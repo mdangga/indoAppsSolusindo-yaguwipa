@@ -11,21 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('riwayat_donasi', function(Blueprint $table){
-            $table->id();
-            $table->foreignId('id_donatur')->constrained('donatur')->onDelete('cascade');
-            $table->decimal('jumlah', 15, 2)->default(0);
-            $table->foreignId('id_jenis_donasi')->constrained('jenis_donasi')->onDelete('restrict');
-            $table->text('keterangan')->nullable();
-            $table->date('tanggal_donasi');
-            $table->timestamps();
-        });
-
         Schema::create('jenis_donasi', function (Blueprint $table) {
             $table->id('id_jenis_donasi');
             $table->string('nama')->unique();
             $table->text('deskripsi')->nullable();
             $table->timestamps();
+        });
+        
+        Schema::create('riwayat_donasi', function(Blueprint $table){
+            $table->id();
+            $table->unsignedBigInteger('id_donatur');
+            $table->decimal('jumlah', 15, 2)->default(0);
+            $table->unsignedBigInteger('id_jenis_donasi');
+            $table->text('keterangan')->nullable();
+            $table->date('tanggal_donasi');
+            $table->timestamps();
+            
+            $table->foreign('id_donatur')->references('id_donatur')->on('donatur')->onDelete('cascade');
+            $table->foreign('id_jenis_donasi')->references('id_jenis_donasi')->on('jenis_donasi')->onDelete('restrict');
         });
     }
 
@@ -34,7 +37,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('riwayat_donasi');
         Schema::dropIfExists('jenis_donasi');
+        Schema::dropIfExists('riwayat_donasi');
     }
 };
