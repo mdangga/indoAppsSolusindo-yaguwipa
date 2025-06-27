@@ -99,7 +99,7 @@
 
                 <!-- tombol Login -->
                 <div class="hidden justify-end items-center lg:flex">
-                    <a href="#test"
+                    <a href="#"
                         class="bg-blue-100 text-sm font-semibold text-gray-900 rounded-[50px] px-6 py-3.5 hover:bg-blue-200 transition">
                         Log in
                     </a>
