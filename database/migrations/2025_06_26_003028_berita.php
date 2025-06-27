@@ -11,19 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('berita', function(Blueprint $table) {
+        Schema::create('berita', function (Blueprint $table) {
             $table->id('id_berita');
             $table->string('judul');
             $table->string('slug');
             $table->longText('isi_berita');
             $table->string('thumbnail')->nullable();
-            // $table->unsignedBigInteger('id_editor');
+            $table->string('keyword')->nullable();
             $table->dateTime('tanggal_publish')->nullable();
             $table->boolean('is_dipublish')->default(false);
             $table->unsignedInteger('dibaca')->default(0);
-            $table->timestamps(); 
-
-            // $table->foreign('id_editor')->references('id')->on('editor')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
