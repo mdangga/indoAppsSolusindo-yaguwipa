@@ -11,7 +11,76 @@
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- AOS Library -->
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
 </head>
+<style>
+    @keyframes scroll-left {
+        0% {
+            transform: translateX(0);
+        }
+
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+
+    .logo-container {
+        overflow: hidden;
+        width: 100%;
+        position: relative;
+    }
+
+    .logo-scroll {
+        display: flex;
+        width: max-content;
+        animation: scroll-left 40s linear infinite;
+        white-space: nowrap;
+    }
+
+    .logo-set {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        flex-shrink: 0;
+        padding: 0 2rem;
+    }
+
+    .logo-item {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 158px;
+    }
+
+    .logo-container::before,
+    .logo-container::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 100px;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .logo-container::before {
+        left: 0;
+        background: linear-gradient(to right, white, transparent);
+    }
+
+    .logo-container::after {
+        right: 0;
+        background: linear-gradient(to left, white, transparent);
+    }
+
+    .logo-container:hover .logo-scroll {
+        animation-play-state: paused;
+    }
+</style>
 
 <body>
     <header class="absolute w-full z-50">
@@ -165,11 +234,22 @@
     {{-- hero end --}}
 
     {{-- berita kegiatan --}}
-    <div class="px-14 py-20">
-        <h1 id="kegiatan">Kegiatan</h1>
+    <div class="px-4 sm:px-6 lg:px-14 py-20">
+        <!-- Header: Judul di kiri dan tombol di kanan -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-10 gap-4">
+            <h1 id="kegiatan" class="text-3xl font-semibold text-gray-900">
+                BERITA DAN KEGIATAN
+            </h1>
+            <a href="#"
+                class="rounded-full px-6 py-3 text-sm font-semibold text-black bg-white hover:bg-gray-100 border-2 border-gray-300 shadow-sm focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+                See More
+            </a>
+        </div>
+
+        <!-- Grid Kegiatan -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             @for ($i = 0; $i < 4; $i++)
-                <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm">
+                <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm" data-aos="fade-up">
                     <a href="#">
                         <img class="rounded-t-lg w-full h-48 object-cover" src="{{ asset('img-placeholder.webp') }}"
                             alt="Gambar kegiatan" />
@@ -179,18 +259,21 @@
                             <h5 class="text-xl font-semibold text-gray-900">
                                 Kegiatan 1
                             </h5>
-                            <span class="text-sm text-green-600 font-medium bg-green-100 px-2 py-1 rounded">
+                            <span class="text-[12px] text-green-600 bg-green-100 px-2 py-1 rounded-full">
                                 Akan datang
                             </span>
-                            <!-- Untuk kegiatan yang sudah lewat, bisa diganti:
-                                    <span class="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded">
-                                        15 Juni 2025
-                                    </span> -->
+                            <!-- Jika sudah lewat:
+                        <span class="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded">
+                            15 Juni 2025
+                        </span> -->
                         </div>
                         <p class="mb-3 text-gray-700 text-sm">
-                            Kegiatan donor darah bersama PMI untuk umum, bertempat di Aula Kecamatan.
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore, praesentium doloremque
+                            numquam at deserunt eum quis? Voluptatem commodi, voluptatum beatae iure exercitationem ipsa
+                            necessitatibus magnam dolores reiciendis ab dolore laudantium officia molestiae temporibus
+                            placeat laboriosam, dolor aperiam libero! Adipisci, ut.
                         </p>
-                        <a href="#"
+                        {{-- <a href="#"
                             class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
                             Detail Kegiatan
                             <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true"
@@ -198,13 +281,56 @@
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                     stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
                             </svg>
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
             @endfor
         </div>
     </div>
     {{-- end kegiatan --}}
+
+    {{-- lembaga --}}
+    <div class="bg-white py-15 sm:py-32">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+            <h1 class="text-center pb-5 text-4xl font-semibold text-gray-900">
+                LEMBAGA TERKAIT
+            </h1>
+
+            <div class="mx-auto mt-10 max-w-6xl overflow-hidden logo-container">
+                <div class="logo-scroll">
+                    <!-- First set of logos -->
+                    <div class="logo-set">
+                        @foreach ([['src' => 'pt-indo-apps-solusindo.png', 'alt' => 'PT Indo Apps Solusindo', 'link' => 'https://indoapps.id'], ['src' => 'denpasar-institute.png', 'alt' => 'Denpasar Institute', 'link' => 'https://denpasarinstitute.ac.id'], ['src' => 'gcom.png', 'alt' => 'GCOM', 'link' => '#'], ['src' => 'indo-berkah-konstruksi.png', 'alt' => 'Indo Berkah Konstruksi', 'link' => '#'], ['src' => 'indo-consulting.png', 'alt' => 'Indo Consulting', 'link' => '#'], ['src' => 'latifaba.png', 'alt' => 'Latifaba', 'link' => 'https://www.latifaba.com/'], ['src' => 'nyaman-care.png', 'alt' => 'Nyaman Care', 'link' => '#'], ['src' => 'penerbit-yaguwipa.png', 'alt' => 'Penerbit Yaguwipa', 'link' => 'https://www.penerbityaguwipa.id/'], ['src' => 'robotic.png', 'alt' => 'Robotic', 'link' => '#'], ['src' => 'teknika-solusinda.png', 'alt' => 'Teknika Solusinda', 'link' => '#']] as $logo)
+                            <div class="logo-item">
+                                <a href="{{ $logo['link'] }}" target="_blank" rel="noopener noreferrer"
+                                    class="hover:opacity-75 transition-opacity duration-200">
+                                    <img class="max-h-32 w-auto object-contain"
+                                        src="{{ asset('lembaga-logo/' . $logo['src']) }}" alt="{{ $logo['alt'] }}"
+                                        width="158" height="48" />
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <!-- Duplicate set for infinite scroll -->
+                    <div class="logo-set">
+                        @foreach ([['src' => 'pt-indo-apps-solusindo.png', 'alt' => 'PT Indo Apps Solusindo', 'link' => 'https://indoapps.id'], ['src' => 'denpasar-institute.png', 'alt' => 'Denpasar Institute', 'link' => 'https://denpasarinstitute.ac.id'], ['src' => 'gcom.png', 'alt' => 'GCOM', 'link' => '#'], ['src' => 'indo-berkah-konstruksi.png', 'alt' => 'Indo Berkah Konstruksi', 'link' => '#'], ['src' => 'indo-consulting.png', 'alt' => 'Indo Consulting', 'link' => '#'], ['src' => 'latifaba.png', 'alt' => 'Latifaba', 'link' => 'https://www.latifaba.com/'], ['src' => 'nyaman-care.png', 'alt' => 'Nyaman Care', 'link' => '#'], ['src' => 'penerbit-yaguwipa.png', 'alt' => 'Penerbit Yaguwipa', 'link' => 'https://www.penerbityaguwipa.id/'], ['src' => 'robotic.png', 'alt' => 'Robotic', 'link' => '#'], ['src' => 'teknika-solusinda.png', 'alt' => 'Teknika Solusinda', 'link' => '#']] as $logo)
+                            <div class="logo-item">
+                                <a href="{{ $logo['link'] }}" target="_blank" rel="noopener noreferrer"
+                                    class="hover:opacity-75 transition-opacity duration-200">
+                                    <img class="max-h-32 w-auto object-contain"
+                                        src="{{ asset('lembaga-logo/' . $logo['src']) }}" alt="{{ $logo['alt'] }}"
+                                        width="158" height="48" />
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- end lembaga --}}
 </body>
 
 <footer class="bg-gray-900 text-white py-10 px-6">
