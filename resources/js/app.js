@@ -123,3 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
         mobileMenuPanel.style.transition = "transform 0.3s ease-in-out";
     }
 });
+AOS.init({
+    duration: 1000, // durasi animasi (ms)
+    once: true, // hanya muncul sekali
+});
