@@ -91,7 +91,7 @@
                 <div class="flex justify-start">
                     <a href="#" class="-m-1.5 p-1.5">
                         <span class="sr-only">Your Company</span>
-                        <img class="h-[75px] w-auto" src="logo.png" alt="Company Logo" />
+                        <img class="h-[75px] w-auto" src="img/logo.png" alt="Company Logo" />
                     </a>
                 </div>
 
@@ -99,7 +99,7 @@
 
                 <!-- tombol Login -->
                 <div class="hidden justify-end items-center lg:flex">
-                    <a href="#"
+                    <a href="/signin"
                         class="bg-blue-100 text-sm font-semibold text-gray-900 rounded-[50px] px-6 py-3.5 hover:bg-blue-200 transition">
                         Log in
                     </a>
@@ -203,7 +203,7 @@
     <div class="relative top-0">
         {{-- Background Image --}}
         <div class="absolute inset-0 -z-10">
-            <img src="{{ asset('ex.jpg') }}" alt="Hero Background" class="w-full h-full object-cover grayscale-25" />
+            <img src="{{ asset('img/ex.jpg') }}" alt="Hero Background" class="w-full h-full object-cover grayscale-25" />
 
             {{-- Gradient Overlay agar transisi ke putih --}}
             <div class="absolute inset-0 bg-gradient-to-b from-white/0 via-white/70 to-white"></div>
@@ -251,7 +251,7 @@
             @for ($i = 0; $i < 4; $i++)
                 <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm" data-aos="fade-up">
                     <a href="#">
-                        <img class="rounded-t-lg w-full h-48 object-cover" src="{{ asset('img-placeholder.webp') }}"
+                        <img class="rounded-t-lg w-full h-48 object-cover" src="{{ asset('img/img-placeholder.webp') }}"
                             alt="Gambar kegiatan" />
                     </a>
                     <div class="p-5">
@@ -305,7 +305,7 @@
                                 <a href="{{ $logo['link'] }}" target="_blank" rel="noopener noreferrer"
                                     class="hover:opacity-75 transition-opacity duration-200">
                                     <img class="max-h-32 w-auto object-contain"
-                                        src="{{ asset('lembaga-logo/' . $logo['src']) }}" alt="{{ $logo['alt'] }}"
+                                        src="{{ asset('img/lembaga-logo/' . $logo['src']) }}" alt="{{ $logo['alt'] }}"
                                         width="158" height="48" />
                                 </a>
                             </div>
@@ -319,7 +319,7 @@
                                 <a href="{{ $logo['link'] }}" target="_blank" rel="noopener noreferrer"
                                     class="hover:opacity-75 transition-opacity duration-200">
                                     <img class="max-h-32 w-auto object-contain"
-                                        src="{{ asset('lembaga-logo/' . $logo['src']) }}" alt="{{ $logo['alt'] }}"
+                                        src="{{ asset('img/lembaga-logo/' . $logo['src']) }}" alt="{{ $logo['alt'] }}"
                                         width="158" height="48" />
                                 </a>
                             </div>
