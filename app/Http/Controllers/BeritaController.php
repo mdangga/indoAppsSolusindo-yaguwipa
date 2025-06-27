@@ -65,27 +65,7 @@ class BeritaController extends Controller
         ], 201);
     }
 
-    public function show($id)
-    {
-        $berita = Berita::find($id);
-
-        if (!$berita) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Berita not found'
-            ], 404);
-        }
-
-        // Increment view count
-        $berita->increment('dibaca');
-
-        return response()->json([
-            'success' => true,
-            'data' => $berita
-        ]);
-    }
-
-    public function showBySlug($slug)
+    public function show($slug)
     {
         $berita = Berita::where('slug', $slug)->first();
 
