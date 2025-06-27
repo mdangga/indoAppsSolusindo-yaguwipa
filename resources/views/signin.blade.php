@@ -102,7 +102,7 @@
                         <div class="max-w-md mx-auto">
                             <!-- Logo -->
                             <div class="text-center mb-8">
-                                <img class="mx-auto h-24 w-auto" src="{{ asset('logo.png') }}" alt="Your Company" />
+                                <img class="mx-auto h-24 w-auto" src="{{ asset('img/logo.png') }}" alt="Your Company" />
                                 <h2 class="mt-6 text-2xl font-bold tracking-tight text-gray-900">Masuk ke Yaguwipa
                                 </h2>
                                 <p class="mt-2 text-sm text-gray-600">Isi form dengan benar
@@ -113,13 +113,13 @@
                             <!-- Form -->
                             <form class="space-y-6" action="#" method="POST">
                                 <div>
-                                    <label for="email" class="block text-sm font-medium text-gray-900 mb-2">Email
+                                    <label for="username" class="block text-sm font-medium text-gray-900 mb-2">username
                                     </label>
                                     <div class="relative">
-                                        <input type="email" name="email" id="email" autocomplete="email"
+                                        <input type="text" name="username" id="username"
                                             required
                                             class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0 transition-colors"
-                                            placeholder="Enter your email" />
+                                            placeholder="Enter your username" />
                                         <div class="absolute inset-y-0 right-0 flex items-center pr-3">
                                             <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
