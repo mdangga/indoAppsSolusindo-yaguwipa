@@ -36,7 +36,7 @@
     .logo-scroll {
         display: flex;
         width: max-content;
-        animation: scroll-left 40s linear infinite;
+        animation: scroll-left 25s linear infinite;
         white-space: nowrap;
     }
 
@@ -99,7 +99,7 @@
 
                 <!-- tombol Login -->
                 <div class="hidden justify-end items-center lg:flex">
-                    <a href="/signin"
+                    <a href="{{ route('login') }}"
                         class="bg-blue-100 text-sm font-semibold text-gray-900 rounded-[50px] px-6 py-3.5 hover:bg-blue-200 transition">
                         Log in
                     </a>
@@ -247,46 +247,45 @@
             </a>
         </div>
 
-        <!--berita -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" data-aos="fade-up">
-            @foreach ($berita as $item)
-                <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm">
-                    <a href="{{ route('berita.show', $item->slug) }}">
-                        <img class="rounded-t-lg w-full h-48 object-cover"
-                            src="{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : asset('img/img-placeholder.webp') }}"
-                            alt="{{ $item->judul }}" />
-                    </a>
-                    <div class="p-5">
-                        <div class="flex items-center justify-between mb-2">
-                            <h5 class="text-xl font-semibold text-gray-900">
-                                {{ $item->judul }}
-                            </h5>
-                            <span class="text-[12px] text-green-600 bg-green-100 px-2 py-1 rounded-full">
-                                {{ \Carbon\Carbon::parse($item->tanggal_publish)->translatedFormat('d F Y') }}
+        <!-- Berita dan Kegiatan -->
+        <div class="grid grid-cols-1 xl:grid-cols-4 gap-6" data-aos="fade-up">
+            <!-- Kolom Berita (3 kolom) -->
+            <div class="xl:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @forelse ($berita as $item)
+                    <div
+                        class="bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col justify-between h-full">
+                        <a href="{{ route('berita.show', $item->slug) }}">
+                            <img class="rounded-t-lg w-full h-48 object-cover"
+                                src="{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : asset('img/img-placeholder.webp') }}"
+                                alt="{{ $item->judul }}" />
+                        </a>
+                        <div class="p-5">
+                            <div class="flex items-center justify-between mb-2">
+                                <h5 class="text-xl font-semibold text-gray-900">
+                                    {{ $item->judul }}
+                                </h5>
+
+                            </div>
+                            <p class="mb-3 text-gray-700 text-sm">
+                                {{ Str::limit(strip_tags($item->isi_berita), 250) }}
+                            </p>
+                            <span class="text-sm bottom-0">
+                                {{ \Carbon\Carbon::parse($item->tanggal_publish)->diffForHumans() }}
                             </span>
                         </div>
-                        <p class="mb-3 text-gray-700 text-sm">
-                            {{ Str::limit(strip_tags($item->isi_berita), 150) }}
-                        </p>
-                        <a href="{{ route('berita.show', $item->slug) }}"
-                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800">
-                            Detail Berita
-                            <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 14 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                            </svg>
-                        </a>
                     </div>
-                </div>
-            @endforeach
-        </div>
-
-        {{-- <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                @empty
+                    <div
+                        class="col-span-full bg-white border border-gray-200 rounded-lg shadow-sm p-6 flex items-center justify-center h-full">
+                        <p class="text-sm text-gray-500">Belum ada berita yang ditambahkan.</p>
+                    </div>
+                @endforelse
+            </div>
+            <!-- Kolom Kegiatan (1 kolom) -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 h-fit">
                 <h2 class="text-xl font-semibold text-gray-900 mb-6">Kegiatan</h2>
 
-                <!-- Event Timeline -->
-                <div class="space-y-4">
+                <div class="space-y-4 relative">
                     <!-- Event 1 - Upcoming -->
                     <div class="flex items-start space-x-4">
                         <div class="flex-shrink-0">
@@ -294,8 +293,7 @@
                                 <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                    </path>
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
                             </div>
                         </div>
@@ -316,7 +314,7 @@
                                 <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
                         </div>
@@ -326,7 +324,8 @@
                                 <span class="text-sm text-gray-500">Jan 8</span>
                             </div>
                             <p class="text-sm text-gray-600 mt-1">Lorem, ipsum dolor sit amet consectetur adipisicing
-                                elit. Laudantium, atque.</p>
+                                elit.
+                                Laudantium, atque.</p>
                         </div>
                     </div>
 
@@ -337,7 +336,7 @@
                                 <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5 13l4 4L19 7"></path>
+                                        d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
                         </div>
@@ -351,13 +350,15 @@
                                 methodologies</p>
                         </div>
                     </div>
-                    <div class="flex items-start space-x-4">
+
+                    <!-- Event 4 - Completed with Overlay -->
+                    <div class="flex items-start space-x-4 relative">
                         <div class="flex-shrink-0">
                             <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
                                 <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5 13l4 4L19 7"></path>
+                                        d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
                         </div>
@@ -367,121 +368,52 @@
                                 <span class="text-sm text-gray-500">Dec 28</span>
                             </div>
                             <p class="text-sm text-gray-600 mt-1">Lorem ipsum dolor, sit amet consectetur adipisicing
-                                elit. Unde, accusantium.
-                            </p>
+                                elit.
+                                Unde, accusantium.</p>
                         </div>
 
-                    </div>
-
-                </div>
-            </div> --}}
-        <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 class="text-xl font-semibold text-gray-900 mb-6">Kegiatan</h2>
-
-            <!-- Event Timeline -->
-            <div class="space-y-4 relative">
-                <!-- Event 1 - Upcoming -->
-                <div class="flex items-start space-x-4">
-                    <div class="flex-shrink-0">
-                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                </path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-sm font-medium text-gray-900">Tech Conference 2025</h3>
-                            <span class="text-sm text-gray-500">Jan 15</span>
-                        </div>
-                        <p class="text-sm text-gray-600 mt-1">Annual technology conference featuring the latest
-                            innovations in AI and web development</p>
-                    </div>
-                </div>
-
-                <!-- Event 2 - In Progress -->
-                <div class="flex items-start space-x-4">
-                    <div class="flex-shrink-0">
-                        <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
-                            <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-sm font-medium text-gray-900">Product Launch Workshop</h3>
-                            <span class="text-sm text-gray-500">Jan 8</span>
-                        </div>
-                        <p class="text-sm text-gray-600 mt-1">Lorem, ipsum dolor sit amet consectetur adipisicing
-                            elit. Laudantium, atque.</p>
-                    </div>
-                </div>
-
-                <!-- Event 3 - Completed -->
-                <div class="flex items-start space-x-4">
-                    <div class="flex-shrink-0">
-                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-sm font-medium text-gray-900">Design Thinking Seminar</h3>
-                            <span class="text-sm text-gray-500">Dec 28</span>
-                        </div>
-                        <p class="text-sm text-gray-600 mt-1">Completed seminar on user-centered design principles
-                            and methodologies</p>
-                    </div>
-                </div>
-
-                <!-- Event 4 - Completed with Overlay -->
-                <div class="flex items-start space-x-4 relative">
-                    <div class="flex-shrink-0">
-                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-sm font-medium text-gray-900">Design Thinking Seminar</h3>
-                            <span class="text-sm text-gray-500">Dec 28</span>
-                        </div>
-                        <p class="text-sm text-gray-600 mt-1">Lorem ipsum dolor, sit amet consectetur adipisicing
-                            elit. Unde, accusantium.</p>
-                    </div>
-
-                    <!-- Gradient Overlay -->
-                    <div
-                        class="absolute inset-0 bg-gradient-to-b from-transparent via-white/80 to-white rounded-lg pointer-events-none">
-                    </div>
-
-                    <!-- More Events Indicator
+                        <!-- Gradient Overlay -->
                         <div
-                            class="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-xs text-gray-500 bg-white px-2 py-1 rounded-full border border-gray-200 shadow-sm">
-                            +5 kegiatan lainnya
-                        </div>-->
+                            class="absolute inset-0 bg-gradient-to-b from-transparent via-white/80 to-white rounded-lg pointer-events-none">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         {{-- end kegiatan --}}
     </div>
-
-    </div>
     {{-- end berita --}}
+
+    {{-- galleri --}}
+    <div class="px-4 sm:px-6 lg:px-14 py-20">
+        <!-- Header: Judul di kiri dan tombol di kanan -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-10 gap-4">
+            <h1 id="kegiatan" class="text-3xl font-semibold text-gray-900">
+                GALLERI
+            </h1>
+            <a href="/berita"
+                class="rounded-full px-6 py-3 text-sm font-semibold text-black bg-white hover:bg-gray-100 border-2 border-gray-300 shadow-sm focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+                See More
+            </a>
+        </div>
+        {{-- <!-- Galeri Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            @forelse ($galeri as $item)
+                <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+                    <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}"
+                        class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300 ease-in-out">
+                    <div class="p-4">
+                        <h3 class="text-base font-semibold text-gray-800">
+                            {{ $item->judul }}
+                        </h3>
+                    </div>
+                </div>
+            @empty
+                <p class="text-gray-500 col-span-full">Belum ada gambar di galeri.</p>
+            @endforelse --}}
+    </div>
+    </div>
+    {{-- galleri end --}}
 
     {{-- lembaga --}}
     <div class="bg-white py-15 sm:py-32">
@@ -489,8 +421,7 @@
             <h1 class="text-center pb-5 text-4xl font-semibold text-gray-900">
                 LEMBAGA TERKAIT
             </h1>
-
-            <div class="mx-auto mt-10 max-w-6xl overflow-hidden logo-container">
+            {{-- <div class="mx-auto mt-10 max-w-6xl overflow-hidden logo-container">
                 <div class="logo-scroll">
                     <!-- First set of logos -->
                     <div class="logo-set">
@@ -521,7 +452,23 @@
                     </div>
 
                 </div>
+            </div> --}}
+
+            <div class="mx-auto mt-10 max-w-6xl overflow-hidden logo-container">
+                <div class="logo-scroll">
+                    @foreach ([['src' => 'pt-indo-apps-solusindo.png', 'alt' => 'PT Indo Apps Solusindo', 'link' => 'https://indoapps.id'], ['src' => 'denpasar-institute.png', 'alt' => 'Denpasar Institute', 'link' => 'https://denpasarinstitute.ac.id'], ['src' => 'gcom.png', 'alt' => 'GCOM', 'link' => '#'], ['src' => 'indo-berkah-konstruksi.png', 'alt' => 'Indo Berkah Konstruksi', 'link' => '#'], ['src' => 'indo-consulting.png', 'alt' => 'Indo Consulting', 'link' => '#'], ['src' => 'latifaba.png', 'alt' => 'Latifaba', 'link' => 'https://www.latifaba.com/'], ['src' => 'nyaman-care.png', 'alt' => 'Nyaman Care', 'link' => '#'], ['src' => 'penerbit-yaguwipa.png', 'alt' => 'Penerbit Yaguwipa', 'link' => 'https://www.penerbityaguwipa.id/'], ['src' => 'robotic.png', 'alt' => 'Robotic', 'link' => '#'], ['src' => 'teknika-solusinda.png', 'alt' => 'Teknika Solusinda', 'link' => '#']] as $logo)
+                        <div class="logo-item flex-shrink-0">
+                            <a href="{{ $logo['link'] }}" target="_blank" rel="noopener noreferrer"
+                                class="hover:opacity-75 transition-opacity duration-200 block">
+                                <img class="max-h-32 w-auto object-contain mx-8"
+                                    src="{{ asset('img/lembaga-logo/' . $logo['src']) }}" alt="{{ $logo['alt'] }}"
+                                    width="158" height="48" />
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
             </div>
+
         </div>
     </div>
     {{-- end lembaga --}}
