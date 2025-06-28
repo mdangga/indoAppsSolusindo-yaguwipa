@@ -35,13 +35,11 @@ class GalleryController extends Controller
             'kategori' => 'required|in:foto,video',
         ]);
 
-        $file = $request->file('link');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $filePath = $file->storeAs('uploads/galeri', $filename, 'public');
+        $path = $request->file('link')->store('img/gallery', 'public');
 
         Gallery::create([
             'judul' => $request->judul,
-            'link' => 'storage/' . $filePath,
+            'link' => $path,
             'kategori' => $request->kategori,
         ]);
 
