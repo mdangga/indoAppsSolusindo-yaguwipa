@@ -386,33 +386,30 @@
 
     {{-- galleri --}}
     <div class="px-4 sm:px-6 lg:px-14 py-20">
-        <!-- Header: Judul di kiri dan tombol di kanan -->
+        <!-- Header -->
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-10 gap-4">
-            <h1 id="kegiatan" class="text-3xl font-semibold text-gray-900">
+            <h1 class="text-3xl font-semibold text-gray-900">
                 GALLERI
             </h1>
-            <a href="/berita"
-                class="rounded-full px-6 py-3 text-sm font-semibold text-black bg-white hover:bg-gray-100 border-2 border-gray-300 shadow-sm focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+            <a href="/galeri"
+                class="rounded-full px-6 py-3 text-sm font-semibold text-black bg-white hover:bg-gray-100 border-2 border-gray-300 shadow-sm">
                 See More
             </a>
         </div>
-        <!-- Galeri Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+        <!-- Masonry Grid -->
+        <div class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
             @forelse ($gallery as $item)
-                <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
-                    <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}"
-                        class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300 ease-in-out">
-                    <div class="p-4">
-                        <h3 class="text-base font-semibold text-gray-800">
-                            {{ $item->judul }}
-                        </h3>
-                    </div>
+                <div class="break-inside-avoid overflow-hidden rounded-lg shadow-md">
+                    <img src="{{ asset('storage/' . $item->link) }}" alt="{{ $item->judul }}"
+                        class="w-full object-cover rounded-lg transition-transform duration-300 hover:scale-105" />
                 </div>
             @empty
-                <p class="text-gray-500 col-span-full">Belum ada gambar di galeri.</p>
+                <p class="text-gray-500">Belum ada gambar di galeri.</p>
             @endforelse
         </div>
     </div>
+
     {{-- galleri end --}}
 
     {{-- lembaga --}}
