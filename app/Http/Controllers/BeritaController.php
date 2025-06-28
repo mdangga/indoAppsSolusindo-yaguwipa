@@ -36,6 +36,7 @@ class BeritaController extends Controller
         $validator = Validator::make($request->all(), [
             'judul' => 'required|string|max:255',
             'isi_berita' => 'required|string',
+            'keyword'=> 'nullable|string',
             'thumbnail' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
         ]);
 
@@ -68,11 +69,7 @@ class BeritaController extends Controller
         // Create berita
         $berita = Berita::create($data);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Berita created successfully',
-            'data' => $berita
-        ], 201);
+        return redirect('/berita/' . $berita->slug);
     }
 
     public function show($slug)

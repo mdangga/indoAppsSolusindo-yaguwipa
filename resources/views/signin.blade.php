@@ -111,7 +111,8 @@
 
 
                             <!-- Form -->
-                            <form class="space-y-6" action="#" method="POST">
+                            <form class="space-y-6" action="/login" method="POST">
+                                @csrf
                                 <div>
                                     <label for="username" class="block text-sm font-medium text-gray-900 mb-2">username
                                     </label>
