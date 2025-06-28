@@ -17,6 +17,7 @@ class Berita extends Model
         'slug',
         'isi_berita',
         'thumbnail',
+        'keyword',
         'tanggal_publish',
         'is_dipublish',
         'dibaca',

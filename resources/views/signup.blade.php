@@ -29,25 +29,8 @@
                 </div>
 
                 <!-- Form -->
-                <form class="space-y-6" action="#" method="POST">
-                    <!-- Email Field -->
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-900 mb-2">Email address</label>
-                        <div class="relative">
-                            <input type="email" name="email" id="email" autocomplete="email" required
-                                class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0 transition-colors"
-                                placeholder="Enter your email" />
-                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207">
-                                    </path>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-
+                <form class="space-y-6" action="/register" method="POST">
+                    @csrf
                     <!-- Username Field -->
                     <div>
                         <label for="username" class="block text-sm font-medium text-gray-900 mb-2">Username</label>
@@ -124,6 +107,8 @@
                             <span class="text-red-500">Passwords do not match</span>
                         </div>
                     </div>
+
+                    <input type="text" name="role" value="donatur">
 
 
                     <!-- Submit Button -->
