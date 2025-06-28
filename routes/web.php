@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\GalleryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [BeritaController::class, 'beranda'])->name('beranda');
@@ -9,6 +10,8 @@ Route::get('/', [BeritaController::class, 'beranda'])->name('beranda');
 Route::get('/testing', function () {
     return view('testing');
 });
+
+Route::post('/galeri', [GalleryController::class, 'store'])->name('galeri.store');
 // Auth routes
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register.form');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
