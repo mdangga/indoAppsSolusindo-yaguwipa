@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Berita;
+use App\Models\Gallery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -28,7 +29,8 @@ class BeritaController extends Controller
             ->take(3)
             ->get();
 
-        return view('beranda', compact('berita'));
+        $gallery = Gallery::all();  
+        return view('beranda', compact('berita','gallery'));
     }
 
 

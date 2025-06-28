@@ -396,9 +396,9 @@
                 See More
             </a>
         </div>
-        {{-- <!-- Galeri Grid -->
+        <!-- Galeri Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            @forelse ($galeri as $item)
+            @forelse ($gallery as $item)
                 <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
                     <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}"
                         class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300 ease-in-out">
@@ -410,8 +410,8 @@
                 </div>
             @empty
                 <p class="text-gray-500 col-span-full">Belum ada gambar di galeri.</p>
-            @endforelse --}}
-    </div>
+            @endforelse
+        </div>
     </div>
     {{-- galleri end --}}
 
