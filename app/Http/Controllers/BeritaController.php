@@ -21,6 +21,16 @@ class BeritaController extends Controller
         ]);
     }
 
+    public function beranda()
+    {
+        $berita = Berita::where('is_dipublish', true)
+            ->orderBy('tanggal_publish', 'desc')
+            ->get();
+
+        return view('beranda', compact('berita'));
+    }
+
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [

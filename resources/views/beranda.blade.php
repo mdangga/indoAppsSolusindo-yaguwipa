@@ -203,7 +203,8 @@
     <div class="relative top-0">
         {{-- Background Image --}}
         <div class="absolute inset-0 -z-10">
-            <img src="{{ asset('img/ex.jpg') }}" alt="Hero Background" class="w-full h-full object-cover grayscale-25" />
+            <img src="{{ asset('img/ex.jpg') }}" alt="Hero Background"
+                class="w-full h-full object-cover grayscale-25" />
 
             {{-- Gradient Overlay agar transisi ke putih --}}
             <div class="absolute inset-0 bg-gradient-to-b from-white/0 via-white/70 to-white"></div>
@@ -233,61 +234,254 @@
     </div>
     {{-- hero end --}}
 
-    {{-- berita kegiatan --}}
+    {{-- berita berita --}}
     <div class="px-4 sm:px-6 lg:px-14 py-20">
         <!-- Header: Judul di kiri dan tombol di kanan -->
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-10 gap-4">
             <h1 id="kegiatan" class="text-3xl font-semibold text-gray-900">
                 BERITA DAN KEGIATAN
             </h1>
-            <a href="#"
+            <a href="/berita"
                 class="rounded-full px-6 py-3 text-sm font-semibold text-black bg-white hover:bg-gray-100 border-2 border-gray-300 shadow-sm focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-gray-600">
                 See More
             </a>
         </div>
 
-        <!-- Grid Kegiatan -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            @for ($i = 0; $i < 4; $i++)
-                <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm" data-aos="fade-up">
-                    <a href="#">
-                        <img class="rounded-t-lg w-full h-48 object-cover" src="{{ asset('img/img-placeholder.webp') }}"
-                            alt="Gambar kegiatan" />
+        <!--berita -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" data-aos="fade-up">
+            @foreach ($berita as $item)
+                <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm">
+                    <a href="{{ route('berita.show', $item->slug) }}">
+                        <img class="rounded-t-lg w-full h-48 object-cover"
+                            src="{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : asset('img/img-placeholder.webp') }}"
+                            alt="{{ $item->judul }}" />
                     </a>
                     <div class="p-5">
                         <div class="flex items-center justify-between mb-2">
                             <h5 class="text-xl font-semibold text-gray-900">
-                                Kegiatan 1
+                                {{ $item->judul }}
                             </h5>
                             <span class="text-[12px] text-green-600 bg-green-100 px-2 py-1 rounded-full">
-                                Akan datang
+                                {{ \Carbon\Carbon::parse($item->tanggal_publish)->translatedFormat('d F Y') }}
                             </span>
-                            <!-- Jika sudah lewat:
-                        <span class="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded">
-                            15 Juni 2025
-                        </span> -->
                         </div>
                         <p class="mb-3 text-gray-700 text-sm">
-                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore, praesentium doloremque
-                            numquam at deserunt eum quis? Voluptatem commodi, voluptatum beatae iure exercitationem ipsa
-                            necessitatibus magnam dolores reiciendis ab dolore laudantium officia molestiae temporibus
-                            placeat laboriosam, dolor aperiam libero! Adipisci, ut.
+                            {{ Str::limit(strip_tags($item->isi_berita), 150) }}
                         </p>
-                        {{-- <a href="#"
-                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
-                            Detail Kegiatan
-                            <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                        <a href="{{ route('berita.show', $item->slug) }}"
+                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800">
+                            Detail Berita
+                            <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 14 10">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                     stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
                             </svg>
-                        </a> --}}
+                        </a>
                     </div>
                 </div>
-            @endfor
+            @endforeach
         </div>
+
+        {{-- <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6">Kegiatan</h2>
+
+                <!-- Event Timeline -->
+                <div class="space-y-4">
+                    <!-- Event 1 - Upcoming -->
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-sm font-medium text-gray-900">Tech Conference 2025</h3>
+                                <span class="text-sm text-gray-500">Jan 15</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-1">Annual technology conference featuring the latest
+                                innovations in AI and web development</p>
+                        </div>
+                    </div>
+
+                    <!-- Event 2 - In Progress -->
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                                <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-sm font-medium text-gray-900">Product Launch Workshop</h3>
+                                <span class="text-sm text-gray-500">Jan 8</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-1">Lorem, ipsum dolor sit amet consectetur adipisicing
+                                elit. Laudantium, atque.</p>
+                        </div>
+                    </div>
+
+                    <!-- Event 3 - Completed -->
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-sm font-medium text-gray-900">Design Thinking Seminar</h3>
+                                <span class="text-sm text-gray-500">Dec 28</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-1">Completed seminar on user-centered design principles
+                                and
+                                methodologies</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-sm font-medium text-gray-900">Design Thinking Seminar</h3>
+                                <span class="text-sm text-gray-500">Dec 28</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-1">Lorem ipsum dolor, sit amet consectetur adipisicing
+                                elit. Unde, accusantium.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div> --}}
+        <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-6">Kegiatan</h2>
+
+            <!-- Event Timeline -->
+            <div class="space-y-4 relative">
+                <!-- Event 1 - Upcoming -->
+                <div class="flex items-start space-x-4">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-medium text-gray-900">Tech Conference 2025</h3>
+                            <span class="text-sm text-gray-500">Jan 15</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">Annual technology conference featuring the latest
+                            innovations in AI and web development</p>
+                    </div>
+                </div>
+
+                <!-- Event 2 - In Progress -->
+                <div class="flex items-start space-x-4">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-medium text-gray-900">Product Launch Workshop</h3>
+                            <span class="text-sm text-gray-500">Jan 8</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">Lorem, ipsum dolor sit amet consectetur adipisicing
+                            elit. Laudantium, atque.</p>
+                    </div>
+                </div>
+
+                <!-- Event 3 - Completed -->
+                <div class="flex items-start space-x-4">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-medium text-gray-900">Design Thinking Seminar</h3>
+                            <span class="text-sm text-gray-500">Dec 28</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">Completed seminar on user-centered design principles
+                            and methodologies</p>
+                    </div>
+                </div>
+
+                <!-- Event 4 - Completed with Overlay -->
+                <div class="flex items-start space-x-4 relative">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-medium text-gray-900">Design Thinking Seminar</h3>
+                            <span class="text-sm text-gray-500">Dec 28</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1">Lorem ipsum dolor, sit amet consectetur adipisicing
+                            elit. Unde, accusantium.</p>
+                    </div>
+
+                    <!-- Gradient Overlay -->
+                    <div
+                        class="absolute inset-0 bg-gradient-to-b from-transparent via-white/80 to-white rounded-lg pointer-events-none">
+                    </div>
+
+                    <!-- More Events Indicator
+                        <div
+                            class="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-xs text-gray-500 bg-white px-2 py-1 rounded-full border border-gray-200 shadow-sm">
+                            +5 kegiatan lainnya
+                        </div>-->
+                </div>
+            </div>
+        </div>
+        {{-- end kegiatan --}}
     </div>
-    {{-- end kegiatan --}}
+
+    </div>
+    {{-- end berita --}}
 
     {{-- lembaga --}}
     <div class="bg-white py-15 sm:py-32">
@@ -305,8 +499,8 @@
                                 <a href="{{ $logo['link'] }}" target="_blank" rel="noopener noreferrer"
                                     class="hover:opacity-75 transition-opacity duration-200">
                                     <img class="max-h-32 w-auto object-contain"
-                                        src="{{ asset('img/lembaga-logo/' . $logo['src']) }}" alt="{{ $logo['alt'] }}"
-                                        width="158" height="48" />
+                                        src="{{ asset('img/lembaga-logo/' . $logo['src']) }}"
+                                        alt="{{ $logo['alt'] }}" width="158" height="48" />
                                 </a>
                             </div>
                         @endforeach
@@ -319,8 +513,8 @@
                                 <a href="{{ $logo['link'] }}" target="_blank" rel="noopener noreferrer"
                                     class="hover:opacity-75 transition-opacity duration-200">
                                     <img class="max-h-32 w-auto object-contain"
-                                        src="{{ asset('img/lembaga-logo/' . $logo['src']) }}" alt="{{ $logo['alt'] }}"
-                                        width="158" height="48" />
+                                        src="{{ asset('img/lembaga-logo/' . $logo['src']) }}"
+                                        alt="{{ $logo['alt'] }}" width="158" height="48" />
                                 </a>
                             </div>
                         @endforeach
@@ -380,16 +574,18 @@
         </div>
 
         <!-- Kanan: Kosongkan -->
-        <div id="test" class="relative group w-[500px]">
-
-            <div
+        <div id="test" class="relative group max-w-full overflow-hidden">
+            {{-- <div
                 class="absolute inset-0 bg-gradient-to-br from-black/70 via-gray-800/60 to-black/70 rounded-md z-10 transition-opacity duration-300 group-hover:opacity-0 pointer-events-none">
-            </div>
+            </div> --}}
+
             <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2828.1566751622727!2d115.23003191579483!3d-8.638782329040929!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd23f8661ef31cd%3A0x663c45c04ca4cfb3!2sPT.%20Indo%20Apps%20Solusindo%20-%20Apps%20%26%20Web%20Development%20%7C%20Software%20Services%20%7C%20Seo%20Services%20di%20Bali%20%7C%20Domain%20%26%20Hosting%20%7C%20IoT!5e0!3m2!1sid!2sid!4v1750918670426!5m2!1sid!2sid"
-                width="500" height="250" style="border:0;" allowfullscreen="" loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade" class="rounded-md"></iframe>
+                class="rounded-md w-full h-[250px] border-0" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
         </div>
+
     </div>
 </footer>
 
