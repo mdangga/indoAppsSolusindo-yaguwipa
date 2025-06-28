@@ -25,6 +25,7 @@ class BeritaController extends Controller
     {
         $berita = Berita::where('is_dipublish', true)
             ->orderBy('tanggal_publish', 'desc')
+            ->take(3)
             ->get();
 
         return view('beranda', compact('berita'));

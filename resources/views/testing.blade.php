@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <title>Tambah Berita</title>
     @vite('resources/css/app.css') {{-- Abaikan ini jika belum pakai Vite --}}
 </head>
-<body class="bg-gray-100 py-10">
+{{-- <body class="bg-gray-100 py-10">
     <div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
         <h1 class="text-2xl font-bold mb-4">Tambah Berita</h1>
-
-        {{-- Tampilkan error validasi --}}
         @if ($errors->any())
             <div class="mb-4 bg-red-100 text-red-700 p-2 rounded">
                 <ul class="list-disc pl-5">
@@ -20,7 +19,6 @@
             </div>
         @endif
 
-        {{-- Form untuk route POST /berita --}}
         <form action="/berita" method="POST" enctype="multipart/form-data">
             @csrf
             
@@ -56,5 +54,38 @@
             </button>
         </form>
     </div>
+</body> --}}
+
+<body>
+    <h1>Upload Galeri</h1>
+
+    @if ($errors->any())
+        <div style="color: red;">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form action="{{ route('galeri.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <label for="judul">Judul:</label>
+        <input type="text" name="judul" id="judul" required><br><br>
+
+        <label for="link">File (Foto/Video):</label>
+        <input type="file" name="link" id="link" required><br><br>
+
+        <label for="kategori">Kategori:</label>
+        <select name="kategori" id="kategori" required>
+            <option value="">-- Pilih Kategori --</option>
+            <option value="foto">Foto</option>
+            <option value="video">Video</option>
+        </select><br><br>
+
+        <button type="submit">Simpan</button>
+    </form>
 </body>
+
 </html>
