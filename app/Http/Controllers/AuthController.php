@@ -13,7 +13,7 @@ class AuthController extends Controller
     // form register
     public function showRegisterForm()
     {
-        return view('signin');
+        return view('signup');
     }
 
     // register
@@ -24,7 +24,7 @@ class AuthController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'role' => 'in:admin,donatur'
         ]);
-
+        
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
@@ -35,8 +35,9 @@ class AuthController extends Controller
             'role' => $request->role ?? 'donatur',
         ]);
 
+
         Auth::login($user);
-        return redirect()->route('signin')->with('success', 'Registrasi berhasil!');
+        return redirect()->route('login')->with('success', 'Registrasi berhasil!');
     }
 
     // form login
