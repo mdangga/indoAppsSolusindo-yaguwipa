@@ -28,11 +28,9 @@ class BeritaController extends Controller
             ->orderBy('tanggal_publish', 'desc')
             ->take(3)
             ->get();
-
-        $gallery = Gallery::all();  
-        return view('beranda', compact('berita','gallery'));
+        $gallery = Gallery::orderBy('created_at', 'desc')->take(5)->get();
+        return view('beranda', compact('berita', 'gallery'));
     }
-
 
     public function store(Request $request)
     {

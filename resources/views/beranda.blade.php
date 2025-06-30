@@ -237,7 +237,7 @@
     {{-- berita berita --}}
     <div class="px-4 sm:px-6 lg:px-14 py-20">
         <!-- Header: Judul di kiri dan tombol di kanan -->
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-10 gap-4">
+        <div class="flex flex-col sm:flex-row items-center justify-between pb-10 gap-4">
             <h1 id="kegiatan" class="text-3xl font-semibold text-gray-900">
                 BERITA DAN KEGIATAN
             </h1>
@@ -246,6 +246,7 @@
                 See More
             </a>
         </div>
+
 
         <!-- Berita dan Kegiatan -->
         <div class="grid grid-cols-1 xl:grid-cols-4 gap-6" data-aos="fade-up">
@@ -385,71 +386,52 @@
     {{-- end berita --}}
 
     {{-- galleri --}}
-
-
-    <div id="gallery" class="relative w-full" data-carousel="slide">
-        <!-- Carousel wrapper -->
-        <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
-            <!-- Item 1 -->
-            <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                <img src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg"
-                    class="absolute block max-w-full h-auto -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                    alt="">
-            </div>
-            <!-- Item 2 -->
-            <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
-                <img src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg"
-                    class="absolute block max-w-full h-auto -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                    alt="">
-            </div>
-            <!-- Item 3 -->
-            <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                <img src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg"
-                    class="absolute block max-w-full h-auto -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                    alt="">
-            </div>
-            <!-- Item 4 -->
-            <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                <img src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg"
-                    class="absolute block max-w-full h-auto -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                    alt="">
-            </div>
-            <!-- Item 5 -->
-            <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                <img src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg"
-                    class="absolute block max-w-full h-auto -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                    alt="">
-            </div>
+    <div class="px-4 sm:px-6 lg:px-14 py-20">
+        <!-- Header: Judul di kiri dan tombol di kanan -->
+        <div class="flex flex-col sm:flex-row items-center justify-between pb-10 gap-4">
+            <h1 id="kegiatan" class="text-3xl font-semibold text-gray-900">
+                GALLERI
+            </h1>
+            <a href="/gallery"
+                class="rounded-full px-6 py-3 text-sm font-semibold text-black bg-white hover:bg-gray-100 border-2 border-gray-300 shadow-sm focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+                See More
+            </a>
         </div>
-        <!-- Slider controls -->
-        <button type="button"
-            class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-            data-carousel-prev>
-            <span
-                class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M5 1 1 5l4 4" />
-                </svg>
-                <span class="sr-only">Previous</span>
-            </span>
-        </button>
-        <button type="button"
-            class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-            data-carousel-next>
-            <span
-                class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="m1 9 4-4-4-4" />
-                </svg>
-                <span class="sr-only">Next</span>
-            </span>
-        </button>
-    </div>
 
+        <div id="gallery" class="relative w-full" data-carousel="slide">
+            <!-- Carousel wrapper -->
+            <div class="relative h-[10px] overflow-hidden rounded-lg md:h-[32vw]">
+                @forelse ($gallery->take(5) as $index => $item)
+                    <!-- Item {{ $index + 1 }} -->
+                    <div class="hidden duration-700 ease-in-out"
+                        data-carousel-item="{{ $index === 0 ? 'active' : '' }}">
+                        <img src="{{ asset('storage/' . $item->link) }}" alt="{{ $item->judul }}" loading="lazy"
+                            class="absolute block w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                    </div>
+                @empty
+                    <!-- Default item when no gallery items -->
+                    <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
+                        <div
+                            class="absolute block w-full h-full bg-gray-200 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 items-center justify-center">
+                            <p class="text-gray-500">Belum ada gambar di galeri.</p>
+                        </div>
+                    </div>
+                @endforelse
+            </div>
+
+            <!-- Indicators (optional) -->
+            @if ($gallery->count() > 1)
+                <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
+                    @forelse ($gallery->take(5) as $inex => $item)
+                        <button type="button" class="w-[6px] h-[6px] rounded-full"
+                            aria-current="{{ $index === 0 ? 'true' : 'false' }}"
+                            aria-label="Slide {{ $index + 1 }}"
+                            data-carousel-slide-to="{{ $index }}"></button>
+                    @endforeach
+                </div>
+            @endif
+        </div>
+    </div>
 
     {{-- galleri end --}}
 
@@ -459,7 +441,7 @@
             <h1 class="text-center pb-5 text-4xl font-semibold text-gray-900">
                 LEMBAGA TERKAIT
             </h1>
-            {{-- <div class="mx-auto mt-10 max-w-6xl overflow-hidden logo-container">
+            <div class="mx-auto mt-10 max-w-6xl overflow-hidden logo-container">
                 <div class="logo-scroll">
                     <!-- First set of logos -->
                     <div class="logo-set">
@@ -490,9 +472,9 @@
                     </div>
 
                 </div>
-            </div> --}}
+            </div>
 
-            <div class="mx-auto mt-10 max-w-6xl overflow-hidden logo-container">
+            {{-- <div class="mx-auto mt-10 max-w-6xl overflow-hidden logo-container">
                 <div class="logo-scroll">
                     @foreach ([['src' => 'pt-indo-apps-solusindo.png', 'alt' => 'PT Indo Apps Solusindo', 'link' => 'https://indoapps.id'], ['src' => 'denpasar-institute.png', 'alt' => 'Denpasar Institute', 'link' => 'https://denpasarinstitute.ac.id'], ['src' => 'gcom.png', 'alt' => 'GCOM', 'link' => '#'], ['src' => 'indo-berkah-konstruksi.png', 'alt' => 'Indo Berkah Konstruksi', 'link' => '#'], ['src' => 'indo-consulting.png', 'alt' => 'Indo Consulting', 'link' => '#'], ['src' => 'latifaba.png', 'alt' => 'Latifaba', 'link' => 'https://www.latifaba.com/'], ['src' => 'nyaman-care.png', 'alt' => 'Nyaman Care', 'link' => '#'], ['src' => 'penerbit-yaguwipa.png', 'alt' => 'Penerbit Yaguwipa', 'link' => 'https://www.penerbityaguwipa.id/'], ['src' => 'robotic.png', 'alt' => 'Robotic', 'link' => '#'], ['src' => 'teknika-solusinda.png', 'alt' => 'Teknika Solusinda', 'link' => '#']] as $logo)
                         <div class="logo-item flex-shrink-0">
@@ -505,7 +487,7 @@
                         </div>
                     @endforeach
                 </div>
-            </div>
+            </div> --}}
 
         </div>
     </div>

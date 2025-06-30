@@ -11,6 +11,8 @@ Route::get('/testing', function () {
     return view('testing');
 });
 
+Route::get('/gallery', [GalleryController::class, 'index'])->name('beranda');
+
 Route::post('/galeri', [GalleryController::class, 'store'])->name('galeri.store');
 // Auth routes
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register.form');
