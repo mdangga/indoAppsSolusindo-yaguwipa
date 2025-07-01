@@ -7,6 +7,7 @@ use App\Models\Gallery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Yajra\DataTables\Facades\DataTables;
 
 class BeritaController extends Controller
 {
@@ -20,6 +21,30 @@ class BeritaController extends Controller
             'success' => true,
             'data' => $berita
         ]);
+    }
+
+    public function admin()
+    {
+        return view('admin.berita');
+    }
+    
+    public function getDataTables(Request $request)
+    {
+        if ($request->ajax()) {
+            $berita = Berita::query();
+
+            return DataTables::of($berita)
+                ->addColumn('aksi', function ($row) {
+                    return '
+                        <button class="editBtn bg-blue-500 text-white px-2 py-1 rounded text-sm" data-id="'.$row->id_berita.'">Edit</button>
+                        <button class="deleteBtn bg-red-500 text-white px-2 py-1 rounded text-sm ml-2" data-id="'.$row->id_berita.'">Hapus</button>
+                    ';
+                })
+                ->editColumn('is_dipublish', fn($row) => $row->is_dipublish ? 'Ya' : 'Tidak')
+                ->editColumn('thumbnail', fn($row) => '<img src="'.asset('storage/'.$row->thumbnail).'" class="w-16 h-16 object-cover rounded" />')
+                ->rawColumns(['aksi', 'thumbnail'])
+                ->make(true);
+        }
     }
 
     public function store(Request $request)
