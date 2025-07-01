@@ -70,7 +70,12 @@ class BeritaController extends Controller
         // Create berita
         $berita = Berita::create($data);
 
-        return redirect('/berita/' . $berita->slug);
+        return response()->json([
+            'success' => true,
+            'message' => 'Berita created successfully',
+            'data' => $berita
+        ], 201);
+        // return redirect('/berita/' . $berita->slug);
     }
 
     public function show($slug)
@@ -87,12 +92,12 @@ class BeritaController extends Controller
         // Increment view count
         $berita->increment('dibaca');
 
-        // return response()->json([
-        //     'success' => true,
-        //     'data' => $berita
-        // ]);
+        return response()->json([
+            'success' => true,
+            'data' => $berita
+        ]);
 
-        return view('berita', compact('berita'));
+        // return view('berita', compact('berita'));
     }
 
     public function update(Request $request, $id)
