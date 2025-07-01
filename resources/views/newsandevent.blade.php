@@ -166,14 +166,12 @@
     <script>
         let currentPage = 1;
         let totalPages = 1;
-        let newsData = [];
+        let dataBerita = [];
 
-        // API configuration
         const API_CONFIG = {
             baseUrl: '/api/berita',
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': 'Bearer YOUR_TOKEN' // Uncomment jika perlu auth
             }
         };
 
@@ -226,7 +224,7 @@
                 const data = await response.json();
 
                 // Adapt this structure based on your API response format
-                newsData = data.data || data.articles || data.news || [];
+                dataBerita = data.data || data.articles || data.news || [];
                 currentPage = data.current_page || page;
                 totalPages = data.last_page || data.total_pages || 1;
 
@@ -245,7 +243,7 @@
         function renderNews() {
             const container = document.getElementById('news-container');
 
-            if (newsData.length === 0) {
+            if (dataBerita.length === 0) {
                 container.innerHTML = `
                     <div class="col-span-full bg-white border border-gray-200 rounded-lg shadow-sm p-12 text-center">
                         <div class="text-gray-400 mb-4">
@@ -261,7 +259,7 @@
                 return;
             }
 
-            const newsHtml = newsData.map(item => {
+            const newsHtml = dataBerita.map(item => {
                 const thumbnailUrl = item.thumbnail ?
                     `/storage/${item.thumbnail}` :
                     'https://via.placeholder.com/400x300/f3f4f6/9ca3af?text=No+Image';
@@ -382,10 +380,8 @@
         // Event handlers
         function changePage(page) {
             if (page >= 1 && page <= totalPages && page !== currentPage) {
-                // Use real API call here
                 fetchNews(page);
 
-                // Scroll to top of news section
                 document.getElementById('kegiatan').scrollIntoView({
                     behavior: 'smooth'
                 });
