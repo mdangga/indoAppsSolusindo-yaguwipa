@@ -33,3 +33,5 @@ Route::get('/berita/{slug}', [BeritaController::class, 'show'])->name('berita.sh
 Route::post('/berita', [BeritaController::class, 'store']);
 Route::put('/berita/{id}', [BeritaController::class, 'update']);
 Route::delete('/berita/{id}', [BeritaController::class, 'destroy']);
+
+Route::get('/kegiatan', [BeritaController::class, 'kegiatan'])->name('kegiatan');
