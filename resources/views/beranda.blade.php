@@ -251,28 +251,27 @@
         <!-- Berita dan Kegiatan -->
         <div class="grid grid-cols-1 xl:grid-cols-4 gap-6" data-aos="fade-up">
             <!-- Kolom Berita (3 kolom) -->
-            <div class="xl:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="xl:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
                 @forelse ($berita as $item)
                     <div
-                        class="bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col justify-between h-full">
+                        class="bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col h-full transition-transform hover:scale-[1.02] duration-300 ease-in-out">
                         <a href="{{ route('berita.show', $item->slug) }}">
                             <img class="rounded-t-lg w-full h-48 object-cover"
                                 src="{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : asset('img/img-placeholder.webp') }}"
                                 alt="{{ $item->judul }}" />
                         </a>
-                        <div class="p-5">
-                            <div class="flex items-center justify-between mb-2">
-                                <h5 class="text-xl font-semibold text-gray-900">
-                                    {{ $item->judul }}
-                                </h5>
 
-                            </div>
-                            <p class="mb-3 text-gray-700 text-sm">
+                        {{-- Judul dan isi berita --}}
+                        <div class="p-5 flex-grow">
+                            <h5 class="text-xl font-semibold text-gray-900 mb-2">{{ $item->judul }}</h5>
+                            <p class="text-gray-700 text-sm">
                                 {{ Str::limit(strip_tags($item->isi_berita), 250) }}
                             </p>
-                            <span class="text-sm bottom-0">
-                                {{ \Carbon\Carbon::parse($item->tanggal_publish)->diffForHumans() }}
-                            </span>
+                        </div>
+
+                        {{-- Tanggal di bagian paling bawah --}}
+                        <div class="px-5 pb-4 mt-auto text-sm text-gray-500">
+                            {{ \Carbon\Carbon::parse($item->tanggal_publish)->diffForHumans() }}
                         </div>
                     </div>
                 @empty
@@ -282,6 +281,7 @@
                     </div>
                 @endforelse
             </div>
+
             <!-- Kolom Kegiatan (1 kolom) -->
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 h-fit">
                 <h2 class="text-xl font-semibold text-gray-900 mb-6">Kegiatan</h2>
