@@ -21,15 +21,14 @@ class BeritaController extends Controller
             'data' => $berita
         ]);
     }
-
-    public function beranda()
+    
+     public function kegiatan()
     {
         $berita = Berita::where('is_dipublish', true)
             ->orderBy('tanggal_publish', 'desc')
-            ->take(3)
-            ->get();
-        $gallery = Gallery::orderBy('created_at', 'desc')->take(5)->get();
-        return view('beranda', compact('berita', 'gallery'));
+            ->paginate(8);
+            
+        return view('kegiatan', compact('berita'));
     }
 
     public function store(Request $request)
@@ -70,7 +69,12 @@ class BeritaController extends Controller
         // Create berita
         $berita = Berita::create($data);
 
-        return redirect('/berita/' . $berita->slug);
+        return response()->json([
+            'success' => true,
+            'message' => 'Berita created successfully',
+            'data' => $berita
+        ], 201);
+        // return redirect('/berita/' . $berita->slug);
     }
 
     public function show($slug)
@@ -87,12 +91,12 @@ class BeritaController extends Controller
         // Increment view count
         $berita->increment('dibaca');
 
-        // return response()->json([
-        //     'success' => true,
-        //     'data' => $berita
-        // ]);
+        return response()->json([
+            'success' => true,
+            'data' => $berita
+        ]);
 
-        return view('berita', compact('berita'));
+        // return view('berita', compact('berita'));
     }
 
     public function update(Request $request, $id)

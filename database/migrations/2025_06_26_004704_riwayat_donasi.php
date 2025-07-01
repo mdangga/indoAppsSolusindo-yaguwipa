@@ -21,10 +21,10 @@ return new class extends Migration
         Schema::create('riwayat_donasi', function(Blueprint $table){
             $table->id();
             $table->unsignedBigInteger('id_donatur');
-            $table->decimal('jumlah', 15, 2)->default(0);
+            $table->decimal('jumlah_donasi', 15, 2)->nullable();
             $table->unsignedBigInteger('id_jenis_donasi');
             $table->text('keterangan')->nullable();
-            $table->date('tanggal_donasi');
+            $table->enum('status', ['spproved', 'pending', 'rejected']);
             $table->timestamps();
             
             $table->foreign('id_donatur')->references('id_donatur')->on('donatur')->onDelete('cascade');
