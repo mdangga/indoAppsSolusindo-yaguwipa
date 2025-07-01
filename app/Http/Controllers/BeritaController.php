@@ -21,15 +21,6 @@ class BeritaController extends Controller
             'data' => $berita
         ]);
     }
-    
-     public function kegiatan()
-    {
-        $berita = Berita::where('is_dipublish', true)
-            ->orderBy('tanggal_publish', 'desc')
-            ->paginate(8);
-            
-        return view('kegiatan', compact('berita'));
-    }
 
     public function store(Request $request)
     {
@@ -87,16 +78,9 @@ class BeritaController extends Controller
                 'message' => 'Berita not found'
             ], 404);
         }
-
-        // Increment view count
         $berita->increment('dibaca');
 
-        return response()->json([
-            'success' => true,
-            'data' => $berita
-        ]);
-
-        // return view('berita', compact('berita'));
+        return view('berita', compact('berita'));
     }
 
     public function update(Request $request, $id)

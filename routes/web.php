@@ -18,14 +18,14 @@ Route::get('/testing3', function () {
     return view('kegiatan');
 });
 
-Route::get('/berita', [BeritaController::class, 'index']);
+// news & event 
+Route::get('/berita-dan-kegiatan', function () {
+    return view('newsandevent');
+});
 Route::get('/berita/{slug}', [BeritaController::class, 'show'])->name('berita.show');
 Route::post('/berita', [BeritaController::class, 'store']);
 Route::put('/berita/{id}', [BeritaController::class, 'update']);
 Route::delete('/berita/{id}', [BeritaController::class, 'destroy']);
-
-// news & event 
-Route::get('/kegiatan', [BeritaController::class, 'kegiatan'])->name('kegiatan');
 
 // gallery
 Route::get('/gallery', function () {
