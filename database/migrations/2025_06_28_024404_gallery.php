@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('gallery', function (Blueprint $table) {
             $table->id('id_gallery');
-            $table->string('judul');
-            $table->string('link');
+            $table->string('alt_text');
+            $table->string('img');
+            $table->enum('status', ['show', 'hide']);
             $table->enum('kategori', ['foto', 'video']);
             $table->timestamps();
         });
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('gallery');
     }
 };

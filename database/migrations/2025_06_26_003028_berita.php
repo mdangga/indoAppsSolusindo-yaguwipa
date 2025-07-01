@@ -11,17 +11,29 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('berita', function (Blueprint $table) {
+        Schema::create('kategori_news_event', function(Blueprint $table){
+            $table->id('id_kategori_news_event');
+            $table->string('nama')->unique();
+            $table->text('deskripsi')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('news_event', function (Blueprint $table) {
             $table->id('id_berita');
             $table->string('judul');
+            $table->string('meta_title');
+            $table->string('meta_description');
             $table->string('slug');
             $table->longText('isi_berita');
             $table->string('thumbnail')->nullable();
             $table->string('keyword')->nullable();
             $table->dateTime('tanggal_publish')->nullable();
-            $table->boolean('is_dipublish')->default(false);
-            $table->unsignedInteger('dibaca')->default(0);
+            $table->enum('status', ['show', 'hide']);
+            $table->unsignedInteger('hit')->default(0);
+            $table->unsignedBigInteger('id_kategori_news_event');
             $table->timestamps();
+
+            $table->foreign('id_kategori_news_event')->references('id_kategori_news_event')->on('kategori_news_event')->onDelete('cascade');
         });
     }
 
@@ -30,6 +42,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('berita');
+        Schema::dropIfExists('news_event');
+        Schema::dropIfExists('kategori_news_event');
     }
 };
