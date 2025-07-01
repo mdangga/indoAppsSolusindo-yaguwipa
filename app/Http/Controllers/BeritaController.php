@@ -21,16 +21,7 @@ class BeritaController extends Controller
             'data' => $berita
         ]);
     }
-
-    public function beranda()
-    {
-        $berita = Berita::where('is_dipublish', true)
-            ->orderBy('tanggal_publish', 'desc')
-            ->take(3)
-            ->get();
-        $gallery = Gallery::orderBy('created_at', 'desc')->take(5)->get();
-        return view('beranda', compact('berita', 'gallery'));
-    }
+    
      public function kegiatan()
     {
         $berita = Berita::where('is_dipublish', true)

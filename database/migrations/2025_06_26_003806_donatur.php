@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('donatur', function (Blueprint $table) {
             $table->id('id_donatur');
+            $table->unsignedBigInteger('id_user');
             $table->string('nama');
             $table->string('no_tlp');
             $table->string('email')->nullable();
             $table->string('alamat')->nullable();
+            $table->enum('status', ['show', 'hide']);
             $table->timestamps();
+
+            $table->foreign('id_user')->references('id_users')->on('users')->onDelete('cascade');
         });
     }
 
