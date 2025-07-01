@@ -31,6 +31,14 @@ class BeritaController extends Controller
         $gallery = Gallery::orderBy('created_at', 'desc')->take(5)->get();
         return view('beranda', compact('berita', 'gallery'));
     }
+     public function kegiatan()
+    {
+        $berita = Berita::where('is_dipublish', true)
+            ->orderBy('tanggal_publish', 'desc')
+            ->paginate(8);
+            
+        return view('kegiatan', compact('berita'));
+    }
 
     public function store(Request $request)
     {
