@@ -241,7 +241,7 @@
             <h1 id="kegiatan" class="text-3xl font-semibold text-gray-900">
                 BERITA DAN KEGIATAN
             </h1>
-            <a href="/berita"
+            <a href="/berita-dan-kegiatan"
                 class="rounded-full px-6 py-3 text-sm font-semibold text-black bg-white hover:bg-gray-100 border-2 border-gray-300 shadow-sm focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-gray-600">
                 See More
             </a>

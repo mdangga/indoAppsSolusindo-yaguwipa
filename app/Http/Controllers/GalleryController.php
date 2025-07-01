@@ -12,7 +12,9 @@ class GalleryController extends Controller
      */
     public function index()
     {
-        $gallery = Gallery::latest()->paginate(6);
+        $gallery = Gallery::latest()
+            ->paginate(6);
+            
         return response()->json([
             'success' => true,
             'data' => $gallery
