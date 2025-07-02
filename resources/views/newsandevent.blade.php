@@ -16,6 +16,22 @@
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 </head>
+<style>
+    /* Custom CSS for text clamping */
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+</style>
 
 <body>
     <header class="absolute w-full z-50">
@@ -136,7 +152,7 @@
 
     <div class="px-4 sm:px-6 lg:px-14 py-20">
         <!-- Header: Judul di kiri dan tombol di kanan -->
-        <div class="sm:flex-row pb-10 gap-4 text-center">
+        <div class=" sm:flex-row pb-10 gap-4 text-center">
             <h1 id="kegiatan" class="mt-15 text-3xl font-semibold text-gray-900">
                 BERITA DAN KEGIATAN
             </h1>
@@ -144,285 +160,120 @@
                 odio animi ducimus temporibus rem dolorum aut omnis!</p>
         </div>
 
-        <!-- Loading indicator -->
-        <div id="loading" class="text-center py-10">
-            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            <p class="mt-2 text-gray-600">Memuat berita...</p>
-        </div>
-
-        <!-- News container -->
-        <div id="news-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-10"
-            data-aos="fade-up">
-            <!-- News items will be inserted here -->
-        </div>
-
-        <!-- Pagination container -->
-        <div id="pagination-container" class="flex justify-center items-center space-x-4" data-aos="fade-up"
-            data-aos-delay="200">
-            <!-- Pagination will be inserted here -->
-        </div>
-    </div>
-
-    <script>
-        let currentPage = 1;
-        let totalPages = 1;
-        let dataBerita = [];
-
-        const API_CONFIG = {
-            baseUrl: '/api/berita',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        };
-
-        // Utility functions
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
-                'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
-            ];
-            return `${date.getDate()} ${months[date.getMonth()]}`;
-        }
-
-        function timeAgo(dateString) {
-            const date = new Date(dateString);
-            const now = new Date();
-            const diffTime = Math.abs(now - date);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-            if (diffDays === 1) return '1 hari yang lalu';
-            if (diffDays < 30) return `${diffDays} hari yang lalu`;
-            if (diffDays < 365) return `${Math.floor(diffDays / 30)} bulan yang lalu`;
-            return `${Math.floor(diffDays / 365)} tahun yang lalu`;
-        }
-
-        function truncateText(text, limit) {
-            if (text.length <= limit) return text;
-            return text.substring(0, limit) + '...';
-        }
-
-        function stripHtml(html) {
-            const div = document.createElement('div');
-            div.innerHTML = html;
-            return div.textContent || div.innerText || '';
-        }
-
-        // API functions
-        async function fetchNews(page = 1) {
-            try {
-                showLoading();
-
-                const response = await fetch(`${API_CONFIG.baseUrl}?page=${page}&per_page=8`, {
-                    method: 'GET',
-                    headers: API_CONFIG.headers
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-
-                // Adapt this structure based on your API response format
-                dataBerita = data.data || data.articles || data.news || [];
-                currentPage = data.current_page || page;
-                totalPages = data.last_page || data.total_pages || 1;
-
-                renderNews();
-                renderPagination();
-
-            } catch (error) {
-                console.error('Error fetching news:', error);
-                showError('Gagal memuat berita. Silakan coba lagi.');
-            } finally {
-                hideLoading();
-            }
-        }
-
-        // Render functions
-        function renderNews() {
-            const container = document.getElementById('news-container');
-
-            if (dataBerita.length === 0) {
-                container.innerHTML = `
-                    <div class="col-span-full bg-white border border-gray-200 rounded-lg shadow-sm p-12 text-center">
-                        <div class="text-gray-400 mb-4">
-                            <svg class="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                                    d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 01-2-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                            </svg>
+        <!-- Berita dan Kegiatan Grid - 2 rows x 4 columns -->
+        <!-- Berita dan Kegiatan Grid - 4 columns, unlimited rows -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-10" data-aos="fade-up">
+            @forelse ($berita as $item)
+                <div
+                    class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] flex flex-col h-full">
+                    <!-- Image Container -->
+                    <div class="relative">
+                        <a href="{{ route('berita.show', $item->slug) }}" class="block">
+                            <img class="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
+                                src="{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : asset('img/img-placeholder.webp') }}"
+                                alt="{{ $item->judul }}" />
+                        </a>
+                        <!-- Date badge overlay -->
+                        <div
+                            class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-gray-700">
+                            {{ \Carbon\Carbon::parse($item->tanggal_publish)->format('d M') }}
                         </div>
-                        <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada berita</h3>
-                        <p class="text-sm text-gray-500">Berita dan kegiatan akan ditampilkan di sini.</p>
                     </div>
-                `;
-                return;
-            }
 
-            const newsHtml = dataBerita.map(item => {
-                const thumbnailUrl = item.thumbnail ?
-                    `/storage/${item.thumbnail}` :
-                    'https://via.placeholder.com/400x300/f3f4f6/9ca3af?text=No+Image';
-
-                return `
-                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] flex flex-col h-full">
-                        <!-- Image Container -->
-                        <div class="relative">
-                            <a href="#" onclick="viewNews('${item.slug}')" class="block">
-                                <img class="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
-                                    src="${thumbnailUrl}"
-                                    alt="${item.judul}"
-                                    onerror="this.src='https://via.placeholder.com/400x300/f3f4f6/9ca3af?text=No+Image'" />
+                    <!-- Content Container -->
+                    <div class="p-5 flex flex-col flex-grow">
+                        <!-- Title -->
+                        <h5
+                            class="text-lg font-semibold text-gray-900 mb-3 line-clamp-2 hover:text-blue-600 transition-colors">
+                            <a href="{{ route('berita.show', $item->slug) }}">
+                                {{ $item->judul }}
                             </a>
-                            <!-- Date badge overlay -->
-                            <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-gray-700">
-                                ${formatDate(item.tanggal_publish)}
-                            </div>
-                        </div>
+                        </h5>
 
-                        <!-- Content Container -->
-                        <div class="p-5 flex flex-col flex-grow">
-                            <!-- Title -->
-                            <h5 class="text-lg font-semibold text-gray-900 mb-3 line-clamp-2 hover:text-blue-600 transition-colors">
-                                <a href="#" onclick="viewNews('${item.slug}')">
-                                    ${item.judul}
-                                </a>
-                            </h5>
+                        <!-- Excerpt -->
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4 flex-grow line-clamp-3">
+                            {{ Str::limit(strip_tags($item->isi_berita), 120) }}
+                        </p>
 
-                            <!-- Excerpt -->
-                            <p class="text-gray-600 text-sm leading-relaxed mb-4 flex-grow line-clamp-3">
-                                ${truncateText(stripHtml(item.isi_berita), 120)}
-                            </p>
-
-                            <!-- Footer with date and read more -->
-                            <div class="flex items-center justify-between pt-2 border-t border-gray-100">
-                                <span class="text-xs text-gray-500">
-                                    ${timeAgo(item.tanggal_publish)}
-                                </span>
-                                <a href="#" onclick="viewNews('${item.slug}')"
-                                    class="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors">
-                                    Baca →
-                                </a>
-                            </div>
+                        <!-- Footer with date and read more -->
+                        <div class="flex items-center justify-between pt-2 border-t border-gray-100">
+                            <span class="text-xs text-gray-500">
+                                {{ \Carbon\Carbon::parse($item->tanggal_publish)->diffForHumans() }}
+                            </span>
+                            <a href="{{ route('berita.show', $item->slug) }}"
+                                class="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors">
+                                Baca →
+                            </a>
                         </div>
                     </div>
-                `;
-            }).join('');
-
-            container.innerHTML = newsHtml;
-        }
-
-        function renderPagination() {
-            const container = document.getElementById('pagination-container');
-
-            if (totalPages <= 1) {
-                container.innerHTML = '';
-                return;
-            }
-
-            let paginationHtml = '';
-
-            // Previous button
-            if (currentPage === 1) {
-                paginationHtml += `
-                    <span class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
-                        ← Previous
-                    </span>
-                `;
-            } else {
-                paginationHtml += `
-                    <button onclick="changePage(${currentPage - 1})" 
-                            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
-                        ← Previous
-                    </button>
-                `;
-            }
-
-            // Page numbers
-            paginationHtml += '<div class="flex space-x-1">';
-            for (let page = 1; page <= totalPages; page++) {
-                if (page === currentPage) {
-                    paginationHtml += `
-                        <span class="px-3 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded-lg">
-                            ${page}
-                        </span>
-                    `;
-                } else {
-                    paginationHtml += `
-                        <button onclick="changePage(${page})" 
-                                class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
-                            ${page}
-                        </button>
-                    `;
-                }
-            }
-            paginationHtml += '</div>';
-
-            // Next button
-            if (currentPage === totalPages) {
-                paginationHtml += `
-                    <span class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
-                        Next →
-                    </span>
-                `;
-            } else {
-                paginationHtml += `
-                    <button onclick="changePage(${currentPage + 1})" 
-                            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
-                        Next →
-                    </button>
-                `;
-            }
-
-            container.innerHTML = paginationHtml;
-        }
-
-        // Event handlers
-        function changePage(page) {
-            if (page >= 1 && page <= totalPages && page !== currentPage) {
-                fetchNews(page);
-
-                document.getElementById('kegiatan').scrollIntoView({
-                    behavior: 'smooth'
-                });
-            }
-        }
-
-        function viewNews(slug) {
-            window.location.href = `/berita/${slug}`;
-        }
-
-        // UI state functions
-        function showLoading() {
-            document.getElementById('loading').classList.remove('hidden');
-            document.getElementById('news-container').classList.add('hidden');
-            document.getElementById('pagination-container').classList.add('hidden');
-        }
-
-        function hideLoading() {
-            document.getElementById('loading').classList.add('hidden');
-            document.getElementById('news-container').classList.remove('hidden');
-            document.getElementById('pagination-container').classList.remove('hidden');
-        }
-
-        function showError(message) {
-            const container = document.getElementById('news-container');
-            container.innerHTML = `
-                <div class="col-span-full bg-red-50 border border-red-200 rounded-lg shadow-sm p-12 text-center">
-                    <div class="text-red-400 mb-4">
+                </div>
+            @empty
+                <div class="col-span-full bg-white border border-gray-200 rounded-lg shadow-sm p-12 text-center">
+                    <div class="text-gray-400 mb-4">
                         <svg class="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                                d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                         </svg>
                     </div>
-                    <h3 class="text-lg font-medium text-red-900 mb-2">Terjadi Kesalahan</h3>
-                    <p class="text-sm text-red-700 mb-4">${message}</p>
-                    <button onclick="fetchNews(1)" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
-                        Coba Lagi
-                    </button>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada berita</h3>
+                    <p class="text-sm text-gray-500">Berita dan kegiatan akan ditampilkan di sini.</p>
                 </div>
-            `;
-        }
+            @endforelse
+        </div>
 
+        <!-- Pagination -->
+
+
+        <!-- Custom Pagination if using simple pagination -->
+        @if (isset($berita) && method_exists($berita, 'hasPages') && $berita->hasPages())
+            <div class="flex justify-center items-center space-x-4" data-aos="fade-up" data-aos-delay="200">
+                <!-- Previous Button -->
+                @if ($berita->onFirstPage())
+                    <span
+                        class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
+                        ← Previous
+                    </span>
+                @else
+                    <a href="{{ $berita->previousPageUrl() }}"
+                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        ← Previous
+                    </a>
+                @endif
+
+                <!-- Page Numbers -->
+                <div class="flex space-x-1">
+                    @foreach ($berita->getUrlRange(1, $berita->lastPage()) as $page => $url)
+                        @if ($page == $berita->currentPage())
+                            <span
+                                class="px-3 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded-lg">
+                                {{ $page }}
+                            </span>
+                        @else
+                            <a href="{{ $url }}"
+                                class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                                {{ $page }}
+                            </a>
+                        @endif
+                    @endforeach
+                </div>
+
+                <!-- Next Button -->
+                @if ($berita->hasMorePages())
+                    <a href="{{ $berita->nextPageUrl() }}"
+                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        Next →
+                    </a>
+                @else
+                    <span
+                        class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
+                        Next →
+                    </span>
+                @endif
+            </div>
+        @endif
+
+    </div>
+    <script>
         // Initialize AOS
         AOS.init({
             duration: 800,
@@ -430,7 +281,7 @@
             once: true
         });
 
-        // Mobile menu functionality (if needed)
+        // Mobile menu functionality
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
         const closeMenuButton = document.getElementById('close-menu-button');
@@ -454,11 +305,6 @@
                 }
             });
         }
-
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchNews(1);
-        });
     </script>
 </body>
 

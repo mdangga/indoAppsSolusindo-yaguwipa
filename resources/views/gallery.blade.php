@@ -266,38 +266,98 @@
         </div>
     </header>
 
-    <div class="px-4 sm:px-6 lg:px-40 py-20">
+    <div class=" px-4 sm:px-6 lg:px-40 py-20">
         <!-- Header -->
         <div class="pt-17 pb-15 gap-4">
-            <h1 class="text-3xl font-semibold text-gray-900 text-center">GALLERI</h1>
-            <p class="text-center mt-3">
-                Dokumentasi kegiatan dan aktivitas yayasan dalam berbagai momen penting.
-            </p>
-        </div>
-
-        <!-- Error Message -->
-        <div id="error-message" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-            <strong class="font-bold">Error:</strong>
-            <span id="error-text"></span>
-        </div>
-
-        <!-- Loading Indicator -->
-        <div id="loading-indicator" class="text-center py-8 hidden">
-            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-            <p class="mt-2 text-gray-600">Memuat galeri...</p>
+            <h1 class="text-3xl font-semibold text-gray-900 text-center">
+                GALLERI
+            </h1>
+            <p class="text-center mt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum, cumque ab,
+                assumenda
+                velit consectetur
+                laborum magni odio quisquam architecto, deserunt tempore atque aspernatur. Sunt, nemo.</p>
         </div>
 
         <!-- Masonry Grid -->
         <div id="masonry-container" class="columns-1 sm:columns-2 md:columns-3 gap-6">
-            <!-- Galeri akan dimuat di sini via JS -->
+            @forelse ($gallery->take(8) as $item)
+                <div class="break-inside-avoid mb-6 group cursor-pointer gallery-item"
+                    data-image="{{ asset('storage/' . $item->link) }}" data-title="{{ $item->judul }}">
+                    <div
+                        class="relative overflow-hidden rounded-xl bg-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 ease-out">
+                        <!-- Image -->
+                        <img src="{{ asset('storage/' . $item->link) }}" alt="{{ $item->judul }}"
+                            class="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                            loading="lazy" />
+
+                        <!-- Overlay -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <!-- Bottom Info -->
+                            <div class="absolute bottom-0 left-0 right-0 p-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div>
+                                            <p class="text-white text-sm font-medium">{{ $item->judul }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="col-span-full text-center py-12">
+                    <div class="text-gray-400 mb-4">
+                        <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <p class="text-gray-500 text-lg">Belum ada gambar di galeri</p>
+                    <p class="text-gray-400 text-sm mt-1">Upload gambar untuk memulai koleksi Anda</p>
+                </div>
+            @endforelse
         </div>
 
         <!-- Load More Button -->
-        <div class="text-center mt-12">
-            <button id="load-more-btn"
-                class="opacity-75 w-full h-15 border border-gray-500 group relative bg-white text-black font-medium py-3 px-8 shadow-sm rounded-md hover:opacity-100 hover:border-gray-800 hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-300 ease-out flex items-center justify-center gap-2">
-                <span>Muat Lagi</span>
-            </button>
+        @if ($gallery->count() > 8)
+            <div class="text-center mt-12">
+                <button id="load-more-btn"
+                    class="opacity-75 w-full h-15 border border-gray-500 group relative bg-white text-black font-medium py-3 px-8 shadow-sm rounded-md hover:opacity-100 hover:border-gray-800 hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-300 ease-out flex items-center justify-center gap-2">
+                    <span>Load More</span>
+                </button>
+            </div>
+        @endif
+
+        <!-- Hidden Gallery Items -->
+        <div id="hidden-gallery" class="hidden">
+            @foreach ($gallery->skip(8) as $index => $item)
+                <div class="break-inside-avoid mb-6 group cursor-pointer gallery-item-hidden fade-in"
+                    data-index="{{ $index }}" data-image="{{ asset('storage/' . $item->link) }}"
+                    data-title="{{ $item->judul }}">
+                    <div
+                        class="relative overflow-hidden rounded-xl bg-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 ease-out">
+                        <img src="{{ asset('storage/' . $item->link) }}" alt="{{ $item->judul }}"
+                            class="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                            loading="lazy" />
+
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+
+                            <div class="absolute bottom-0 left-0 right-0 p-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div>
+                                            <p class="text-white text-sm font-medium">{{ $item->judul }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
         </div>
     </div>
 
@@ -318,187 +378,124 @@
     </div>
 
     <script>
-        const imageModal = document.getElementById('image-modal');
-        const modalImage = document.getElementById('modal-image');
-        const modalTitle = document.getElementById('modal-title');
-        const modalCloseBtn = document.getElementById('modal-close-btn');
-        let page = 1;
-        let isLoading = false;
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadMoreBtn = document.getElementById('load-more-btn');
+            const masonryContainer = document.getElementById('masonry-container');
+            const hiddenGallery = document.getElementById('hidden-gallery');
+            const imageModal = document.getElementById('image-modal');
+            const modalImage = document.getElementById('modal-image');
+            const modalTitle = document.getElementById('modal-title');
+            const modalCloseBtn = document.getElementById('modal-close-btn');
+            let currentPage = 1;
+            const itemsPerPage = 8;
 
-        // Modal functionality
-        function openModal(imageSrc, imageTitle) {
-            modalImage.src = imageSrc;
-            modalTitle.textContent = imageTitle;
-            imageModal.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
-        }
-
-        function closeModal() {
-            imageModal.classList.remove('active');
-            document.body.style.overflow = ''; // Restore scrolling
-            setTimeout(() => {
-                modalImage.src = '';
-                modalTitle.textContent = '';
-            }, 300);
-        }
-
-        // Event listeners for modal
-        modalCloseBtn.addEventListener('click', closeModal);
-
-        // Close modal when clicking outside the image
-        imageModal.addEventListener('click', function(e) {
-            if (e.target === imageModal || e.target.classList.contains('modal-overlay')) {
-                closeModal();
+            // Modal functionality
+            function openModal(imageSrc, imageTitle) {
+                modalImage.src = imageSrc;
+                modalTitle.textContent = imageTitle;
+                imageModal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
             }
-        });
 
-        // Close modal with Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && imageModal.classList.contains('active')) {
-                closeModal();
+            function closeModal() {
+                imageModal.classList.remove('active');
+                document.body.style.overflow = ''; // Restore scrolling
+                setTimeout(() => {
+                    modalImage.src = '';
+                    modalTitle.textContent = '';
+                }, 300);
             }
-        });
 
-        // Add click listeners to gallery items - FIXED VERSION
-        function addGalleryClickListeners() {
-            // Target all gallery items, including newly added ones
-            const galleryItems = document.querySelectorAll('.gallery-item');
+            // Event listeners for modal
+            modalCloseBtn.addEventListener('click', closeModal);
 
-            galleryItems.forEach(item => {
-                // Check if listener already added to prevent duplicate listeners
-                if (!item.hasAttribute('data-listener-added')) {
-                    item.addEventListener('click', function() {
-                        // Get image source from the img element inside
-                        const imgElement = this.querySelector('img');
-                        const imageSrc = imgElement ? imgElement.src : '';
-
-                        // Get title from data attribute or img alt
-                        const imageTitle = this.dataset.title ||
-                            (imgElement ? imgElement.alt : '') ||
-                            'Untitled';
-
-                        if (imageSrc) {
-                            openModal(imageSrc, imageTitle);
-                        }
-                    });
-
-                    // Mark as having listener to prevent duplicates
-                    item.setAttribute('data-listener-added', 'true');
+            // Close modal when clicking outside the image
+            imageModal.addEventListener('click', function(e) {
+                if (e.target === imageModal || e.target.classList.contains('modal-overlay')) {
+                    closeModal();
                 }
             });
-        }
 
-        function showError(message) {
-            const errorDiv = document.getElementById('error-message');
-            const errorText = document.getElementById('error-text');
-            errorText.textContent = message;
-            errorDiv.classList.remove('hidden');
-
-            setTimeout(() => {
-                errorDiv.classList.add('hidden');
-            }, 5000);
-        }
-
-        async function loadGaleri() {
-            if (isLoading) return;
-
-            const btn = document.getElementById('load-more-btn');
-            isLoading = true;
-            btn.disabled = true;
-            btn.innerHTML = '<span>Memuat...</span>';
-
-            try {
-                const res = await fetch(`/api/gallery?page=${page}`);
-
-                if (!res.ok) {
-                    throw new Error(`HTTP Error: ${res.status} - ${res.statusText}`);
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && imageModal.classList.contains('active')) {
+                    closeModal();
                 }
+            });
 
-                const response = await res.json();
-
-                let galleryData;
-                let nextPageUrl;
-
-                if (response.success && response.data) {
-                    galleryData = response.data.data || [];
-                    nextPageUrl = response.data.next_page_url;
-                } else if (response.data && Array.isArray(response.data)) {
-                    galleryData = response.data;
-                    nextPageUrl = response.next_page_url;
-                } else {
-                    throw new Error('Format response tidak dikenali');
-                }
-
-                const container = document.getElementById('masonry-container');
-
-                if (galleryData.length === 0 && page === 1) {
-                    container.innerHTML =
-                        '<div class="col-span-full text-center py-8 text-gray-500">Tidak ada data galeri.</div>';
-                } else {
-                    galleryData.forEach((item) => {
-                        const imageLink = item.image || item.link || item.file_path;
-                        const imageTitle = item.title || item.judul || item.name;
-
-                        if (!imageLink || !imageTitle) {
-                            console.warn('Item tidak lengkap:', item);
-                            return;
-                        }
-
-                        const el = document.createElement('div');
-                        el.className = "break-inside-avoid mb-6 group cursor-pointer gallery-item";
-
-                        // Store title in data attribute for easy access
-                        el.setAttribute('data-title', imageTitle);
-
-                        el.innerHTML = `
-                    <div class="relative overflow-hidden rounded-xl bg-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 ease-out">
-                        <img src="/storage/${imageLink}" 
-                             alt="${imageTitle}"
-                             class="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105" 
-                             loading="lazy"
-                             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'400\\' height=\\'300\\' viewBox=\\'0 0 400 300\\'%3E%3Crect width=\\'400\\' height=\\'300\\' fill=\\'%23f3f4f6\\'/%3E%3Ctext x=\\'200\\' y=\\'150\\' text-anchor=\\'middle\\' dy=\\'.3em\\' fill=\\'%236b7280\\' font-family=\\'Arial, sans-serif\\' font-size=\\'14\\'%3EGambar tidak ditemukan%3C/text%3E%3C/svg%3E'; console.error('Gagal memuat gambar:', '/storage/${imageLink}');" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <div class="absolute bottom-0 left-0 right-0 p-4">
-                                <p class="text-white text-sm font-medium">${imageTitle}</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                        container.appendChild(el);
+            // Add click listeners to existing gallery items
+            function addGalleryClickListeners() {
+                const galleryItems = document.querySelectorAll(
+                    '.gallery-item:not([data-listener-added]), .gallery-item-hidden:not([data-listener-added])');
+                galleryItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        const imageSrc = this.dataset.image;
+                        const imageTitle = this.dataset.title;
+                        openModal(imageSrc, imageTitle);
                     });
-
-                    addGalleryClickListeners();
-                }
-
-                page++;
-
-                // Handle pagination
-                if (!nextPageUrl || galleryData.length === 0) {
-                    btn.style.display = 'none';
-                } else {
-                    btn.disabled = false;
-                    btn.innerHTML = '<span>Muat Lagi</span>';
-                }
-
-            } catch (error) {
-                console.error('Error detail:', error);
-                const errorMessage = `Gagal memuat data galeri: ${error.message}`;
-                showError(errorMessage);
-                btn.innerHTML = '<span>Coba Lagi</span>';
-                btn.disabled = false;
-            } finally {
-                isLoading = false;
+                    item.setAttribute('data-listener-added', 'true');
+                });
             }
-        }
 
-        // Initialize when DOM is ready
-        document.addEventListener('DOMContentLoaded', () => {
-            // Load initial gallery and add listeners to any existing items
-            loadGaleri();
+            // Initialize click listeners
             addGalleryClickListeners();
 
-            // Add load more button listener
-            document.getElementById('load-more-btn').addEventListener('click', loadGaleri);
+            // Load more functionality
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener('click', function() {
+                    const hiddenItems = hiddenGallery.querySelectorAll('.gallery-item-hidden');
+                    const startIndex = (currentPage - 1) * itemsPerPage;
+                    const endIndex = Math.min(startIndex + itemsPerPage, hiddenItems.length);
+
+                    // Show loading state
+                    loadMoreBtn.innerHTML = `
+                    <svg class="animate-spin w-5 h-5 text-black mr-2" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Loading...</span>
+                    `;
+                    loadMoreBtn.disabled = true;
+
+                    // Simulate loading delay
+                    setTimeout(() => {
+                        // Add items to masonry container with fade-in animation
+                        for (let i = startIndex; i < endIndex; i++) {
+                            if (hiddenItems[i]) {
+                                const clonedItem = hiddenItems[i].cloneNode(true);
+                                clonedItem.classList.remove('gallery-item-hidden');
+                                clonedItem.classList.add('gallery-item');
+                                // Remove any existing listener attributes
+                                clonedItem.removeAttribute('data-listener-added');
+                                masonryContainer.appendChild(clonedItem);
+                            }
+                        }
+
+                        // Add click listeners to new items
+                        addGalleryClickListeners();
+
+                        currentPage++;
+
+                        // Reset or hide button
+                        if (endIndex >= hiddenItems.length) {
+                            // Hide button with animation
+                            setTimeout(() => {
+                                loadMoreBtn.style.opacity = '0';
+                                loadMoreBtn.style.transform = 'translateY(10px)';
+                                loadMoreBtn.style.transition =
+                                    'opacity 0.5s ease, transform 0.5s ease';
+                                setTimeout(() => {
+                                    loadMoreBtn.style.display = 'none';
+                                }, 500);
+                            }, 500);
+                        } else {
+                            loadMoreBtn.innerHTML = `<span>Load More</span>`;
+                            loadMoreBtn.disabled = false;
+                        }
+
+                    }, 800);
+                });
+            }
         });
     </script>
 </body>
