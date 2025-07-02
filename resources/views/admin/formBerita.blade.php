@@ -16,10 +16,45 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- Quill Snow Theme --}}
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+
+    {{-- Highlight.js Theme --}}
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+
+    {{-- KaTeX CSS --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #f3f4f6;
+            padding: 20px;
+        }
+
+        #editor {
+            height: 300px;
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .ql-toolbar {
+            margin-bottom: 10px;
+        }
+
+        pre {
+            background: #282c34;
+            color: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
 </head>
 
 <body>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200    ">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
@@ -227,7 +262,7 @@
                 <div class="mb-4">
                     <label for="meta_title" class="block font-semibold">Meta Title</label>
                     <input type="text" name="meta_title" id="meta_title" class="w-full border rounded px-3 py-2"
-                        value="{{ old('meta_title', $berita->meta_title ?? '') }}"  required>
+                        value="{{ old('meta_title', $berita->meta_title ?? '') }}" required>
                     @error('meta_title')
                         <small class="text-red-600">{{ $message }}</small>
                     @enderror
@@ -236,7 +271,8 @@
                 <div class="mb-4">
                     <label for="meta_description" class="block font-semibold">Meta Description</label>
                     <input type="text" name="meta_description" id="meta_description"
-                        class="w-full border rounded px-3 py-2" value="{{ old('meta_description', $berita->meta_description ?? '') }}"  required>
+                        class="w-full border rounded px-3 py-2"
+                        value="{{ old('meta_description', $berita->meta_description ?? '') }}" required>
                     @error('meta_description')
                         <small class="text-red-600">{{ $message }}</small>
                     @enderror
@@ -245,24 +281,78 @@
                 <div class="mb-4">
                     <label for="slug" class="block font-semibold">Slug</label>
                     <input type="text" name="slug" id="slug" class="w-full border rounded px-3 py-2"
-                        value="{{ old('slug', $berita->slug ?? '') }}"  required>
+                        value="{{ old('slug', $berita->slug ?? '') }}" required>
                     @error('slug')
                         <small class="text-red-600">{{ $message }}</small>
                     @enderror
                 </div>
 
                 <div class="mb-4">
-                    <label for="isi_berita" class="block font-semibold">Isi Berita</label>
-                    <textarea name="isi_berita" id="isi_berita" rows="6" class="w-full border rounded px-3 py-2" required>value="{{ old('isi_berita', $berita->isi_berita ?? '') }}" </textarea>
+                    <label class="block font-semibold mb-1">Isi Berita</label>
+
+                    {{-- toolbar --}}
+                    <div id="toolbar-container">
+                        <span class="ql-formats">
+                            <select class="ql-font"></select>
+                            <select class="ql-size"></select>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-bold"></button>
+                            <button class="ql-italic"></button>
+                            <button class="ql-underline"></button>
+                            <button class="ql-strike"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <select class="ql-color"></select>
+                            <select class="ql-background"></select>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-script" value="sub"></button>
+                            <button class="ql-script" value="super"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-header" value="1"></button>
+                            <button class="ql-header" value="2"></button>
+                            <button class="ql-blockquote"></button>
+                            <button class="ql-code-block"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-list" value="ordered"></button>
+                            <button class="ql-list" value="bullet"></button>
+                            <button class="ql-indent" value="-1"></button>
+                            <button class="ql-indent" value="+1"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-direction" value="rtl"></button>
+                            <select class="ql-align"></select>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-link"></button>
+                            <button class="ql-image"></button>
+                            <button class="ql-video"></button>
+                            <button class="ql-formula"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-clean"></button>
+                        </span>
+                    </div>
+                    <!-- Editor tampil di sini -->
+                    <div id="editor" class="bg-white border rounded h-60 overflow-y-auto">
+                        {!! old('isi_berita', $berita->isi_berita ?? '') !!}
+                    </div>
+
+                    <!-- Input hidden yang akan disubmit ke backend -->
+                    <input type="hidden" name="isi_berita" id="isi_berita">
                     @error('isi_berita')
                         <small class="text-red-600">{{ $message }}</small>
                     @enderror
                 </div>
 
                 @if (!empty($berita->thumbnail))
-                <div class="mb-2">
-                    <img src="{{ asset('storage/' . $berita->thumbnail) }}" alt="Thumbnail lama" class="w-40 h-auto rounded shadow">
-                </div>
+                    <div class="mb-2">
+                        <img src="{{ asset('storage/' . $berita->thumbnail) }}" alt="Thumbnail lama"
+                            class="w-40 h-auto rounded shadow">
+                    </div>
                 @endif
                 <div class="mb-4">
                     <label for="thumbnail" class="block font-semibold">Thumbnail</label>
@@ -275,7 +365,7 @@
                 <div class="mb-4">
                     <label for="keyword" class="block font-semibold">Keyword</label>
                     <input type="text" name="keyword" id="keyword" class="w-full border rounded px-3 py-2"
-                        value="{{ old('keyword', $berita->keyword ?? '') }}" >
+                        value="{{ old('keyword', $berita->keyword ?? '') }}">
                     @error('keyword')
                         <small class="text-red-600">{{ $message }}</small>
                     @enderror
@@ -284,7 +374,8 @@
                 <div class="mb-4">
                     <label for="tanggal_publish" class="block font-semibold">Tanggal Publish</label>
                     <input type="datetime-local" name="tanggal_publish" id="tanggal_publish"
-                        class="w-full border rounded px-3 py-2" value="{{ old('tanggal_publish', $berita->tanggal_publish ?? '') }}" >
+                        class="w-full border rounded px-3 py-2"
+                        value="{{ old('tanggal_publish', $berita->tanggal_publish ?? '') }}">
                     @error('tanggal_publish')
                         <small class="text-red-600">{{ $message }}</small>
                     @enderror
@@ -311,9 +402,9 @@
                         <option value="">-- Pilih Kategori --</option>
                         @foreach ($kategoriList as $kategori)
                             <option value="{{ $kategori->id_kategori_news_event }}"
-                            {{ old('id_kategori_news_event', $berita->id_kategori_news_event ?? '') == $kategori->id_kategori_news_event ? 'selected' : '' }}>
-                            {{ $kategori->nama }}
-                        </option>
+                                {{ old('id_kategori_news_event', $berita->id_kategori_news_event ?? '') == $kategori->id_kategori_news_event ? 'selected' : '' }}>
+                                {{ $kategori->nama }}
+                            </option>
                         @endforeach
                     </select>
                     @error('id_kategori_news_event')
@@ -327,6 +418,36 @@
             </form>
         </div>
     </main>
+    {{-- Scripts --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.min.js"></script>
+
+    <script>
+        const quill = new Quill('#editor', {
+            theme: 'snow',
+            placeholder: 'Compose an epic...',
+            modules: {
+                syntax: true, // Syntax highlighting
+                formula: true, // KaTeX formula
+                toolbar: '#toolbar-container'
+            }
+        });
+
+        // Optional: re-highlight code blocks after content change
+        quill.on('text-change', function() {
+            document.querySelectorAll('pre code').forEach(block => {
+                hljs.highlightElement(block);
+            });
+        });
+
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function() {
+            const isi_berita = document.querySelector('#isi_berita');
+            isi_berita.value = quill.root.innerHTML;
+        });
+    </script>
+    </script>
 </body>
 
 </html>
