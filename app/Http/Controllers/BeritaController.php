@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Berita;
-use App\Models\Gallery;
+use App\Models\KategoriNewsEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -14,6 +14,7 @@ class BeritaController extends Controller
     public function index()
     {
         $berita = Berita::latest()
+            ->where('status' == 'show')
             ->paginate(8);
 
         return view('newsandevent', compact('berita'));
@@ -25,7 +26,7 @@ class BeritaController extends Controller
             return abort(403, 'Akses tidak diizinkan');
         }
 
-        $berita = Berita::select(['id_berita', 'judul', 'thumbnail', 'is_dipublish']); // Pilih kolom spesifik
+        $berita = Berita::select(['id_berita', 'judul', 'thumbnail', 'status']);
 
         return DataTables::of($berita)
             ->addColumn('aksi', function ($row) {
@@ -34,13 +35,13 @@ class BeritaController extends Controller
                 <button class="deleteBtn bg-red-500 text-white px-2 py-1 rounded text-sm ml-2" data-id="' . e($row->id_berita) . '">Hapus</button>
             ';
             })
-            ->editColumn('is_dipublish', function ($row) {
-                return $row->is_dipublish ? 'Ya' : 'Tidak';
+            ->editColumn('status', function ($row) {
+                return $row->status ? 'Show' : 'Hide';
             })
             ->editColumn('thumbnail', function ($row) {
                 $path = $row->thumbnail
                     ? asset('storage/' . $row->thumbnail)
-                    : asset('images/no-image.png'); // fallback image
+                    : asset('images/no-image.png');
 
                 return '<img src="' . e($path) . '" class="w-16 h-16 object-cover rounded" alt="Thumbnail" />';
             })
@@ -53,108 +54,113 @@ class BeritaController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'judul' => 'required|string|max:255',
+            'meta_title' => 'required|string|max:255',
+            'meta_description' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:news_event,slug',
             'isi_berita' => 'required|string',
-            'keyword' => 'nullable|string',
-            'thumbnail' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'keyword' => 'nullable|string|max:255',
+            'tanggal_publish' => 'nullable|date',
+            'status' => 'required|in:show,hide',
+            'id_kategori_news_event' => 'required|exists:kategori_news_event,id_kategori_news_event',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation error',
-                'errors' => $validator->errors()
-            ], 422);
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('message', 'Validasi gagal.');
         }
 
-        // Inisialisasi data
-        $data = $request->only(['judul', 'isi_berita']);
+        $data = $validator->validated();
+
         $data['slug'] = Str::slug($request->judul);
+        $data['hit'] = 0;
+        $data['tanggal_publish'] = $data['status'] === 'show' ? now() : null;
 
-        if ($request->has('keyword')) {
-            $data['keyword'] = $request->keyword;
-        }
-
-        // Upload thumbnail jika ada
         if ($request->hasFile('thumbnail')) {
             $path = $request->file('thumbnail')->store('img/thumbnail-berita', 'public');
             $data['thumbnail'] = $path;
         }
 
-        // Handle publish
-        $data['is_dipublish'] = $request->boolean('is_dipublish', false);
-        $data['tanggal_publish'] = $data['is_dipublish'] ? now() : null;
+        Berita::create($data);
 
-        // Create berita
-        $berita = Berita::create($data);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Berita created successfully',
-            'data' => $berita
-        ], 201);
-        // return redirect('/berita/' . $berita->slug);
+        return redirect()->route('dashboard')->with('success', 'Berita berhasil ditambahkan!');
     }
 
     public function show($slug)
     {
-        $berita = Berita::where('slug', $slug)->first();
+        $berita = Berita::where('slug', $slug)
+            ->where('status', 'show')
+            ->firstOrFail();
 
-        if (!$berita) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Berita not found'
-            ], 404);
-        }
-        $berita->increment('dibaca');
+        $berita->increment('hit');
 
         return view('berita', compact('berita'));
     }
+
 
     public function update(Request $request, $id)
     {
         $berita = Berita::find($id);
 
         if (!$berita) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Berita not found'
-            ], 404);
+            return redirect()->back()->with('gagal', 'Berita tidak ditemukan');
         }
 
         $validator = Validator::make($request->all(), [
-            'judul' => 'sometimes|required|string|max:255',
-            'isi_berita' => 'sometimes|required|string',
-            'thumbnail' => 'nullable|string',
+            'judul' => 'required|string|max:255',
+            'meta_title' => 'required|string|max:255',
+            'meta_description' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:news_event,slug,' . $berita->id_berita . ',id_berita',
+            'isi_berita' => 'required|string',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'keyword' => 'nullable|string|max:255',
+            'tanggal_publish' => 'nullable|date',
+            'status' => 'required|in:show,hide',
+            'id_kategori_news_event' => 'required|exists:kategori_news_event,id_kategori_news_event',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation error',
-                'errors' => $validator->errors()
-            ], 422);
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        $data = $request->all();
+        $data = $request->only([
+            'judul',
+            'meta_title',
+            'meta_description',
+            'slug',
+            'isi_berita',
+            'keyword',
+            'tanggal_publish',
+            'status',
+            'id_kategori_news_event',
+        ]);
 
-        // Update slug if title changed
-        if ($request->has('judul')) {
-            $data['slug'] = Str::slug($request->judul);
+        // Slug pakai generate ulang dari judul
+        $data['slug'] = Str::slug($request->judul);
+
+        // Handle upload thumbnail
+        if ($request->hasFile('thumbnail')) {
+            $path = $request->file('thumbnail')->store('img/thumbnail-berita', 'public');
+            $data['thumbnail'] = $path;
+        } else {
+            $data['thumbnail'] = $berita->thumbnail;
         }
 
-        // Set publish date if publishing
+        // Tanggal publish jika dipublish sekarang
         if ($request->has('is_dipublish') && $request->is_dipublish && !$berita->is_dipublish) {
             $data['tanggal_publish'] = now();
         }
 
         $berita->update($data);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Berita updated successfully',
-            'data' => $berita
-        ]);
+        return redirect()->route('dashboard')->with('success', 'Berita berhasil diperbarui!');
     }
+
+
 
     public function destroy($id)
     {
@@ -173,5 +179,20 @@ class BeritaController extends Controller
             'success' => true,
             'message' => 'Berita deleted successfully'
         ]);
+    }
+
+    // Untuk form store
+    public function showFormStore()
+    {
+        $kategoriList = KategoriNewsEvent::all();
+        return view('admin.formBerita', compact('kategoriList'));
+    }
+
+    // Untuk form edit
+    public function showFormEdit($id)
+    {
+        $berita = Berita::findOrFail($id);
+        $kategoriList = KategoriNewsEvent::all();
+        return view('admin.formBerita', compact('berita', 'kategoriList'));
     }
 }

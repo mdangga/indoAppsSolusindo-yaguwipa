@@ -9,23 +9,29 @@ class Berita extends Model
 {
     use HasFactory;
 
-    protected $table = 'berita';
+    protected $table = 'news_event';
     protected $primaryKey = 'id_berita';
 
     protected $fillable = [
         'judul',
+        'meta_title',
+        'meta_description',
         'slug',
         'isi_berita',
         'thumbnail',
         'keyword',
         'tanggal_publish',
-        'is_dipublish',
-        'dibaca',
+        'status',
+        'hit',
+        'id_kategori_news_event'
     ];
 
     protected $casts = [
         'tanggal_publish' => 'datetime',
-        'is_dipublish' => 'boolean',
         'dibaca' => 'integer',
     ];
+
+    public function Berita(){
+        return $this->belongsTo(KategoriNewsEvent::class, 'id_kategori_news_event', 'id_kategori_news_event');
+    }
 }
