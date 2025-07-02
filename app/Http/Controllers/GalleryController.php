@@ -12,14 +12,8 @@ class GalleryController extends Controller
      */
     public function index()
     {
-        $gallery = Gallery::latest()
-            ->paginate(6);
-            
-        return response()->json([
-            'success' => true,
-            'data' => $gallery
-        ]);
-        // return view('gallery', compact('gallery'));
+        $gallery = Gallery::latest()->get();
+        return view('gallery', compact('gallery'));
     }
 
     /**

@@ -4,24 +4,28 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Laravel</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <!-- AOS Library -->
-    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
-    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
-    {{-- datatables --}}
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" />
-    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" />
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200    ">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
@@ -199,8 +203,8 @@
     <main class="p-4 md:ml-64 pt-20">
         <h1 class="">Berita dan Kegiatan</h1>
 
-        <table id="beritaTable" class="min-w-full display">
-            <thead>
+        <table id="beritaTable" class="table table-striped table-bordered">
+            <thead class="table-dark">
                 <tr>
                     <th>No</th>
                     <th>Judul</th>
@@ -211,13 +215,229 @@
             </thead>
             <tbody></tbody>
         </table>
+
+        <form action="{{ route('logout') }}" method="POST" style="display: inline">
+            @csrf
+            <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
+
     </main>
+    <!-- Load all JavaScript at the bottom -->
+    <!-- jQuery FIRST -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- DataTables Core JS -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <!-- DataTables Bootstrap JS -->
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
     <script>
         $(document).ready(function() {
-            $('#beritaTable').DataTable();
+            let table = $('#beritaTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{ route('berita.table') }}',
+                columns: [{
+                        data: null,
+                        name: 'no',
+                        render: function(data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        },
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'judul',
+                        name: 'judul'
+                    },
+                    {
+                        data: 'thumbnail',
+                        name: 'thumbnail',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'is_dipublish',
+                        name: 'is_dipublish'
+                    },
+                    {
+                        data: 'aksi',
+                        name: 'aksi',
+                        orderable: false,
+                        searchable: false
+                    }
+                ]
+            });
+
+            // Handler delete button
+            $('#beritaTable').on('click', '.deleteBtn', function() {
+                const id = $(this).data('id');
+                if (confirm('Yakin ingin menghapus berita ini?')) {
+                    fetch(`/berita/${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                'content'), // Tambahkan ini
+                                'Accept': 'application/json'
+                            }
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                table.ajax.reload();
+                                alert('Berita berhasil dihapus.');
+                            } else {
+                                // Debug response
+                                return response.json().then(data => {
+                                    console.error('Error response:', data);
+                                    throw new Error(data.message || 'Gagal menghapus');
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            alert('Terjadi kesalahan saat menghapus: ' + error.message);
+                        });
+                }
+            });
+
+            // Handler edit button (nanti bisa kamu isi)
+            $('#beritaTable').on('click', '.editBtn', function() {
+                const id = $(this).data('id');
+                alert('Edit ID: ' + id);
+                // buka modal atau redirect edit form di sini
+            });
         });
     </script>
 
+    </script>
+    {{-- <script>
+        $(document).ready(function() {
+            const BASE_IMAGE_URL = "{{ asset('storage') }}/";
+
+            // Initialize DataTable with error handling
+            try {
+                $('#beritaTable').DataTable({
+                    processing: true,
+                    serverSide: false,
+                    ajax: {
+                        url: '/api/berita',
+                        dataSrc: 'data',
+                        error: function(xhr, error, code) {
+                            console.error('AJAX Error:', error);
+                            console.error('Status:', xhr.status);
+                            console.error('Response:', xhr.responseText);
+
+                            // Show user-friendly error message
+                            alert('Gagal memuat data. Silakan cek koneksi API.');
+                        }
+                    },
+                    columns: [{
+                            data: null,
+                            render: function(data, type, row, meta) {
+                                return meta.row + 1;
+                            },
+                            orderable: false
+                        },
+                        {
+                            data: 'judul',
+                            render: function(data) {
+                                return data || 'Tidak ada judul';
+                            }
+                        },
+                        {
+                            data: 'thumbnail',
+                            render: function(data) {
+                                if (data) {
+                                    return `<img src="${BASE_IMAGE_URL + data}" class="img-thumbnail" style="max-width: 100px; max-height: 60px;" alt="Thumbnail" />`;
+                                }
+                                return '<span class="text-muted">No Image</span>';
+                            },
+                            orderable: false
+                        },
+                        {
+                            data: 'slug',
+                            render: function(data) {
+                                return data || 'Draft';
+                            }
+                        },
+                        {
+                            data: 'id_berita',
+                            render: function(data) {
+                                return `
+                                    <div class="btn-group" role="group">
+                                        <a href="/berita/edit/${data}" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        <button onclick="deleteBerita(${data})" class="btn btn-sm btn-danger">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </div>
+                                `;
+                            },
+                            orderable: false
+                        }
+                    ],
+                    language: {
+                        processing: "Memuat data...",
+                        search: "Cari:",
+                        lengthMenu: "Tampilkan _MENU_ data per halaman",
+                        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                        infoEmpty: "Tidak ada data",
+                        infoFiltered: "(difilter dari _MAX_ total data)",
+                        paginate: {
+                            first: "Pertama",
+                            last: "Terakhir",
+                            next: "Selanjutnya",
+                            previous: "Sebelumnya"
+                        },
+                        emptyTable: "Tidak ada data yang tersedia"
+                    },
+                    responsive: true,
+                    pageLength: 10,
+                    lengthMenu: [
+                        [10, 25, 50, 100],
+                        [10, 25, 50, 100]
+                    ],
+                    order: [
+                        [0, 'asc']
+                    ]
+                });
+            } catch (error) {
+                console.error('DataTable initialization error:', error);
+                alert('Gagal menginisialisasi tabel. Silakan refresh halaman.');
+            }
+        });
+
+        // Delete function with improved error handling
+        function deleteBerita(id) {
+            if (confirm('Yakin ingin menghapus berita ini?')) {
+
+
+                fetch(`/api/berita/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            // Reload the DataTable
+                            $('#beritaTable').DataTable().ajax.reload();
+                            alert('Berita berhasil dihapus');
+                        } else {
+                            throw new Error('Network response was not ok');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Delete error:', error);
+                        alert('Gagal menghapus berita. Silakan coba lagi.');
+                    });
+            }
+        }
+    </script> --}}
 </body>
 
 </html>
