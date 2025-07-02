@@ -83,6 +83,6 @@ class AuthController extends Controller
 
     public function me()
     {
-        return view('admin.berita', ['user' => Auth::user()]);
+        return view('admin.showBerita', ['user' => Auth::user()]);
     }
 }

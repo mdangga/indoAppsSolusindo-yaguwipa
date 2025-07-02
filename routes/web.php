@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\GalleryController;
-use App\Http\Controllers\GeneralController;
 use Illuminate\Support\Facades\Route;
 
 // testing area
@@ -20,7 +20,7 @@ Route::get('/testing3', function () {
 
 // news & event 
 Route::get('/berita-dan-kegiatan', [BeritaController::class, 'index'])->name('beranda.berita');
-Route::get('/berita/{slug}', [BeritaController::class, 'show'])->name('berita.show');
+Route::get('/berita/show/{slug}', [BeritaController::class, 'show'])->name('berita.show');
 
 // gallery
 Route::get('/gallery', [GalleryController::class, 'index'])->name('beranda.gallery');
@@ -31,8 +31,10 @@ Route::middleware(['auth.admin'])->group(function () {
     // gallery
     // news & event 
     Route::get('/datatable/berita', [BeritaController::class, 'getDataTables'])->name('berita.table');
-    Route::put('/berita/{id}', [BeritaController::class, 'update']);
-    Route::post('/berita', [BeritaController::class, 'store']);
+    Route::get('/berita/store', [BeritaController::class, 'showFormStore'])->name('berita.formStore');
+    Route::get('/berita/edit/{id}', [BeritaController::class, 'showFormEdit'])->name('berita.formEdit');
+    Route::post('/berita', [BeritaController::class, 'store'])->name('berita.store');
+    Route::put('/berita/{id}', [BeritaController::class, 'update'])->name('berita.update');
     Route::delete('/berita/{id}', [BeritaController::class, 'destroy']);
 
     // logout

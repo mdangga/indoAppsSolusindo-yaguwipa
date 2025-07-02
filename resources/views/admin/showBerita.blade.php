@@ -201,9 +201,15 @@
     </aside>
 
     <main class="p-4 md:ml-64 pt-20">
-        <h1 class="">Berita dan Kegiatan</h1>
 
+        <h1 class="pt-10">Berita dan Kegiatan</h1>
+        @if (session('success'))
+            <div class="bg-green-100 text-green-700 p-3 rounded mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
         <table id="beritaTable" class="table table-striped table-bordered">
+            <a href="{{ route('berita.formStore') }}" class="bg-amber-500">Tambah Data</a>
             <thead class="table-dark">
                 <tr>
                     <th>No</th>
@@ -257,8 +263,8 @@
                         searchable: false
                     },
                     {
-                        data: 'is_dipublish',
-                        name: 'is_dipublish'
+                        data: 'status',
+                        name: 'status'
                     },
                     {
                         data: 'aksi',
@@ -279,7 +285,7 @@
                                 'Content-Type': 'application/json',
                                 'X-Requested-With': 'XMLHttpRequest',
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                                'content'), // Tambahkan ini
+                                    'content'), // Tambahkan ini
                                 'Accept': 'application/json'
                             }
                         })
@@ -305,8 +311,7 @@
             // Handler edit button (nanti bisa kamu isi)
             $('#beritaTable').on('click', '.editBtn', function() {
                 const id = $(this).data('id');
-                alert('Edit ID: ' + id);
-                // buka modal atau redirect edit form di sini
+                window.location.href= `/berita/edit/${id}`
             });
         });
     </script>
