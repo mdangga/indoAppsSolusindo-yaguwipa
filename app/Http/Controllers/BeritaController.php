@@ -13,46 +13,48 @@ class BeritaController extends Controller
 {
     public function index()
     {
-        $berita = Berita::where('is_dipublish', true)
-            ->orderBy('tanggal_publish', 'desc')
-            ->get();
+        $berita = Berita::latest()
+            ->paginate(8);
 
-        return response()->json([
-            'success' => true,
-            'data' => $berita
-        ]);
+        return view('newsandevent', compact('berita'));
     }
 
-    public function admin()
-    {
-        return view('admin.berita');
-    }
-    
     public function getDataTables(Request $request)
     {
-        if ($request->ajax()) {
-            $berita = Berita::query();
-
-            return DataTables::of($berita)
-                ->addColumn('aksi', function ($row) {
-                    return '
-                        <button class="editBtn bg-blue-500 text-white px-2 py-1 rounded text-sm" data-id="'.$row->id_berita.'">Edit</button>
-                        <button class="deleteBtn bg-red-500 text-white px-2 py-1 rounded text-sm ml-2" data-id="'.$row->id_berita.'">Hapus</button>
-                    ';
-                })
-                ->editColumn('is_dipublish', fn($row) => $row->is_dipublish ? 'Ya' : 'Tidak')
-                ->editColumn('thumbnail', fn($row) => '<img src="'.asset('storage/'.$row->thumbnail).'" class="w-16 h-16 object-cover rounded" />')
-                ->rawColumns(['aksi', 'thumbnail'])
-                ->make(true);
+        if (!$request->ajax()) {
+            return abort(403, 'Akses tidak diizinkan');
         }
+
+        $berita = Berita::select(['id_berita', 'judul', 'thumbnail', 'is_dipublish']); // Pilih kolom spesifik
+
+        return DataTables::of($berita)
+            ->addColumn('aksi', function ($row) {
+                return '
+                <button class="editBtn bg-blue-500 text-white px-2 py-1 rounded text-sm" data-id="' . e($row->id_berita) . '">Edit</button>
+                <button class="deleteBtn bg-red-500 text-white px-2 py-1 rounded text-sm ml-2" data-id="' . e($row->id_berita) . '">Hapus</button>
+            ';
+            })
+            ->editColumn('is_dipublish', function ($row) {
+                return $row->is_dipublish ? 'Ya' : 'Tidak';
+            })
+            ->editColumn('thumbnail', function ($row) {
+                $path = $row->thumbnail
+                    ? asset('storage/' . $row->thumbnail)
+                    : asset('images/no-image.png'); // fallback image
+
+                return '<img src="' . e($path) . '" class="w-16 h-16 object-cover rounded" alt="Thumbnail" />';
+            })
+            ->rawColumns(['aksi', 'thumbnail'])
+            ->make(true);
     }
+
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'judul' => 'required|string|max:255',
             'isi_berita' => 'required|string',
-            'keyword'=> 'nullable|string',
+            'keyword' => 'nullable|string',
             'thumbnail' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
         ]);
 

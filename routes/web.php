@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 // testing area
 Route::get('/', [GeneralController::class, 'beranda'])->name('beranda');
 Route::get('/testing1', function () {
-    return view('profiles');
+    return view('admin.berita');
 });
 Route::get('/testing2', function () {
     return view('partners');
@@ -19,17 +19,17 @@ Route::get('/testing3', function () {
 });
 
 // news & event 
-Route::get('/berita-dan-kegiatan', function () {
-    return view('newsandevent');
-});
+Route::get('/berita-dan-kegiatan',[BeritaController::class, 'index'])->name('beranda.berita');
+Route::get('/datatable/berita', [BeritaController::class, 'getDataTables'])->name('berita.table');
 Route::get('/berita/{slug}', [BeritaController::class, 'show'])->name('berita.show');
 Route::post('/berita', [BeritaController::class, 'store']);
 Route::put('/berita/{id}', [BeritaController::class, 'update']);
-Route::delete('/berita/{id}', [BeritaController::class, 'destroy']);
 
 // gallery
-Route::get('/gallery', function () {
-    return view('gallery');
+Route::get('/gallery', [GalleryController::class, 'index'])->name('beranda.gallery');
+
+Route::middleware(['auth.admin'])->group(function () {
+    Route::delete('/berita/{id}', [BeritaController::class, 'destroy']);
 });
 
 
