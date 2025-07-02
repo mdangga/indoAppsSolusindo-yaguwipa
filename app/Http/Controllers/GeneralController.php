@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Berita;
 use App\Models\Gallery;
 use Illuminate\Http\Request;
+use App\Models\Menu;
 
 class GeneralController extends Controller
 {
@@ -14,7 +15,9 @@ class GeneralController extends Controller
             ->orderBy('tanggal_publish', 'desc')
             ->take(3)
             ->get();
+        $menus = Menu::with('subMenus')->get();
+        
         $gallery = Gallery::orderBy('created_at', 'desc')->take(5)->get();
-        return view('beranda', compact('berita', 'gallery'));
+        return view('beranda', compact('berita', 'gallery', 'menus'));
     }
 }

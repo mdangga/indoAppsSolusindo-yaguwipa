@@ -117,8 +117,7 @@
                                     <label for="username" class="block text-sm font-medium text-gray-900 mb-2">username
                                     </label>
                                     <div class="relative">
-                                        <input type="text" name="username" id="username"
-                                            required
+                                        <input type="text" name="username" id="username" required
                                             class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0 transition-colors"
                                             placeholder="Enter your username" />
                                         <div class="absolute inset-y-0 right-0 flex items-center pr-3">
