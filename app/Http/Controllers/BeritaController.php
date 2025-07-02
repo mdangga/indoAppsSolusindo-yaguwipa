@@ -36,7 +36,7 @@ class BeritaController extends Controller
             ';
             })
             ->editColumn('status', function ($row) {
-                return $row->status ? 'Show' : 'Hide';
+                return $row->status;
             })
             ->editColumn('thumbnail', function ($row) {
                 $path = $row->thumbnail

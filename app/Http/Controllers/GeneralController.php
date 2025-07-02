@@ -11,8 +11,8 @@ class GeneralController extends Controller
 {
     public function beranda()
     {
-        $berita = Berita::where('is_dipublish', true)
-            ->orderBy('tanggal_publish', 'desc')
+        $berita = Berita::latest()
+            ->where('status', 'show')
             ->take(3)
             ->get();
         $menus = Menu::with('subMenus')->get();

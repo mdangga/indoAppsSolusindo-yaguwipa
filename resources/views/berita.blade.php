@@ -27,7 +27,7 @@
                 {{ $berita->judul }}
             </h1>
 
-            <img src="{{ asset('storage/' . $berita->thumbnail) }}" alt="thumbnail" class="object-cover">
+            <img src="{{ asset('storage/' . $berita->thumbnail) }}" alt="thumbnail" class="w-full object-cover">
 
             <!-- info waktu dan share -->
             <div class="flex justify-between items-center mb-3">
@@ -36,7 +36,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <span class="text-sm">{{ \Carbon\Carbon::parse($berita->tanggal_publish)->diffForHumans() }}</span>
+                    <span class="text-sm">{{ \Carbon\Carbon::parse($berita->updated_at)->diffForHumans() }}</span>
                 </div>
 
                 <div class="flex items-center space-x-2">
@@ -70,7 +70,7 @@
             <!-- konten berita -->
             <div class="prose max-w-none">
                 <p class="text-lg text-gray-700 leading-relaxed mb-6">
-                    {!! nl2br(e($berita->isi_berita)) !!}
+                    {!! $berita->isi_berita !!}
                 </p>
 
                 <p class="text-gray-700 italic leading-relaxed mt-7">
