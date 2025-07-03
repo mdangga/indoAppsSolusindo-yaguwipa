@@ -4,21 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Donatur extends Model
+class Mitra extends Model
 {
-    protected $table = 'donatur';
+     protected $table = 'mitra';
     protected $primaryKey = 'id_donatur';
 
     protected $fillable = [
         'id_user',
         'nama',
+        'alamat',
         'no_tlp',
         'email',
-        'alamat',
+        'website',
+        'penanggung_jawab',
+        'jabatan_penanggung_jawab',
         'status',
     ];
 
-    public function DonaturToUser()
+    public function MitraToUser()
     {
         return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
