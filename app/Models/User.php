@@ -23,6 +23,7 @@ class User extends Authenticatable
     protected $fillable = [
         'username',
         'password',
+        'role',
     ];
 
     /**
@@ -47,8 +48,12 @@ class User extends Authenticatable
         ];
     }
 
-    public function donatur()
+    public function UserToDonatur()
     {
         return $this->hasOne(Donatur::class, 'id_user', 'id_user');
+    }
+    public function UserToMitra()
+    {
+        return $this->hasOne(Mitra::class, 'id_user', 'id_user');
     }
 }

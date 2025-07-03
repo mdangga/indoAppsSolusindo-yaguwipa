@@ -11,9 +11,10 @@ class Gallery extends Model
 
     protected $fillable = 
     [
-        'judul',
+        'alt_text',
         'link',
-        'kategori'
+        'status',
+        'kategori',
     ];
 
 }

@@ -7,7 +7,7 @@ class SubMenu extends Model
 {
     protected $primaryKey = 'id_sub_menus';
 
-    public function menu()
+    public function SubMenuToMenu()
     {
         return $this->belongsTo(Menu::class, 'id_menus', 'id_menus');
     }
