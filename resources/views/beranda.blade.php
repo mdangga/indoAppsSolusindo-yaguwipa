@@ -70,8 +70,8 @@
                 @forelse ($berita as $item)
                     <x-berita :item="$item" />
                 @empty
-                    <div class="flex items-center justify-center h-96 bg-gray-100 rounded-lg">
-                        <p class="text-sm text-gray-500 py-[auto]">Belum ada gambar di galeri.</p>
+                    <div class="flex col-span-3 items-center justify-center bg-gray-100 rounded-lg">
+                        <p class="text-sm text-gray-500 py-[auto]">Belum ada berita yang di publish</p>
                     </div>
                 @endforelse
 

@@ -179,7 +179,7 @@ class BeritaController extends Controller
     public function showFormStore()
     {
         $kategoriList = KategoriNewsEvent::all();
-        return view('admin.formBerita', compact('kategoriList'));
+        return view('admin.formBeritaNew', compact('kategoriList'));
     }
 
     // Untuk form edit
@@ -187,6 +187,6 @@ class BeritaController extends Controller
     {
         $berita = Berita::findOrFail($id);
         $kategoriList = KategoriNewsEvent::all();
-        return view('admin.formBerita', compact('berita', 'kategoriList'));
+        return view('admin.formBeritaNew', compact('berita', 'kategoriList'));
     }
 }

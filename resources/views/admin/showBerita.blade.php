@@ -19,8 +19,6 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-
-
     <!-- Custom DataTables Tailwind Styling -->
     <style>
         /* Remove default DataTables styling */
@@ -483,12 +481,6 @@
                         .catch(error => {
                             console.error(error);
                             showNotification('Terjadi kesalahan: ' + error.message, 'error');
-
-                            // Reset button state
-                            button.prop('disabled', false)
-                                .removeClass('bg-gray-400 cursor-not-allowed')
-                                .addClass('bg-red-500 hover:bg-red-600')
-                                .html('<i class="fas fa-trash w-3 h-3 mr-1"></i>Hapus');
                         });
                 }
             });
