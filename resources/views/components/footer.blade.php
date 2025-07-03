@@ -2,20 +2,23 @@
     <div class="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
         <!-- Kiri: Info Yayasan -->
         <div>
-            <h2 class="text-xl font-bold uppercase">YAYASAN</h2>
-            <h2 class="text-xl font-bold uppercase mb-4">GUNA WIDYA PARAMESTHI</h2>
+            <h2 class="text-xl font-bold uppercase">{{ $site['yayasanProfile']->company }}</h2>
 
             <p class="mb-2">
                 <span class="font-semibold">Alamat :</span>
-                JLN. GANETRI IV NO. 4 DPS 80237 BALI
+                {{ $site['yayasanProfile']->address }}
             </p>
             <p class="mb-2">
                 <span class="font-semibold">No Telepon :</span>
-                (+62) 87865309966
+                {{ $site['yayasanProfile']->telephone }}
+            </p>
+            <p class="mb-2">
+                <span class="font-semibold">Fax :</span>
+                {{ $site['yayasanProfile']->fax }}
             </p>
             <p class="mb-4">
                 <span class="font-semibold">Email :</span>
-                info@yaguwipa.org
+                {{ $site['yayasanProfile']->email }}
             </p>
 
             <p class="mb-2 font-semibold">Follow Us :</p>
@@ -49,11 +52,14 @@
             {{-- <div
                 class="absolute inset-0 bg-gradient-to-br from-black/70 via-gray-800/60 to-black/70 rounded-md z-10 transition-opacity duration-300 group-hover:opacity-0 pointer-events-none">
             </div> --}}
-            <iframe
+            {{-- <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2828.1566751622727!2d115.23003191579483!3d-8.638782329040929!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd23f8661ef31cd%3A0x663c45c04ca4cfb3!2sPT.%20Indo%20Apps%20Solusindo%20-%20Apps%20%26%20Web%20Development%20%7C%20Software%20Services%20%7C%20Seo%20Services%20di%20Bali%20%7C%20Domain%20%26%20Hosting%20%7C%20IoT!5e0!3m2!1sid!2sid!4v1750918670426!5m2!1sid!2sid"
                 class="rounded-md w-full h-[250px] border-0" allowfullscreen="" loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
+            </iframe> --}}
+            <div class="rounded-md w-full h-[250px] border-0">
+                {!! $site['yayasanProfile']->map !!}
+            </div>
         </div>
     </div>
 </footer>

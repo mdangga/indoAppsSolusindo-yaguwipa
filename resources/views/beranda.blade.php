@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Beranda</title>
     {{-- icon --}}
-    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('storage/' . $site['yayasanProfile']->favicon) }}">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
@@ -38,11 +38,10 @@
         <div class="relative px-6 pt-14 lg:px-8">
             <div class="mx-auto max-w-2xl py-24 sm:py-32 lg:py-36 text-center">
                 <h1 class="text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
-                    YAYASAN GUNA WIDYA PARAMESTHI
+                    {{ $site['yayasanProfile']->company }}
                 </h1>
                 <p class="mt-8 text-lg font-medium text-gray-600">
-                    Yayasan ini didirikan oleh tokoh muda Indonesia sebagai bentuk kepedulian sosial terhadap
-                    peningkatan kapasitas riset dan kualitas sumber daya manusia Indonesia.
+                    {{ $site['yayasanProfile']->intro }}
                 </p>
                 <div class="mt-10 flex items-center justify-center gap-x-6">
                     <a href="#"

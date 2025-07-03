@@ -52,7 +52,7 @@ class ProfileController extends Controller
 
         foreach (['logo', 'favicon', 'background', 'popup'] as $file) {
             if ($request->hasFile($file)) {
-                $data[$file] = $request->file($file)->store('img/profil_yayasan', 'public');
+                $data[$file] = $request->file($file)->store('img', 'public');
             } else {
                 $data[$file] = $profile->thumbnail;
             }
