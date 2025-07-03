@@ -6,7 +6,7 @@
     <div class="relative">
         <a href="{{ route('berita.show', $item->slug) }}" class="block">
             <img class="w-full h-48 object-cover"
-                src="{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : asset('img/img-placeholder.webp') }}"
+                src="{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : asset('storage/img/img-placeholder.webp') }}"
                 alt="{{ $item->judul }}" />
         </a>
         <!-- Date badge overlay -->

@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Profiles;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +15,34 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+       User::create([
+            'username' => 'angga',
+            'password' => Hash::make('1234567'),
+            'role' => 'admin',
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        Profiles::create([
+            'logo' => 'img-placeholder.webp',
+            'favicon' => 'img-placeholder.webp',
+            'background' => 'img-placeholder.webp',
+            'company' => 'Yayasan Contoh',
+            'website' => 'https://yayasan.test',
+            'telephone' => '08123456789',
+            'fax' => '021123456',
+            'email' => 'info@yayasan.test',
+            'address' => 'Jl. Contoh No. 123',
+            'map' => '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13564.653230849299!2d115.36532485295947!3d-8.439398063216458!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd219284bcc1c03%3A0x9348f038f0ba8c9d!2sUniversitas%20Hindu%20Negeri%20I%20Gusti%20Bagus%20Sugriwa%20Denpasar%20(Kampus%20Bangli)!5e1!3m2!1sid!2sid!4v1751511635639!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+            'intro' => 'Selamat datang di Yayasan',
+            'popup' => 'img-placeholder.webp',
+            'meta_title' => 'Yayasan Meta Title',
+            'meta_description' => 'Meta description yayasan',
+            'meta_keyword' => 'yayasan, pendidikan, sosial',
+            'copyright' => '© 2025 AnggaYudaRelia',
+            'tentang' => 'Tentang kami',
+            'visi' => 'Visi yayasan',
+            'misi' => 'Misi yayasan',
+            'tujuan' => 'Tujuan yayasan',
+            'makna_logo' => 'Makna dari logo yayasan',
         ]);
     }
 }

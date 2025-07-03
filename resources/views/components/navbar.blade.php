@@ -4,7 +4,7 @@
         <div class="grid grid-cols-2 lg:grid-cols-3 items-center gap-4">
             <div class="flex justify-start">
                 <a href="{{ route('beranda') }}" class="-m-1.5 p-1.5">
-                    <img class="h-[75px] w-auto" src="{{ asset('img/logo.png') }}" alt="Company Logo" />
+                    <img class="h-[75px] w-auto" src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" alt="Company Logo" />
                 </a>
             </div>
 
