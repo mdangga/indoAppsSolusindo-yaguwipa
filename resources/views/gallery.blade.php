@@ -85,10 +85,10 @@
             @foreach ($gallery->skip(8) as $index => $item)
                 <div class="break-inside-avoid mb-6 group cursor-pointer gallery-item-hidden fade-in"
                     data-index="{{ $index }}" data-image="{{ asset('storage/' . $item->link) }}"
-                    data-title="{{ $item->judul }}">
+                    data-title="{{ $item->alt_text }}">
                     <div
                         class="relative overflow-hidden rounded-xl bg-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 ease-out">
-                        <img src="{{ asset('storage/' . $item->link) }}" alt="{{ $item->judul }}"
+                        <img src="{{ asset('storage/' . $item->link) }}" alt="{{ $item->alt_text }}"
                             class="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                             loading="lazy" />
 
@@ -99,7 +99,7 @@
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center space-x-3">
                                         <div>
-                                            <p class="text-white text-sm font-medium">{{ $item->judul }}</p>
+                                            <p class="text-white text-sm font-medium">{{ $item->alt_text }}</p>
                                         </div>
                                     </div>
                                 </div>
