@@ -69,20 +69,78 @@
         </div>
     @endif
 
-    <form action="{{ route('galeri.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('profiles.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <label for="judul">Judul:</label>
-        <input type="text" name="judul" id="judul" required><br><br>
+        @php
+            $fields = [
+                'company',
+                'website',
+                'telephone',
+                'fax',
+                'email',
+                'address',
+                'map',
+                'intro',
+                'meta_title',
+                'meta_description',
+                'meta_keyword',
+                'copyright',
+                'tentang',
+                'visi',
+                'misi',
+                'tujuan',
+                'makna_logo',
+            ];
+        @endphp
 
-        <label for="link">File (Foto/Video):</label>
-        <input type="file" name="link" id="link" required><br><br>
+        @foreach ($fields as $field)
+            <div class="mb-4">
+                <label for="{{ $field }}"
+                    class="block text-sm font-semibold capitalize">{{ str_replace('_', ' ', $field) }}</label>
+                <input type="text" name="{{ $field }}" id="{{ $field }}" value="{{ old($field) }}"
+                    class="w-full border rounded px-4 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-300">
+                @error($field)
+                    <small class="text-red-500">{{ $message }}</small>
+                @enderror
+            </div>
+        @endforeach
 
-        <label for="kategori">Kategori:</label>
-        <select name="kategori" id="kategori" required>
-            <option value="">-- Pilih Kategori --</option>
-            <option value="foto">Foto</option>
-            <option value="video">Video</option>
-        </select><br><br>
+        <div class="mb-4">
+            <label for="logo" class="block text-sm font-semibold">Logo</label>
+            <input type="file" name="logo" id="logo"
+                class="w-full border rounded px-4 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-300">
+            @error('logo')
+                <small class="text-red-500">{{ $message }}</small>
+            @enderror
+        </div>
+
+        <div class="mb-4">
+            <label for="favicon" class="block text-sm font-semibold">Favicon</label>
+            <input type="file" name="favicon" id="favicon"
+                class="w-full border rounded px-4 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-300">
+            @error('favicon')
+                <small class="text-red-500">{{ $message }}</small>
+            @enderror
+        </div>
+
+        <div class="mb-4">
+            <label for="background" class="block text-sm font-semibold">Background</label>
+            <input type="file" name="background" id="background"
+                class="w-full border rounded px-4 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-300">
+            @error('background')
+                <small class="text-red-500">{{ $message }}</small>
+            @enderror
+        </div>
+
+        <div class="mb-4">
+            <label for="popup" class="block text-sm font-semibold">Popup</label>
+            <input type="file" name="popup" id="popup"
+                class="w-full border rounded px-4 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-300">
+            @error('popup')
+                <small class="text-red-500">{{ $message }}</small>
+            @enderror
+        </div>
+
 
         <button type="submit">Simpan</button>
     </form>

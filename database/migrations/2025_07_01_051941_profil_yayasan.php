@@ -34,6 +34,7 @@ return new class extends Migration
             $table->text('misi')->nullable();
             $table->text('tujuan')->nullable();
             $table->text('makna_logo')->nullable();
+            $table->timestamps();
         });
 
         Schema::create('sosial_media', function (Blueprint $table) {

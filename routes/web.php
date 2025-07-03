@@ -4,20 +4,17 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 // testing area
-Route::get('/', [GeneralController::class, 'beranda'])->name('beranda');
-Route::get('/testing1', function () {
-    return view('admin.berita');
+Route::get('/testing', function () {
+    return view('testing');
 });
-Route::get('/testing2', function () {
-    return view('partners');
-});
-Route::get('/testing3', function () {
-    return view('kegiatan');
-});
+Route::post('/profiles/create', [ProfileController::class, 'store'])->name('profiles.store');
 
+// default route
+Route::get('/', [GeneralController::class, 'beranda'])->name('beranda');
 // news & event 
 Route::get('/berita-dan-kegiatan', [BeritaController::class, 'index'])->name('beranda.berita');
 Route::get('/berita/show/{slug}', [BeritaController::class, 'show'])->name('berita.show');
