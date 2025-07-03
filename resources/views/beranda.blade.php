@@ -71,9 +71,8 @@
                 @forelse ($berita as $item)
                     <x-berita :item="$item" />
                 @empty
-                    <div
-                        class="col-span-full bg-white border border-gray-200 rounded-lg shadow-sm p-6 flex items-center justify-center h-full">
-                        <p class="text-sm text-gray-500">Belum ada berita yang ditambahkan.</p>
+                    <div class="flex items-center justify-center h-96 bg-gray-100 rounded-lg">
+                        <p class="text-sm text-gray-500 py-[auto]">Belum ada gambar di galeri.</p>
                     </div>
                 @endforelse
 
@@ -200,11 +199,11 @@
                 @empty
                     <!-- Default item when no gallery items -->
                     <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
-                        <div
-                            class="absolute block w-full h-full bg-gray-200 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 items-center justify-center">
-                            <p class="text-gray-500">Belum ada gambar di galeri.</p>
+                        <div class="absolute inset-0 flex items-center justify-center w-full h-full bg-gray-200">
+                            <p class="text-gray-500 text-center">Belum ada gambar di galeri.</p>
                         </div>
                     </div>
+
                 @endforelse
             </div>
 

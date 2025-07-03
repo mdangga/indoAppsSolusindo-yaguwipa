@@ -4,9 +4,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>{{ $berita->judul }} - {{ config('app.name', 'Laravel') }}</title>
+    <meta name="Description" content="{{ $berita->meta_description }}">
+    <title>{{ $berita->meta_title }}</title>
     {{-- icon --}}
+
     <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net" />
@@ -36,7 +37,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <span class="text-sm">{{ \Carbon\Carbon::parse($berita->updated_at)->diffForHumans() }}</span>
+                    <span class="text-sm">{{ \Carbon\Carbon::parse($berita->tanggal_publish)->diffForHumans() }}</span>
                 </div>
 
                 <div class="flex items-center space-x-2">
