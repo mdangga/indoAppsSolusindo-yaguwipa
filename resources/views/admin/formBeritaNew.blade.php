@@ -151,14 +151,46 @@
                     @enderror
                 </div>
 
-                <div class="grid grid-cols-3 gap-4 mt-4">
-                    {{-- Kolom 1 dan 2: Upload + Caption --}}
-                    <div class="col-span-2 grid grid-rows-2 gap-4">
+                @if (!empty($berita) && !empty($berita->thumbnail))
+                    {{-- Mode Edit: Tampilkan gambar --}}
+                    <div class="grid grid-cols-3 gap-4 mt-4">
+                        {{-- Kolom 1 dan 2: Upload + Caption --}}
+                        <div class="col-span-2 grid grid-rows-2 gap-4">
+                            {{-- Upload Gambar --}}
+                            <div>
+                                <label for="thumbnail" class="block mb-1 text-sm font-medium">Upload Gambar</label>
+                                <input type="file" name="thumbnail" id="thumbnail"
+                                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" />
+                                @error('thumbnail')
+                                    <small class="text-red-600">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            {{-- Caption --}}
+                            <div>
+                                <label for="caption" class="block mb-1 text-sm font-medium">Caption Gambar</label>
+                                <input type="text" name="caption"
+                                    class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                                    value="{{ old('caption', $berita->caption ?? '') }}" />
+                            </div>
+                        </div>
+
+                        {{-- Kolom 3: Gambar --}}
+                        <div class="row-span-2 flex justify-center items-center h-full">
+                            <div class="h-full flex items-center">
+                                <img src="{{ asset('storage/' . $berita->thumbnail) }}" alt="Thumbnail lama"
+                                    class="max-h-32 rounded shadow" />
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    {{-- Mode Tambah: Upload + Caption berdampingan --}}
+                    <div class="grid grid-cols-2 gap-4 mt-4">
                         {{-- Upload Gambar --}}
                         <div>
                             <label for="thumbnail" class="block mb-1 text-sm font-medium">Upload Gambar</label>
                             <input type="file" name="thumbnail" id="thumbnail"
-                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none" />
+                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" />
                             @error('thumbnail')
                                 <small class="text-red-600">{{ $message }}</small>
                             @enderror
@@ -169,20 +201,11 @@
                             <label for="caption" class="block mb-1 text-sm font-medium">Caption Gambar</label>
                             <input type="text" name="caption"
                                 class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                                value="{{ old('caption', $berita->caption ?? '') }}" />
+                                value="{{ old('caption') }}" />
                         </div>
                     </div>
+                @endif
 
-                    {{-- Kolom 3: Gambar --}}
-                    @if (!empty($berita->thumbnail))
-                        <div class="row-span-2 flex justify-center items-center h-full">
-                            <div class="h-full flex items-center">
-                                <img src="{{ asset('storage/' . $berita->thumbnail) }}" alt="Thumbnail lama"
-                                    class=" max-h-32  rounded shadow" />
-                            </div>
-                        </div>
-                    @endif
-                </div>
 
 
 
