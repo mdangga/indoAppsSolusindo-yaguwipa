@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_gallery');
             $table->string('alt_text');
             $table->string('img');
-            $table->enum('status', ['show', 'hide']);
+            $table->enum('status', ['show', 'hide'])->default('show');
             $table->enum('kategori', ['foto', 'video']);
             $table->timestamps();
         });

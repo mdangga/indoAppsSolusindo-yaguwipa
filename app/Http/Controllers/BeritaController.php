@@ -11,15 +11,17 @@ use Yajra\DataTables\Facades\DataTables;
 
 class BeritaController extends Controller
 {
+    // menampilkan semua data dengan dibagi menjadi 8 data perpage
     public function index()
     {
         $berita = Berita::latest()
-            ->where('status' == 'show')
+            ->where('status', 'show')
             ->paginate(8);
 
         return view('newsandevent', compact('berita'));
     }
 
+    // menampilkan table di admin
     public function getDataTables(Request $request)
     {
         if (!$request->ajax()) {
@@ -49,7 +51,7 @@ class BeritaController extends Controller
             ->make(true);
     }
 
-
+    // mengirim data untuk membuat berita
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -58,7 +60,7 @@ class BeritaController extends Controller
             'meta_description' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:news_event,slug',
             'isi_berita' => 'required|string',
-            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'keyword' => 'nullable|string|max:255',
             'tanggal_publish' => 'nullable|date',
             'status' => 'required|in:show,hide',
@@ -88,6 +90,7 @@ class BeritaController extends Controller
         return redirect()->route('dashboard')->with('success', 'Berita berhasil ditambahkan!');
     }
 
+    // menampilkan data
     public function show($slug)
     {
         $berita = Berita::where('slug', $slug)
@@ -99,7 +102,7 @@ class BeritaController extends Controller
         return view('berita', compact('berita'));
     }
 
-
+    // mengupdate data
     public function update(Request $request, $id)
     {
         $berita = Berita::find($id);
@@ -139,7 +142,6 @@ class BeritaController extends Controller
             'id_kategori_news_event',
         ]);
 
-        // Slug pakai generate ulang dari judul
         $data['slug'] = Str::slug($request->judul);
 
         // Handle upload thumbnail
@@ -150,8 +152,7 @@ class BeritaController extends Controller
             $data['thumbnail'] = $berita->thumbnail;
         }
 
-        // Tanggal publish jika dipublish sekarang
-        if ($request->has('is_dipublish') && $request->is_dipublish && !$berita->is_dipublish) {
+        if ($request->has('status') && $request->status && !$berita->status) {
             $data['tanggal_publish'] = now();
         }
 
@@ -160,25 +161,18 @@ class BeritaController extends Controller
         return redirect()->route('dashboard')->with('success', 'Berita berhasil diperbarui!');
     }
 
-
-
+    // mengahapus data
     public function destroy($id)
     {
         $berita = Berita::find($id);
 
         if (!$berita) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Berita not found'
-            ], 404);
+            return redirect()->back()->with('gagal', 'Berita tidak ditemukan');
         }
 
         $berita->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Berita deleted successfully'
-        ]);
+        return redirect()->back()->with('sukses', 'Berita berhasil dihapus');
     }
 
     // Untuk form store

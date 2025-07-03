@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('keterangan')->nullable();
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
-            $table->enum('status', ['approved', 'pending', 'rejected']);
+            $table->enum('status', ['approved', 'pending', 'rejected'])->default('pending');
             $table->unsignedBigInteger('id_mitra');
             $table->unsignedBigInteger('id_kategori_kerja_sama');
             $table->timestamps();

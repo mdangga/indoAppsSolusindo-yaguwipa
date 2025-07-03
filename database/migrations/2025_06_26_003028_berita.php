@@ -22,13 +22,14 @@ return new class extends Migration
             $table->id('id_berita');
             $table->string('judul');
             $table->string('meta_title');
-            $table->string('meta_description');
+            $table->text('meta_description');
             $table->string('slug');
             $table->longText('isi_berita');
             $table->string('thumbnail')->nullable();
+            $table->string('caption')->nullable();
             $table->string('keyword')->nullable();
             $table->dateTime('tanggal_publish')->nullable();
-            $table->enum('status', ['show', 'hide']);
+            $table->enum('status', ['show', 'hide'])->default('show');
             $table->unsignedInteger('hit')->default(0);
             $table->unsignedBigInteger('id_kategori_news_event');
             $table->timestamps();

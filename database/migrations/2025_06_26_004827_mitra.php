@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_mitra');
             $table->unsignedBigInteger('id_user');
             $table->string('nama');
-            $table->string('alamat');
+            $table->text('alamat');
             $table->string('no_tlp');
             $table->string('email');
             $table->string('website')->nullable();

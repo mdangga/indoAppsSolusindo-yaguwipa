@@ -13,27 +13,27 @@ return new class extends Migration
     {
         Schema::create('profil_yayasan', function (Blueprint $table) {
             $table->id('id_profil_yayasan');
-            $table->string('logo');
-            $table->string('favicon');
-            $table->string('background');
+            $table->string('logo')->nullable();
+            $table->string('favicon')->nullable();
+            $table->string('background')->nullable();
             $table->string('company');
-            $table->string('website');
-            $table->string('telephone');
-            $table->string('fax');
-            $table->string('email');
-            $table->string('address');
-            $table->string('map');
-            $table->string('intro');
-            $table->string('popup');
-            $table->string('meta_title');
-            $table->string('meta_description');
-            $table->string('meta_keyword');
-            $table->string('copyright');
-            $table->string('tentang');
-            $table->string('visi');
-            $table->string('misi');
-            $table->string('tujuan');
-            $table->string('makna_logo');
+            $table->string('website')->nullable();
+            $table->string('telephone')->nullable();
+            $table->string('fax')->nullable();
+            $table->string('email')->nullable();
+            $table->text('address')->nullable();
+            $table->text('map')->nullable();
+            $table->text('intro')->nullable();
+            $table->string('popup')->nullable();
+            $table->string('meta_title')->nullable();
+            $table->text('meta_description')->nullable();
+            $table->text('meta_keyword')->nullable();
+            $table->string('copyright')->nullable();
+            $table->text('tentang')->nullable();
+            $table->text('visi')->nullable();
+            $table->text('misi')->nullable();
+            $table->text('tujuan')->nullable();
+            $table->text('makna_logo')->nullable();
         });
 
         Schema::create('sosial_media', function (Blueprint $table) {
@@ -41,7 +41,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('link');
             $table->string('icon');
-            $table->string('status');
+            $table->enum('status', ['show', 'hide'])->default('show');
             $table->unsignedBigInteger('id_profil_yayasan');
 
             $table->foreign('id_profil_yayasan')->references('id_profil_yayasan')->on('profil_yayasan')->onDelete('cascade');

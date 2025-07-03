@@ -24,7 +24,7 @@ return new class extends Migration
             $table->decimal('jumlah_donasi', 15, 2)->nullable();
             $table->unsignedBigInteger('id_jenis_donasi');
             $table->text('keterangan')->nullable();
-            $table->enum('status', ['spproved', 'pending', 'rejected']);
+            $table->enum('status', ['approved', 'pending', 'rejected'])->default('pending');
             $table->timestamps();
             
             $table->foreign('id_donatur')->references('id_donatur')->on('donatur')->onDelete('cascade');

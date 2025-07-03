@@ -25,8 +25,8 @@ return new class extends Migration
             $table->string('file');
             $table->dateTime('tanggal_terbit')->nullable();
             $table->string('meta_title');
-            $table->string('meta_description');
-            $table->enum('status', ['show', 'hide']);
+            $table->text('meta_description');
+            $table->enum('status', ['show', 'hide'])->default('show');
             $table->unsignedBigInteger('id_jenis_publikasi');
             $table->timestamps();
 
