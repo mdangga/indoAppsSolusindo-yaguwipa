@@ -15,6 +15,7 @@ Route::post('/profiles/create', [ProfileController::class, 'store'])->name('prof
 
 // default route
 Route::get('/', [GeneralController::class, 'beranda'])->name('beranda');
+
 // news & event 
 Route::get('/berita-dan-kegiatan', [BeritaController::class, 'index'])->name('beranda.berita');
 Route::get('/berita/show/{slug}', [BeritaController::class, 'show'])->name('berita.show');

@@ -4,7 +4,8 @@
         <div class="grid grid-cols-2 lg:grid-cols-3 items-center gap-4">
             <div class="flex justify-start">
                 <a href="{{ route('beranda') }}" class="-m-1.5 p-1.5">
-                    <img class="h-[75px] w-auto" src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" alt="Company Logo" />
+                    <img class="h-[75px] w-auto" src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}"
+                        alt="Company Logo" />
                 </a>
             </div>
 
@@ -34,17 +35,21 @@
         <div class="h-[50px] px-6 flex justify-center items-center rounded-[75px] bg-white/5 backdrop-blur-sm">
             <div class="flex gap-x-12">
                 @foreach ($menus as $menu)
-                    @if ($menu->subMenus->count())
+                    @if ($menu->MenuToSubMenu->count())
                         <div class="inline-flex items-center relative group">
-                            <a href="{{ $menu->link }}"
-                                class="text-sm font-semibold text-gray-900 border-b-2 border-transparent hover:border-amber-200 transition duration-200">
+                            <p
+                                class="relative text-sm font-semibold text-gray-900 group transition-transform duration-200">
                                 {{ $menu->nama_menu }}
-                            </a>
+                            </p>
+
+
                             <div
-                                class="absolute top-full mt-2 left-0 bg-white shadow-lg rounded-lg py-2 opacity-0 group-hover:opacity-100 group-hover:visible invisible transition duration-200 min-w-[160px]">
-                                @foreach ($menu->subMenus as $sub)
+                                class="absolute top-full mt-2 left-0 bg-white shadow-lg rounded-lg opacity-0 group-hover:opacity-100 group-hover:visible invisible transition duration-200 min-w-[160px]">
+                                @foreach ($menu->MenuToSubMenu as $sub)
                                     <a href="{{ $sub->link }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-amber-100">
+                                        class="block px-4 py-2 text-sm font-medium rounded-lg transition duration-200 {{ rtrim(request()->url(), '/') === rtrim($sub->link, '/')
+                                                ? 'bg-amber-100 text-gray-800 hover:bg-gray-700 hover:text-white': 'text-gray-700 hover:bg-amber-100' }}"
+                                        >
                                         {{ $sub->nama_menu }}
                                     </a>
                                 @endforeach
@@ -52,9 +57,12 @@
                         </div>
                     @else
                         <a href="{{ $menu->link }}"
-                            class="text-sm font-semibold text-gray-900 border-b-2 transition duration-200
-       {{ request()->url() === url($menu->link) ? 'border-amber-200' : 'border-transparent hover:border-amber-200' }}">
+                            class="relative text-sm font-semibold text-gray-900 group transition-transform duration-200">
                             {{ $menu->nama_menu }}
+                            <span
+                                class="absolute bottom-0 right-0 h-[2px] bg-amber-200 transition-all duration-300 
+       {{ rtrim(request()->url(), '/') === rtrim($menu->link, '/') ? 'w-full left-0' : 'w-0 group-hover:w-full group-hover:right-auto left-0' }}">
+                            </span>
                         </a>
                     @endif
                 @endforeach
