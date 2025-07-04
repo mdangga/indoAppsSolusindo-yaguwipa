@@ -4,14 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Profiles;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 
 class ProfileController extends Controller
 {
+    public function index()
+    {
+        $profiles = Profiles::first();
+
+        return view('admin.generals', compact('profiles'));
+    }
+
     public function update(Request $request, $id)
     {
-        // dd($request->all());
         $profile = Profiles::find($id);
 
         if (!$profile) {
@@ -53,6 +60,10 @@ class ProfileController extends Controller
 
         foreach (['logo', 'favicon', 'background', 'popup'] as $file) {
             if ($request->hasFile($file)) {
+                $oldFilePath = $profile->$file;
+                if ($oldFilePath && Storage::disk('public')->exists($oldFilePath)) {
+                    Storage::disk('public')->delete($oldFilePath);
+                }
                 $data[$file] = $request->file($file)->store('img', 'public');
             } else {
                 $data[$file] = $profile->$file;

@@ -8,13 +8,13 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 // testing area
-Route::get('/testing', [GeneralController::class, 'testing'])->name('testing');
+// Route::get('/testing', [GeneralController::class, 'testing'])->name('testing');
 
-Route::put('/profiles/update/{id}', [ProfileController::class, 'update'])->name('profiles.update');
 
-// default route
+// route
 Route::get('/', [GeneralController::class, 'beranda'])->name('beranda');
-
+// profiles
+Route::get('/tentang-kami', [GeneralController::class, 'tentangKami'])->name('beranda.tentang');
 // news & event 
 Route::get('/berita-dan-kegiatan', [BeritaController::class, 'index'])->name('beranda.berita');
 Route::get('/berita/show/{slug}', [BeritaController::class, 'show'])->name('berita.show');
@@ -25,6 +25,9 @@ Route::get('/gallery/show-all', [GalleryController::class, 'index'])->name('bera
 // middleware authtentication
 Route::middleware(['auth.admin'])->group(function () {
     Route::get('/dashboard', [AuthController::class, 'me'])->name('dashboard');
+    // general setting
+    Route::get('/general-setting', [ProfileController::class, 'index'])->name('admin.profiles');
+    Route::put('/general-setting/update/{id}', [ProfileController::class, 'update'])->name('profiles.update');
     // gallery
     Route::get('/gallery', [GalleryController::class, 'showFormStore'])->name('gallery.formStore');
     Route::get('/datatable/gallery', [GalleryController::class, 'getDataTables'])->name('gallery.table');

@@ -27,7 +27,7 @@
     <div class="relative flex items-center justify-center h-screen">
         {{-- Background Image --}}
         <div class="absolute inset-0 -z-10">
-            <img src="{{ asset('img/ex.jpg') }}" alt="Hero Background"
+            <img src="{{ asset('storage/' . $site['yayasanProfile']->background) }}" alt="Hero Background"
                 class="w-full h-full object-cover grayscale-25" />
 
             {{-- Gradient Overlay agar transisi ke putih --}}
@@ -41,7 +41,7 @@
                     {{ $site['yayasanProfile']->company }}
                 </h1>
                 <p class="mt-8 text-lg font-medium text-gray-600">
-                    {!! $site['yayasanProfile']->intro !!}
+                    {!! str_replace(['<p>', '</p>'], '', $site['yayasanProfile']->intro) !!}
                 </p>
                 <div class="mt-10 flex items-center justify-center gap-x-6">
                     <a href="#"

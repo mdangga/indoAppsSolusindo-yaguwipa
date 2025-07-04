@@ -22,9 +22,7 @@ class GeneralController extends Controller
         return view('beranda', compact('berita', 'gallery', 'menus'));
     }
 
-    public function testing(){
-        $profiles = Profiles::first();
-        // dd($profiles);
-        return view('admin.generals', compact('profiles'));
+    public function tentangKami(){
+        return view('profiles');
     }
 }
