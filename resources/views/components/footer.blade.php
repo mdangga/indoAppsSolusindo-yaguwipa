@@ -4,24 +4,41 @@
         <div>
             <h2 class="text-xl font-bold uppercase">{{ $site['yayasanProfile']->company }}</h2>
 
-            <p class="mb-2">
-                <span class="font-semibold">Alamat :</span>
-                {{ $site['yayasanProfile']->address }}
-            </p>
-            <p class="mb-2">
-                <span class="font-semibold">No Telepon :</span>
-                {{ $site['yayasanProfile']->telephone }}
-            </p>
-            <p class="mb-2">
-                <span class="font-semibold">Fax :</span>
-                {{ $site['yayasanProfile']->fax }}
-            </p>
-            <p class="mb-4">
-                <span class="font-semibold">Email :</span>
-                {{ $site['yayasanProfile']->email }}
-            </p>
+            @php
+                $fields = [
+                    'Alamat' => [
+                        'text' => 'Alamat',
+                        'key' => 'address',
+                    ],
+                    'telp' => [
+                        'text' => 'Phone',
+                        'key' => 'telephone',
+                    ],
+                    'fax' => [
+                        'text' => 'Fax',
+                        'key' => 'fax',
+                    ],
+                    'email' => [
+                        'text' => 'Email',
+                        'key' => 'email',
+                    ],
+                ];
 
-            <p class="mb-2 font-semibold">Follow Us :</p>
+            @endphp
+            @foreach ($fields as $field => $config)
+                @php
+                    $value = $site['yayasanProfile']->{$config['key']};
+                @endphp
+
+                @if (!is_null($value))
+                    <p class="mb-2">
+                        <span class="font-semibold">{{ $config['text'] }} :</span>
+                        {{ $value }}
+                    </p>
+                @endif
+            @endforeach
+
+            <p class="mt-4 mb-2 font-semibold">Follow Us :</p>
             <div class="flex space-x-4">
                 <!-- YouTube -->
                 <a href="#" class="text-white hover:text-red-200" aria-label="YouTube">

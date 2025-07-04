@@ -6,6 +6,7 @@ use App\Models\Berita;
 use App\Models\Gallery;
 use Illuminate\Http\Request;
 use App\Models\Menu;
+use App\Models\Profiles;
 
 class GeneralController extends Controller
 {
@@ -19,5 +20,11 @@ class GeneralController extends Controller
         
         $gallery = Gallery::orderBy('created_at', 'desc')->take(5)->get();
         return view('beranda', compact('berita', 'gallery', 'menus'));
+    }
+
+    public function testing(){
+        $profiles = Profiles::first();
+        // dd($profiles);
+        return view('admin.generals', compact('profiles'));
     }
 }

@@ -54,44 +54,176 @@
                 </div>
             @endif
 
-            <form action="{{ route('profiles.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('profiles.update', $profiles->id_profil_yayasan) }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf
+                @method('PUT')
+                @php
+                    $fields = [
+                        'logo' => [
+                            'title' => 'Logo',
+                            'desc' => 'Upload logo organisasi',
+                            'format' => 'Format: JPEG, JPG, PNG, SVG • Max: 2MB',
+                        ],
+                        'favicon' => [
+                            'title' => 'Favicon',
+                            'desc' => 'Upload favicon website',
+                            'format' => 'Format: JPEG, JPG, PNG, SVG, ICO • Max: 2MB',
+                        ],
+                        'background' => [
+                            'title' => 'Background',
+                            'desc' => 'Upload background website',
+                            'format' => 'Format: JPEG, JPG, PNG, WEBP • Max: 4MB',
+                        ],
+                        'popup' => [
+                            'title' => 'Popup',
+                            'desc' => 'Upload popup (opsional)',
+                            'format' => 'Format: JPEG, JPG, PNG, WEBP • Max: 4MB',
+                        ],
+                    ];
+                @endphp
 
-                {{-- Upload Files --}}
-                <div class="grid md:grid-cols-2 gap-6 mb-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-900">Logo</label>
-                        <input type="file" name="logo"
-                            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none " />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-900">Favicon</label>
-                        <input type="file" name="favicon"
-                            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none " />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-900">Background</label>
-                        <input type="file" name="background"
-                            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none " />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-900">Popup</label>
-                        <input type="file" name="popup"
-                            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none " />
-                    </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-4">
+                    @foreach ($fields as $field => $config)
+                        <div
+                            class="group relative bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
+                            {{-- menampilkan data --}}
+                            <div class="relative">
+                                <div
+                                    class="relative overflow-hidden group-hover:scale-105 transition-transform duration-300">
+                                    <img src="{{ !empty($profiles->$field) ? asset('storage/' . $profiles->$field) : asset('storage/img/img-placeholder.webp') }}"
+                                        alt="{{ $config['title'] }}"
+                                        class="object-contain w-full h-32 {{ empty($profiles->$field) ? 'opacity-40 grayscale' : '' }} transition-all duration-300">
+
+                                    @if (empty($profiles->$field))
+                                        <div class="absolute inset-0 flex items-center justify-center bg-black/10">
+                                            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                                </path>
+                                            </svg>
+                                        </div>
+                                    @endif
+                                </div>
+
+                                <!-- Status Badge -->
+                                <div class="absolute top-1 left-1 ">
+                                    @if (empty($profiles->$field))
+                                        <span data-status="{{ $field }}"
+                                            class="block items-center px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200">
+                                            {{ $field === 'popup' ? 'Opsional' : 'Belum diunggah' }}
+                                        </span>
+                                    @else
+                                        <span data-status="{{ $field }}"
+                                            class="block items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
+                                            Sudah diunggah
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            {{-- upload section --}}
+                            <div class="p-6">
+                                <div class="space-y-1">
+                                    <div class="text-center">
+                                        <h3 class="text-lg font-semibold text-gray-800 mb-1">{{ $config['title'] }}
+                                        </h3>
+                                        <p class="text-sm text-gray-500">{{ $config['desc'] }}</p>
+                                    </div>
+
+                                    <div class="relative">
+                                        <input type="file" name="{{ $field }}"
+                                            id="{{ $field }}-upload" accept="image/*"
+                                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10 file-input"
+                                            data-field="{{ $field }}">
+
+                                        <div data-upload-area="{{ $field }}"
+                                            class="flex items-center justify-center w-full h-12 px-4 bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-dashed border-blue-200 rounded-xl hover:from-blue-100 hover:to-purple-100 hover:border-blue-300 transition-all duration-300 cursor-pointer group">
+                                            <div
+                                                class="flex items-center space-x-2 text-blue-600 group-hover:text-blue-700">
+                                                <svg data-upload-icon="{{ $field }}" class="w-5 h-5"
+                                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
+                                                    </path>
+                                                </svg>
+                                                <span data-upload-text="{{ $field }}"
+                                                    class="text-sm font-medium">
+                                                    {{ empty($profiles->$field) ? 'Pilih file ' . strtolower($config['title']) : 'Ganti ' . strtolower($config['title']) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- File Info Display -->
+                                    <div data-file-info="{{ $field }}"
+                                        class="hidden bg-blue-50 border border-blue-200 rounded-lg p-3">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center space-x-2">
+                                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                                    </path>
+                                                </svg>
+                                                <div>
+                                                    <p data-file-name="{{ $field }}"
+                                                        class="text-sm font-medium text-blue-800"></p>
+                                                    <p data-file-size="{{ $field }}"
+                                                        class="text-xs text-blue-600"></p>
+                                                </div>
+                                            </div>
+                                            <button type="button" onclick="clearFile('{{ $field }}')"
+                                                class="text-blue-600 hover:text-blue-800">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {{-- format --}}
+                                    <div class="text-center">
+                                        <p class="text-xs text-gray-500">
+                                            {{ $config['format'] }}
+                                        </p>
+                                    </div>
+
+                                    {{-- error --}}
+                                    @error($field)
+                                        <div
+                                            class="flex items-center space-x-2 text-red-600 bg-red-50 px-3 py-2 rounded-lg border border-red-200">
+                                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg>
+                                            <small class="text-sm">{{ $message }}</small>
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
+
                 <div class="grid grid-cols-2 gap-4 mt-4 items-start">
                     {{-- Text Inputs --}}
                     <div class="mb-4">
-                        <label class="block mb-1 text-sm font-medium text-gray-900">Nama Perusahaan</label>
-                        <input type="text" name="company" value="{{ old('company') }}"
+                        <label class="block mb-1 text-sm font-medium text-gray-900">Nama Yayasan</label>
+                        <input type="text" name="company" value="{{ old('company', $profiles->company ?? '') }}"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Nama Perusahaan" />
+                            placeholder="Nama Yayasan" />
                     </div>
 
                     <div class="mb-4">
                         <label class="block mb-1 text-sm font-medium text-gray-900">Website</label>
-                        <input type="text" name="website" value="{{ old('website') }}"
+                        <input type="text" name="website" value="{{ old('website', $profiles->website ?? '') }}"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Website" />
                     </div>
@@ -99,21 +231,22 @@
                 <div class="grid grid-cols-3 gap-4 mt-4 items-start">
                     <div class="mb-4">
                         <label class="block mb-1 text-sm font-medium text-gray-900">Telepon</label>
-                        <input type="text" name="telephone" value="{{ old('telephone') }}"
+                        <input type="text" name="telephone"
+                            value="{{ old('telephone', $profiles->telephone ?? '') }}"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Telepon" />
                     </div>
 
                     <div class="mb-4">
                         <label class="block mb-1 text-sm font-medium text-gray-900">Fax</label>
-                        <input type="text" name="fax" value="{{ old('fax') }}"
+                        <input type="text" name="fax" value="{{ old('fax', $profiles->fax ?? '') }}"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Fax" />
                     </div>
 
                     <div class="mb-4">
                         <label class="block mb-1 text-sm font-medium text-gray-900">Email</label>
-                        <input type="email" name="email" value="{{ old('email') }}"
+                        <input type="email" name="email" value="{{ old('email', $profiles->email ?? '') }}"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Email" />
                     </div>
@@ -121,16 +254,16 @@
                 <div class="grid grid-cols-2 gap-4 mt-4 items-start">
                     <div class="mb-4">
                         <label for="alamat" class="block mb-1 text-sm font-medium text-gray-900">Alamat</label>
-                        <textarea name="alamat" id="alamat" cols="30" rows="4"
+                        <textarea name="address" id="alamat" cols="30" rows="4"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Embed Map"></textarea>
+                            placeholder="Masukkan Alamat">{{ old('address', $profiles->address ?? '') }}</textarea>
                     </div>
 
                     <div class="mb-4">
                         <label for="map" class="block mb-1 text-sm font-medium text-gray-900">Embed Map</label>
                         <textarea name="map" id="map" cols="30" rows="4"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Embed Map"></textarea>
+                            placeholder="Embed Map">{{ old('map', $profiles->map ?? '') }}</textarea>
                     </div>
                 </div>
 
@@ -186,23 +319,25 @@
                     </div>
                     <!-- Editor tampil di sini -->
                     <div id="editor" class="bg-gray-50 border rounded-t-none rounded-b-lg p-2.5 min-h-[200px]">
-                        {!! old('isi_berita', $berita->isi_berita ?? '') !!}
+                        {!! old('intro', $profiles->intro ?? '') !!}
                     </div>
 
                     <!-- Input hidden yang akan disubmit ke backend -->
                     <input type="hidden" name="intro" id="intro">
-
                 </div>
+
                 <div class="grid grid-cols-2 gap-4 mt-4 items-start">
                     <div class="mb-4">
                         <label class="block mb-1 text-sm font-medium text-gray-900">Meta Title</label>
-                        <input type="text" name="meta_title" value="{{ old('meta_title') }}"
+                        <input type="text" name="meta_title"
+                            value="{{ old('meta_title', $profiles->meta_title ?? '') }}"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Meta Title" />
                     </div>
                     <div class="mb-4">
                         <label class="block mb-1 text-sm font-medium text-gray-900">Copyright</label>
-                        <input type="text" name="copyright" value="{{ old('copyright') }}"
+                        <input type="text" name="copyright"
+                            value="{{ old('copyright', $profiles->copyright ?? '') }}"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Copyright" />
                     </div>
@@ -212,14 +347,14 @@
                         <label class="block mb-1 text-sm font-medium text-gray-900">Meta Description</label>
                         <textarea name="meta_description" rows="4"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Tulis meta description di sini...">{{ old('meta_description') }}</textarea>
+                            placeholder="Tulis meta description di sini...">{{ old('meta_description', $profiles->meta_description ?? '') }}</textarea>
                     </div>
 
                     <div class="mb-4">
                         <label class="block mb-1 text-sm font-medium text-gray-900">Meta Keyword</label>
                         <textarea name="meta_keyword" rows="4"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Tulis meta keywrod di sini...">{{ old('meta_description') }}</textarea>
+                            placeholder="Tulis meta keywrod di sini...">{{ old('meta_keyword', $profiles->meta_keyword ?? '') }}</textarea>
                     </div>
                 </div>
 
@@ -227,21 +362,21 @@
                     <label class="block mb-1 text-sm font-medium text-gray-900">Tentang</label>
                     <textarea name="tentang" rows="4"
                         class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Tulis tentang di sini...">{{ old('tentang') }}</textarea>
+                        placeholder="Tulis tentang di sini...">{{ old('tentang', $profiles->tentang ?? '') }}</textarea>
                 </div>
                 <div class="grid grid-cols-2 gap-4 mt-4 items-start">
                     <div class="mb-4">
                         <label class="block mb-1 text-sm font-medium text-gray-900">Visi</label>
                         <textarea name="visi" rows="4"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Tulis visi di sini...">{{ old('visi') }}</textarea>
+                            placeholder="Tulis visi di sini...">{{ old('visi', $profiles->visi ?? '') }}</textarea>
                     </div>
 
                     <div class="mb-4">
                         <label class="block mb-1 text-sm font-medium text-gray-900">Misi</label>
                         <textarea name="misi" rows="4"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Tulis misi di sini...">{{ old('misi') }}</textarea>
+                            placeholder="Tulis misi di sini...">{{ old('misi', $profiles->misi ?? '') }}</textarea>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4 mt-4 items-start">
@@ -249,14 +384,14 @@
                         <label class="block mb-1 text-sm font-medium text-gray-900">Tujuan</label>
                         <textarea name="tujuan" rows="4"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Tulis tujuan di sini...">{{ old('tujuan') }}</textarea>
+                            placeholder="Tulis tujuan di sini...">{{ old('tujuan', $profiles->tujuan ?? '') }}</textarea>
                     </div>
 
                     <div class="mb-4">
                         <label class="block mb-1 text-sm font-medium text-gray-900">Makna Logo</label>
                         <textarea name="makna_logo" rows="4"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Tulis makna logo di sini...">{{ old('makna_logo') }}</textarea>
+                            placeholder="Tulis makna logo di sini...">{{ old('makna_logo', $profiles->makna_logo ?? '') }}</textarea>
                     </div>
                 </div>
                 {{-- Submit --}}
@@ -276,31 +411,122 @@
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.min.js"></script>
 
     <script>
-        const quill = new Quill('#editor', {
-            theme: 'snow',
-            placeholder: 'Tulis Intro disini...',
+        const quill = new Quill("#editor", {
+            theme: "snow",
+            placeholder: "Ketik disini...",
             modules: {
-                syntax: true, // Syntax highlighting
-                formula: true, // KaTeX formula
-                toolbar: '#toolbar-container'
-            }
+                syntax: true,
+                formula: true,
+                toolbar: "#toolbar-container",
+            },
         });
 
         // Optional: re-highlight code blocks after content change
-        quill.on('text-change', function() {
-            document.querySelectorAll('pre code').forEach(block => {
+        quill.on("text-change", function() {
+            document.querySelectorAll("pre code").forEach((block) => {
                 hljs.highlightElement(block);
             });
         });
 
-        const form = document.querySelector('form');
-        form.addEventListener('submit', function() {
-            const isi_berita = document.querySelector('#isi_berita');
-            isi_berita.value = quill.root.innerHTML;
+        const form = document.querySelector("form");
+        form.addEventListener("submit", function() {
+            const intro = document.querySelector("#intro");
+            intro.value = quill.root.innerHTML;
         });
-    </script>
-    </script>
 
+        document.addEventListener('DOMContentLoaded', function() {
+            // Universal file input handler
+            document.querySelectorAll('.file-input').forEach(function(input) {
+                input.addEventListener('change', function() {
+                    const fieldName = this.dataset.field;
+                    const file = this.files[0];
+
+                    if (file) {
+                        updateFileUI(fieldName, file);
+                    }
+                });
+            });
+        });
+
+        function updateFileUI(fieldName, file) {
+            const elements = {
+                fileInfo: document.querySelector(`[data-file-info="${fieldName}"]`),
+                fileName: document.querySelector(`[data-file-name="${fieldName}"]`),
+                fileSize: document.querySelector(`[data-file-size="${fieldName}"]`),
+                uploadArea: document.querySelector(`[data-upload-area="${fieldName}"]`),
+                uploadIcon: document.querySelector(`[data-upload-icon="${fieldName}"]`),
+                uploadText: document.querySelector(`[data-upload-text="${fieldName}"]`),
+                statusBadge: document.querySelector(`[data-status="${fieldName}"]`)
+            };
+
+            // Show file info
+            elements.fileName.textContent = file.name;
+            elements.fileSize.textContent = formatFileSize(file.size);
+            elements.fileInfo.classList.remove('hidden');
+
+            // Update upload area
+            elements.uploadArea.className =
+                'flex items-center justify-center w-full h-12 px-4 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-solid border-green-200 rounded-xl transition-all duration-300 cursor-pointer';
+
+            // Update icon to check
+            elements.uploadIcon.innerHTML =
+                `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>`;
+            elements.uploadIcon.className = 'w-5 h-5 text-green-600';
+
+            // Update text
+            elements.uploadText.textContent = 'File siap diupload';
+            elements.uploadText.className = 'text-sm font-medium text-green-600';
+
+            // Update status badge
+            elements.statusBadge.textContent = 'Siap diupload';
+            elements.statusBadge.className =
+                'block items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200';
+        }
+
+        function clearFile(fieldName) {
+            const elements = {
+                input: document.getElementById(`${fieldName}-upload`),
+                fileInfo: document.querySelector(`[data-file-info="${fieldName}"]`),
+                uploadArea: document.querySelector(`[data-upload-area="${fieldName}"]`),
+                uploadIcon: document.querySelector(`[data-upload-icon="${fieldName}"]`),
+                uploadText: document.querySelector(`[data-upload-text="${fieldName}"]`),
+                statusBadge: document.querySelector(`[data-status="${fieldName}"]`)
+            };
+
+            // Clear input
+            elements.input.value = '';
+
+            // Hide file info
+            elements.fileInfo.classList.add('hidden');
+
+            // Reset upload area
+            elements.uploadArea.className =
+                'flex items-center justify-center w-full h-12 px-4 bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-dashed border-blue-200 rounded-xl hover:from-blue-100 hover:to-purple-100 hover:border-blue-300 transition-all duration-300 cursor-pointer group';
+
+            // Reset icon
+            elements.uploadIcon.innerHTML =
+                `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>`;
+            elements.uploadIcon.className = 'w-5 h-5';
+
+            // Reset text
+            elements.uploadText.textContent = `Pilih file ${fieldName}`;
+            elements.uploadText.className = 'text-sm font-medium';
+
+            // Reset status badge
+            const isOptional = fieldName === 'popup';
+            elements.statusBadge.textContent = isOptional ? 'Opsional' : 'Belum diunggah';
+            elements.statusBadge.className =
+                'block items-center px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+    </script>
 </body>
 
 </html>

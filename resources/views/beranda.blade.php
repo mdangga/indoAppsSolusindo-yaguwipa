@@ -41,7 +41,7 @@
                     {{ $site['yayasanProfile']->company }}
                 </h1>
                 <p class="mt-8 text-lg font-medium text-gray-600">
-                    {{ $site['yayasanProfile']->intro }}
+                    {!! $site['yayasanProfile']->intro !!}
                 </p>
                 <div class="mt-10 flex items-center justify-center gap-x-6">
                     <a href="#"

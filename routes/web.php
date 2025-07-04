@@ -8,10 +8,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 // testing area
-Route::get('/testing', function () {
-    return view('admin.showGaleri');
-})->name('testing');
-Route::post('/profiles/create', [ProfileController::class, 'store'])->name('profiles.store');
+Route::get('/testing', [GeneralController::class, 'testing'])->name('testing');
+
+Route::put('/profiles/update/{id}', [ProfileController::class, 'update'])->name('profiles.update');
 
 // default route
 Route::get('/', [GeneralController::class, 'beranda'])->name('beranda');
