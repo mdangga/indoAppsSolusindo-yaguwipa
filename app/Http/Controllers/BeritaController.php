@@ -57,13 +57,14 @@ class BeritaController extends Controller
         $validator = Validator::make($request->all(), [
             'judul' => 'required|string|max:255',
             'meta_title' => 'required|string|max:255',
-            'meta_description' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:news_event,slug',
+            'meta_description' => 'required|string|max:2000',
             'isi_berita' => 'required|string',
             'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'caption' => 'nullable|string|max:255',
             'keyword' => 'nullable|string|max:255',
             'tanggal_publish' => 'nullable|date',
             'status' => 'required|in:show,hide',
+            'hit' => 'required|numeric|min:0',
             'id_kategori_news_event' => 'required|exists:kategori_news_event,id_kategori_news_event',
         ]);
 
@@ -77,7 +78,6 @@ class BeritaController extends Controller
         $data = $validator->validated();
 
         $data['slug'] = Str::slug($request->judul);
-        $data['hit'] = 0;
         $data['tanggal_publish'] = $data['status'] === 'show' ? now() : null;
 
         if ($request->hasFile('thumbnail')) {
@@ -114,31 +114,34 @@ class BeritaController extends Controller
         $validator = Validator::make($request->all(), [
             'judul' => 'required|string|max:255',
             'meta_title' => 'required|string|max:255',
-            'meta_description' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:news_event,slug,' . $berita->id_berita . ',id_berita',
+            'meta_description' => 'required|string|max:2000',
             'isi_berita' => 'required|string',
-            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'caption' => 'nullable|string|max:255',
             'keyword' => 'nullable|string|max:255',
             'tanggal_publish' => 'nullable|date',
             'status' => 'required|in:show,hide',
+            'hit' => 'required|numeric|min:0',
             'id_kategori_news_event' => 'required|exists:kategori_news_event,id_kategori_news_event',
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
-                ->withInput();
+                ->withInput()
+                ->with('message', 'Validasi gagal.');
         }
 
         $data = $request->only([
             'judul',
             'meta_title',
             'meta_description',
-            'slug',
+            'caption',
             'isi_berita',
             'keyword',
             'tanggal_publish',
             'status',
+            'hit',
             'id_kategori_news_event',
         ]);
 

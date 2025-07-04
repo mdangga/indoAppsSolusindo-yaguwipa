@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         View::composer('*', function ($view) {
-            $view->with('menus', Menu::with('subMenus')->get());
+            $view->with('menus', Menu::with('MenuToSubMenu')->get());
         });
     }
 }

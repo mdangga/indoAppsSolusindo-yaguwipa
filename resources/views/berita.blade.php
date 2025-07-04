@@ -29,6 +29,9 @@
             </h1>
 
             <img src="{{ asset('storage/' . $berita->thumbnail) }}" alt="thumbnail" class="w-full object-cover">
+            <p class="text-gray-500 font-light leading-relaxed mt-2">
+                    {{ $berita->caption }}
+            </p>
 
             <!-- info waktu dan share -->
             <div class="flex justify-between items-center mb-3">
@@ -72,10 +75,6 @@
             <div class="prose max-w-none">
                 <p class="text-lg text-gray-700 leading-relaxed mb-6">
                     {!! $berita->isi_berita !!}
-                </p>
-
-                <p class="text-gray-700 italic leading-relaxed mt-7">
-                    Sumber: Mikir sendiri
                 </p>
             </div>
 

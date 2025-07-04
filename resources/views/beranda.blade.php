@@ -24,7 +24,7 @@
     <x-navbar :menus="$menus" />
 
     {{-- hero --}}
-    <div class="relative top-0">
+    <div class="relative flex items-center justify-center h-screen">
         {{-- Background Image --}}
         <div class="absolute inset-0 -z-10">
             <img src="{{ asset('img/ex.jpg') }}" alt="Hero Background"
@@ -36,7 +36,7 @@
 
         {{-- Isi Hero --}}
         <div class="relative px-6 pt-14 lg:px-8">
-            <div class="mx-auto max-w-2xl py-24 sm:py-32 lg:py-36 text-center">
+            <div class="mx-auto max-w-2xl text-center">
                 <h1 class="text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
                     {{ $site['yayasanProfile']->company }}
                 </h1>
@@ -60,7 +60,7 @@
     {{-- berita berita --}}
     <div class="px-4 sm:px-6 lg:px-14 py-20">
         <!-- Header: Judul di kiri dan tombol di kanan -->
-        <x-section-header id="berita-kegiatan" title="BERITA DAN KEGIATAN" link="/berita-dan-kegiatan"
+        <x-section-header id="berita-kegiatan" title="BERITA DAN KEGIATAN" link="beranda.berita"
             buttonText="See More" />
 
         <!-- Berita dan Kegiatan -->
@@ -183,7 +183,7 @@
     {{-- galleri --}}
     <div class="px-4 sm:px-6 lg:px-14 py-20">
         <!-- Header: Judul di kiri dan tombol di kanan -->
-        <x-section-header id="gallery" title="GALLERY" link="/gallery" buttonText="See More" />
+        <x-section-header id="gallery" title="GALLERY" link="beranda.gallery" buttonText="See More" />
 
         <div id="gallery" class="relative w-full" data-carousel="slide">
             <!-- Carousel wrapper -->

@@ -172,6 +172,9 @@
                                 <input type="text" name="caption"
                                     class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
                                     value="{{ old('caption', $berita->caption ?? '') }}" />
+                                @error('caption')
+                                    <small class="text-red-600">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
 
@@ -246,11 +249,11 @@
 
                 <div class="grid md:grid-cols-2 gap-6 mt-4">
                     <div>
-                        <label for="slug" class="block mb-1 text-sm font-medium">Slug</label>
-                        <input id="slug" type="text" name="slug"
+                        <label for="hit" class="block mb-1 text-sm font-medium">Hit</label>
+                        <input id="hit" type="number" name="hit"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                            value="{{ old('slug', $berita->slug ?? '') }}" required>
-                        @error('slug')
+                            value="{{ old('hit', $berita->hit ?? '') }}" required>
+                        @error('hit')
                             <small class="text-red-600">{{ $message }}</small>
                         @enderror
                     </div>
