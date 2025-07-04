@@ -4,11 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Profiles;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 
 class ProfileController extends Controller
 {
+    public function index()
+    {
+        $profiles = Profiles::first();
+
+        return view('admin.generals', compact('profiles'));
+    }
+
     public function update(Request $request, $id)
     {
         $profile = Profiles::find($id);
@@ -18,7 +26,7 @@ class ProfileController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
             'favicon' => 'nullable|image|mimes:jpeg,png,jpg,svg,ico|max:2048',
             'background' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
             'popup' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
@@ -52,13 +60,17 @@ class ProfileController extends Controller
 
         foreach (['logo', 'favicon', 'background', 'popup'] as $file) {
             if ($request->hasFile($file)) {
+                $oldFilePath = $profile->$file;
+                if ($oldFilePath && Storage::disk('public')->exists($oldFilePath)) {
+                    Storage::disk('public')->delete($oldFilePath);
+                }
                 $data[$file] = $request->file($file)->store('img', 'public');
             } else {
-                $data[$file] = $profile->thumbnail;
+                $data[$file] = $profile->$file;
             }
         }
 
-        Profiles::update($data);
+        $profile->update($data);
 
         return redirect()->back()->with('success', 'Data berhasil disimpan.');
     }
