@@ -258,18 +258,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Logout Section -->
-        <div class="mt-8 pt-6 border-t border-gray-200">
-            <form action="{{ route('logout') }}" method="POST" class="inline-block">
-                @csrf
-                <button type="submit"
-                    class="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
-                    <i class="fas fa-sign-out-alt w-4 h-4 mr-2"></i>
-                    Logout
-                </button>
-            </form>
-        </div>
     </main>
 
     <!-- Scripts -->
