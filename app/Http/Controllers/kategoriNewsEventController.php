@@ -14,7 +14,7 @@ class kategoriNewsEventController extends Controller
      */
     public function index()
     {
-        return view('admin.');
+        return view('admin.showKategoriBerita');
     }
 
     /**
@@ -116,13 +116,13 @@ class kategoriNewsEventController extends Controller
     // Untuk form store
     public function showFormStore()
     {
-        return view('admin.');
+        return view('admin.formKategoriBerita');
     }
 
     // Untuk form edit
     public function showFormEdit($id)
     {
         $kategori = KategoriNewsEvent::findOrFail($id);
-        return view('admin.', compact('kategori'));
+        return view('admin.formKategoriBerita', compact('kategori'));
     }
 }
