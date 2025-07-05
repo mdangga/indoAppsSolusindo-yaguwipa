@@ -38,7 +38,7 @@ class kategoriNewsEventController extends Controller
 
         KategoriNewsEvent::create($data);
 
-        return redirect()->route('')->with('success', 'Kategori berhasil ditambahkan!');
+        return redirect()->route('admin.kategori')->with('success', 'Kategori berhasil ditambahkan!');
     }
 
     // datatable
@@ -95,7 +95,7 @@ class kategoriNewsEventController extends Controller
 
         $kategori->update($data);
 
-        return redirect()->route('')->with('success', 'Kategori berhasil ditambahkan!');
+        return redirect()->route('admin.kategori')->with('success', 'Kategori berhasil ditambahkan!');
     }
 
     /**
