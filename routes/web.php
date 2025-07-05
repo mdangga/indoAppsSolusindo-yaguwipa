@@ -6,7 +6,6 @@ use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\kategoriNewsEventController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Gallery;
 use Illuminate\Support\Facades\Route;
 
 // testing area
@@ -27,11 +26,11 @@ Route::get('/gallery/show-all', [GalleryController::class, 'index'])->name('bera
 // middleware authtentication
 Route::middleware(['auth.admin'])->group(function () {
     Route::get('/dashboard', [AuthController::class, 'me'])->name('dashboard');
+    Route::get('/kategori', [kategoriNewsEventController::class, 'index'])->name('admin.kategori');
     // general setting
     Route::get('/general-setting', [ProfileController::class, 'index'])->name('admin.profiles');
     Route::put('/general-setting/update/{id}', [ProfileController::class, 'update'])->name('profiles.update');
     // gallery
-    Route::get('/gallery', [GalleryController::class, 'showFormStore'])->name('gallery.formStore');
     Route::get('/datatable/gallery', [GalleryController::class, 'getDataTables'])->name('gallery.table');
     Route::get('/gallery/store', [GalleryController::class, 'showFormStore'])->name('gallery.formStore');
     Route::post('/gallery', [GalleryController::class, 'store'])->name('gallery.store');
@@ -43,7 +42,7 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/datatable/kategori-news-event', [kategoriNewsEventController::class, 'getDataTables'])->name('kategori.table');
     Route::get('/kategori/store', [kategoriNewsEventController::class, 'showFormStore'])->name('kategori.formStore');
     Route::get('/kategori/edit/{id}', [kategoriNewsEventController::class, 'showFormEdit'])->name('kategori.formEdit');
-    Route::post('/kategori', [kategoriNewsEventController::class, 'store'])->name('kategori.store');
+    Route::post('/kategori', [kategoriNewsEventController::class, 'create'])->name('kategori.store');
     Route::put('/kategori/{id}', [kategoriNewsEventController::class, 'update'])->name('kategori.update');
     Route::delete('/kategori/destroy/{id}', [kategoriNewsEventController::class, 'destroy'])->name('kategori.delete');
     // news & event 
