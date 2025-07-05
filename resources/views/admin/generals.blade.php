@@ -54,7 +54,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('profiles.update', $profiles->id_profil_yayasan) }}" method="POST"
+            <form id="formProfiles" action="{{ route('profiles.update', $profiles->id_profil_yayasan) }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -428,7 +428,7 @@
             });
         });
 
-        const form = document.querySelector("form");
+        const form = document.querySelector("#formProfiles");
         form.addEventListener("submit", function() {
             const intro = document.querySelector("#intro");
             intro.value = quill.root.innerHTML;

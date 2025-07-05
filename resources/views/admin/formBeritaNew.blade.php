@@ -43,7 +43,7 @@
 
             @php $isEdit = isset($berita); @endphp
 
-            <form action="{{ $isEdit ? route('berita.update', $berita->id_berita) : route('berita.store') }}"
+            <form id="formBerita" action="{{ $isEdit ? route('berita.update', $berita->id_berita) : route('berita.store') }}"
                 method="POST" enctype="multipart/form-data">
                 @csrf
                 @if ($isEdit)
@@ -304,7 +304,7 @@
             });
         });
 
-        const form = document.querySelector('form');
+        const form = document.querySelector('#formBerita');
         form.addEventListener('submit', function() {
             const isi_berita = document.querySelector('#isi_berita');
             isi_berita.value = quill.root.innerHTML;
