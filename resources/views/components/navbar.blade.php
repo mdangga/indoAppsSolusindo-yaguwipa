@@ -1,3 +1,4 @@
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 <header class="absolute w-full z-50">
     <!-- Logo dan Login Button -->
     <div class="w-full bg-transparent p-6 lg:px-8">
@@ -48,8 +49,8 @@
                                 @foreach ($menu->MenuToSubMenu as $sub)
                                     <a href="{{ $sub->link }}"
                                         class="block px-4 py-2 text-sm font-medium rounded-lg transition duration-200 {{ rtrim(request()->url(), '/') === rtrim($sub->link, '/')
-                                                ? 'bg-amber-100 text-gray-800 hover:bg-gray-700 hover:text-white': 'text-gray-700 hover:bg-amber-100' }}"
-                                        >
+                                            ? 'bg-amber-100 text-gray-800 hover:bg-gray-700 hover:text-white'
+                                            : 'text-gray-700 hover:bg-amber-100' }}">
                                         {{ $sub->nama_menu }}
                                     </a>
                                 @endforeach
@@ -69,4 +70,67 @@
             </div>
         </div>
     </nav>
+    <div id="mobile-menu" class="lg:hidden fixed inset-0 z-50 hidden" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-black/25"></div>
+        <div
+            class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+            <div class="mt-6 px-4 flex items-center justify-between">
+                <a href="#" class="-m-1.5 p-1.5">
+                    <img class="h-8 w-auto" src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" alt="" />
+                </a>
+                <button type="button" id="close-menu-button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+                    <span class="sr-only">Close menu</span>
+                    <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                        aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="mt-6 flow-root">
+                <div class="-my-6 divide-y divide-gray-500/10">
+                    <div class="space-y-2 py-6" x-data="{ openDropdown: null }">
+                        @foreach ($menus as $index => $menu)
+                            @if ($menu->MenuToSubMenu->count())
+                                <div class="border border-gray-200 rounded-lg">
+                                    <button
+                                        @click="openDropdown === {{ $index }} ? openDropdown = null : openDropdown = {{ $index }}"
+                                        class="w-full flex justify-between items-center px-3 py-2 font-semibold text-gray-900">
+                                        <span>{{ $menu->nama_menu }}</span>
+                                        <svg class="h-5 w-5 transform transition-transform"
+                                            :class="openDropdown === {{ $index }} ? 'rotate-180' : ''"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </button>
+                                    <div x-show="openDropdown === {{ $index }}" x-collapse>
+                                        @foreach ($menu->MenuToSubMenu as $sub)
+                                            <a href="{{ $sub->link }}"
+                                                class="block px-6 py-2 text-sm text-gray-700 hover:bg-blue-100">
+                                                {{ $sub->nama_menu }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @else
+                                <a href="{{ $menu->link }}"
+                                    class="block px-3 py-2 text-base font-semibold text-gray-900 hover:bg-blue-100">
+                                    {{ $menu->nama_menu }}
+                                </a>
+                            @endif
+                        @endforeach
+                    </div>
+
+
+                    <div class="py-6">
+                        <a href="{{ route('login') }}"
+                            class="-mx-3 block px-3 py-2.5 text-base/7 font-semibold text-gray-900 text-center rounded-full hover:bg-blue-100">
+                            Log in
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </header>

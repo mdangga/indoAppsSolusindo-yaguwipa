@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\KategoriNewsEvent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\Facades\DataTables;
 
 class kategoriNewsEventController extends Controller
 {
@@ -12,47 +14,88 @@ class kategoriNewsEventController extends Controller
      */
     public function index()
     {
-        $kategori = KategoriNewsEvent::all();
+        return view('admin.');
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nama' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('message', 'Validasi gagal.');
+        }
+
+        $data = $validator->validated();
+
+        KategoriNewsEvent::create($data);
+
+        return redirect()->route('')->with('success', 'Kategori berhasil ditambahkan!');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // datatable
+    public function getDataTables(Request $request)
     {
-        //
-    }
+        if (!$request->ajax()) {
+            return abort(403, 'Akses tidak diizinkan');
+        }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        $kategori = KategoriNewsEvent::select(['id_kategori_news_event', 'nama', 'deskripsi']);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return DataTables::of($kategori)
+            ->addColumn('aksi', function ($row) {
+                return '
+                <button class="editBtn bg-blue-500 text-white px-2 py-1 rounded text-sm" data-id="' . e($row->id_kategori_news_event) . '">Edit</button>
+                <button class="deleteBtn bg-red-500 text-white px-2 py-1 rounded text-sm ml-2" data-id="' . e($row->id_kategori_news_event) . '">Hapus</button>
+            ';
+            })
+            ->editColumn('nama', function ($row) {
+                return $row->nama;
+            })
+            ->editColumn('deskripsi', function ($row) {
+                return $row->deskripsi;
+            })
+            
+            ->rawColumns(['aksi', 'deskripsi'])
+            ->make(true);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $kategori = KategoriNewsEvent::find($id);
+        
+        if(!$kategori){
+            return redirect()->back()->with('gagal', 'Kategori tidak ditemukan');
+        }
+
+        $validator = Validator::make($request->all(), [
+            'nama' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('message', 'Validasi gagal.');
+        }
+
+        $data = $validator->validated();
+
+        $kategori->update($data);
+
+        return redirect()->route('')->with('success', 'Kategori berhasil ditambahkan!');
     }
 
     /**
@@ -60,6 +103,26 @@ class kategoriNewsEventController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $kategori = KategoriNewsEvent::find($id);
+        
+        if(!$kategori){
+            return redirect()->back()->with('gagal', 'Kategori tidak ditemukan');
+        }
+
+        $kategori->delete();
+        return redirect()->back()->with('sukses', 'Kategori berhasil dihapus');
+    }
+
+    // Untuk form store
+    public function showFormStore()
+    {
+        return view('admin.');
+    }
+
+    // Untuk form edit
+    public function showFormEdit($id)
+    {
+        $kategori = KategoriNewsEvent::findOrFail($id);
+        return view('admin.', compact('kategori'));
     }
 }

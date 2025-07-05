@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         setTimeout(() => {
             mobileMenu.classList.add("hidden");
-        }, 300);
+        }, 1000);
 
         const menuIcon = mobileMenuButton.querySelector("svg path");
         if (menuIcon) {

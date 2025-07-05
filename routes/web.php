@@ -4,7 +4,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\kategoriNewsEventController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Gallery;
 use Illuminate\Support\Facades\Route;
 
 // testing area
@@ -35,14 +37,21 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::post('/gallery', [GalleryController::class, 'store'])->name('gallery.store');
     Route::get('/gallery/edit/{id}', [GalleryController::class, 'showFormEdit'])->name('gallery.formEdit');
     Route::put('/gallery/{id}', [GalleryController::class, 'update'])->name('gallery.update');
-    Route::delete('/gallery/destroy/{id}', [GalleryController::class, 'destroy']);
+    Route::delete('/gallery/destroy/{id}', [GalleryController::class, 'destroy'])->name('gallery.delete');
+    // Kategori
+    Route::get('/datatable/kategori-news-event', [kategoriNewsEventController::class, 'getDataTables'])->name('kategori.table');
+    Route::get('/kategori/store', [kategoriNewsEventController::class, 'showFormStore'])->name('kategori.formStore');
+    Route::get('/kategori/edit/{id}', [kategoriNewsEventController::class, 'showFormEdit'])->name('kategori.formEdit');
+    Route::post('/kategori', [kategoriNewsEventController::class, 'store'])->name('kategori.store');
+    Route::put('/kategori/{id}', [kategoriNewsEventController::class, 'update'])->name('kategori.update');
+    Route::delete('/kategori/destroy/{id}', [kategoriNewsEventController::class, 'destroy'])->name('kategori.delete');
     // news & event 
     Route::get('/datatable/berita', [BeritaController::class, 'getDataTables'])->name('berita.table');
     Route::get('/berita/store', [BeritaController::class, 'showFormStore'])->name('berita.formStore');
     Route::get('/berita/edit/{id}', [BeritaController::class, 'showFormEdit'])->name('berita.formEdit');
     Route::post('/berita', [BeritaController::class, 'store'])->name('berita.store');
     Route::put('/berita/{id}', [BeritaController::class, 'update'])->name('berita.update');
-    Route::delete('/berita/destroy/{id}', [BeritaController::class, 'destroy']);
+    Route::delete('/berita/destroy/{id}', [BeritaController::class, 'destroy'])->name('berita.delete');
 
     // logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
