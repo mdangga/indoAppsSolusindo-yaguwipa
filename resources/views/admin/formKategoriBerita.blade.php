@@ -38,13 +38,20 @@
                 </div>
             @endif
 
-            <form action="" method="POST">
+            @php $isEdit = isset($kategori); @endphp
+
+            <form
+                action="{{ $isEdit ? route('kategori.update', $kategori->id_kategori_news_event) : route('kategori.store') }}"
+                method="POST" enctype="multipart/form-data">
                 @csrf
+                @if ($isEdit)
+                    @method('PUT')
+                @endif
                 <div class="grid md:grid-cols-2 gap-6 mt-4">
 
                     <div class="mt-4">
                         <label for="nama" class="block mb-1 text-sm font-medium text-gray-900">Nama</label>
-                        <input type="text" id="nama" name="nama" placeholder="Masukkan nama kategori..."
+                        <input type="text" id="nama" name="nama" value="{{ old('nama', $kategori->nama ?? '') }}"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5" />
                         @error('nama')
                             <small class="text-red-600">{{ $message }}</small>
@@ -53,7 +60,7 @@
                     <div class="mt-4">
                         <label for="deskripsi" class="block mb-1 text-sm font-medium text-gray-900">Deskripsi</label>
                         <input type="text" id="deskripsi" name="deskripsi"
-                            placeholder="Masukkan deskripsi kategori..."
+                            value="{{ old('tanggal_publish', $kategori->deskripsi ?? '') }}"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5" />
                         @error('deskripsi')
                             <small class="text-red-600">{{ $message }}</small>

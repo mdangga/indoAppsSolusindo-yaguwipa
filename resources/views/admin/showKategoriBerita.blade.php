@@ -393,7 +393,7 @@
                         .addClass('bg-gray-400 cursor-not-allowed')
                         .html('<i class="fas fa-spinner fa-spin w-3 h-3 mr-1"></i>Menghapus...');
 
-                    fetch(`/berita/${id}`, {
+                    fetch(`/kategori/destroy/${id}`, {
                             method: 'DELETE',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -422,7 +422,7 @@
             // Edit handler
             $('#beritaTable').on('click', '.editBtn', function() {
                 const id = $(this).data('id');
-                window.location.href = `/berita/edit/${id}`;
+                window.location.href = `/kategori/edit/${id}`;
             });
 
             // Notification system
