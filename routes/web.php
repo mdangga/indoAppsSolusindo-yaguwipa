@@ -39,6 +39,7 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::put('/gallery/{id}', [GalleryController::class, 'update'])->name('gallery.update');
     Route::delete('/gallery/destroy/{id}', [GalleryController::class, 'destroy'])->name('gallery.delete');
     // Kategori
+    Route::get('/kategori-news-event', [kategoriNewsEventController::class, 'index'])->name('admin.kategoriBerita');
     Route::get('/datatable/kategori-news-event', [kategoriNewsEventController::class, 'getDataTables'])->name('kategori.table');
     Route::get('/kategori/store', [kategoriNewsEventController::class, 'showFormStore'])->name('kategori.formStore');
     Route::get('/kategori/edit/{id}', [kategoriNewsEventController::class, 'showFormEdit'])->name('kategori.formEdit');

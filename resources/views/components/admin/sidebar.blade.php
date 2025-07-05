@@ -31,7 +31,7 @@
                 </button>
                 <ul id="generals" class="hidden py-2 space-y-2">
                     <li>
-                        <a href="#"
+                        <a href="{{ route('admin.profiles') }}"
                             class="flex items-center w-full p-2 text-gray-200 transition duration-75 rounded-lg pl-11 group hover:bg-[#535c66] font-normal">Profile</a>
                     </li>
                     <li>
@@ -59,11 +59,11 @@
                 </button>
                 <ul id="news-event" class="hidden py-2 space-y-2">
                     <li>
-                        <a href="#"
+                        <a href="{{ route('admin.kategoriBerita') }}"
                             class="flex items-center w-full p-2 text-gray-200 transition duration-75 rounded-lg pl-11 group hover:bg-[#535c66] font-normal">Kategori</a>
                     </li>
                     <li>
-                        <a href="#"
+                        <a href="{{ route('dashboard') }}"
                             class="flex items-center w-full p-2 text-gray-200 transition duration-75 rounded-lg pl-11 group hover:bg-[#535c66] font-normal">News
                             and Event
                         </a>
