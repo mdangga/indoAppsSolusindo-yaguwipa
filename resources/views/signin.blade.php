@@ -8,18 +8,22 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- AOS Library -->
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     <style>
         body {
             font-family: 'Instrument Sans', sans-serif;
         }
 
-        .video-container {
+        .img-container {
             position: relative;
             overflow: hidden;
         }
 
-        .video-background {
+        .img-background {
             position: absolute;
             top: 0;
             left: 0;
@@ -29,13 +33,15 @@
             z-index: 1;
         }
 
-        .video-overlay {
+        .img-overlay {
             position: absolute;
             inset: 0;
             background: linear-gradient(135deg, rgba(6, 8, 220, 0.8) 0%, rgba(147, 51, 234, 0.2) 50%, rgba(252, 253, 175, 0.4) 100%);
             z-index: 2;
             opacity: 0.5;
-            background-color: rgba(0, 0, 0, 0.805)
+            background-color: rgba(0, 0, 0, 0.805);
+            -webkit-backdrop-filter: blur(50px);
+            backdrop-filter: blur(50px);
         }
 
         .content-overlay {
@@ -52,17 +58,19 @@
             <div class="bg-white rounded-2xl shadow-xl overflow-hidden sm:s">
                 <div class="flex flex-col lg:flex-row">
                     <!-- Left Side - Video Background -->
-                    <div class="hidden lg:flex lg:w-1/2 video-container p-8 items-center justify-center relative">
+                    <div class="hidden lg:flex lg:w-1/2 img-container p-8 items-center justify-center relative">
 
-                        <!-- Video Background -->
+                        {{-- <!-- Video Background -->
                         <video class="video-background" autoplay muted loop playsinline height="100%">
                             <source src="{{ asset('vidbg2.mp4') }}" type="video/mp4">
                             <!-- Fallback for browsers that don't support video -->
                             Your browser does not support the video tag.
-                        </video>
+                        </video> --}}
+                        <!-- Video Background -->
+                        <img class="img-background" src="{{ asset('storage/' . $site['yayasanProfile']->background) }}">
 
                         <!-- Video Overlay -->
-                        <div class="video-overlay"></div>
+                        <div class="img-overlay"></div>
 
                         <!-- Content Overlay -->
                         <div class="content-overlay text-center text-white">

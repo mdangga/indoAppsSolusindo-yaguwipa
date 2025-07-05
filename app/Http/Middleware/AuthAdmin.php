@@ -16,11 +16,10 @@ class AuthAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Pastikan user ter-auth dan role-nya 'admin'
         if (Auth::check() && Auth::user()->role === 'admin') {
             return $next($request);
         }
 
-        return response()->json(['message' => 'Unauthorized. Admin only.'], 403);
+        abort(403);
     }
 }

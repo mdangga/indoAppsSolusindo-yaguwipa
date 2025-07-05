@@ -66,18 +66,18 @@
         <!-- Berita dan Kegiatan -->
         <div class="grid grid-cols-1 xl:grid-cols-4 gap-6" data-aos="fade-up">
             <!-- Kolom Berita (3 kolom) -->
-            <div class="xl:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+            <div class="xl:col-span-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
                 @forelse ($berita as $item)
                     <x-berita :item="$item" />
                 @empty
-                    <div class="flex col-span-3 items-center justify-center bg-gray-100 rounded-lg">
+                    <div class="flex items-center justify-center bg-gray-100 rounded-lg">
                         <p class="text-sm text-gray-500 py-[auto]">Belum ada berita yang di publish</p>
                     </div>
                 @endforelse
 
             </div>
 
-            <!-- Kolom Kegiatan (1 kolom) -->
+            {{-- <!-- Kolom Kegiatan (1 kolom) -->
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 h-fit">
                 <h2 class="text-xl font-semibold text-gray-900 mb-6">Kegiatan</h2>
 
@@ -174,7 +174,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             {{-- end kegiatan --}}
         </div>
     </div>
