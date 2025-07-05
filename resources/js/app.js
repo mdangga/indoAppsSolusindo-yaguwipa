@@ -1,5 +1,5 @@
 import "./bootstrap";
-
+import "flowbite";
 document.addEventListener("DOMContentLoaded", function () {
     // Get mobile menu elements
     const mobileMenuButton = document.getElementById("mobile-menu-button");

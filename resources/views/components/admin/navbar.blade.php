@@ -13,16 +13,22 @@
                             </path>
                         </svg>
                     </button>
-                    <a href="https://flowbite.com" class="flex ms-2 md:me-24">
+                    {{-- <a href="https://flowbite.com" class="flex ms-2 md:me-24">
                         <img src="{{ asset('img/logo.png') }}" class="h-8 me-3" alt="FlowBite Logo" />
                         <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap  ">Yaguwipa</span>
-                    </a>
+                    </a> --}}
                 </div>
                 <div class="flex items-center">
-                    <div class="flex items-center ms-3">
-                        <div>
-
-                        </div>
+                    <div class="flex items-center mx-3 space-x-2">
+                        <span class="px-2">{{ Auth::user()->username }}</span>
+                        <span>|</span>
+                        <form action="{{ route('logout') }}" method="POST" class="inline-block">
+                            @csrf
+                            <button type="submit"
+                                class="inline-flex items-center px-2 py-1 bg-transparent text-gray-500 font-medium  hover:text-gray-700">
+                                Logout
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
