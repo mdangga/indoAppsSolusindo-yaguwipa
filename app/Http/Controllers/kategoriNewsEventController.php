@@ -23,8 +23,7 @@ class kategoriNewsEventController extends Controller
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama' => 'required|string|max:255',
-            'deskripsi' => 'required|string',
+            'nama' => 'required|string|max:255'
         ]);
 
         if ($validator->fails()) {

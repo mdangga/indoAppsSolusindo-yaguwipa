@@ -240,11 +240,10 @@
 
         <!-- Main Content Card -->
         <div class="bg-white border rounded-md border-gray-200 overflow-hidden">
-
             <!-- Table Container -->
             <div class="p-5 rounded-lg">
                 <div class="table-container overflow-x-auto">
-                    <table id="beritaTable" class="w-full border border-gray-300 ">
+                    <table id="kategoriTable" class="w-full border border-gray-300 ">
                         <thead>
                             <tr>
                                 <th class="text-left">No</th>
@@ -266,7 +265,7 @@
 
     <script>
         $(document).ready(function() {
-            let table = $('#beritaTable').DataTable({
+            let table = $('#kategoriTable').DataTable({
                 processing: false,
                 serverSide: true,
                 autoWidth: false,
@@ -325,7 +324,7 @@
                         render: function(data, type, row) {
                             return `
                                 <div class="">
-                                    <h3 class="font-semibold text-gray-900 leading-tight">${data}</h3>
+                                    <h3 class="font-semibold text-gray-900 leading-tight">${data === null ? 'tidak ada' : data}</h3>
                                 </div>
                             `;
                         }
@@ -382,7 +381,7 @@
             });
 
             // Delete handler
-            $('#beritaTable').on('click', '.deleteBtn', function() {
+            $('#kategoriTable').on('click', '.deleteBtn', function() {
                 const id = $(this).data('id');
                 const button = $(this);
 
@@ -393,34 +392,37 @@
                         .addClass('bg-gray-400 cursor-not-allowed')
                         .html('<i class="fas fa-spinner fa-spin w-3 h-3 mr-1"></i>Menghapus...');
 
-                    fetch(`/kategori/destroy/${id}`, {
-                            method: 'DELETE',
+                    fetch(`/berita/destroy/${id}`, {
+                            method: 'delete', // ubah ke POST
                             headers: {
                                 'Content-Type': 'application/json',
                                 'X-Requested-With': 'XMLHttpRequest',
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                                'Accept': 'application/json'
+                                'Accept': 'text/html'
                             }
                         })
                         .then(response => {
-                            if (response.ok) {
+                            if (response.redirected || response.ok) {
                                 table.ajax.reload();
                                 showNotification('Berita berhasil dihapus!', 'success');
                             } else {
-                                return response.json().then(data => {
-                                    throw new Error(data.message || 'Gagal menghapus berita');
-                                });
+                                throw new Error('Gagal menghapus berita');
                             }
                         })
                         .catch(error => {
                             console.error(error);
                             showNotification('Terjadi kesalahan: ' + error.message, 'error');
+
+                            button.prop('disabled', false)
+                                .removeClass('bg-gray-400 cursor-not-allowed')
+                                .addClass('bg-red-500 hover:bg-red-600')
+                                .html('<i class="fas fa-trash w-3 h-3 mr-1"></i>Hapus');
                         });
                 }
             });
 
             // Edit handler
-            $('#beritaTable').on('click', '.editBtn', function() {
+            $('#kategoriTable').on('click', '.editBtn', function() {
                 const id = $(this).data('id');
                 window.location.href = `/kategori/edit/${id}`;
             });

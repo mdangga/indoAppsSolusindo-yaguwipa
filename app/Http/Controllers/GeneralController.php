@@ -14,7 +14,7 @@ class GeneralController extends Controller
     {
         $berita = Berita::latest()
             ->where('status', 'show')
-            ->take(3)
+            ->take(4)
             ->get();
         $menus = Menu::with('MenuToSubMenu')->get();
         
