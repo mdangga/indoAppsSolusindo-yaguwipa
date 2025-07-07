@@ -35,7 +35,7 @@
                             class="flex items-center w-full p-2 text-gray-200 transition duration-75 rounded-lg pl-11 group hover:bg-[#535c66] font-normal">Profile</a>
                     </li>
                     <li>
-                        <a href="#"
+                        <a href="{{ route('admin.menus') }}"
                             class="flex items-center w-full p-2 text-gray-200 transition duration-75 rounded-lg pl-11 group hover:bg-[#535c66] font-normal">Menu</a>
                     </li>
                 </ul>

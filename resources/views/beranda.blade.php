@@ -70,14 +70,17 @@
                 @forelse ($berita as $item)
                     <x-berita :item="$item" />
                 @empty
-                    <div class="flex items-center justify-center bg-gray-100 rounded-lg">
-                        <p class="text-sm text-gray-500 py-[auto]">Belum ada berita yang di publish</p>
+                    <div class="relative w-full h-64 col-span-4"> <!-- pastikan parent relative -->
+                        <div class="absolute inset-0 flex items-center justify-center bg-gray-100/50">
+                            <p class="text-gray-500 text-center">Belum ada gambar di galeri.</p>
+                        </div>
                     </div>
-                @endforelse
-
             </div>
+            @endforelse
 
-            {{-- <!-- Kolom Kegiatan (1 kolom) -->
+        </div>
+
+        {{-- <!-- Kolom Kegiatan (1 kolom) -->
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 h-fit">
                 <h2 class="text-xl font-semibold text-gray-900 mb-6">Kegiatan</h2>
 
@@ -175,8 +178,8 @@
                     </div>
                 </div>
             </div> --}}
-            {{-- end kegiatan --}}
-        </div>
+        {{-- end kegiatan --}}
+    </div>
     </div>
     {{-- end berita --}}
 
@@ -198,11 +201,10 @@
                 @empty
                     <!-- Default item when no gallery items -->
                     <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
-                        <div class="absolute inset-0 flex items-center justify-center w-full h-full bg-gray-200">
+                        <div class="absolute inset-0 flex items-center justify-center w-full h-full bg-gray-100/50">
                             <p class="text-gray-500 text-center">Belum ada gambar di galeri.</p>
                         </div>
                     </div>
-
                 @endforelse
             </div>
 
