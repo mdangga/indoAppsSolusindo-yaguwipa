@@ -17,7 +17,12 @@ class GeneralController extends Controller
             ->take(4)
             ->get();
         
-        $gallery = Gallery::orderBy('created_at', 'desc')->take(5)->get();
+        $gallery = Gallery::latest()
+            ->where('status', 'show')
+            ->where('kategori', 'foto')
+            ->take(5)
+            ->get();
+
         return view('beranda', compact('berita', 'gallery'));
     }
 
