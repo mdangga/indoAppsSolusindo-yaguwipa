@@ -187,7 +187,7 @@
 
         <div id="gallery" class="relative w-full" data-carousel="slide">
             <!-- Carousel wrapper -->
-            <div class="relative h-[10px] overflow-hidden rounded-lg md:h-[32vw]">
+            <div class="relative h-[500px] overflow-hidden rounded-lg md:h-[32vw]">
                 @forelse ($gallery->take(5) as $index => $item)
                     <!-- Item {{ $index + 1 }} -->
                     <div class="hidden duration-700 ease-in-out"
@@ -211,8 +211,7 @@
                 <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
                     @forelse ($gallery->take(5) as $inex => $item)
                         <button type="button" class="w-[6px] h-[6px] rounded-full"
-                            aria-current="{{ $index === 0 ? 'true' : 'false' }}"
-                            aria-label="Slide {{ $index + 1 }}"
+                            aria-current="{{ $index === 0 ? 'true' : 'false' }}" aria-label="Slide {{ $index + 1 }}"
                             data-carousel-slide-to="{{ $index }}"></button>
                     @endforeach
                 </div>

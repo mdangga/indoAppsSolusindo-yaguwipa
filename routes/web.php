@@ -27,6 +27,7 @@ Route::get('/gallery/show-all', [GalleryController::class, 'index'])->name('bera
 Route::middleware(['auth.admin'])->group(function () {
     Route::get('/dashboard', [AuthController::class, 'me'])->name('dashboard');
     Route::get('/kategori', [kategoriNewsEventController::class, 'index'])->name('admin.kategori');
+    Route::get('/gallery', [GalleryController::class, 'create'])->name('admin.gallery');
     // general setting
     Route::get('/general-setting', [ProfileController::class, 'index'])->name('admin.profiles');
     Route::put('/general-setting/update/{id}', [ProfileController::class, 'update'])->name('profiles.update');

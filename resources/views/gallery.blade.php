@@ -19,37 +19,46 @@
     <link rel="stylesheet" href="https://unpkg.com/flexmasonry/dist/flexmasonry.css">
 </head>
 
+@php
+    function extractYoutubeId($url)
+    {
+        preg_match('/(?:youtube\.com\/(?:.*v=|v\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $url, $matches);
+        return $matches[1] ?? null;
+    }
+@endphp
+
 <body>
-    {{-- navbar --}}
     <x-navbar :menus="$menus" />
 
-    <div class=" px-4 sm:px-6 lg:px-40 py-20">
-        <!-- Header -->
+    <div class="px-4 sm:px-6 lg:px-40 py-20">
         <x-header-page title="GALLERI"
             description="Galeri ini menyajikan koleksi gambar dari berbagai aktivitas, baik yang diselenggarakan oleh yayasan maupun momen-momen penting lainnya." />
 
         <!-- Masonry Grid -->
         <div id="masonry-container" class="columns-1 sm:columns-2 md:columns-3 gap-6">
             @forelse ($gallery->take(8) as $item)
-                <div class="break-inside-avoid mb-6 group cursor-pointer gallery-item"
-                    data-image="{{ asset('storage/' . $item->link) }}" data-title="{{ $item->judul }}">
+                @php
+                    $isYoutube = $item->kategori === 'youtube';
+                    $youtubeId = $isYoutube ? extractYoutubeId($item->link) : null;
+                    $thumbnail =
+                        $isYoutube && $youtubeId
+                            ? "https://img.youtube.com/vi/$youtubeId/hqdefault.jpg"
+                            : asset('storage/' . $item->link);
+                @endphp
+                <div class="break-inside-avoid mb-6 group cursor-pointer gallery-item" data-image="{{ $thumbnail }}"
+                    data-title="{{ $item->alt_text }}" data-type="{{ $item->kategori }}"
+                    data-link="{{ $item->link }}">
                     <div
                         class="relative overflow-hidden rounded-xl bg-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 ease-out">
-                        <!-- Image -->
-                        <img src="{{ asset('storage/' . $item->link) }}" alt="{{ $item->judul }}"
+                        <img src="{{ $thumbnail }}" alt="{{ $item->alt_text }}"
                             class="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                             loading="lazy" />
-
-                        <!-- Overlay -->
                         <div
                             class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <!-- Bottom Info -->
                             <div class="absolute bottom-0 left-0 right-0 p-4">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center space-x-3">
-                                        <div>
-                                            <p class="text-white text-sm font-medium">{{ $item->judul }}</p>
-                                        </div>
+                                        <p class="text-white text-sm font-medium">{{ $item->alt_text }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -70,7 +79,6 @@
             @endforelse
         </div>
 
-        <!-- Load More Button -->
         @if ($gallery->count() > 8)
             <div class="text-center mt-12">
                 <button id="load-more-btn"
@@ -80,27 +88,30 @@
             </div>
         @endif
 
-        <!-- Hidden Gallery Items -->
         <div id="hidden-gallery" class="hidden">
             @foreach ($gallery->skip(8) as $index => $item)
+                @php
+                    $isYoutube = $item->kategori === 'youtube';
+                    $youtubeId = $isYoutube ? extractYoutubeId($item->link) : null;
+                    $thumbnail =
+                        $isYoutube && $youtubeId
+                            ? "https://img.youtube.com/vi/$youtubeId/hqdefault.jpg"
+                            : asset('storage/' . $item->link);
+                @endphp
                 <div class="break-inside-avoid mb-6 group cursor-pointer gallery-item-hidden fade-in"
-                    data-index="{{ $index }}" data-image="{{ asset('storage/' . $item->link) }}"
+                    data-index="{{ $index }}" data-image="{{ $thumbnail }}"
                     data-title="{{ $item->alt_text }}">
                     <div
                         class="relative overflow-hidden rounded-xl bg-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 ease-out">
-                        <img src="{{ asset('storage/' . $item->link) }}" alt="{{ $item->alt_text }}"
+                        <img src="{{ $thumbnail }}" alt="{{ $item->alt_text }}"
                             class="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                             loading="lazy" />
-
                         <div
                             class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-
                             <div class="absolute bottom-0 left-0 right-0 p-4">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center space-x-3">
-                                        <div>
-                                            <p class="text-white text-sm font-medium">{{ $item->alt_text }}</p>
-                                        </div>
+                                        <p class="text-white text-sm font-medium">{{ $item->alt_text }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -111,20 +122,27 @@
         </div>
     </div>
 
-    <!-- Image Modal -->
+    <!-- Modal -->
     <div id="image-modal" class="modal-overlay">
-        <button class="modal-close" id="modal-close-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24"
-                height="24" viewBox="0 0 24 24">
+        <button class="modal-close" id="modal-close-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                 <path fill="currentColor"
                     d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59L7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12L5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4" />
-            </svg></button>
-        <div class="modal-content">
-
-            <img id="modal-image" class="modal-image" src="" alt="" loading="lazy">
-            <div class="modal-info">
-                <h3 id="modal-title" class="modal-title"></h3>
+            </svg>
+        </button>
+        <div class="modal-content bg-black w-full h-full flex items-center justify-center">
+            <div class="relative w-full aspect-video rounded-lg overflow-hidden">
+                <iframe id="modal-video" class="absolute top-0 left-0 w-full h-full rounded-lg hidden" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; " allowfullscreen>
+                </iframe>
+                <img id="modal-image" class="absolute top-0 left-0 w-full h-full object-contain hidden"
+                    loading="lazy" />
+            </div>
+            <div class="absolute bottom-6 text-white text-center px-4">
+                <h3 id="modal-title" class="text-xl font-semibold drop-shadow-md"></h3>
             </div>
         </div>
+
     </div>
 
     <script>
@@ -134,101 +152,109 @@
             const hiddenGallery = document.getElementById('hidden-gallery');
             const imageModal = document.getElementById('image-modal');
             const modalImage = document.getElementById('modal-image');
+            const modalVideo = document.getElementById('modal-video');
             const modalTitle = document.getElementById('modal-title');
+
             const modalCloseBtn = document.getElementById('modal-close-btn');
             let currentPage = 1;
             const itemsPerPage = 8;
 
-            // Modal functionality
-            function openModal(imageSrc, imageTitle) {
-                modalImage.src = imageSrc;
-                modalTitle.textContent = imageTitle;
-                imageModal.classList.add('active');
-                document.body.style.overflow = 'hidden'; // Prevent scrolling
+            // Buka Modal
+            function openModal(imageSrc, imageTitle, type = 'image', originalLink = '') {
+                if (type === 'youtube') {
+                    const youtubeId = extractYoutubeId(originalLink);
+                    if (youtubeId) {
+                        modalVideo.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1`;
+                        modalVideo.classList.remove('hidden');
+                        modalImage.classList.add('hidden');
+                    }
+                } else {
+                    modalImage.src = imageSrc;
+                    modalImage.classList.remove('hidden');
+                    modalVideo.classList.add('hidden');
+                    modalVideo.src = '';
+                }
+
+                // modalTitle.textContent = imageTitle;
+                // imageModal.classList.add('active');
+                // document.body.style.overflow = 'hidden';
             }
 
+            // Tutup Modal
             function closeModal() {
                 imageModal.classList.remove('active');
-                document.body.style.overflow = ''; // Restore scrolling
-                setTimeout(() => {
-                    modalImage.src = '';
-                    modalTitle.textContent = '';
-                }, 300);
+                document.body.style.overflow = '';
+                modalImage.src = '';
+                modalVideo.src = '';
             }
 
-            // Event listeners for modal
+            // Ekstrak ID YouTube
+            function extractYoutubeId(url) {
+                const match = url.match(/(?:youtube\.com\/(?:.*v=|v\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+                return match ? match[1] : null;
+            }
+
+            // Klik Modal
             modalCloseBtn.addEventListener('click', closeModal);
-
-            // Close modal when clicking outside the image
             imageModal.addEventListener('click', function(e) {
-                if (e.target === imageModal || e.target.classList.contains('modal-overlay')) {
-                    closeModal();
-                }
+                if (e.target === this || e.target.classList.contains('modal-overlay')) closeModal();
             });
-
-            // Close modal with Escape key
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && imageModal.classList.contains('active')) {
-                    closeModal();
-                }
+                if (e.key === 'Escape' && imageModal.classList.contains('active')) closeModal();
             });
 
-            // Add click listeners to existing gallery items
+            // Tambah Event Klik ke Item Galeri
             function addGalleryClickListeners() {
                 const galleryItems = document.querySelectorAll(
-                    '.gallery-item:not([data-listener-added]), .gallery-item-hidden:not([data-listener-added])');
+                    '.gallery-item:not([data-listener-added]), .gallery-item-hidden:not([data-listener-added])'
+                );
+
                 galleryItems.forEach(item => {
                     item.addEventListener('click', function() {
                         const imageSrc = this.dataset.image;
                         const imageTitle = this.dataset.title;
-                        openModal(imageSrc, imageTitle);
+                        const type = this.dataset.type || 'image';
+                        const link = this.dataset.link || '';
+                        openModal(imageSrc, imageTitle, type, link);
                     });
                     item.setAttribute('data-listener-added', 'true');
                 });
             }
 
-            // Initialize click listeners
             addGalleryClickListeners();
 
-            // Load more functionality
+            // Load More
             if (loadMoreBtn) {
                 loadMoreBtn.addEventListener('click', function() {
                     const hiddenItems = hiddenGallery.querySelectorAll('.gallery-item-hidden');
                     const startIndex = (currentPage - 1) * itemsPerPage;
                     const endIndex = Math.min(startIndex + itemsPerPage, hiddenItems.length);
 
-                    // Show loading state
                     loadMoreBtn.innerHTML = `
                     <svg class="animate-spin w-5 h-5 text-black mr-2" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
                     </svg>
-                    <span>Loading...</span>
-                    `;
+                    <span>Loading...</span>`;
                     loadMoreBtn.disabled = true;
 
-                    // Simulate loading delay
                     setTimeout(() => {
-                        // Add items to masonry container with fade-in animation
                         for (let i = startIndex; i < endIndex; i++) {
                             if (hiddenItems[i]) {
                                 const clonedItem = hiddenItems[i].cloneNode(true);
                                 clonedItem.classList.remove('gallery-item-hidden');
                                 clonedItem.classList.add('gallery-item');
-                                // Remove any existing listener attributes
                                 clonedItem.removeAttribute('data-listener-added');
                                 masonryContainer.appendChild(clonedItem);
                             }
                         }
 
-                        // Add click listeners to new items
                         addGalleryClickListeners();
 
                         currentPage++;
-
-                        // Reset or hide button
                         if (endIndex >= hiddenItems.length) {
-                            // Hide button with animation
                             setTimeout(() => {
                                 loadMoreBtn.style.opacity = '0';
                                 loadMoreBtn.style.transform = 'translateY(10px)';
@@ -242,12 +268,12 @@
                             loadMoreBtn.innerHTML = `<span>Load More</span>`;
                             loadMoreBtn.disabled = false;
                         }
-
                     }, 800);
                 });
             }
         });
     </script>
+
 </body>
 
 <x-footer />

@@ -60,7 +60,7 @@ class GalleryController extends Controller
      */
     public function create()
     {
-        return view('testing');
+        return view('admin.formGaleri');
     }
 
     /**
@@ -70,9 +70,10 @@ class GalleryController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'alt_text' => 'required|string|max:255',
-            'link' => 'required|file|mimes:jpeg,png,jpg,mp4,webm,ogg|max:10240',
-            'kategori' => 'required|in:foto,video',
+            'kategori' => 'required|in:foto,youtube',
             'status' => 'required|in:show,hide',
+            'link' => 'required_if:kategori,foto|file|mimes:jpeg,png,jpg,mp4,webm,ogg|max:10240',
+            'youtube_link' => 'required_if:kategori,youtube|url',
         ]);
 
         if ($validator->fails()) {
@@ -84,15 +85,18 @@ class GalleryController extends Controller
 
         $data = $validator->validated();
 
-        if ($request->hasFile('link')) {
+        if ($request->kategori === 'foto' && $request->hasFile('link')) {
             $path = $request->file('link')->store('img/gallery', 'public');
             $data['link'] = $path;
+        } elseif ($request->kategori === 'youtube') {
+            $data['link'] = $request->youtube_link;
         }
 
         Gallery::create($data);
 
-        return redirect()->route('testing')->with('success', 'Berita berhasil ditambahkan!');
+        return redirect()->route("admin.gallery")->with('success', 'Gallery berhasil ditambahkan!');
     }
+
 
 
     /**
@@ -108,9 +112,10 @@ class GalleryController extends Controller
 
         $validator = Validator::make($request->all(), [
             'alt_text' => 'required|string|max:255',
-            'link' => 'required|file|mimes:jpeg,png,jpg,mp4,webm,ogg|max:10240',
-            'kategori' => 'required|in:foto,video',
+            'kategori' => 'required|in:foto,youtube',
             'status' => 'required|in:show,hide',
+            'link' => 'nullable|file|mimes:jpeg,png,jpg,mp4,webm,ogg|max:10240',
+            'youtube_link' => 'required_if:kategori,youtube|url',
         ]);
 
         if ($validator->fails()) {
@@ -122,16 +127,19 @@ class GalleryController extends Controller
 
         $data = $validator->validated();
 
-        if ($request->hasFile('link')) {
+        if ($request->kategori === 'foto' && $request->hasFile('link')) {
             $path = $request->file('link')->store('img/gallery', 'public');
             $data['link'] = $path;
+        } elseif ($request->kategori === 'youtube') {
+            $data['link'] = $request->youtube_link;
         } else {
+            // Kalau file tidak diupload ulang, pakai yang lama
             $data['link'] = $gallery->link;
         }
 
         $gallery->update($data);
 
-        return redirect()->route('testing')->with('success', 'Gallery berhasil ditambahkan!');
+        return redirect()->route("admin.gallery")->with('success', 'Gallery berhasil diperbarui!');
     }
 
     /**
