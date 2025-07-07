@@ -13,14 +13,15 @@ class MenusController extends Controller
     public function index(){
         return view('admin.showMenus');
     }
+
     public function showFormStore(){
-        $menus = Menu::all();
+        $menus = Menu::whereNull('parent_menu')->orderBy('id_menus')->get();
         return view('admin.formMenus', compact('menus'));
     }
 
     public function showFormEdit($id){
-        $menus = Menu::all();
-        $menu = Menu::findOrFail($id);
+        $menus = Menu::whereNull('parent_menu')->orderBy('id_menus')->get();
+        $menu = Menu::with('parent')->findOrFail($id);
         return view('admin.formMenus', compact('menus', 'menu'));
     }
 
@@ -79,6 +80,54 @@ class MenusController extends Controller
 
         Menu::create($data);
 
-        return redirect()->route('dashboard')->with('success', 'Menu berhasil ditambahkan!');
+        return redirect()->route('admin.menu')->with('success', 'Menu berhasil ditambahkan!');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $menu = Menu::find($id);
+
+        if(!$menu){
+            return redirect()->back()->with('gagal', 'menu tidak ditemukan');
+        }
+        // dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:50',
+            'url' => 'nullable|string|max:255',
+            'parent_menu' => 'nullable|string|max:2',
+            'status' => 'required|in:show,hide',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('message', 'Validasi gagal.');
+        }
+
+        $data = $validator->validated();
+        
+        if ($request->has('parent_menu')) {
+            $data['parent_menu'] = $request->parent_menu;
+        }
+
+        if($request->has('url')){
+            $data['url'] = $request->url;
+        }
+
+        $menu->update($data);
+
+        return redirect()->route('admin.menu')->with('success', 'Menu berhasil ditambahkan!');
+    }
+
+    public function destroy($id){
+        $menu = Menu::find($id);
+
+        if(!$menu){
+            return redirect()->back()->with('gagal', 'menu tidak ditemukan');
+        }
+        
+        $menu->delete();
+        return redirect()->back()->with('sukses', 'menu berhasil dihapus');
     }
 }
