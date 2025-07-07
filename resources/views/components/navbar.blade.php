@@ -36,33 +36,42 @@
         <div class="h-[50px] px-6 flex justify-center items-center rounded-[75px] bg-white/5 backdrop-blur-sm">
             <div class="flex gap-x-12">
                 @foreach ($menus as $menu)
-                    @if ($menu->MenuToSubMenu->count())
+                    @php
+                        $isActive = rtrim(request()->url(), '/') === rtrim($menu->url, '/');
+                    @endphp
+
+                    @if ($menu->children->count())
                         <div class="inline-flex items-center relative group">
                             <p
                                 class="relative text-sm font-semibold text-gray-900 group transition-transform duration-200">
-                                {{ $menu->nama_menu }}
+                                {{ $menu->title }}
                             </p>
 
-
                             <div
-                                class="absolute top-full mt-2 left-0 bg-white shadow-lg rounded-lg opacity-0 group-hover:opacity-100 group-hover:visible invisible transition duration-200 min-w-[160px]">
-                                @foreach ($menu->MenuToSubMenu as $sub)
-                                    <a href="{{ $sub->link }}"
-                                        class="block px-4 py-2 text-sm font-medium rounded-lg transition duration-200 {{ rtrim(request()->url(), '/') === rtrim($sub->link, '/')
-                                            ? 'bg-amber-100 text-gray-800 hover:bg-gray-700 hover:text-white'
-                                            : 'text-gray-700 hover:bg-amber-100' }}">
-                                        {{ $sub->nama_menu }}
+                                class="absolute top-full mt-2 left-0 bg-white shadow-lg rounded-lg opacity-0 
+                        group-hover:opacity-100 group-hover:visible invisible 
+                        transition duration-200 min-w-[160px]">
+                                @foreach ($menu->children as $sub)
+                                    @php
+                                        $subActive = rtrim(request()->url(), '/') === rtrim($sub->url, '/');
+                                    @endphp
+                                    <a href="{{ $sub->url }}"
+                                        class="block px-4 py-2 text-sm font-medium rounded-lg transition duration-200
+                        {{ $subActive
+                            ? 'bg-amber-100 text-gray-800 hover:bg-gray-700 hover:text-white'
+                            : 'text-gray-700 hover:bg-amber-100' }}">
+                                        {{ $sub->title }}
                                     </a>
                                 @endforeach
                             </div>
                         </div>
                     @else
-                        <a href="{{ $menu->link }}"
+                        <a href="{{ $menu->url }}"
                             class="relative text-sm font-semibold text-gray-900 group transition-transform duration-200">
-                            {{ $menu->nama_menu }}
+                            {{ $menu->title }}
                             <span
                                 class="absolute bottom-0 right-0 h-[2px] bg-amber-200 transition-all duration-300 
-       {{ rtrim(request()->url(), '/') === rtrim($menu->link, '/') ? 'w-full left-0' : 'w-0 group-hover:w-full group-hover:right-auto left-0' }}">
+                    {{ $isActive ? 'w-full left-0' : 'w-0 group-hover:w-full group-hover:right-auto left-0' }}">
                             </span>
                         </a>
                     @endif
@@ -76,7 +85,8 @@
             class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div class="mt-6 px-4 flex items-center justify-between">
                 <a href="#" class="-m-1.5 p-1.5">
-                    <img class="h-8 w-auto" src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" alt="" />
+                    <img class="h-8 w-auto" src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}"
+                        alt="" />
                 </a>
                 <button type="button" id="close-menu-button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
                     <span class="sr-only">Close menu</span>
@@ -89,37 +99,43 @@
             <div class="mt-6 flow-root">
                 <div class="-my-6 divide-y divide-gray-500/10">
                     <div class="space-y-2 py-6" x-data="{ openDropdown: null }">
-                        @foreach ($menus as $index => $menu)
-                            @if ($menu->MenuToSubMenu->count())
+                        @foreach ($menus as $menu)
+                            @php
+                                $isActive = rtrim(request()->url(), '/') === rtrim($menu->url, '/');
+                            @endphp
+
+                            @if ($menu->children->count())
                                 <div class="border border-gray-200 rounded-lg">
                                     <button
-                                        @click="openDropdown === {{ $index }} ? openDropdown = null : openDropdown = {{ $index }}"
+                                        @click="openDropdown === {{ $menu->id_menus }} ? openDropdown = null : openDropdown = {{ $menu->id_menus }}"
                                         class="w-full flex justify-between items-center px-3 py-2 font-semibold text-gray-900">
-                                        <span>{{ $menu->nama_menu }}</span>
+                                        <span>{{ $menu->title }}</span>
                                         <svg class="h-5 w-5 transform transition-transform"
-                                            :class="openDropdown === {{ $index }} ? 'rotate-180' : ''"
+                                            :class="openDropdown === {{ $menu->id_menus }} ? 'rotate-180' : ''"
                                             fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M19 9l-7 7-7-7"></path>
                                         </svg>
                                     </button>
-                                    <div x-show="openDropdown === {{ $index }}" x-collapse>
-                                        @foreach ($menu->MenuToSubMenu as $sub)
-                                            <a href="{{ $sub->link }}"
+
+                                    <div x-show="openDropdown === {{ $menu->id_menus }}" x-collapse>
+                                        @foreach ($menu->children as $sub)
+                                            <a href="{{ $sub->url }}"
                                                 class="block px-6 py-2 text-sm text-gray-700 hover:bg-blue-100">
-                                                {{ $sub->nama_menu }}
+                                                {{ $sub->title }}
                                             </a>
                                         @endforeach
                                     </div>
                                 </div>
                             @else
-                                <a href="{{ $menu->link }}"
+                                <a href="{{ $menu->url }}"
                                     class="block px-3 py-2 text-base font-semibold text-gray-900 hover:bg-blue-100">
-                                    {{ $menu->nama_menu }}
+                                    {{ $menu->title }}
                                 </a>
                             @endif
                         @endforeach
+
                     </div>
 
 

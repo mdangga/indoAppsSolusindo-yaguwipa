@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers;
+
 use App\Models\Menu;
 use App\Models\Profiles;
 use App\Models\SosialMedia;
@@ -31,7 +32,14 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         View::composer('*', function ($view) {
-            $view->with('menus', Menu::with('MenuToSubMenu')->get());
+            $menus = Menu::with(['children' => function ($q) {
+                $q->orderByRaw('COALESCE(`urutan`, `id_menus`)');
+            }])
+                ->whereNull('parent_menu')
+                ->orderByRaw('COALESCE(`urutan`, `id_menus`)')
+                ->get();
+
+            $view->with('menus', $menus);
         });
     }
 }

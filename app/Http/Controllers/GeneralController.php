@@ -16,10 +16,9 @@ class GeneralController extends Controller
             ->where('status', 'show')
             ->take(4)
             ->get();
-        $menus = Menu::with('MenuToSubMenu')->get();
         
         $gallery = Gallery::orderBy('created_at', 'desc')->take(5)->get();
-        return view('beranda', compact('berita', 'gallery', 'menus'));
+        return view('beranda', compact('berita', 'gallery'));
     }
 
     public function tentangKami(){
