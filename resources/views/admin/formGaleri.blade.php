@@ -216,7 +216,7 @@
                 @endif
 
                 <div class="mb-4">
-                    <label for="alt_text" class="block font-semibold">Captio</label>
+                    <label for="alt_text" class="block font-semibold">Caption</label>
                     <input type="text" name="alt_text" id="alt_text" class="w-full border rounded px-3 py-2"
                         value="{{ old('alt_text', $gallery->alt_text ?? '') }}" required>
                     @error('alt_text')
@@ -230,21 +230,31 @@
                             class="w-40 h-auto rounded shadow">
                     </div>
                 @endif
-                <div class="mb-4">
+                <div id="file-upload" class="mb-4">
                     <label for="link" class="block font-semibold">Source</label>
                     <input type="file" name="link" id="link" class="w-full border rounded px-3 py-2">
                     @error('link')
                         <small class="text-red-600">{{ $message }}</small>
                     @enderror
                 </div>
-
+                <div class="mb-4" id="youtube-link-container" style="display: none;">
+                    <label for="youtube_link" class="block font-semibold">YouTube URL</label>
+                    <input type="url" name="youtube_link" id="youtube_link"
+                        class="w-full border rounded px-3 py-2" value="{{ old('youtube_link') }}">
+                    <small class="text-gray-500">Contoh: https://www.youtube.com/watch?v=dQw4w9WgXcQ</small>
+                    @error('youtube_link')
+                        <small class="text-red-600">{{ $message }}</small>
+                    @enderror
+                </div>
 
                 <div class="mb-4">
                     <label for="status">Status</label>
                     <select name="status" id="status" class="w-full border rounded px-3 py-2">
-                        <option value="show" {{ old('status', $gallery->status ?? '') == 'show' ? 'selected' : '' }}>
+                        <option value="show"
+                            {{ old('status', $gallery->status ?? '') == 'show' ? 'selected' : '' }}>
                             Show</option>
-                        <option value="hide" {{ old('status', $gallery->status ?? '') == 'hide' ? 'selected' : '' }}>
+                        <option value="hide"
+                            {{ old('status', $gallery->status ?? '') == 'hide' ? 'selected' : '' }}>
                             Hide</option>
                     </select>
                     @error('status')
@@ -254,16 +264,16 @@
 
                 <div class="mb-6">
                     <label for="kategori" class="block font-semibold">Kategori</label>
-                    <select name="kategori" id="kategori"
-                        class="w-full border rounded px-3 py-2" required>
+                    <select name="kategori" id="kategori" class="w-full border rounded px-3 py-2" required>
                         <option value="">-- Pilih Kategori --</option>
                         <option value="foto"
                             {{ old('kategori', $gallery->kategori ?? '') == 'foto' ? 'selected' : '' }}>
                             Foto
                         </option>
-                        <option value="video"
-                            {{ old('kategori', $gallery->kategori ?? '') == 'video' ? 'selected' : '' }}>
-                            Video
+
+                        <option value="youtube"
+                            {{ old('kategori', $gallery->kategori ?? '') == 'youtube' ? 'selected' : '' }}>
+                            YouTube
                         </option>
                     </select>
                     @error('kategori')
@@ -277,6 +287,31 @@
             </form>
         </div>
     </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const kategoriSelect = document.getElementById('kategori');
+            const youtubeContainer = document.getElementById('youtube-link-container');
+            const fileUploadContainer = document.getElementById('file-upload');
+
+            function toggleFields() {
+                if (kategoriSelect.value === 'youtube') {
+                    youtubeContainer.style.display = 'block';
+                    fileUploadContainer.style.display = 'none';
+                } else {
+                    youtubeContainer.style.display = 'none';
+                    fileUploadContainer.style.display = 'block';
+                }
+            }
+
+            // Jalankan saat halaman dimuat
+            toggleFields();
+
+            // Jalankan saat kategori berubah
+            kategoriSelect.addEventListener('change', toggleFields);
+        });
+    </script>
+
+
 </body>
 
 </html>
