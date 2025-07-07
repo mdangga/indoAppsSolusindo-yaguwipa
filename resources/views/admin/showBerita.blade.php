@@ -227,18 +227,19 @@
             </div>
         @endif
 
-        <!-- Main Content Card -->
-        <div class="bg-white overflow-hidden">
-            <!-- Card Header -->
-            <div class=" py-4 border-gray-200 bg-gray-50">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <a href="{{ route('berita.formStore') }}"
-                        class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
-                        <i class="fas fa-plus w-4 h-4 mr-2"></i>
-                        Tambah Berita
-                    </a>
-                </div>
+        <div class=" py-4 border-gray-200 bg-gray-50">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <a href="{{ route('berita.formStore') }}"
+                    class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
+                    <i class="fas fa-plus w-4 h-4 mr-2"></i>
+                    Tambah Berita
+                </a>
             </div>
+        </div>
+
+
+        <!-- Main Content Card -->
+        <div class="bg-white border rounded-md border-gray-200 overflow-hidden">
 
             <!-- Table Container -->
             <div class="p-5 rounded-lg">
@@ -447,28 +448,31 @@
                         .addClass('bg-gray-400 cursor-not-allowed')
                         .html('<i class="fas fa-spinner fa-spin w-3 h-3 mr-1"></i>Menghapus...');
 
-                    fetch(`/berita/${id}`, {
-                            method: 'DELETE',
+                    fetch(`/berita/destroy/${id}`, {
+                            method: 'delete', // ubah ke POST
                             headers: {
                                 'Content-Type': 'application/json',
                                 'X-Requested-With': 'XMLHttpRequest',
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                                'Accept': 'application/json'
+                                'Accept': 'text/html'
                             }
                         })
                         .then(response => {
-                            if (response.ok) {
+                            if (response.redirected || response.ok) {
                                 table.ajax.reload();
                                 showNotification('Berita berhasil dihapus!', 'success');
                             } else {
-                                return response.json().then(data => {
-                                    throw new Error(data.message || 'Gagal menghapus berita');
-                                });
+                                throw new Error('Gagal menghapus berita');
                             }
                         })
                         .catch(error => {
                             console.error(error);
                             showNotification('Terjadi kesalahan: ' + error.message, 'error');
+
+                            button.prop('disabled', false)
+                                .removeClass('bg-gray-400 cursor-not-allowed')
+                                .addClass('bg-red-500 hover:bg-red-600')
+                                .html('<i class="fas fa-trash w-3 h-3 mr-1"></i>Hapus');
                         });
                 }
             });
