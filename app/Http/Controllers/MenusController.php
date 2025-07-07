@@ -5,12 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 class MenusController extends Controller
 {
     public function index(){
-        
+        return view('admin.showMenus');
+    }
+    public function showFormStore(){
+        $menus = Menu::all();
+        return view('admin.formMenus', compact('menus'));
+    }
+
+    public function showFormEdit($id){
+        $menus = Menu::all();
+        $menu = Menu::findOrFail($id);
+        return view('admin.formMenus', compact('menus', 'menu'));
     }
 
     public function getDataTables(Request $request)
@@ -32,7 +43,7 @@ class MenusController extends Controller
                 return $row->status;
             })
             ->editColumn('title', function ($row) {
-                return $row->status;
+                return $row->title;
             })
             ->rawColumns(['aksi'])
             ->make(true);
@@ -41,10 +52,11 @@ class MenusController extends Controller
     // mengirim data untuk membuat berita
     public function store(Request $request)
     {
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:50',
             'url' => 'nullable|string|max:255',
-            'parent_menu' => 'nullable|numberic|min:0',
+            'parent_menu' => 'nullable|string|max:2',
             'status' => 'required|in:show,hide',
         ]);
 

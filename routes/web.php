@@ -5,11 +5,12 @@ use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\kategoriNewsEventController;
+use App\Http\Controllers\MenusController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 // testing area
-// Route::get('/testing', [GeneralController::class, 'testing'])->name('testing');
+// Route::get('/testing', [MenusController::class, 'index'])->name('testing');
 
 
 // route
@@ -28,6 +29,7 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/dashboard', [AuthController::class, 'me'])->name('dashboard');
     Route::get('/kategori', [kategoriNewsEventController::class, 'index'])->name('admin.kategori');
     Route::get('/gallery', [GalleryController::class, 'create'])->name('admin.gallery');
+    Route::get('/menus', [MenusController::class, 'index'])->name('admin.menus');
     // general setting
     Route::get('/general-setting', [ProfileController::class, 'index'])->name('admin.profiles');
     Route::put('/general-setting/update/{id}', [ProfileController::class, 'update'])->name('profiles.update');
@@ -53,6 +55,15 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::post('/berita', [BeritaController::class, 'store'])->name('berita.store');
     Route::put('/berita/{id}', [BeritaController::class, 'update'])->name('berita.update');
     Route::delete('/berita/destroy/{id}', [BeritaController::class, 'destroy'])->name('berita.delete');
+    // menus
+    Route::get('/datatable/menus', [MenusController::class, 'getDataTables'])->name('menus.table');
+    Route::get('/menu/store', [MenusController::class, 'showFormStore'])->name('menus.formStore');
+    Route::get('/menu/edit/{id}', [MenusController::class, 'showFormEdit'])->name('menus.formEdit');
+    Route::post('/menu', [MenusController::class, 'store'])->name('menus.store');
+    Route::put('/menu/{id}', [MenusController::class, 'update'])->name('menus.update');
+    // Route::delete('/menu/destroy/{id}', [BeritaController::class, 'destroy'])->name('berita.delete');
+    
+
 
     // logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
