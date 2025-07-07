@@ -25,9 +25,4 @@ class Menu extends Model
     {
         return $this->belongsTo(Menu::class, 'parent_menu');
     }
-
-    public function scopeParentMenus($query)
-    {
-        return $query->whereNull('parent_menu')->orderBy('urutan');
-    }
 }

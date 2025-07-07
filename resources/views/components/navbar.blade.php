@@ -33,7 +33,7 @@
 
     <!-- fixed navbar -->
     <nav class="fixed top-10 left-1/2 transform -translate-x-1/2 z-50 hidden lg:block">
-        <div class="h-[50px] px-6 flex justify-center items-center rounded-[75px] bg-white/5 backdrop-blur-sm">
+        <div class="h-[50px] px-6 flex justify-center items-center rounded-[75px] bg-white/30 backdrop-blur-md">
             <div class="flex gap-x-12">
                 @foreach ($menus as $menu)
                     @php

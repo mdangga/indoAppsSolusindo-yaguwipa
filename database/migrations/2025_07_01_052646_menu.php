@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('url')->nullable();
             $table->string('parent_menu')->nullable();
-            $table->string('urutan');
+            $table->enum('status', ['show', 'hide']);
             $table->timestamps();
         });
     }
