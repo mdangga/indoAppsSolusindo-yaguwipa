@@ -6,10 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
 {
+    protected $table = 'menus';
     protected $primaryKey = 'id_menus';
 
-    public function MenuToSubMenu()
+    protected $fillable = [
+        'title',
+        'url',
+        'parent_menu',
+        'urutan'
+    ];
+
+    public function children()
     {
-        return $this->hasMany(SubMenu::class, 'id_menus', 'id_menus');
+        return $this->hasMany(Menu::class, 'parent_menu');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Menu::class, 'parent_menu');
+    }
+
+    public function scopeParentMenus($query)
+    {
+        return $query->whereNull('parent_menu')->orderBy('urutan');
     }
 }

@@ -13,19 +13,11 @@ return new class extends Migration
     {
         Schema::create('menus', function(Blueprint $table){
             $table->id('id_menus');
-            $table->string('nama_menu');
-            $table->string('link');
+            $table->string('title');
+            $table->string('url')->nullable();
+            $table->string('parent_menu')->nullable();
+            $table->string('urutan');
             $table->timestamps();
-        });
-
-        Schema::create('sub_menus', function(Blueprint $table){
-            $table->id('id_sub_menus');
-            $table->string('nama_menu');
-            $table->string('link');
-            $table->unsignedBigInteger('id_menus');
-            $table->timestamps();
-
-            $table->foreign('id_menus')->references('id_menus')->on('menus')->onDelete('cascade');
         });
     }
 
@@ -35,6 +27,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('menus');
-        Schema::dropIfExists('sub_menus');
     }
 };
