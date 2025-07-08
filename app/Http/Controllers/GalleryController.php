@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Gallery;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -12,10 +13,15 @@ class GalleryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function berandaShow()
     {
         $gallery = Gallery::latest()->get();
         return view('gallery', compact('gallery'));
+    }
+
+    public function adminShow()
+    {
+        return view('admin.showGaleri');
     }
 
     // menampilkan table di admin
@@ -55,26 +61,25 @@ class GalleryController extends Controller
             ->rawColumns(['aksi', 'link'])
             ->make(true);
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('admin.formGaleri');
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $rules = [
             'alt_text' => 'required|string|max:255',
             'kategori' => 'required|in:foto,youtube',
             'status' => 'required|in:show,hide',
-            'link' => 'required_if:kategori,foto|file|mimes:jpeg,png,jpg,mp4,webm,ogg|max:10240',
-            'youtube_link' => 'required_if:kategori,youtube|url',
-        ]);
+        ];
+
+        if ($request->kategori === 'foto') {
+            $rules['link'] = 'required:kategori,foto|file|mimes:jpeg,png,jpg,webp|max:10240';
+        } elseif ($request->kategori === 'youtube') {
+            $rules['youtube_link'] = 'required:kategori,youtube|url';
+        }
+
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             return redirect()->back()
@@ -83,18 +88,26 @@ class GalleryController extends Controller
                 ->with('message', 'Validasi gagal.');
         }
 
-        $data = $validator->validated();
+        $data = [
+            'alt_text' => $request->alt_text,
+            'kategori' => $request->kategori,
+            'status' => $request->status,
+        ];
 
         if ($request->kategori === 'foto' && $request->hasFile('link')) {
             $path = $request->file('link')->store('img/gallery', 'public');
             $data['link'] = $path;
-        } elseif ($request->kategori === 'youtube') {
+        } elseif ($request->kategori === 'youtube' && $request->youtube_link) {
             $data['link'] = $request->youtube_link;
+        } else {
+            return redirect()->back()
+                ->withInput()
+                ->with('message', 'File atau link YouTube wajib diisi.');
         }
 
         Gallery::create($data);
 
-        return redirect()->route("admin.gallery")->with('success', 'Gallery berhasil ditambahkan!');
+        return redirect()->route('admin.gallery')->with('success', 'Gallery berhasil ditambahkan!');
     }
 
 
@@ -110,13 +123,23 @@ class GalleryController extends Controller
             return redirect()->back()->with('gagal', 'Gallery tidak ditemukan');
         }
 
-        $validator = Validator::make($request->all(), [
+        $rules = [
             'alt_text' => 'required|string|max:255',
             'kategori' => 'required|in:foto,youtube',
             'status' => 'required|in:show,hide',
-            'link' => 'nullable|file|mimes:jpeg,png,jpg,mp4,webm,ogg|max:10240',
-            'youtube_link' => 'required_if:kategori,youtube|url',
-        ]);
+        ];
+
+        if ($request->kategori === 'foto') {
+            if ($gallery->kategori === 'youtube' || !$gallery->link) {
+                $rules['link'] = 'required|file|mimes:jpeg,png,jpg,webp|max:10240';
+            } else {
+                $rules['link'] = 'nullable|file|mimes:jpeg,png,jpg,webp|max:10240';
+            }
+        } elseif ($request->kategori === 'youtube') {
+            $rules['youtube_link'] = 'required|url';
+        }
+
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             return redirect()->back()
@@ -125,21 +148,36 @@ class GalleryController extends Controller
                 ->with('message', 'Validasi gagal.');
         }
 
-        $data = $validator->validated();
+        $data = [
+            'alt_text' => $request->alt_text,
+            'kategori' => $request->kategori,
+            'status' => $request->status,
+        ];
 
-        if ($request->kategori === 'foto' && $request->hasFile('link')) {
-            $path = $request->file('link')->store('img/gallery', 'public');
-            $data['link'] = $path;
-        } elseif ($request->kategori === 'youtube') {
+        if ($request->kategori === 'foto') {
+            if ($request->hasFile('link')) {
+                if ($gallery->link && Storage::disk('public')->exists($gallery->link)) {
+                    Storage::disk('public')->delete($gallery->link);
+                }
+
+                $path = $request->file('link')->store('img/gallery', 'public');
+                $data['link'] = $path;
+            } elseif ($gallery->kategori === 'youtube' && !$request->hasFile('link')) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('message', 'File foto wajib diisi ketika mengubah dari YouTube ke Foto.');
+            }
+        } elseif ($request->kategori === 'youtube' && $request->youtube_link) {
+            if ($gallery->kategori === 'foto' && $gallery->link && Storage::disk('public')->exists($gallery->link)) {
+                Storage::disk('public')->delete($gallery->link);
+            }
+
             $data['link'] = $request->youtube_link;
-        } else {
-            // Kalau file tidak diupload ulang, pakai yang lama
-            $data['link'] = $gallery->link;
         }
 
         $gallery->update($data);
 
-        return redirect()->route("admin.gallery")->with('success', 'Gallery berhasil diperbarui!');
+        return redirect()->route('admin.gallery')->with('success', 'Gallery berhasil diperbarui!');
     }
 
     /**
