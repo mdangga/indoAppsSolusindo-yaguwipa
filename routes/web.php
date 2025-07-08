@@ -22,13 +22,13 @@ Route::get('/berita-dan-kegiatan', [BeritaController::class, 'index'])->name('be
 Route::get('/berita/show/{slug}', [BeritaController::class, 'show'])->name('berita.show');
 
 // gallery
-Route::get('/gallery/show-all', [GalleryController::class, 'index'])->name('beranda.gallery');
+Route::get('/gallery/show-all', [GalleryController::class, 'berandaShow'])->name('beranda.gallery');
 
 // middleware authtentication
 Route::middleware(['auth.admin'])->group(function () {
     Route::get('/dashboard', [AuthController::class, 'me'])->name('dashboard');
     Route::get('/kategori', [kategoriNewsEventController::class, 'index'])->name('admin.kategori');
-    Route::get('/gallery', [GalleryController::class, 'create'])->name('admin.gallery');
+    Route::get('/gallery', [GalleryController::class, 'adminShow'])->name('admin.gallery');
     Route::get('/menus', [MenusController::class, 'index'])->name('admin.menus');
     // general setting
     Route::get('/general-setting', [ProfileController::class, 'index'])->name('admin.profiles');
