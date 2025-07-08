@@ -12,7 +12,6 @@ class SosialMedia extends Model
     protected $fillable = [
         'nama',
         'link',
-        'icon',
         'status',
         'id_profil_yayasan'
     ];

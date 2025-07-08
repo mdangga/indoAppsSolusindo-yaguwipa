@@ -41,7 +41,6 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('link');
-            $table->string('icon');
             $table->enum('status', ['show', 'hide'])->default('show');
             $table->unsignedBigInteger('id_profil_yayasan');
 
