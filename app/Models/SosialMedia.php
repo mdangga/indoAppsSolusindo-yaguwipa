@@ -12,11 +12,7 @@ class SosialMedia extends Model
     protected $fillable = [
         'nama',
         'link',
-        'status',
-        'id_profil_yayasan'
+        'status'
     ];
 
-    public function SosialMediaToProfiles(){
-        return $this->belongsTo(Profiles::class, 'id_profil_yayasan', 'id_profil_yayasan');
-    }
 }

@@ -33,7 +33,5 @@ class Profiles extends Model
         'makna_logo'
     ];
 
-    public function ProfilesToSosialMedia(){
-        return $this->hasMany(SosialMedia::class, 'id_profil_yayasan', 'id_profil_yayasan');
-    }
+
 } 

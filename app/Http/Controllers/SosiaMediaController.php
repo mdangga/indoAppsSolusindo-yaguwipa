@@ -67,7 +67,7 @@ class SosiaMediaController extends Controller
 
         SosialMedia::create($data);
 
-        return redirect()->route('admin.showSosmed')->with('success', 'Berita berhasil ditambahkan!');
+        return redirect()->route('admin.sosmed')->with('success', 'Berita berhasil ditambahkan!');
     }
 
     /**
@@ -98,7 +98,7 @@ class SosiaMediaController extends Controller
 
         $sosialMedia->update($data);
 
-        return redirect()->route('admin.showSosmed')->with('success', 'sosial media berhasil diedit!');
+        return redirect()->route('admin.sosmed')->with('success', 'sosial media berhasil diedit!');
     }
 
     /**
@@ -113,19 +113,19 @@ class SosiaMediaController extends Controller
         }
 
         $sosialMedia->delete();
-        return redirect()->route('admin.showSosmed')->with('success', 'sosial media berhasil dihapus!');
+        return redirect()->route('admin.sosmed')->with('success', 'sosial media berhasil dihapus!');
     }
 
     // Untuk form store
     public function showFormStore()
     {
-        return view('admin.formSomed');
+        return view('admin.formSosmed');
     }
 
     // Untuk form edit
     public function showFormEdit($id)
     {
         $sosialMedia = SosialMedia::findOrFail($id);
-        return view('admin.formSomed', compact('sosialMedia'));
+        return view('admin.formSosmed', compact('sosialMedia'));
     }
 }

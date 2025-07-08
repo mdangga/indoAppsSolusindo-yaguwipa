@@ -24,11 +24,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $profile = Profiles::first();
-        $sosialMedia = SosialMedia::where('id_profil_yayasan', $profile->id)->where('status', 'show')->get();
+        // $sosialMedia = SosialMedia::where('id_profil_yayasan', $profile->id)->where('status', 'show')->get();
 
         View::share('site', [
-            'yayasanProfile' => $profile,
-            'yayasanSosmed' => $sosialMedia,
+            'yayasanProfile' => $profile
+            // 'yayasanSosmed' => $sosialMedia,
         ]);
 
         View::composer('*', function ($view) {
