@@ -29,4 +29,7 @@ class GeneralController extends Controller
     public function tentangKami(){
         return view('profiles');
     }
+    public function testing(){
+        return view('admin.formSosmed');
+    }
 }

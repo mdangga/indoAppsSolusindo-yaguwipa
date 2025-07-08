@@ -42,9 +42,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('link');
             $table->enum('status', ['show', 'hide'])->default('show');
-            $table->unsignedBigInteger('id_profil_yayasan');
-
-            $table->foreign('id_profil_yayasan')->references('id_profil_yayasan')->on('profil_yayasan')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

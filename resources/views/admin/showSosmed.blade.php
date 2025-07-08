@@ -19,8 +19,6 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-
-
     <!-- Custom DataTables Tailwind Styling -->
     <style>
         /* Remove default DataTables styling */
@@ -204,31 +202,6 @@
                 transform: translateY(0);
             }
         }
-
-        table.dataTable thead th.no-sort-icon.sorting:before,
-        table.dataTable thead th.no-sort-icon.sorting_asc:before,
-        table.dataTable thead th.no-sort-icon.sorting_desc:before {
-            display: none !important;
-        }
-
-        /* Your custom icons remain the same */
-        table.dataTable thead th.no-sort-icon.sorting:after,
-        table.dataTable thead th.no-sort-icon.sorting_asc:after,
-        table.dataTable thead th.no-sort-icon.sorting_desc:after {
-            font-family: "Font Awesome 6 Free";
-            font-weight: 900;
-            margin-left: 0.5rem;
-            content: "\f0dc";
-            color: #9ca3af;
-        }
-
-        table.dataTable thead th.no-sort-icon.sorting_asc:after {
-            content: "\f0de";
-        }
-
-        table.dataTable thead th.no-sort-icon.sorting_desc:after {
-            content: "\f0dd";
-        }
     </style>
 </head>
 
@@ -254,28 +227,28 @@
             </div>
         @endif
 
-        <!-- Main Content Card -->
-        <div class="bg-white overflow-hidden">
-            <!-- Card Header -->
-            <div class=" py-4 border-gray-200 bg-gray-50">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <a href="{{ route('gallery.formStore') }}"
-                        class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
-                        <i class="fas fa-plus w-4 h-4 mr-2"></i>
-                        Tambah Berita
-                    </a>
-                </div>
+        <div class=" py-4 border-gray-200 bg-gray-50">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <a href="{{ route('sosmed.formStore') }}"
+                    class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
+                    <i class="fas fa-plus w-4 h-4 mr-2"></i>
+                    Tambah Sosmed
+                </a>
             </div>
+        </div>
 
+
+        <!-- Main Content Card -->
+        <div class="bg-white border rounded-md border-gray-200 overflow-hidden">
             <!-- Table Container -->
             <div class="p-5 rounded-lg">
                 <div class="table-container overflow-x-auto">
-                    <table id="galleryTable" class="w-full border border-gray-300 ">
+                    <table id="sosmedTable" class="w-full border border-gray-300 ">
                         <thead>
                             <tr>
                                 <th class="text-left">No</th>
-                                <th class="text-left">Caption</th>
-                                <th class="text-center">Thubnail</th>
+                                <th class="text-left">Nama</th>
+                                <th class="text-center">Link</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Aksi</th>
                             </tr>
@@ -285,18 +258,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Logout Section -->
-        <div class="mt-8 pt-6 border-t border-gray-200">
-            <form action="{{ route('logout') }}" method="POST" class="inline-block">
-                @csrf
-                <button type="submit"
-                    class="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
-                    <i class="fas fa-sign-out-alt w-4 h-4 mr-2"></i>
-                    Logout
-                </button>
-            </form>
-        </div>
     </main>
 
     <!-- Scripts -->
@@ -305,16 +266,16 @@
 
     <script>
         $(document).ready(function() {
-            let table = $('#galleryTable').DataTable({
+            let table = $('#sosmedTable').DataTable({
                 processing: false,
                 serverSide: true,
                 autoWidth: false,
-                ajax: '{{ route('gallery.table') }}',
+                ajax: '{{ route('sosmed.table') }}',
                 dom: '<"flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6"<"flex items-center gap-2"l><"flex items-center gap-2"f>>rt<"flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-6"ip>',
                 language: {
 
                     search: "",
-                    searchPlaceholder: "Cari...",
+                    searchPlaceholder: "Cari berita...",
                     lengthMenu: "Tampilkan _MENU_ data",
                     info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
                     infoEmpty: "Tidak ada data",
@@ -325,7 +286,7 @@
                         next: "Selanjutnya",
                         previous: "Sebelumnya"
                     },
-                    emptyTable: '<div class="text-center py-8"><i class="fas fa-inbox text-4xl text-gray-300 mb-4"></i><p class="text-gray-500">Belum ada data gallery</p></div>',
+                    emptyTable: '<div class="text-center py-8"><i class="fas fa-inbox text-4xl text-gray-300 mb-4"></i><p class="text-gray-500">Belum ada data berita</p></div>',
                     zeroRecords: '<div class="text-center py-8"><i class="fas fa-search text-4xl text-gray-300 mb-4"></i><p class="text-gray-500">Tidak ada data yang sesuai dengan pencarian</p></div>'
                 },
                 pageLength: 10,
@@ -348,8 +309,8 @@
                         className: 'text-center'
                     },
                     {
-                        data: 'alt_text',
-                        name: 'alt_text',
+                        data: 'nama',
+                        name: 'nama',
                         render: function(data, type, row) {
                             return `
                                 <div class="">
@@ -362,57 +323,22 @@
                         data: 'link',
                         name: 'link',
                         render: function(data, type, row) {
-                            if (type === 'display') {
-                                if (data && typeof data === 'string') {
-                                    return `
-                    <div class="flex justify-center">
-                        <img src="${data}" alt="Thumbnail"
-                             class="w-32 h-20 object-cover border border-gray-200 shadow-sm rounded"
-                             onerror="this.src='/img/no-image.png'; this.classList.add('opacity-50');" />
-                    </div>
-                `;
-                                }
-
-                                return `
-                <div class="flex justify-center">
-                    <div class="w-32 h-20 bg-gray-100 border border-gray-200 flex items-center justify-center rounded">
-                        <i class="fas fa-image text-gray-400"></i>
-                        <span class="text-xs text-gray-500 ml-1">No Media</span>
-                    </div>
-                </div>
-            `;
-                            }
-
-                            return data;
-                        },
-                        orderable: false,
-                        searchable: false,
-                        width: '150px',
-                        className: 'text-center'
-                    },
-                    {
+                            return `
+                                <div class="">
+                                    <h3 class="font-semibold text-gray-900 leading-tight">${data === null ? 'tidak ada' : data}</h3>
+                                </div>
+                            `;
+                        }
+                    }, {
                         data: 'status',
                         name: 'status',
                         render: function(data, type, row) {
-                            // Handle different status formats
-                            let isPublished = false;
-
-                            if (typeof data === 'string') {
-                                isPublished = data.toLowerCase().includes('published') ||
-                                    data.toLowerCase().includes('aktif') ||
-                                    data.toLowerCase().includes('show');
-                            } else if (typeof data === 'number') {
-                                isPublished = data == 1;
-                            } else if (typeof data === 'boolean') {
-                                isPublished = data;
-                            }
-
-                            return isPublished ?
-                                '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200"><i class="fas fa-eye w-3 h-3 mr-1.5"></i>Show</span>' :
-                                '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200"><i class="fas fa-eye-slash w-3 h-3 mr-1.5"></i>Hidden</span>';
-                        },
-                        width: '100px',
-                        className: 'text-center'
+                            return `
+                                <div class="">
+                                    <h3 class="font-semibold text-gray-900 leading-tight">${data === null ? 'tidak ada' : data}</h3>
+                                </div>
+                            `;
+                        }
                     },
                     {
                         data: 'aksi',
@@ -451,7 +377,7 @@
                 scrollX: true,
                 initComplete: function() {
                     // Style the search input
-                    $('.dataTables_filter input').attr('placeholder', 'Cari...')
+                    $('.dataTables_filter input').attr('placeholder', 'Cari berita...')
                         .addClass('pl-10 pr-4')
                         .wrap('<div class="relative"></div>')
                     // .before(
@@ -466,7 +392,7 @@
             });
 
             // Delete handler
-            $('#galleryTable').on('click', '.deleteBtn', function() {
+            $('#sosmedTable').on('click', '.deleteBtn', function() {
                 const id = $(this).data('id');
                 const button = $(this);
 
@@ -477,30 +403,27 @@
                         .addClass('bg-gray-400 cursor-not-allowed')
                         .html('<i class="fas fa-spinner fa-spin w-3 h-3 mr-1"></i>Menghapus...');
 
-                    fetch(`/gallery/destroy/${id}`, {
-                            method: 'DELETE',
+                    fetch(`/sosial-media/destroy/${id}`, {
+                            method: 'delete', // ubah ke POST
                             headers: {
                                 'Content-Type': 'application/json',
                                 'X-Requested-With': 'XMLHttpRequest',
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                                'Accept': 'application/json'
+                                'Accept': 'text/html'
                             }
                         })
                         .then(response => {
-                            if (response.ok) {
+                            if (response.redirected || response.ok) {
                                 table.ajax.reload();
                                 showNotification('Berita berhasil dihapus!', 'success');
                             } else {
-                                return response.json().then(data => {
-                                    throw new Error(data.message || 'Gagal menghapus berita');
-                                });
+                                throw new Error('Gagal menghapus berita');
                             }
                         })
                         .catch(error => {
                             console.error(error);
                             showNotification('Terjadi kesalahan: ' + error.message, 'error');
 
-                            // Reset button state
                             button.prop('disabled', false)
                                 .removeClass('bg-gray-400 cursor-not-allowed')
                                 .addClass('bg-red-500 hover:bg-red-600')
@@ -510,9 +433,9 @@
             });
 
             // Edit handler
-            $('#galleryTable').on('click', '.editBtn', function() {
+            $('#sosmedTable').on('click', '.editBtn', function() {
                 const id = $(this).data('id');
-                window.location.href = `/gallery/edit/${id}`;
+                window.location.href = `/sosial-media/edit/${id}`;
             });
 
             // Notification system

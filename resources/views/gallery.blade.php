@@ -107,7 +107,7 @@
                             class="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                             loading="lazy" />
                         <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <div class="absolute bottom-0 left-0 right-0 p-4">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center space-x-3">
@@ -123,27 +123,37 @@
     </div>
 
     <!-- Modal -->
-    <div id="image-modal" class="modal-overlay">
-        <button class="modal-close" id="modal-close-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <div id="image-modal" class="fixed inset-0 z-50 bg-black/80 hidden items-center justify-center">
+        <!-- Close Button -->
+        <button id="modal-close-btn" class="absolute top-4 right-4 text-white hover:text-red-400 z-50">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
                 <path fill="currentColor"
                     d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59L7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12L5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4" />
             </svg>
         </button>
-        <div class="modal-content bg-black w-full h-full flex items-center justify-center">
-            <div class="relative w-full aspect-video rounded-lg overflow-hidden">
-                <iframe id="modal-video" class="absolute top-0 left-0 w-full h-full rounded-lg hidden" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; " allowfullscreen>
+
+        <!-- Modal Content -->
+        <div class="relative w-full max-w-4xl max-h-[90vh] flex items-center justify-center p-4">
+            <!-- YouTube Video -->
+            <div class="w-full aspect-video hidden" id="modal-video-container">
+                <iframe id="modal-video" class="w-full h-full rounded-md" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
                 </iframe>
-                <img id="modal-image" class="absolute top-0 left-0 w-full h-full object-contain hidden"
-                    loading="lazy" />
             </div>
-            <div class="absolute bottom-6 text-white text-center px-4">
-                <h3 id="modal-title" class="text-xl font-semibold drop-shadow-md"></h3>
-            </div>
+
+            <!-- Image -->
+            <img id="modal-image" class="hidden max-w-full max-h-[90vh] rounded-md object-contain bg-transparent"
+                loading="lazy" />
         </div>
 
+        <!-- Title -->
+        <div class="absolute bottom-6 text-white text-center px-4 max-w-[80%]">
+            <h3 id="modal-title" class="text-xl font-semibold drop-shadow-md"></h3>
+        </div>
     </div>
+
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -153,48 +163,50 @@
             const imageModal = document.getElementById('image-modal');
             const modalImage = document.getElementById('modal-image');
             const modalVideo = document.getElementById('modal-video');
+            const modalVideoContainer = document.getElementById('modal-video-container');
             const modalTitle = document.getElementById('modal-title');
-
             const modalCloseBtn = document.getElementById('modal-close-btn');
+
             let currentPage = 1;
             const itemsPerPage = 8;
 
-            // Buka Modal
-            function openModal(imageSrc, imageTitle, type = 'image', originalLink = '') {
+            function openModal(src, title, type = 'image', link = '') {
+                imageModal.classList.remove('hidden');
+                imageModal.classList.add('flex');
+                imageModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+
                 if (type === 'youtube') {
-                    const youtubeId = extractYoutubeId(originalLink);
+                    const youtubeId = extractYoutubeId(link);
                     if (youtubeId) {
-                        modalVideo.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1`;
-                        modalVideo.classList.remove('hidden');
+                        modalVideo.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&controls=1`;
+                        modalVideoContainer.classList.remove('hidden');
                         modalImage.classList.add('hidden');
                     }
                 } else {
-                    modalImage.src = imageSrc;
+                    modalImage.src = src;
                     modalImage.classList.remove('hidden');
-                    modalVideo.classList.add('hidden');
-                    modalVideo.src = '';
+                    modalVideoContainer.classList.add('hidden');
+                    modalVideo.src = ''; // Reset iframe
                 }
 
-                // modalTitle.textContent = imageTitle;
-                // imageModal.classList.add('active');
-                // document.body.style.overflow = 'hidden';
+                modalTitle.textContent = title || '';
             }
 
-            // Tutup Modal
             function closeModal() {
-                imageModal.classList.remove('active');
+                imageModal.classList.remove('flex', 'active');
+                imageModal.classList.add('hidden');
                 document.body.style.overflow = '';
                 modalImage.src = '';
-                modalVideo.src = '';
+                modalVideo.src = ''; // stop YouTube autoplay
             }
 
-            // Ekstrak ID YouTube
+
             function extractYoutubeId(url) {
                 const match = url.match(/(?:youtube\.com\/(?:.*v=|v\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
                 return match ? match[1] : null;
             }
 
-            // Klik Modal
             modalCloseBtn.addEventListener('click', closeModal);
             imageModal.addEventListener('click', function(e) {
                 if (e.target === this || e.target.classList.contains('modal-overlay')) closeModal();
@@ -203,7 +215,6 @@
                 if (e.key === 'Escape' && imageModal.classList.contains('active')) closeModal();
             });
 
-            // Tambah Event Klik ke Item Galeri
             function addGalleryClickListeners() {
                 const galleryItems = document.querySelectorAll(
                     '.gallery-item:not([data-listener-added]), .gallery-item-hidden:not([data-listener-added])'
@@ -223,21 +234,17 @@
 
             addGalleryClickListeners();
 
-            // Load More
             if (loadMoreBtn) {
                 loadMoreBtn.addEventListener('click', function() {
                     const hiddenItems = hiddenGallery.querySelectorAll('.gallery-item-hidden');
                     const startIndex = (currentPage - 1) * itemsPerPage;
                     const endIndex = Math.min(startIndex + itemsPerPage, hiddenItems.length);
 
-                    loadMoreBtn.innerHTML = `
-                    <svg class="animate-spin w-5 h-5 text-black mr-2" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                        </path>
-                    </svg>
-                    <span>Loading...</span>`;
+                    loadMoreBtn.innerHTML = `<svg class="animate-spin w-5 h-5 text-black mr-2" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg><span>Loading...</span>`;
                     loadMoreBtn.disabled = true;
 
                     setTimeout(() => {
@@ -252,8 +259,8 @@
                         }
 
                         addGalleryClickListeners();
-
                         currentPage++;
+
                         if (endIndex >= hiddenItems.length) {
                             setTimeout(() => {
                                 loadMoreBtn.style.opacity = '0';
@@ -273,7 +280,6 @@
             }
         });
     </script>
-
 </body>
 
 <x-footer />

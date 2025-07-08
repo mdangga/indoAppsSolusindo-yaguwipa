@@ -46,19 +46,30 @@ class GalleryController extends Controller
             })
             ->editColumn('link', function ($row) {
                 if (!$row->link) {
-                    return '<img src="' . asset('storage/img/img-placeholder.webp') . '" class="w-16 h-16 object-cover rounded" alt="Placeholder" />';
+                    return null; // atau bisa kembalikan URL /img/no-image.png
                 }
 
-                $path = asset('storage/' . $row->link);
                 $ext = strtolower(pathinfo($row->link, PATHINFO_EXTENSION));
 
-                if (in_array($ext, ['mp4', 'webm', 'ogg'])) {
-                    return '<video controls width="120" height="80" style="border-radius: 4px;"><source src="' . $path . '" type="video/' . $ext . '">Browser tidak mendukung video.</video>';
+                // Jika kategori YouTube
+                if ($row->kategori === 'youtube') {
+                    // Ambil ID YouTube dari URL
+                    if (preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/|v\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $row->link, $matches)) {
+                        $youtubeId = $matches[1];
+                        return "https://img.youtube.com/vi/{$youtubeId}/mqdefault.jpg";
+                    }
                 }
 
-                return '<img src="' . $path . '" width="60" height="60" style="border-radius: 4px;" alt="Thumbnail" />';
+                // Jika gambar yang diupload
+                if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
+                    return asset('storage/' . $row->link);
+                }
+
+                return null;
             })
-            ->rawColumns(['aksi', 'link'])
+
+
+            ->rawColumns(['aksi'])
             ->make(true);
     }
 
