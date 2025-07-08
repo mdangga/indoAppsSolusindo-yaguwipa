@@ -7,6 +7,7 @@ use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\kategoriNewsEventController;
 use App\Http\Controllers\MenusController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SosiaMediaController;
 use Illuminate\Support\Facades\Route;
 
 // testing area
@@ -30,9 +31,17 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/kategori', [kategoriNewsEventController::class, 'index'])->name('admin.kategori');
     Route::get('/gallery', [GalleryController::class, 'adminShow'])->name('admin.gallery');
     Route::get('/menus', [MenusController::class, 'index'])->name('admin.menus');
+    Route::get('/sosial-media', [SosiaMediaController::class, 'index'])->name('admin.sosmed');
     // general setting
     Route::get('/general-setting', [ProfileController::class, 'index'])->name('admin.profiles');
     Route::put('/general-setting/update/{id}', [ProfileController::class, 'update'])->name('profiles.update');
+    // sosial media
+    Route::get('/datatable/sosial-media', [SosiaMediaController::class, 'getDataTables'])->name('sosmed.table');
+    Route::get('/sosial-media/store', [SosiaMediaController::class, 'showFormStore'])->name('sosmed.formStore');
+    Route::post('/sosial-media', [SosiaMediaController::class, 'store'])->name('sosmed.store');
+    Route::get('/sosial-media/edit/{id}', [SosiaMediaController::class, 'showFormEdit'])->name('sosmed.formEdit');
+    Route::put('/sosial-media/{id}', [SosiaMediaController::class, 'update'])->name('sosmed.update');
+    Route::delete('/sosial-media/destroy/{id}', [SosiaMediaController::class, 'destroy'])->name('sosmed.delete');
     // gallery
     Route::get('/datatable/gallery', [GalleryController::class, 'getDataTables'])->name('gallery.table');
     Route::get('/gallery/store', [GalleryController::class, 'showFormStore'])->name('gallery.formStore');
