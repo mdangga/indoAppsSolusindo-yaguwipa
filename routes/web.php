@@ -70,7 +70,7 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/menu/edit/{id}', [MenusController::class, 'showFormEdit'])->name('menus.formEdit');
     Route::post('/menu', [MenusController::class, 'store'])->name('menus.store');
     Route::put('/menu/{id}', [MenusController::class, 'update'])->name('menus.update');
-    // Route::delete('/menu/destroy/{id}', [BeritaController::class, 'destroy'])->name('berita.delete');
+    Route::delete('/menu/destroy/{id}', [MenusController::class, 'destroy'])->name('berita.delete');
     
 
 

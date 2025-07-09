@@ -23,7 +23,7 @@
     <x-admin.sidebar />
     <main class="p-6 sm:ml-64 pt-24 transition-all ">
         <div class="w-full bg-white p-6 rounded shadow">
-            <h1 class="text-2xl font-bold mb-4">Tambah Kategori</h1>
+            <h1 class="text-2xl font-bold mb-4">Tambah Sosmed</h1>
 
             @if ($errors->any())
                 <div class="mb-4 bg-red-100 text-red-700 p-2 rounded">

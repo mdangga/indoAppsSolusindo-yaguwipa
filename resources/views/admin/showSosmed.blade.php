@@ -217,7 +217,7 @@
         </div> --}}
 
         <!-- Success Alert -->
-        @if (session('success'))
+        {{-- @if (session('success'))
             <div
                 class="alert-success bg-green-50 border border-green-200 text-green-800 px-6 py-4 rounded-lg mb-6 shadow-sm">
                 <div class="flex items-center">
@@ -225,7 +225,7 @@
                     <span class="font-medium">{{ session('success') }}</span>
                 </div>
             </div>
-        @endif
+        @endif --}}
 
         <div class=" py-4 border-gray-200 bg-gray-50">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -401,7 +401,7 @@
                     button.prop('disabled', true)
                         .removeClass('bg-red-500 hover:bg-red-600')
                         .addClass('bg-gray-400 cursor-not-allowed')
-                        .html('<i class="fas fa-spinner fa-spin w-3 h-3 mr-1"></i>Menghapus...');
+                        .html('<i class="fas fa-spinner fa-spin w-3 h-3 mr-1"></i>');
 
                     fetch(`/sosial-media/destroy/${id}`, {
                             method: 'delete', // ubah ke POST

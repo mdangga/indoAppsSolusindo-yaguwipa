@@ -475,32 +475,29 @@
                     button.prop('disabled', true)
                         .removeClass('bg-red-500 hover:bg-red-600')
                         .addClass('bg-gray-400 cursor-not-allowed')
-                        .html('<i class="fas fa-spinner fa-spin w-3 h-3 mr-1"></i>Menghapus...');
+                        .html('<i class="fas fa-spinner fa-spin w-3 h-3 mr-1"></i>');
 
                     fetch(`/gallery/destroy/${id}`, {
-                            method: 'DELETE',
+                            method: 'delete', // ubah ke POST
                             headers: {
                                 'Content-Type': 'application/json',
                                 'X-Requested-With': 'XMLHttpRequest',
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                                'Accept': 'application/json'
+                                'Accept': 'text/html'
                             }
                         })
                         .then(response => {
-                            if (response.ok) {
+                            if (response.redirected || response.ok) {
                                 table.ajax.reload();
-                                showNotification('Berita berhasil dihapus!', 'success');
+                                showNotification('Gallery berhasil dihapus!', 'success');
                             } else {
-                                return response.json().then(data => {
-                                    throw new Error(data.message || 'Gagal menghapus berita');
-                                });
+                                throw new Error('Gagal menghapus gallery');
                             }
                         })
                         .catch(error => {
                             console.error(error);
                             showNotification('Terjadi kesalahan: ' + error.message, 'error');
 
-                            // Reset button state
                             button.prop('disabled', false)
                                 .removeClass('bg-gray-400 cursor-not-allowed')
                                 .addClass('bg-red-500 hover:bg-red-600')
@@ -508,6 +505,7 @@
                         });
                 }
             });
+
 
             // Edit handler
             $('#galleryTable').on('click', '.editBtn', function() {

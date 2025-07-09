@@ -381,16 +381,16 @@
             });
 
             // Delete handler
-            $('#menusTable').on('click', '.deleteBtn', function() {
+           $('#menusTable').on('click', '.deleteBtn', function() {
                 const id = $(this).data('id');
                 const button = $(this);
 
-                if (confirm('Apakah Anda yakin ingin menghapus menu ini?')) {
+                if (confirm('Apakah Anda yakin ingin menghapus berita ini?')) {
                     // Show loading state
                     button.prop('disabled', true)
                         .removeClass('bg-red-500 hover:bg-red-600')
                         .addClass('bg-gray-400 cursor-not-allowed')
-                        .html('<i class="fas fa-spinner fa-spin w-3 h-3 mr-1"></i>Menghapus...');
+                        .html('<i class="fas fa-spinner fa-spin w-3 h-3 mr-1"></i>');
 
                     fetch(`/menu/destroy/${id}`, {
                             method: 'delete', // ubah ke POST
@@ -420,6 +420,7 @@
                         });
                 }
             });
+
 
             // Edit handler
             $('#menusTable').on('click', '.editBtn', function() {

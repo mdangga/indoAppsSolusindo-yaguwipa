@@ -42,7 +42,7 @@
 
     <main class="p-4 md:ml-64 pt-20">
         <div class="max-w-6xl mx-auto bg-white p-6 rounded shadow">
-            <h1 class="text-2xl font-bold mb-4">Tambah Berita</h1>
+            <h1 class="text-2xl font-bold mb-4">Tambah Profile</h1>
 
             @if ($errors->any())
                 <div class="mb-4 bg-red-100 text-red-700 p-2 rounded">
