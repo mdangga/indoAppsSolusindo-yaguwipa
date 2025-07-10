@@ -88,7 +88,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="status">Status</label>
+                            <label for="status" class="block font-semibold">Status</label>
                             <select name="status" id="status"
                                 class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
                                 <option value="show"
@@ -183,7 +183,7 @@
                                     </div>
 
                                     <div class="text-center">
-                                        <p class="text-xs text-gray-500">Format: JPG, PNG, atau WEBP. Maks 2MB.</p>
+                                        <p class="text-xs text-gray-500">Format: JPG, JPEG, PNG, atau WEBP. Maks 5MB.</p>
                                     </div>
 
                                     @error('link')
