@@ -21,7 +21,7 @@ class GalleryController extends Controller
 
     public function adminShow()
     {
-        return view('admin.showGallery');
+        return view('admin.showGaleri');
     }
 
     // menampilkan table di admin
@@ -85,7 +85,7 @@ class GalleryController extends Controller
         ];
 
         if ($request->kategori === 'foto') {
-            $rules['link'] = 'required:kategori,foto|file|mimes:jpeg,png,jpg,webp|max:5120';
+            $rules['link'] = 'required:kategori,foto|file|mimes:jpeg,png,jpg,webp|max:10240';
         } elseif ($request->kategori === 'youtube') {
             $rules['youtube_link'] = 'required:kategori,youtube|url';
         }
@@ -142,9 +142,9 @@ class GalleryController extends Controller
 
         if ($request->kategori === 'foto') {
             if ($gallery->kategori === 'youtube' || !$gallery->link) {
-                $rules['link'] = 'required|file|mimes:jpeg,png,jpg,webp|max:5120';
+                $rules['link'] = 'required|file|mimes:jpeg,png,jpg,webp|max:10240';
             } else {
-                $rules['link'] = 'nullable|file|mimes:jpeg,png,jpg,webp|max:5120';
+                $rules['link'] = 'nullable|file|mimes:jpeg,png,jpg,webp|max:10240';
             }
         } elseif ($request->kategori === 'youtube') {
             $rules['youtube_link'] = 'required|url';
@@ -210,13 +210,13 @@ class GalleryController extends Controller
     // Untuk form store
     public function showFormStore()
     {
-        return view('admin.formGallery');
+        return view('admin.formGaleri');
     }
 
     // Untuk form edit
     public function showFormEdit($id)
     {
         $gallery = Gallery::findOrFail($id);
-        return view('admin.formGallery', compact('gallery'));
+        return view('admin.formGaleri', compact('gallery'));
     }
 }
