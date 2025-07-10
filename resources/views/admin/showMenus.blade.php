@@ -245,11 +245,11 @@
                 <div class="table-container overflow-x-auto">
                     <table id="menusTable" class="w-full border border-gray-300 ">
                         <thead>
-                            <tr>
-                                <th class="text-left">No</th>
-                                <th class="text-left">Judul</th>
-                                <th class="text-center">Status</th>
-                                <th class="text-center">Aksi</th>
+                            <tr class="text-left">
+                                <th>No</th>
+                                <th>Judul</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -304,8 +304,7 @@
                         },
                         orderable: false,
                         searchable: false,
-                        width: '80px',
-                        className: 'text-center'
+                        width: '80px'
                     },
                     {
                         data: 'title',
@@ -322,13 +321,25 @@
                         data: 'status',
                         name: 'status',
                         render: function(data, type, row) {
-                            return `
-                                <div class="">
-                                    <h3 class="font-semibold text-gray-900 leading-tight">${data === null ? 'tidak ada' : data}</h3>
-                                </div>
-                            `;
-                        }
-                    },
+                            // Handle different status formats
+                            let isPublished = false;
+
+                            if (typeof data === 'string') {
+                                isPublished = data.toLowerCase().includes('published') ||
+                                    data.toLowerCase().includes('aktif') ||
+                                    data.toLowerCase().includes('show');
+                            } else if (typeof data === 'number') {
+                                isPublished = data == 1;
+                            } else if (typeof data === 'boolean') {
+                                isPublished = data;
+                            }
+
+                            return isPublished ?
+                                '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200"><i class="fas fa-eye w-3 h-3 mr-1.5"></i>Show</span>' :
+                                '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200"><i class="fas fa-eye-slash w-3 h-3 mr-1.5"></i>Hidden</span>';
+                        },
+                        width: '100px'
+                    }, 
                     {
                         data: 'aksi',
                         name: 'aksi',
@@ -357,8 +368,7 @@
                         },
                         orderable: false,
                         searchable: false,
-                        width: '160px',
-                        className: 'text-center'
+                        width: '160px'
                     }
 
                 ],
