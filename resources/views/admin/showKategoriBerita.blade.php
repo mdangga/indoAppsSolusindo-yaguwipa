@@ -245,11 +245,11 @@
                 <div class="table-container overflow-x-auto">
                     <table id="kategoriTable" class="w-full border border-gray-300 ">
                         <thead>
-                            <tr>
-                                <th class="text-left">No</th>
-                                <th class="text-left">Nama</th>
-                                <th class="text-center">Deskripsi</th>
-                                <th class="text-center">Aksi</th>
+                            <tr class="text-left">
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>Deskripsi</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -304,8 +304,7 @@
                         },
                         orderable: false,
                         searchable: false,
-                        width: '80px',
-                        className: 'text-center'
+                        width: '80px'
                     },
                     {
                         data: 'nama',
@@ -357,8 +356,7 @@
                         },
                         orderable: false,
                         searchable: false,
-                        width: '160px',
-                        className: 'text-center'
+                        width: '160px'
                     }
 
                 ],

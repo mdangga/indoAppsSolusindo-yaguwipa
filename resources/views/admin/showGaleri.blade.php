@@ -272,30 +272,18 @@
                 <div class="table-container overflow-x-auto">
                     <table id="galleryTable" class="w-full border border-gray-300 ">
                         <thead>
-                            <tr>
-                                <th class="text-left">No</th>
-                                <th class="text-left">Caption</th>
-                                <th class="text-center">Thubnail</th>
-                                <th class="text-center">Status</th>
-                                <th class="text-center">Aksi</th>
+                            <tr class="text-left">
+                                <th>No</th>
+                                <th>Caption</th>
+                                <th>Thumbnail</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
                 </div>
             </div>
-        </div>
-
-        <!-- Logout Section -->
-        <div class="mt-8 pt-6 border-t border-gray-200">
-            <form action="{{ route('logout') }}" method="POST" class="inline-block">
-                @csrf
-                <button type="submit"
-                    class="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
-                    <i class="fas fa-sign-out-alt w-4 h-4 mr-2"></i>
-                    Logout
-                </button>
-            </form>
         </div>
     </main>
 
@@ -344,8 +332,7 @@
                         },
                         orderable: false,
                         searchable: false,
-                        width: '80px',
-                        className: 'text-center'
+                        width: '80px'
                     },
                     {
                         data: 'alt_text',
@@ -387,8 +374,7 @@
                         },
                         orderable: false,
                         searchable: false,
-                        width: '150px',
-                        className: 'text-center'
+                        width: '150px'
                     },
                     {
                         data: 'status',
@@ -411,8 +397,7 @@
                                 '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200"><i class="fas fa-eye w-3 h-3 mr-1.5"></i>Show</span>' :
                                 '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200"><i class="fas fa-eye-slash w-3 h-3 mr-1.5"></i>Hidden</span>';
                         },
-                        width: '100px',
-                        className: 'text-center'
+                        width: '100px'
                     },
                     {
                         data: 'aksi',
@@ -442,8 +427,7 @@
                         },
                         orderable: false,
                         searchable: false,
-                        width: '160px',
-                        className: 'text-center'
+                        width: '160px'
                     }
 
                 ],

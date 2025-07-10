@@ -80,7 +80,7 @@ class MenusController extends Controller
 
         Menu::create($data);
 
-        return redirect()->route('admin.menus')>with('success', 'Menu berhasil ditambahkan!');
+        return redirect()->route('admin.menus')->with('success', 'Menu berhasil ditambahkan!');
     }
 
     public function update(Request $request, $id)
