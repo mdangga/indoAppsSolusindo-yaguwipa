@@ -21,7 +21,7 @@ class GalleryController extends Controller
 
     public function adminShow()
     {
-        return view('admin.showGaleri');
+        return view('admin.showGallery');
     }
 
     // menampilkan table di admin
@@ -210,13 +210,13 @@ class GalleryController extends Controller
     // Untuk form store
     public function showFormStore()
     {
-        return view('admin.formGaleri');
+        return view('admin.formGallery');
     }
 
     // Untuk form edit
     public function showFormEdit($id)
     {
         $gallery = Gallery::findOrFail($id);
-        return view('admin.formGaleri', compact('gallery'));
+        return view('admin.formGallery', compact('gallery'));
     }
 }
