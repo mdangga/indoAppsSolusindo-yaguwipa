@@ -262,7 +262,7 @@
                     <a href="{{ route('gallery.formStore') }}"
                         class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
                         <i class="fas fa-plus w-4 h-4 mr-2"></i>
-                        Tambah Berita
+                        Tambah Gallery
                     </a>
                 </div>
             </div>
