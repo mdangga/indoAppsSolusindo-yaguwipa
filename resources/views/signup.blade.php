@@ -8,7 +8,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         body {
             font-family: 'Instrument Sans', sans-serif;
@@ -24,8 +24,8 @@
                 <!-- Logo and Header -->
                 <div class="text-center mb-8">
                     <img class="mx-auto h-24 w-auto" src="{{ asset('img/logo.png') }}" alt="Your Company" />
-                    <h2 class="mt-6 text-3xl font-bold tracking-tight text-gray-900">Create your account</h2>
-                    <p class="mt-2 text-sm text-gray-600">Join us today and get started with your free account</p>
+                    <h2 class="mt-6 text-3xl font-bold tracking-tight text-gray-900">Buat Akun Anda</h2>
+                    <p class="mt-2 text-sm text-gray-600">Bersama kita bisa membuat perubahan yang lebih baik</p>
                 </div>
 
                 <!-- Form -->
@@ -36,15 +36,8 @@
                         <label for="username" class="block text-sm font-medium text-gray-900 mb-2">Username</label>
                         <div class="relative">
                             <input type="text" name="username" id="username" autocomplete="username" required
-                                class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0 transition-colors"
-                                placeholder="Choose a username" />
-                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                </svg>
-                            </div>
+                                class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Masukkan username" />
                         </div>
                     </div>
 
@@ -53,18 +46,23 @@
                         <label for="password" class="block text-sm font-medium text-gray-900 mb-2">Password</label>
                         <div class="relative">
                             <input type="password" name="password" id="password" autocomplete="new-password" required
-                                class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0 transition-colors"
-                                placeholder="Create a password" />
+                                class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Masukkan Password" />
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                                <button type="button" class="text-gray-400 hover:text-gray-600"
-                                    onclick="togglePassword('password')">
-                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <button type="button" class="text-gray-400 hover:text-gray-600 cursor-pointer"
+                                    onclick="togglePassword('password', 'toggle-password-icon')">
+                                    <svg id="toggle-password-icon" class="h-5 w-5" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112
+                                            19c-4.478 0-8.268-2.943-9.542-7a9.957
+                                            9.957 0 012.873-4.412m3.113-2.14A9.956
+                                            9.956 0 0112 5c4.478 0 8.268 2.943
+                                            9.542 7a9.958 9.958 0 01-4.293 5.177M15
+                                            12a3 3 0 11-6 0 3 3 0 016 0z" />
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                        </path>
+                                            d="M3 3l18 18" />
                                     </svg>
+
                                 </button>
                             </div>
                         </div>
@@ -88,19 +86,25 @@
                         <div class="relative">
                             <input type="password" name="password_confirmation" id="password_confirmation"
                                 autocomplete="new-password" required
-                                class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0 transition-colors"
+                                class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Confirm your password" />
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                                <button type="button" class="text-gray-400 hover:text-gray-600"
-                                    onclick="togglePassword('password_confirmation')">
-                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <button type="button" class="text-gray-400 hover:text-gray-600 cursor-pointer"
+                                    onclick="togglePassword('password_confirmation', 'toggle-password-confirmation-icon')">
+                                    <svg id="toggle-password-confirmation-icon" class="h-5 w-5" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112
+                                            19c-4.478 0-8.268-2.943-9.542-7a9.957
+                                            9.957 0 012.873-4.412m3.113-2.14A9.956
+                                            9.956 0 0112 5c4.478 0 8.268 2.943
+                                            9.542 7a9.958 9.958 0 01-4.293 5.177M15
+                                            12a3 3 0 11-6 0 3 3 0 016 0z" />
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                        </path>
+                                            d="M3 3l18 18" />
                                     </svg>
+
                                 </button>
+
                             </div>
                         </div>
                         <div id="password-match" class="mt-1 text-xs hidden">
@@ -108,15 +112,11 @@
                         </div>
                     </div>
 
-                    <input type="text" name="role" value="donatur">
-
-
                     <!-- Submit Button -->
                     <div>
                         <button type="submit"
-                            class="group relative flex w-full justify-center rounded-lg bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-200 hover:shadow-lg">
-
-                            Create Account
+                            class="group relative flex w-full justify-center rounded-lg bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-200 hover:shadow-lg cursor-pointer">
+                            Buat Akun
                         </button>
                     </div>
                 </form>
@@ -125,7 +125,7 @@
                 <div class="mt-8 text-center">
                     <p class="text-sm text-gray-600">
                         Sudah memiliki akun?
-                        <a href="#"
+                        <a href="{{ route('login') }}"
                             class="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">Masuk</a>
                     </p>
                 </div>
@@ -135,12 +135,31 @@
 
     <script>
         // Toggle password visibility
-        function togglePassword(fieldId) {
+        function togglePassword(fieldId, iconId) {
             const field = document.getElementById(fieldId);
-            const type = field.getAttribute('type') === 'password' ? 'text' : 'password';
-            field.setAttribute('type', type);
-        }
+            const icon = document.getElementById(iconId);
+            const isPassword = field.type === 'password';
 
+            field.type = isPassword ? 'text' : 'password';
+
+            icon.innerHTML = isPassword ?
+                `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5
+                       c4.478 0 8.268 2.943 9.542 7
+                       -1.274 4.057-5.064 7-9.542 7
+                       -4.477 0-8.268-2.943-9.542-7z" />` :
+                `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13.875 18.825A10.05 10.05 0 0112
+                       19c-4.478 0-8.268-2.943-9.542-7a9.957
+                       9.957 0 012.873-4.412m3.113-2.14A9.956
+                       9.956 0 0112 5c4.478 0 8.268 2.943
+                       9.542 7a9.958 9.958 0 01-4.293 5.177M15
+                       12a3 3 0 11-6 0 3 3 0 016 0z" />
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 3l18 18" />`;
+        }
         // Password strength checker
         document.getElementById('password').addEventListener('input', function(e) {
             const password = e.target.value;

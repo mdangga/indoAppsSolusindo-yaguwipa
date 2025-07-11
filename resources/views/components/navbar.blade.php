@@ -14,7 +14,7 @@
 
             <div class="hidden justify-end items-center lg:flex">
                 <a href="{{ route('login') }}"
-                    class="bg-blue-100 text-sm font-semibold text-gray-900 rounded-[50px] px-6 py-3.5 hover:bg-blue-200 transition">
+                    class="bg-amber-100 text-sm font-semibold text-gray-900 rounded-[50px] px-6 py-3.5 hover:bg-amber-200 transition">
                     Log in
                 </a>
             </div>
@@ -43,7 +43,7 @@
                     @if ($menu->children->count())
                         <div class="inline-flex items-center relative group">
                             <p
-                                class="relative text-sm font-semibold text-gray-900 group transition-transform duration-200">
+                                class="relative text-sm font-semibold text-gray-800 drop-shadow-md group transition-transform duration-200">
                                 {{ $menu->title }}
                             </p>
 
@@ -67,7 +67,7 @@
                         </div>
                     @else
                         <a href="{{ $menu->url }}"
-                            class="relative text-sm font-semibold text-gray-900 group transition-transform duration-200">
+                            class="relative text-sm font-semibold text-gray-800 drop-shadow-md group transition-transform duration-200">
                             {{ $menu->title }}
                             <span
                                 class="absolute bottom-0 right-0 h-[2px] bg-amber-200 transition-all duration-300 

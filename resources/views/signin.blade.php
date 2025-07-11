@@ -10,9 +10,6 @@
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <!-- AOS Library -->
-    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
-    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     <style>
         body {
             font-family: 'Instrument Sans', sans-serif;
@@ -111,10 +108,10 @@
                             <!-- Logo -->
                             <div class="text-center mb-8">
                                 <img class="mx-auto h-24 w-auto" src="{{ asset('img/logo.png') }}" alt="Your Company" />
-                                <h2 class="mt-6 text-2xl font-bold tracking-tight text-gray-900">Masuk ke Yaguwipa
+                                {{-- <h2 class="mt-6 text-2xl font-bold tracking-tight text-gray-900">Masuk ke Yaguwipa
                                 </h2>
                                 <p class="mt-2 text-sm text-gray-600">Isi form dengan benar
-                                </p>
+                                </p> --}}
                             </div>
 
 
@@ -122,12 +119,12 @@
                             <form class="space-y-6" action="/login" method="POST">
                                 @csrf
                                 <div>
-                                    <label for="username" class="block text-sm font-medium text-gray-900 mb-2">username
+                                    <label for="username" class="block text-sm font-medium text-gray-900 mb-2">Username
                                     </label>
                                     <div class="relative">
                                         <input type="text" name="username" id="username" required
-                                            class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0 transition-colors"
-                                            placeholder="Enter your username" />
+                                            class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
+                                            placeholder="Masukkan Password" placeholder="Enter your username" />
                                         <div class="absolute inset-y-0 right-0 flex items-center pr-3">
                                             <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
@@ -140,25 +137,31 @@
                                 </div>
 
                                 <div>
-                                    <div class="flex items-center justify-between mb-2">
-                                        <label for="password"
-                                            class="block text-sm font-medium text-gray-900">Password</label>
-
-                                    </div>
+                                    <label for="password"
+                                        class="block text-sm font-medium text-gray-900 mb-2">Password</label>
                                     <div class="relative">
                                         <input type="password" name="password" id="password"
-                                            autocomplete="current-password" required
-                                            class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0 transition-colors"
-                                            placeholder="Enter your password" />
+                                            autocomplete="new-password" required
+                                            class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
+                                            placeholder="Masukkan Password" />
                                         <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                                            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                                </path>
-                                            </svg>
+                                            <button type="button"
+                                                class="text-gray-400 hover:text-gray-600 cursor-pointer"
+                                                onclick="togglePassword('password', 'toggle-password-icon')">
+                                                <svg id="toggle-password-icon" class="h-5 w-5" fill="none"
+                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112
+                                                        19c-4.478 0-8.268-2.943-9.542-7a9.957
+                                                        9.957 0 012.873-4.412m3.113-2.14A9.956
+                                                        9.956 0 0112 5c4.478 0 8.268 2.943
+                                                        9.542 7a9.958 9.958 0 01-4.293 5.177M15
+                                                        12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M3 3l18 18" />
+                                                </svg>
+
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -178,7 +181,7 @@
                             <div class="mt-8 text-center">
                                 <p class="text-sm text-gray-600">
                                     Belum Memiliki Akun?
-                                    <a href="#"
+                                    <a href="{{ route('register') }}"
                                         class="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">Daftar</a>
                                 </p>
                             </div>
@@ -188,6 +191,34 @@
             </div>
         </div>
     </div>
+    <script>
+        function togglePassword(fieldId, iconId) {
+            const field = document.getElementById(fieldId);
+            const icon = document.getElementById(iconId);
+            const isPassword = field.type === 'password';
+
+            field.type = isPassword ? 'text' : 'password';
+
+            icon.innerHTML = isPassword ?
+                `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5
+                       c4.478 0 8.268 2.943 9.542 7
+                       -1.274 4.057-5.064 7-9.542 7
+                       -4.477 0-8.268-2.943-9.542-7z" />` :
+                `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13.875 18.825A10.05 10.05 0 0112
+                       19c-4.478 0-8.268-2.943-9.542-7a9.957
+                       9.957 0 012.873-4.412m3.113-2.14A9.956
+                       9.956 0 0112 5c4.478 0 8.268 2.943
+                       9.542 7a9.958 9.958 0 01-4.293 5.177M15
+                       12a3 3 0 11-6 0 3 3 0 016 0z" />
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 3l18 18" />`;
+        }
+    </script>
+
 </body>
 
 </html>
