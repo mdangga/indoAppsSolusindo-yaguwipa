@@ -83,6 +83,9 @@ Route::middleware(['auth.admin'])->group(function () {
 // register
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register.form');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
+// personalDataUser
+Route::get('/register/{id}', [AuthController::class, 'showFormUser'])->name('register.dataUser');
+Route::post('/add-data-user', [AuthController::class, 'addDataUser'])->name('add.dataUser');
 // login
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
