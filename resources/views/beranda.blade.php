@@ -17,10 +17,6 @@
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-    <!-- Font Awesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-        integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
-
 </head>
 
 <body>
@@ -32,7 +28,7 @@
         {{-- Background Image --}}
         <div class="absolute inset-0 -z-10">
             <img src="{{ asset('storage/' . $site['yayasanProfile']->background) }}" alt="Hero Background"
-                class="w-full h-full object-cover grayscale-25" />
+                class="w-full h-full object-cover brightness-75 grayscale-25" />
 
             {{-- Gradient Overlay agar transisi ke putih --}}
             <div class="absolute inset-0 bg-gradient-to-b from-white/0 via-white/70 to-white"></div>
