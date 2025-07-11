@@ -61,14 +61,14 @@
     </div>
 
     <!-- Main Content -->
-    <div class="max-w-xl mx-auto px-4">
+    <div class="max-w-2xl mx-auto px-4">
         <!-- Registration Form -->
         <div class="bg-white rounded-xl shadow-sm p-8" id="registration-form" style="display: none;">
             <div class="flex min-h-full items-center justify-center p-6 lg:px-8">
                 <div class="w-full">
-                    <!-- Logo and Header -->
-                    <div class="text-center mb-8">
-                        <h2 class="mt-2 text-3xl font-semibold tracking-tight text-gray-600" id="form-title"></h2>
+                    <!-- Header -->
+                    <div class="text-center mb-6">
+                        <h2 class="text-3xl font-semibold tracking-tight text-gray-600" id="form-title"></h2>
                         <p class="mt-2 text-sm text-gray-600" id="form-subtitle"></p>
                     </div>
 
@@ -78,28 +78,31 @@
                             <label for="nama" class="block text-sm font-medium text-gray-900 mb-2">Nama</label>
                             <div class="relative">
                                 <input type="text" name="nama" id="nama" autocomplete="nama" required
-                                    class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0 transition-colors"
-                                    placeholder="" />
-                            </div>
-                        </div>
-                        <!-- No Telepon - selalu tampil -->
-                        <div class="mt-4">
-                            <label for="no_tlp" class="block text-sm font-medium text-gray-900 mb-2">No
-                                Telepon</label>
-                            <div class="relative">
-                                <input type="text" name="no_tlp" id="no_tlp" autocomplete="no_tlp" required
-                                    class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0 transition-colors"
-                                    placeholder="" />
-                            </div>
-                        </div>
+                                    class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
+                                    placeholder="Masukkan nama" />
 
-                        <!-- Email - selalu tampil -->
-                        <div class="mt-4">
-                            <label for="email" class="block text-sm font-medium text-gray-900 mb-2">Email</label>
-                            <div class="relative">
-                                <input type="email" name="email" id="email" autocomplete="email" required
-                                    class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0 transition-colors"
-                                    placeholder="" />
+                            </div>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <!-- No Telepon - selalu tampil -->
+                            <div class="mt-4">
+                                <label for="no_tlp" class="block text-sm font-medium text-gray-900 mb-2">No
+                                    Telepon</label>
+                                <div class="relative">
+                                    <input type="text" name="no_tlp" id="no_tlp" autocomplete="no_tlp" required
+                                        class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Masukkan no telepon" />
+                                </div>
+                            </div>
+
+                            <!-- Email - selalu tampil -->
+                            <div class="mt-4">
+                                <label for="email" class="block text-sm font-medium text-gray-900 mb-2">Email</label>
+                                <div class="relative">
+                                    <input type="email" name="email" id="email" autocomplete="email" required
+                                        class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Masukkan email" />
+                                </div>
                             </div>
                         </div>
                         <!-- Alamat - selalu tampil -->
@@ -107,8 +110,8 @@
                             <label for="alamat" class="block text-sm font-medium text-gray-900 mb-2">Alamat</label>
                             <div class="relative">
                                 <textarea
-                                    class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0 transition-colors"
-                                    name="alamat" id="alamat" cols="30" rows="3"></textarea>
+                                    class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
+                                    name="alamat" id="alamat" cols="30" rows="3" placeholder="Masukkan alamat"></textarea>
                             </div>
                         </div>
                         <!-- Fields khusus Mitra -->
@@ -119,8 +122,8 @@
                                     class="block text-sm font-medium text-gray-900 mb-2">Website</label>
                                 <div class="relative">
                                     <input type="url" name="website" id="website" autocomplete="website"
-                                        class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0 transition-colors"
-                                        placeholder="" />
+                                        class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Masukkan alamat website" />
                                 </div>
                             </div>
                             <!-- Penanggung Jawab dan Jabatan -->
@@ -131,8 +134,8 @@
                                     <div class="relative">
                                         <input type="text" name="penanggung_jawab" id="penanggung_jawab"
                                             autocomplete="penanggung_jawab"
-                                            class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0 transition-colors"
-                                            placeholder="" />
+                                            class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
+                                            placeholder="Masukkan penanggung jawab" />
                                     </div>
                                 </div>
                                 <div class="mt-4">
@@ -142,8 +145,8 @@
                                     <div class="relative">
                                         <input type="text" name="jabatan_penanggung_jawab"
                                             id="jabatan_penanggung_jawab" autocomplete="jabatan_penanggung_jawab"
-                                            class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0 transition-colors"
-                                            placeholder="" />
+                                            class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
+                                            placeholder="Masukkan jabatan" />
                                     </div>
                                 </div>
                             </div>
@@ -212,6 +215,10 @@
                 document.getElementById('website').required = false;
                 document.getElementById('penanggung_jawab').required = false;
                 document.getElementById('jabatan_penanggung_jawab').required = false;
+
+                // Remove required for donatur optional fields
+                document.getElementById('alamat').required = false;
+                document.getElementById('email').required = false;
             }
         }
 
