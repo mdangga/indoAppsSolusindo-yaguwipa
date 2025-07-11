@@ -24,8 +24,8 @@
                 <!-- Logo and Header -->
                 <div class="text-center mb-8">
                     <img class="mx-auto h-24 w-auto" src="{{ asset('img/logo.png') }}" alt="Your Company" />
-                    <h2 class="mt-6 text-3xl font-bold tracking-tight text-gray-900">Create your account</h2>
-                    <p class="mt-2 text-sm text-gray-600">Join us today and get started with your free account</p>
+                    <h2 class="mt-6 text-3xl font-bold tracking-tight text-gray-900">Buat Akun Anda</h2>
+                    <p class="mt-2 text-sm text-gray-600">Bersama kita bisa membuat perubahan yang lebih baik</p>
                 </div>
 
                 <!-- Form -->
@@ -36,8 +36,8 @@
                         <label for="username" class="block text-sm font-medium text-gray-900 mb-2">Username</label>
                         <div class="relative">
                             <input type="text" name="username" id="username" autocomplete="username" required
-                                class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0 transition-colors"
-                                placeholder="Choose a username" />
+                                class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Masukkan username" />
                         </div>
                     </div>
 
@@ -46,10 +46,10 @@
                         <label for="password" class="block text-sm font-medium text-gray-900 mb-2">Password</label>
                         <div class="relative">
                             <input type="password" name="password" id="password" autocomplete="new-password" required
-                                class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0 transition-colors"
-                                placeholder="Create a password" />
+                                class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Masukkan Password" />
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                                <button type="button" class="text-gray-400 hover:text-gray-600"
+                                <button type="button" class="text-gray-400 hover:text-gray-600 cursor-pointer"
                                     onclick="togglePassword('password')">
                                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -81,10 +81,11 @@
                         <div class="relative">
                             <input type="password" name="password_confirmation" id="password_confirmation"
                                 autocomplete="new-password" required
-                                class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border border-gray-300 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0 transition-colors"
+                                class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
                                 placeholder="Confirm your password" />
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                                <button type="button" class="text-gray-400 hover:text-gray-600"
+
+                                <button type="button" class="text-gray-400 hover:text-gray-600 cursor-pointer"
                                     onclick="togglePassword('password_confirmation')">
                                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -94,6 +95,7 @@
                                         </path>
                                     </svg>
                                 </button>
+
                             </div>
                         </div>
                         <div id="password-match" class="mt-1 text-xs hidden">
@@ -101,13 +103,11 @@
                         </div>
                     </div>
 
-
-
                     <!-- Submit Button -->
                     <div>
                         <button type="submit"
-                            class="group relative flex w-full justify-center rounded-lg bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-200 hover:shadow-lg">z
-                            Create Account
+                            class="group relative flex w-full justify-center rounded-lg bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-200 hover:shadow-lg cursor-pointer">
+                            Buat Akun
                         </button>
                     </div>
                 </form>
@@ -116,7 +116,7 @@
                 <div class="mt-8 text-center">
                     <p class="text-sm text-gray-600">
                         Sudah memiliki akun?
-                        <a href="#"
+                        <a href="{{ route('login') }}"
                             class="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">Masuk</a>
                     </p>
                 </div>
@@ -131,7 +131,6 @@
             const type = field.getAttribute('type') === 'password' ? 'text' : 'password';
             field.setAttribute('type', type);
         }
-
         // Password strength checker
         document.getElementById('password').addEventListener('input', function(e) {
             const password = e.target.value;
