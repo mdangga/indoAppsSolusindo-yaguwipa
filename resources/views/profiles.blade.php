@@ -16,6 +16,9 @@
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+
+     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+     
 </head>
 
 <body>
@@ -49,69 +52,118 @@
         </div>
     </div>
 
-    <div class="w-5/6 mx-auto p-10 grid grid-cols-1 md:grid-cols-2 gap-10">
-        <!-- visi -->
-        <div class="relative flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow-sm p-6 pt-16">
-            <div class="absolute -top-6 bg-white rounded-full p-2 shadow-md">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-800" viewBox="0 0 512 512"
-                    fill="none">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
-                        d="m39.93 327.56l-4.71-8.13A24 24 0 0 1 44 286.64l86.87-50.07a16 16 0 0 1 21.89 5.86l12.71 22a16 16 0 0 1-5.86 21.85l-86.85 50.07a24.06 24.06 0 0 1-32.83-8.79" />
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
-                        d="M170.68 273.72L147.12 233a24 24 0 0 1 8.8-32.78l124.46-71.75a16 16 0 0 1 21.89 5.86l31.57 54.59a16 16 0 0 1-5.84 21.84L203.51 282.5a24 24 0 0 1-32.83-8.78m171.17-71.51l-46.51-80.43a24 24 0 0 1 8.8-32.78l93.29-53.78A24.07 24.07 0 0 1 430.27 44l46.51 80.43a24 24 0 0 1-8.8 32.79L374.69 211a24.06 24.06 0 0 1-32.84-8.79M127.59 480l96.14-207.99m48.07-15.99L368.55 448" />
-                </svg>
+   <section class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-bold gradient-text mb-6">
+                    Nilai-Nilai Kami
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Fondasi yang kuat membangun masa depan yang berkelanjutan
+                </p>
             </div>
-            <!-- Text -->
-            <p class="text-center font-normal text-gray-700">
-                {{ $site['yayasanProfile']->visi }}
-            </p>
-        </div>
 
-        <!-- misi -->
-        <div class="relative flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow-sm p-6 pt-16">
-            <div class="absolute -top-6 bg-white rounded-full p-2 shadow-md">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-800" viewBox="0 0 24 24"
-                    fill="none">
-                    <path fill="currentColor"
-                        d="M12 4.5a7.5 7.5 0 0 0-6.955 10.312a.5.5 0 1 1-.927.376a8.5 8.5 0 1 1 4.694 4.694a.5.5 0 0 1 .375-.927A7.5 7.5 0 1 0 12 4.5" />
-                    <path fill="currentColor"
-                        d="M6.5 12c0 1.339.478 2.566 1.273 3.52l-.48.48H5.77a1.5 1.5 0 0 0-1.06.44l-1.638 1.637a.75.75 0 0 0 .53 1.28h1.04v1.04a.75.75 0 0 0 1.28.53l1.637-1.638A1.5 1.5 0 0 0 8 18.23v-1.522l.48-.48A5.5 5.5 0 1 0 6.5 12M12 7.5a4.5 4.5 0 1 1-2.81 8.016l1.793-1.793a2 2 0 1 0-.707-.707l-1.792 1.793A4.5 4.5 0 0 1 12 7.5m-6.583 9.646A.5.5 0 0 1 5.771 17H7v1.229a.5.5 0 0 1-.147.353l-1.21 1.21v-.935a.5.5 0 0 0-.5-.5h-.936z" />
-                </svg>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+             <!-- Visi Card -->
+                        <div class="bg-white border border-gray-200 glass-card rounded-3xl p-8 shadow-xl card-hover relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] flex flex-col h-full ">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-full -mr-16 -mt-16"></div>
+                            <div class="relative">
+                                <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl mb-6 shadow-lg">
+                                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-800 mb-4">Visi</h3>
+                                <p class="text-left font-normal text-gray-700">
+                                    {{ $site['yayasanProfile']->visi }}
+                                </p>
+                            </div>
+                        </div>
+
+                    <!-- Misi Card -->
+                    <div class="bg-white border border-gray-200 glass-card rounded-3xl p-8 shadow-xl card-hover relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] flex flex-col h-full ">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-full -mr-16 -mt-16"></div>
+                        <div class="relative">
+                            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl mb-6 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-4">Misi</h3>
+                            <p class="text-left font-normal text-gray-700">
+                                {{ $site['yayasanProfile']->misi }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Tujuan Card -->
+                    <div class="bg-white border border-gray-200 glass-card rounded-3xl p-8 shadow-xl card-hover relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] flex flex-col h-full ">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-500/10 to-teal-500/10 rounded-full -mr-16 -mt-16"></div>
+                        <div class="relative">
+                            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-teal-600 rounded-2xl mb-6 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-4">Tujuan</h3>
+                            <p class="text-left font-normal text-gray-700">
+                                {{ $site['yayasanProfile']->tujuan }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Makna Logo Card -->
+                    <div class="bg-white border border-gray-200 glass-card rounded-3xl p-8 shadow-xl card-hover relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] flex flex-col h-full ">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-500/10 to-red-500/10 rounded-full -mr-16 -mt-16"></div>
+                        <div class="relative">
+                            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl mb-6 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-4">Makna Logo</h3>
+                            <p class="text-left font-normal text-gray-700">
+                                {{ $site['yayasanProfile']->makna_logo }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                </div>
+         {{-- <section class="py-20 gradient-bg">
+                <div class="container mx-auto px-6">
+                <div class="text-center mb-16" data-aos="fade-up">
+                    <h2 class="text-4xl md:text-5xl font-bold text-black mb-6">
+                        Dampak Kami
+                    </h2>
+                    <p class="text-xl text-black/90 max-w-3xl mx-auto">
+                        Pencapaian yang telah kami raih dalam perjalanan membangun masa depan yang lebih baik
+                    </p>
             </div>
-            <p class="text-center font-normal text-gray-700">
-                {{ $site['yayasanProfile']->misi }}
-            </p>
-        </div>
 
-        <!-- CARD 3 -->
-        <div class="relative flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow-sm p-6 pt-16">
-            <div class="absolute -top-6 bg-white rounded-full p-2 shadow-md">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-800" viewBox="0 0 24 24"
-                    fill="none">
-                    <path fill="currentColor"
-                        d="M24 7a1.51 1.51 0 0 0-.66-1.24l-7-4.76a1.48 1.48 0 0 0-1.67 0L8.82 5.31a.51.51 0 0 1-.6 0L2.39 1A1.5 1.5 0 0 0 0 2.25V17a1.51 1.51 0 0 0 .66 1.24l7 4.76a1.48 1.48 0 0 0 1.67 0l5.83-4.29a.51.51 0 0 1 .6 0L21.61 23a1.55 1.55 0 0 0 .89.29a1.49 1.49 0 0 0 1.5-1.5Zm-14.5.53a.48.48 0 0 1 .2-.4l4.4-3.29a.25.25 0 0 1 .26 0a.25.25 0 0 1 .14.16v12.47a.48.48 0 0 1-.2.4l-4.4 3.29a.25.25 0 0 1-.26 0A.25.25 0 0 1 9.5 20ZM2 3.73a.25.25 0 0 1 .14-.23a.25.25 0 0 1 .26 0l4.9 3.61a.51.51 0 0 1 .2.4V20a.25.25 0 0 1-.13.22a.27.27 0 0 1-.26 0l-4.89-3.35a.49.49 0 0 1-.22-.41Zm20 16.54a.25.25 0 0 1-.14.23a.25.25 0 0 1-.26 0l-4.9-3.58a.51.51 0 0 1-.2-.4V4a.25.25 0 0 1 .13-.22a.27.27 0 0 1 .26 0l4.89 3.33a.49.49 0 0 1 .22.41Z" />
-                </svg>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-5xl font-bold text-black mb-2">500+</div>
+                    <div class="text-black/80">Penerima Manfaat</div>
+                </div>
+                    <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-5xl font-bold text-black mb-2">50+</div>
+                    <div class="text-black/80">Program Aktif</div>
+                </div>
+                    <div class="text-center" data-aos="fade-up" data-aos-delay="300">
+                    <div class="text-5xl font-bold text-black mb-2">25+</div>
+                    <div class="text-black/80">Mitra Strategis</div>
+                </div>
+                    <div class="text-center" data-aos="fade-up" data-aos-delay="400">
+                    <div class="text-5xl font-bold text-black mb-2">15+</div>
+                    <div class="text-black/80">Penelitian Published</div>
+                </div> --}}
             </div>
-            <p class="text-center font-normal text-gray-700">
-                {{ $site['yayasanProfile']->tujuan }}
-            </p>
         </div>
-
-        <!-- Makna Logo -->
-        <div class="relative flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow-sm p-6 pt-16">
-            <div class="absolute -top-6 bg-white rounded-full p-2 shadow-md">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-800" viewBox="0 0 24 24"
-                    fill="none">
-                    <path fill="currentColor"
-                        d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12t-2.325-5.675T12 4T6.325 6.325T4 12t2.325 5.675T12 20m0-8" />
-                </svg>
-            </div>
-            <p class="text-center font-normal text-gray-700">
-                {{ $site['yayasanProfile']->makna_logo }}
-            </p>
-        </div>
-
+    </section>
+    </section>
     </div>
+     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 </body>
 <x-footer />
 

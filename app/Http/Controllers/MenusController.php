@@ -117,7 +117,7 @@ class MenusController extends Controller
 
         $menu->update($data);
 
-        return redirect()->route('admin.menu')->with('success', 'Menu berhasil ditambahkan!');
+        return redirect()->route('admin.menus')->with('success', 'Menu berhasil ditambahkan!');
     }
 
     public function destroy($id){
