@@ -72,10 +72,10 @@
                         <p class="mt-2 text-sm text-gray-600" id="form-subtitle"></p>
                     </div>
 
-                    <form action="">
-
-                        <input type="text" name="id_user" id="id_user" hidden>
-                        <input type="text" name="role" id="role" value="s" hidden>
+                    <form action="{{ route('add.dataUser') }}" method="POST">
+                        @csrf
+                        <input type="text" name="id_user" id="id_user" value="{{ $user->id_user }}" hidden>
+                        <input type="text" name="role" id="role" value="" hidden>
                         <!-- Nama - selalu tampil -->
                         <div class="mt-4">
                             <label for="nama" class="block text-sm font-medium text-gray-900 mb-2">Nama</label>
