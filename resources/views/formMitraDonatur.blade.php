@@ -73,6 +73,9 @@
                     </div>
 
                     <form action="">
+
+                        <input type="text" name="id_user" id="id_user" hidden>
+                        <input type="text" name="role" id="role" value="s" hidden>
                         <!-- Nama - selalu tampil -->
                         <div class="mt-4">
                             <label for="nama" class="block text-sm font-medium text-gray-900 mb-2">Nama</label>
@@ -80,7 +83,6 @@
                                 <input type="text" name="nama" id="nama" autocomplete="nama" required
                                     class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Masukkan nama" />
-
                             </div>
                         </div>
                         <div class="grid md:grid-cols-2 gap-6">
@@ -169,6 +171,7 @@
 
         function selectCard(type) {
             selectedType = type;
+            document.getElementById('role').value = type;
 
             // Hide modal with animation
             const modal = document.getElementById('modal-overlay');
