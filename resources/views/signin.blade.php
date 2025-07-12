@@ -64,10 +64,11 @@
                             Your browser does not support the video tag.
                         </video> --}}
                         <!-- Video Background -->
-                        <img class="img-background" src="{{ asset('storage/' . $site['yayasanProfile']->background) }}">
+                        <img class="img-background grayscale-25 blur-[1px]"
+                            src="{{ asset('storage/' . $site['yayasanProfile']->background) }}">
 
                         <!-- Video Overlay -->
-                        <div class="img-overlay"></div>
+                        {{-- <div class="img-overlay"></div> --}}
 
                         <!-- Content Overlay -->
                         <div class="content-overlay text-center text-white">
