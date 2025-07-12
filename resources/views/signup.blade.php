@@ -23,7 +23,7 @@
             <div class="bg-white rounded-2xl shadow-xl p-8">
                 <!-- Logo and Header -->
                 <div class="text-center mb-8">
-                    <img class="mx-auto h-24 w-auto" src="{{ asset('img/logo.png') }}" alt="Your Company" />
+                    <img class="mx-auto h-24 w-auto" src="{{ asset('img/logo.png') }}" alt="yaguwipa logo" />
                     <h2 class="mt-6 text-3xl font-bold tracking-tight text-gray-900">Buat Akun Anda</h2>
                     <p class="mt-2 text-sm text-gray-600">Bersama kita bisa membuat perubahan yang lebih baik</p>
                 </div>
@@ -62,7 +62,6 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M3 3l18 18" />
                                     </svg>
-
                                 </button>
                             </div>
                         </div>
