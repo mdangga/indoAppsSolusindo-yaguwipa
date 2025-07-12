@@ -11,7 +11,7 @@ use App\Http\Controllers\SosiaMediaController;
 use Illuminate\Support\Facades\Route;
 
 // testing area
-// Route::get('/testing', [MenusController::class, 'index'])->name('testing');
+Route::get('/testing', [GeneralController::class, 'testing'])->name('testing');
 
 
 // route

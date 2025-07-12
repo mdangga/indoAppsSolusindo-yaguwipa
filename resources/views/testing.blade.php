@@ -57,6 +57,7 @@
 </body> --}}
 
 <body>
+    <x-loader-component />
     <h1>Upload Galeri</h1>
 
     @if ($errors->any())
@@ -68,8 +69,7 @@
             </ul>
         </div>
     @endif
-
-    <form action="{{ route('profiles.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="" method="POST" enctype="multipart/form-data">
         @csrf
         @php
             $fields = [
