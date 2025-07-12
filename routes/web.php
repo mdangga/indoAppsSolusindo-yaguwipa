@@ -25,6 +25,13 @@ Route::get('/berita/show/{slug}', [BeritaController::class, 'show'])->name('beri
 // gallery
 Route::get('/gallery/show-all', [GalleryController::class, 'berandaShow'])->name('beranda.gallery');
 
+// teams
+Route::get('/teams', [GeneralController::class, 'teams'])->name('beranda.teams');
+
+
+// partners
+Route::get('/mitra', [GeneralController::class, 'mitra'])->name('beranda.mitra');
+
 // middleware authtentication
 Route::middleware(['auth.admin'])->group(function () {
     Route::get('/dashboard', [AuthController::class, 'me'])->name('dashboard');
@@ -32,6 +39,8 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/gallery', [GalleryController::class, 'adminShow'])->name('admin.gallery');
     Route::get('/menus', [MenusController::class, 'index'])->name('admin.menus');
     Route::get('/sosial-media', [SosiaMediaController::class, 'index'])->name('admin.sosmed');
+    
+    
     // general setting
     Route::get('/general-setting', [ProfileController::class, 'index'])->name('admin.profiles');
     Route::put('/general-setting/update/{id}', [ProfileController::class, 'update'])->name('profiles.update');
