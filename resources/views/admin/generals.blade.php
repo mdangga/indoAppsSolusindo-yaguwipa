@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Admin</title>
+    <title>General - Setting</title>
 
     {{-- Favicon --}}
     <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
