@@ -32,7 +32,7 @@ class Berita extends Model
         'dibaca' => 'integer',
     ];
 
-    public function BeritaToKategoriNewsEvent(){
+    public function KategoriNewsEvent(){
         return $this->belongsTo(KategoriNewsEvent::class, 'id_kategori_news_event', 'id_kategori_news_event');
     }
 }

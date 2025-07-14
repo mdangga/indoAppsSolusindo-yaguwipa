@@ -14,7 +14,7 @@ class KategoriNewsEvent extends Model
         'deskripsi',
     ];
 
-    public function KategoriNewsEventToBerita(){
+    public function Berita(){
         return $this->hasMany(KategoriNewsEvent::class, 'id_kategori_news_event', 'id_kategori_news_event');
     }
 }

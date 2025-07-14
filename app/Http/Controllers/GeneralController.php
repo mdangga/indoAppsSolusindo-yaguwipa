@@ -12,7 +12,8 @@ class GeneralController extends Controller
 {
     public function beranda()
     {
-        $berita = Berita::latest()
+        $berita = Berita::with('KategoriNewsEvent')
+            ->latest()
             ->where('status', 'show')
             ->take(4)
             ->get();
