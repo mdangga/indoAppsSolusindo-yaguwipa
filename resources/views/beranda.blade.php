@@ -56,6 +56,78 @@
         </div>
     </div>
     {{-- hero end --}}
+    <section class="px-4 sm:px-6 lg:px-14 py-16">
+        <div class=" mx-auto">
+            <h1 class="text-3xl text-center font-semibold text-gray-900 pb-10">
+                PROGRAM UNGGULAN
+            </h1>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+
+                <!-- Sosial -->
+                <div class="relative group overflow-hidden rounded-2xl shadow-lg">
+                    <img src="{{ asset('img/program/p2.jpg') }}" alt="Program Sosial"
+                        class="w-full h-72 object-cover transition duration-500 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition duration-300"></div>
+                    <div class="absolute bottom-0 p-6 text-white">
+                        <h3 class="text-2xl font-semibold mb-2">Bidang Sosial</h3>
+                        <ul class="text-sm space-y-1 text-gray-100">
+                            <li>Bantuan Sosial & Kemanusiaan</li>
+                            <li>Pengentasan Kemiskinan</li>
+                            <li>Layanan Kesehatan Masyarakat</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Pendidikan -->
+                <div class="relative group overflow-hidden rounded-2xl shadow-lg">
+                    <img src="{{ asset('img/program/p3.jpg') }}" alt="Program Pendidikan"
+                        class="w-full h-72 object-cover transition duration-500 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition duration-300"></div>
+                    <div class="absolute bottom-0 p-6 text-white">
+                        <h3 class="text-2xl font-semibold mb-2">Bidang Pendidikan</h3>
+                        <ul class="text-sm space-y-1 text-gray-100">
+                            <li>Beasiswa & Bimbingan</li>
+                            <li>Lembaga Pendidikan:</li>
+                            <li class="ml-4 text-gray-300">– Denpasar Institute</li>
+                            <li class="ml-4 text-gray-300">– Hotel School, IT Academy</li>
+                            <li class="ml-4 text-gray-300">– AI Vision Academy</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Riset & Inovasi -->
+                <div class="relative group overflow-hidden rounded-2xl shadow-lg">
+                    <img src="{{ asset('img/program/p1.jpg') }}" alt="Program Riset"
+                        class="w-full h-72 object-cover transition duration-500 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition duration-300"></div>
+                    <div class="absolute bottom-0 p-6 text-white">
+                        <h3 class="text-2xl font-semibold mb-2">Riset & Inovasi</h3>
+                        <ul class="text-sm space-y-1 text-gray-100">
+                            <li>Riset Sosial & Budaya</li>
+                            <li>Kolaborasi Akademik</li>
+                            <li>Publikasi Ilmiah</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Keagamaan -->
+                <div class="relative group overflow-hidden rounded-2xl shadow-lg">
+                    <img src="{{ asset('img/program/p4.jpg') }}" alt="Program Keagamaan"
+                        class="w-full h-72 object-cover transition duration-500 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition duration-300"></div>
+                    <div class="absolute bottom-0 p-6 text-white">
+                        <h3 class="text-2xl font-semibold mb-2">Bidang Keagamaan</h3>
+                        <ul class="text-sm space-y-1 text-gray-100">
+                            <li>Kegiatan Dharma & Umat</li>
+                            <li>Pembinaan Rohani</li>
+                            <li>Pendidikan Agama</li>
+                            <li>Hari Raya Keagamaan</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     {{-- berita berita --}}
     <div class="px-4 sm:px-6 lg:px-14 py-20">
@@ -77,7 +149,6 @@
                     </div>
             </div>
             @endforelse
-
         </div>
 
         {{-- <!-- Kolom Kegiatan (1 kolom) -->
@@ -213,7 +284,8 @@
                 <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
                     @forelse ($gallery->take(5) as $inex => $item)
                         <button type="button" class="w-[6px] h-[6px] rounded-full"
-                            aria-current="{{ $index === 0 ? 'true' : 'false' }}" aria-label="Slide {{ $index + 1 }}"
+                            aria-current="{{ $index === 0 ? 'true' : 'false' }}"
+                            aria-label="Slide {{ $index + 1 }}"
                             data-carousel-slide-to="{{ $index }}"></button>
                     @endforeach
                 </div>
@@ -224,11 +296,11 @@
 
     {{-- lembaga --}}
     <div class="bg-white py-15 sm:py-32">
-        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto px-4 sm:px-6 lg:px-14">
             <h1 class="text-center pb-5 text-4xl font-semibold text-gray-900">
                 LEMBAGA TERKAIT
             </h1>
-            <div class="mx-auto mt-10 max-w-6xl overflow-hidden logo-container">
+            <div class="mx-auto mt-10 overflow-hidden logo-container">
                 <div class="logo-scroll">
                     <!-- First set of logos -->
                     <div class="logo-set">
