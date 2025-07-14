@@ -33,10 +33,11 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('*', function ($view) {
             $menus = Menu::with(['children' => function ($q) {
-                $q->orderBy('id_menus');
+                $q->where('status', 'show')->orderBy('id_menus');
             }])
                 ->whereNull('parent_menu')
                 ->orderByRaw('id_menus')
+                ->where('status', 'show')
                 ->get();
 
             $view->with('menus', $menus);
