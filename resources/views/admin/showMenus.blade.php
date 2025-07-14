@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Admin - Berita dan Kegiatan</title>
+    <title>Admin - Menus</title>
     {{-- icon --}}
     <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
 

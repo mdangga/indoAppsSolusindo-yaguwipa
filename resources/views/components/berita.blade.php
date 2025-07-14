@@ -12,7 +12,7 @@
         <!-- Date badge overlay -->
         <div
             class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-gray-700">
-            {{ \Carbon\Carbon::parse($item->tanggal_publish)->format('d M') }}
+            {{ $item->KategoriNewsEvent->nama ?? 'Tanpa Kategori' }}
         </div>
     </div>
 
