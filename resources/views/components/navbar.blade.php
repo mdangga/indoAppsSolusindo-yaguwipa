@@ -1,4 +1,89 @@
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+<style>
+    /* Custom CSS untuk menyembunyikan dan mengubah tampilan Google Translate */
+    .goog-te-banner-frame {
+        display: none !important;
+    }
+
+    .goog-te-menu-value {
+        padding: 8px 12px !important;
+        background: #ffffff !important;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 8px !important;
+        font-size: 14px !important;
+        color: #374151 !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .goog-te-menu-value:hover {
+        background: #f9fafb !important;
+        border-color: #3b82f6 !important;
+    }
+
+    .goog-te-gadget {
+        font-family: 'Inter', sans-serif !important;
+        font-size: 0 !important;
+    }
+
+    .goog-te-gadget-simple {
+        background: transparent !important;
+        border: none !important;
+        font-size: 14px !important;
+    }
+
+    .goog-te-menu-frame {
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+        border-radius: 8px !important;
+        border: 1px solid #e5e7eb !important;
+    }
+
+    /* Sembunyikan teks "Powered by" */
+    .goog-te-gadget-simple .goog-te-menu-value span:first-child {
+        display: none;
+    }
+
+    /* Custom arrow */
+    .goog-te-gadget-simple .goog-te-menu-value:after {
+        content: "▼";
+        font-size: 10px;
+        color: #6b7280;
+        margin-left: 8px;
+    }
+</style>
+
+<script>
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'id',
+            includedLanguages: 'en,id,es,fr,de,ja,ko,zh',
+            layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+        }, 'google_translate_element');
+    };
+
+    function changeGoogleLanguage(langCode) {
+        let attempts = 0;
+        const maxAttempts = 50; // 5 detik (50 x 100ms)
+
+        const interval = setInterval(() => {
+            const select = document.querySelector("select.goog-te-combo");
+
+            if (select) {
+                select.value = langCode;
+                select.dispatchEvent(new Event("change"));
+                clearInterval(interval);
+            }
+
+            attempts++;
+            if (attempts > maxAttempts) {
+                clearInterval(interval);
+                console.error("Google Translate combo not found.");
+            }
+        }, 100);
+    }
+</script>
+
+
 <header class="absolute w-full z-50">
     <!-- Logo dan Login Button -->
     <div class="w-full bg-transparent p-6 lg:px-8">
@@ -13,6 +98,8 @@
             <div class="hidden lg:block"></div>
 
             <div class="hidden justify-end items-center lg:flex">
+                
+                <div id="google_translate_element"></div>
                 <a href="{{ route('login') }}"
                     class="bg-amber-100 text-sm font-semibold text-gray-900 rounded-[50px] px-6 py-3.5 hover:bg-amber-200 transition">
                     Log in
@@ -150,3 +237,5 @@
         </div>
     </div>
 </header>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>

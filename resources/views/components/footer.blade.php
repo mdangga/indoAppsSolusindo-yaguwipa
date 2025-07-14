@@ -108,7 +108,7 @@
                 &copy; {{ $site['yayasanProfile']->copyright }}. All Rights Reserved.
             </div>
             <div class="text-center md:text-right text-md">
-                Design by AnggaYudaRelia
+                Design with <i class="fa-solid fa-heart text-red-400"></i> by AnggaYudaRelia
             </div>
         </div>
     </div>

@@ -13,7 +13,7 @@ class Menu extends Model
         'title',
         'url',
         'parent_menu',
-        'urutan'
+        'status'
     ];
 
     public function children()
