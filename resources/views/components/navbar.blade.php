@@ -18,7 +18,7 @@
         cursor: pointer;
         display: block !important;
         margin-bottom: 4px !important;
-        margin-top: 20px !important;
+        top: 7.5px !important;
         position: relative !important;
         right: -70px !important;
     }
@@ -71,6 +71,7 @@
         white-space: nowrap !important;
         position: relative !important;
         right: -80px !important;
+        top: 3px !important;
     }
 
     /* Semua link dalam google translate */
@@ -186,6 +187,7 @@
             <div class="hidden justify-end items-center lg:flex">
 
                 <div id="google_translate_element" class="mr-5"></div>
+
                 <a href="{{ route('login') }}"
                     class="bg-amber-100 text-sm font-semibold text-gray-900 rounded-[50px] px-6 py-3.5 hover:bg-amber-200 transition">
                     Log in
@@ -205,7 +207,7 @@
     </div>
 
     <!-- fixed navbar -->
-    <nav class="fixed mt-[-90px] left-1/2 transform -translate-x-1/2 z-50 hidden lg:block">
+    <nav class="fixed mt-[-85px] left-1/2 transform -translate-x-1/2 z-50 hidden lg:block">
         <div class="h-[50px] px-6 flex justify-center items-center rounded-[75px] bg-white/30 backdrop-blur-md">
             <div class="flex gap-x-12">
                 @foreach ($menus as $menu)
