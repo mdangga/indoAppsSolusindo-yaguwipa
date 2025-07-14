@@ -56,10 +56,10 @@
     function googleTranslateElementInit() {
         new google.translate.TranslateElement({
             pageLanguage: 'id',
-            includedLanguages: 'id,en,ms,th,vi,zh-CN,ja,ko',
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            includedLanguages: 'en,id,es,fr,de,ja,ko,zh',
+            layout: google.translate.TranslateElement.InlineLayout.VERTICAL
         }, 'google_translate_element');
-    }
+    };
 
     function changeGoogleLanguage(langCode) {
         let attempts = 0;
@@ -98,58 +98,8 @@
             <div class="hidden lg:block"></div>
 
             <div class="hidden justify-end items-center lg:flex">
-                <!-- Language Selector Desktop -->
-                {{-- <div class="hidden justify-end items-center lg:flex">
-                    <!-- Dropdown Bahasa -->
-                    <!-- Dropdown Bahasa Custom -->
-                    <div x-data="{ open: false, selectedLang: 'id' }" class="relative">
-                        <button @click="open = !open"
-                            class="bg-white/20 backdrop-blur-sm text-sm font-semibold text-gray-900 rounded-full px-4 py-2 hover:bg-white/30 transition flex items-center space-x-2">
-                            <span
-                                x-text="{
-                'id': '🇮🇩 ID',
-                'en': '🇺🇸 EN',
-                'ms': '🇲🇾 MS',
-                'th': '🇹🇭 TH',
-                'vi': '🇻🇳 VI',
-                'zh-CN': '🇨🇳 ZH',
-                'ja': '🇯🇵 JA',
-                'ko': '🇰🇷 KO'
-            }[selectedLang]"></span>
-                            <svg class="w-4 h-4 transition-transform" :class="open ? 'rotate-180' : ''" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-
-                        <div x-show="open" @click.away="open = false" x-transition
-                            class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 z-50">
-                            <div class="py-1">
-                                <!-- Loop Bahasa -->
-                                @foreach ([['id', '🇮🇩', 'Bahasa Indonesia'], ['en', '🇺🇸', 'English'], ['ms', '🇲🇾', 'Bahasa Melayu'], ['th', '🇹🇭', 'ไทย'], ['vi', '🇻🇳', 'Tiếng Việt'], ['zh-CN', '🇨🇳', '中文'], ['ja', '🇯🇵', '日本語'], ['ko', '🇰🇷', '한국어']] as [$code, $flag, $label])
-                                    <button
-                                        @click="selectedLang = '{{ $code }}'; open = false; changeGoogleLanguage('{{ $code }}')"
-                                        class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-3"
-                                        :class="selectedLang === '{{ $code }}' ? 'bg-indigo-50 text-indigo-700' : ''">
-                                        <span>{{ $flag }}</span>
-                                        <span>{{ $label }}</span>
-                                    </button>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div> --}}
-
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                            <span class="text-white text-sm font-bold">🌐</span>
-                        </div>
-                        <span class="text-sm text-gray-700 font-medium">Translate this page</span>
-                    </div>
-                    <div id="google_translate_element" class="bg-white rounded-lg shadow-sm p-1"></div>
-                </div>
-                {{-- <div id="google_translate_element"></div> --}}
+                
+                <div id="google_translate_element"></div>
                 <a href="{{ route('login') }}"
                     class="bg-amber-100 text-sm font-semibold text-gray-900 rounded-[50px] px-6 py-3.5 hover:bg-amber-200 transition">
                     Log in
