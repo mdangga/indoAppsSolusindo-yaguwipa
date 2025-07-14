@@ -4,7 +4,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Laravel - Register</title>
+    <title>Register</title>
+    {{-- Favicon --}}
+    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
@@ -37,7 +40,7 @@
                         <div class="relative">
                             <input type="text" name="username" id="username" autocomplete="username" required
                                 class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Masukkan username" />
+                                placeholder="Masukkan Username" />
                         </div>
                     </div>
 
@@ -86,7 +89,7 @@
                             <input type="password" name="password_confirmation" id="password_confirmation"
                                 autocomplete="new-password" required
                                 class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Confirm your password" />
+                                placeholder="Masukkan Password" />
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3">
                                 <button type="button" class="text-gray-400 hover:text-gray-600 cursor-pointer"
                                     onclick="togglePassword('password_confirmation', 'toggle-password-confirmation-icon')">

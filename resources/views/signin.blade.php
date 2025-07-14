@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Laravel</title>
     <!-- Fonts -->
+    {{-- Favicon --}}
+    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
+
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -68,7 +71,7 @@
                             src="{{ asset('storage/' . $site['yayasanProfile']->background) }}">
 
                         <!-- Video Overlay -->
-                        {{-- <div class="img-overlay"></div> --}}
+                        <div class="img-overlay"></div>
 
                         <!-- Content Overlay -->
                         <div class="content-overlay text-center text-white">
@@ -169,7 +172,7 @@
 
                                 <div>
                                     <button type="submit"
-                                        class="group relative flex w-full justify-center rounded-lg bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-200 hover:shadow-lg">
+                                        class="cursor-pointer group relative flex w-full justify-center rounded-lg bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-200 hover:shadow-lg">
                                         <span class="absolute inset-y-0 left-0 flex items-center pl-3">
 
                                         </span>
