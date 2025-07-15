@@ -47,7 +47,7 @@ class kategoriNewsEventController extends Controller
             return abort(403, 'Akses tidak diizinkan');
         }
 
-        $kategori = KategoriNewsEvent::select(['id_kategori_news_event', 'nama', 'deskripsi']);
+        $kategori = KategoriNewsEvent::select(['id_kategori_news_event', 'nama', 'deskripsi'])->orderBy('updated_at', 'desc');
 
         return DataTables::of($kategori)
             ->addColumn('aksi', function ($row) {

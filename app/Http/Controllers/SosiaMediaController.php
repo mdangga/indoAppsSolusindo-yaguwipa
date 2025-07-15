@@ -23,7 +23,7 @@ class SosiaMediaController extends Controller
             return abort(403, 'Akses tidak diizinkan');
         }
 
-        $sosialMedia = SosialMedia::select(['id', 'nama', 'link', 'status']);
+        $sosialMedia = SosialMedia::select(['id', 'nama', 'link', 'status'])->orderBy('updated_at', 'desc');
 
         return DataTables::of($sosialMedia)
             ->addColumn('aksi', function ($row) {

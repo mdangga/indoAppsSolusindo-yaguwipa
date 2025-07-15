@@ -31,7 +31,7 @@ class MenusController extends Controller
             return abort(403, 'Akses tidak diizinkan');
         }
 
-        $menus = Menu::select(['id_menus', 'title', 'status']);
+        $menus = Menu::select(['id_menus', 'title', 'status'])->orderBy('updated_at', 'desc');
 
         return DataTables::of($menus)
             ->addColumn('aksi', function ($row) {

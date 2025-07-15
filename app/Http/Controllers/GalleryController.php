@@ -31,7 +31,7 @@ class GalleryController extends Controller
             return abort(403, 'Akses tidak diizinkan');
         }
 
-        $gallery = Gallery::select(['id_gallery', 'alt_text', 'kategori', 'link', 'status']);
+        $gallery = Gallery::select(['id_gallery', 'alt_text', 'kategori', 'link', 'status'])->orderBy('updated_at', 'desc');
 
         return DataTables::of($gallery)
             ->addIndexColumn()

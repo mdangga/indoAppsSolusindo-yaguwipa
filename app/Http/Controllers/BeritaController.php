@@ -28,7 +28,7 @@ class BeritaController extends Controller
             return abort(403, 'Akses tidak diizinkan');
         }
 
-        $berita = Berita::select(['id_berita', 'judul', 'thumbnail', 'status']);
+        $berita = Berita::select(['id_berita', 'judul', 'thumbnail', 'status'])->orderBy('updated_at', 'desc');
 
         return DataTables::of($berita)
             ->addColumn('aksi', function ($row) {
