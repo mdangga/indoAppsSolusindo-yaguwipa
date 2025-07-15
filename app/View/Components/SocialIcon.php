@@ -19,12 +19,39 @@ class SocialIcon extends Component
     public function iconClass(): string
     {
         $host = parse_url($this->link, PHP_URL_HOST);
-        $base = Str::before(Str::after($host, 'www.'), '.');
 
-        $knownBrands = ['facebook', 'instagram', 'youtube', 'twitter', 'x', 'linkedin', 'tiktok'];
+        if (!$host) {
+            return 'fa-solid fa-globe';
+        }
 
-        if (in_array($base, $knownBrands)) {
-            return 'fa-brands fa-' . ($base === 'x' ? 'x-twitter' : $base);
+        $host = Str::lower($host);
+
+        $knownBrands = [
+            'facebook',
+            'instagram',
+            'youtube',
+            'twitter',
+            'x', // untuk x.com
+            'linkedin',
+            'tiktok',
+            'whatsapp',
+            'telegram',
+            'github',
+            'reddit',
+            'pinterest',
+            'snapchat',
+            'discord',
+            'medium',
+            'tumblr',
+            'dribbble',
+            'behance',
+            'microsoft'
+        ];
+
+        foreach ($knownBrands as $brand) {
+            if (Str::contains($host, $brand)) {
+                return 'fab fa-' . ($brand === 'x' ? 'x-twitter' : $brand);
+            }
         }
 
         return 'fa-solid fa-globe';
