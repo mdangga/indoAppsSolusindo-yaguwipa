@@ -20,143 +20,155 @@
 </head>
 
 <body>
-    {{-- laoder --}}
+    {{-- loader --}}
     <x-loader-component />
+    {{-- pop-up --}}
+    @if ($site['yayasanProfile']->popup)
+        <x-pop-up image-src="{{ $site['yayasanProfile']->popup }}" image-alt="Welcome Image" />
+    @endif
     {{-- navbar --}}
     <x-navbar :menus="$menus" />
     {{-- floating button --}}
-    {{-- 6. KONFIGURASI LENGKAP --}}
-    <x-contact-btt-floating email="support@mycompany.com" phone="+62 21-1234-5678" whatsapp="6281234567890" size="default" :auto-hide="true" :auto-hide-delay="3000" :show-back-to-top="true" :scroll-threshold="200" />
+    <x-contact-btt-floating email="{{ $site['yayasanProfile']->email }}"
+        phone="{{ $site['yayasanProfile']->telephone }}" size="default" :auto-hide="true" :auto-hide-delay="3000"
+        :show-back-to-top="true" :scroll-threshold="200" />
 
-    {{-- hero --}}
-    <div class="relative flex items-center justify-center h-screen">
-        {{-- Background Image --}}
-        <div class="absolute inset-0 -z-10">
-            <img src="{{ asset('storage/' . $site['yayasanProfile']->background) }}" alt="Hero Background"
-                class="w-full h-full object-cover brightness-75 grayscale-25" />
+    <main>
+        {{-- hero --}}
+        <div class="relative flex items-center justify-center h-screen">
+            {{-- Background Image --}}
+            <div class="absolute inset-0 -z-10">
+                <img src="{{ asset('storage/' . $site['yayasanProfile']->background) }}" alt="Hero Background"
+                    class="w-full h-full object-cover brightness-75 grayscale-25" />
 
-            {{-- Gradient Overlay agar transisi ke putih --}}
-            <div class="absolute inset-0 bg-gradient-to-b from-white/0 via-white/70 to-white"></div>
+                {{-- Gradient Overlay agar transisi ke putih --}}
+                <div class="absolute inset-0 bg-gradient-to-b from-white/0 via-white/70 to-white"></div>
+            </div>
+
+            {{-- Isi Hero --}}
+            <div class="relative px-6 pt-14 lg:px-8">
+                <div class="mx-auto max-w-2xl text-center">
+                    <h1 class="text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
+                        {{ $site['yayasanProfile']->company }}
+                    </h1>
+                    <p class="mt-8 text-lg font-medium text-gray-600">
+                        {!! str_replace(['<p>', '</p>'], '', $site['yayasanProfile']->intro) !!}
+                    </p>
+                    <div class="mt-10 flex items-center justify-center gap-x-6">
+                        <a href="#"
+                            class="rounded-full px-6 py-3 text-md font-semibold text-white bg-gray-700 hover:bg-gray-500 shadow-sm focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+                            Donasi
+                        </a>
+                        <a href="#berita-kegiatan"
+                            class="text-sm font-semibold text-gray-700 inline-flex justify-center items-center">
+                            Selengkapnya<svg class="ml-2 -mr-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        {{-- Isi Hero --}}
-        <div class="relative px-6 pt-14 lg:px-8">
-            <div class="mx-auto max-w-2xl text-center">
-                <h1 class="text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
-                    {{ $site['yayasanProfile']->company }}
+        {{-- hero end --}}
+        <section class="px-4 sm:px-6 lg:px-12 py-16">
+            <div class="max-w-7xl mx-auto">
+                <h1 class="text-3xl text-center font-semibold text-gray-900 pb-10">
+                    PROGRAM UNGGULAN
                 </h1>
-                <p class="mt-8 text-lg font-medium text-gray-600">
-                    {!! str_replace(['<p>', '</p>'], '', $site['yayasanProfile']->intro) !!}
-                </p>
-                <div class="mt-10 flex items-center justify-center gap-x-6">
-                    <a href="#"
-                        class="rounded-full px-6 py-3 text-md font-semibold text-white bg-gray-700 hover:bg-gray-500 shadow-sm focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-gray-600">
-                        Donasi
-                    </a>
-                    <a href="#berita-kegiatan" class="text-sm font-semibold text-gray-900">
-                        Selengkapnya
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{-- hero end --}}
-    <section class="px-4 sm:px-6 lg:px-14 py-16">
-        <div class=" mx-auto">
-            <h1 class="text-3xl text-center font-semibold text-gray-900 pb-10">
-                PROGRAM UNGGULAN
-            </h1>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
-
-                <!-- Sosial -->
-                <div class="relative group overflow-hidden rounded-2xl shadow-lg">
-                    <img src="{{ asset('img/program/p2.jpg') }}" alt="Program Sosial"
-                        class="w-full h-72 object-cover transition duration-500 group-hover:scale-105">
-                    <div class="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition duration-300"></div>
-                    <div class="absolute bottom-0 p-6 text-white">
-                        <h3 class="text-2xl font-semibold mb-2">Bidang Sosial</h3>
-                        <ul class="text-sm space-y-1 text-gray-100">
-                            <li>Bantuan Sosial & Kemanusiaan</li>
-                            <li>Pengentasan Kemiskinan</li>
-                            <li>Layanan Kesehatan Masyarakat</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Pendidikan -->
-                <div class="relative group overflow-hidden rounded-2xl shadow-lg">
-                    <img src="{{ asset('img/program/p3.jpg') }}" alt="Program Pendidikan"
-                        class="w-full h-72 object-cover transition duration-500 group-hover:scale-105">
-                    <div class="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition duration-300"></div>
-                    <div class="absolute bottom-0 p-6 text-white">
-                        <h3 class="text-2xl font-semibold mb-2">Bidang Pendidikan</h3>
-                        <ul class="text-sm space-y-1 text-gray-100">
-                            <li>Beasiswa & Bimbingan</li>
-                            <li>Lembaga Pendidikan:</li>
-                            <li class="ml-4 text-gray-300">– Denpasar Institute</li>
-                            <li class="ml-4 text-gray-300">– Hotel School, IT Academy</li>
-                            <li class="ml-4 text-gray-300">– AI Vision Academy</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Riset & Inovasi -->
-                <div class="relative group overflow-hidden rounded-2xl shadow-lg">
-                    <img src="{{ asset('img/program/p1.jpg') }}" alt="Program Riset"
-                        class="w-full h-72 object-cover transition duration-500 group-hover:scale-105">
-                    <div class="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition duration-300"></div>
-                    <div class="absolute bottom-0 p-6 text-white">
-                        <h3 class="text-2xl font-semibold mb-2">Riset & Inovasi</h3>
-                        <ul class="text-sm space-y-1 text-gray-100">
-                            <li>Riset Sosial & Budaya</li>
-                            <li>Kolaborasi Akademik</li>
-                            <li>Publikasi Ilmiah</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Keagamaan -->
-                <div class="relative group overflow-hidden rounded-2xl shadow-lg">
-                    <img src="{{ asset('img/program/p4.jpg') }}" alt="Program Keagamaan"
-                        class="w-full h-72 object-cover transition duration-500 group-hover:scale-105">
-                    <div class="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition duration-300"></div>
-                    <div class="absolute bottom-0 p-6 text-white">
-                        <h3 class="text-2xl font-semibold mb-2">Bidang Keagamaan</h3>
-                        <ul class="text-sm space-y-1 text-gray-100">
-                            <li>Kegiatan Dharma & Umat</li>
-                            <li>Pembinaan Rohani</li>
-                            <li>Pendidikan Agama</li>
-                            <li>Hari Raya Keagamaan</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {{-- berita berita --}}
-    <div class="px-4 sm:px-6 lg:px-14 py-20">
-        <!-- Header: Judul di kiri dan tombol di kanan -->
-        <x-section-header id="berita-kegiatan" title="BERITA DAN KEGIATAN" link="beranda.berita"
-            buttonText="See More" />
-
-        <!-- Berita dan Kegiatan -->
-        <div class="grid grid-cols-1 xl:grid-cols-4 gap-6" data-aos="fade-up">
-            <!-- Kolom Berita (3 kolom) -->
-            <div class="xl:col-span-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
-                @forelse ($berita as $item)
-                    <x-berita :item="$item" />
-                @empty
-                    <div class="relative w-full h-64 col-span-4"> <!-- pastikan parent relative -->
-                        <div class="absolute inset-0 flex items-center justify-center bg-gray-100/50">
-                            <p class="text-gray-500 text-center">Belum ada gambar di galeri.</p>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
+                    <!-- Sosial -->
+                    <div class="relative group overflow-hidden rounded-2xl shadow-lg" data-aos="fade-up">
+                        <img src="{{ asset('img/program/p2.jpg') }}" alt="Program Sosial"
+                            class="w-full h-72 object-cover transition duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition duration-300"></div>
+                        <div class="absolute bottom-0 p-6 text-white">
+                            <h3 class="text-2xl font-semibold mb-2">Bidang Sosial</h3>
+                            <ul class="text-sm space-y-1 text-gray-100">
+                                <li>Bantuan Sosial & Kemanusiaan</li>
+                                <li>Pengentasan Kemiskinan</li>
+                                <li>Layanan Kesehatan Masyarakat</li>
+                            </ul>
                         </div>
                     </div>
-            </div>
-            @endforelse
-        </div>
 
-        {{-- <!-- Kolom Kegiatan (1 kolom) -->
+                    <!-- Pendidikan -->
+                    <div class="relative group overflow-hidden rounded-2xl shadow-lg" data-aos="fade-up">
+                        <img src="{{ asset('img/program/p3.jpg') }}" alt="Program Pendidikan"
+                            class="w-full h-72 object-cover transition duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition duration-300"></div>
+                        <div class="absolute bottom-0 p-6 text-white">
+                            <h3 class="text-2xl font-semibold mb-2">Bidang Pendidikan</h3>
+                            <ul class="text-sm space-y-1 text-gray-100">
+                                <li>Beasiswa & Bimbingan</li>
+                                <li>Lembaga Pendidikan:</li>
+                                <li class="ml-4 text-gray-300">– Denpasar Institute</li>
+                                <li class="ml-4 text-gray-300">– Hotel School, IT Academy</li>
+                                <li class="ml-4 text-gray-300">– AI Vision Academy</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Riset & Inovasi -->
+                    <div class="relative group overflow-hidden rounded-2xl shadow-lg" data-aos="fade-up">
+                        <img src="{{ asset('img/program/p1.jpg') }}" alt="Program Riset"
+                            class="w-full h-72 object-cover transition duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition duration-300"></div>
+                        <div class="absolute bottom-0 p-6 text-white">
+                            <h3 class="text-2xl font-semibold mb-2">Riset & Inovasi</h3>
+                            <ul class="text-sm space-y-1 text-gray-100">
+                                <li>Riset Sosial & Budaya</li>
+                                <li>Kolaborasi Akademik</li>
+                                <li>Publikasi Ilmiah</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Keagamaan -->
+                    <div class="relative group overflow-hidden rounded-2xl shadow-lg" data-aos="fade-up">
+                        <img src="{{ asset('img/program/p4.jpg') }}" alt="Program Keagamaan"
+                            class="w-full h-72 object-cover transition duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition duration-300"></div>
+                        <div class="absolute bottom-0 p-6 text-white">
+                            <h3 class="text-2xl font-semibold mb-2">Bidang Keagamaan</h3>
+                            <ul class="text-sm space-y-1 text-gray-100">
+                                <li>Kegiatan Dharma & Umat</li>
+                                <li>Pembinaan Rohani</li>
+                                <li>Pendidikan Agama</li>
+                                <li>Hari Raya Keagamaan</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {{-- berita berita --}}
+        <section class="px-4 sm:px-6 lg:px-12 py-16 ">
+            <div class="max-w-7xl mx-auto">
+                <!-- Header: Judul di kiri dan tombol di kanan -->
+                <x-section-header id="berita-kegiatan" title="BERITA DAN KEGIATAN" link="beranda.berita"
+                    buttonText="See More" />
+
+                <!-- Berita dan Kegiatan -->
+                <div class="grid grid-cols-1 xl:grid-cols-4 gap-6" data-aos="fade-up">
+                    <!-- Kolom Berita (3 kolom) -->
+                    <div class="xl:col-span-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+                        @forelse ($berita as $item)
+                            <x-berita :item="$item" />
+                        @empty
+                            <div class="relative w-full h-64 col-span-4"> <!-- pastikan parent relative -->
+                                <div class="absolute inset-0 flex items-center justify-center bg-gray-100/50">
+                                    <p class="text-gray-500 text-center">Belum ada gambar di galeri.</p>
+                                </div>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+            {{-- <!-- Kolom Kegiatan (1 kolom) -->
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 h-fit">
                 <h2 class="text-xl font-semibold text-gray-900 mb-6">Kegiatan</h2>
 
@@ -254,87 +266,90 @@
                     </div>
                 </div>
             </div> --}}
-        {{-- end kegiatan --}}
-    </div>
-    </div>
-    {{-- end berita --}}
+            {{-- end kegiatan --}}
+        </section>
+        {{-- end berita --}}
 
-    {{-- galleri --}}
-    <div class="px-4 sm:px-6 lg:px-14 py-20">
-        <!-- Header: Judul di kiri dan tombol di kanan -->
-        <x-section-header id="gallery" title="GALLERY" link="beranda.gallery" buttonText="See More" />
+        {{-- galleri --}}
+        <div class="px-4 sm:px-6 lg:px-12 py-16">
+            <div class="max-w-7xl mx-auto">
+                <!-- Header: Judul di kiri dan tombol di kanan -->
+                <x-section-header id="gallery" title="GALLERY" link="beranda.gallery" buttonText="See More" />
 
-        <div id="gallery" class="relative w-full" data-carousel="slide">
-            <!-- Carousel wrapper -->
-            <div class="relative h-[500px] overflow-hidden rounded-lg md:h-[32vw]">
-                @forelse ($gallery->take(5) as $index => $item)
-                    <!-- Item {{ $index + 1 }} -->
-                    <div class="hidden duration-700 ease-in-out"
-                        data-carousel-item="{{ $index === 0 ? 'active' : '' }}">
-                        <img src="{{ asset('storage/' . $item->link) }}" alt="{{ $item->judul }}" loading="lazy"
-                            class="absolute block w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                <div id="gallery" class="relative w-full" data-carousel="slide">
+                    <!-- Carousel wrapper -->
+                    <div class="relative h-[500px] overflow-hidden rounded-xl md:h-[32vw]">
+                        @forelse ($gallery->take(5) as $index => $item)
+                            <!-- Item {{ $index + 1 }} -->
+                            <div class="hidden duration-700 ease-in-out"
+                                data-carousel-item="{{ $index === 0 ? 'active' : '' }}">
+                                <img src="{{ asset('storage/' . $item->link) }}" alt="{{ $item->judul }}"
+                                    loading="lazy"
+                                    class="absolute block w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                            </div>
+                        @empty
+                            <!-- Default item when no gallery items -->
+                            <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
+                                <div
+                                    class="absolute inset-0 flex items-center justify-center w-full h-full bg-gray-100/50">
+                                    <p class="text-gray-500 text-center">Belum ada gambar di galeri.</p>
+                                </div>
+                            </div>
+                        @endforelse
                     </div>
-                @empty
-                    <!-- Default item when no gallery items -->
-                    <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
-                        <div class="absolute inset-0 flex items-center justify-center w-full h-full bg-gray-100/50">
-                            <p class="text-gray-500 text-center">Belum ada gambar di galeri.</p>
+                    <!-- Indicators (optional) -->
+                    @if ($gallery->count() > 1)
+                        <div
+                            class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
+                            @forelse ($gallery->take(5) as $inex => $item)
+                                <button type="button" class="w-[6px] h-[6px] rounded-full"
+                                    aria-current="{{ $index === 0 ? 'true' : 'false' }}"
+                                    aria-label="Slide {{ $index + 1 }}"
+                                    data-carousel-slide-to="{{ $index }}"></button>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+        {{-- galleri end --}}
+
+        {{-- lembaga --}}
+        <div class="px-4 sm:px-6 lg:px-12 py-16">
+            <div class="max-w-7xl mx-auto">
+                <h1 class="text-center pb-5 text-4xl font-semibold text-gray-900">
+                    LEMBAGA TERKAIT
+                </h1>
+                <div class="mx-auto mt-10 overflow-hidden logo-container">
+                    <div class="logo-scroll">
+                        <!-- First set of logos -->
+                        <div class="logo-set">
+                            @foreach ([['src' => 'pt-indo-apps-solusindo.png', 'alt' => 'PT Indo Apps Solusindo', 'link' => 'https://indoapps.id'], ['src' => 'denpasar-institute.png', 'alt' => 'Denpasar Institute', 'link' => 'https://denpasarinstitute.ac.id'], ['src' => 'gcom.png', 'alt' => 'GCOM', 'link' => '#'], ['src' => 'indo-berkah-konstruksi.png', 'alt' => 'Indo Berkah Konstruksi', 'link' => '#'], ['src' => 'indo-consulting.png', 'alt' => 'Indo Consulting', 'link' => '#'], ['src' => 'latifaba.png', 'alt' => 'Latifaba', 'link' => 'https://www.latifaba.com/'], ['src' => 'nyaman-care.png', 'alt' => 'Nyaman Care', 'link' => '#'], ['src' => 'penerbit-yaguwipa.png', 'alt' => 'Penerbit Yaguwipa', 'link' => 'https://www.penerbityaguwipa.id/'], ['src' => 'robotic.png', 'alt' => 'Robotic', 'link' => '#'], ['src' => 'teknika-solusinda.png', 'alt' => 'Teknika Solusinda', 'link' => '#']] as $logo)
+                                <div class="logo-item">
+                                    <a href="{{ $logo['link'] }}" target="_blank" rel="noopener noreferrer"
+                                        class="hover:opacity-75 transition-opacity duration-200">
+                                        <img class="max-h-24 w-auto object-contain"
+                                            src="{{ asset('img/lembaga-logo/' . $logo['src']) }}"
+                                            alt="{{ $logo['alt'] }}" width="158" height="48" />
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Duplicate set for infinite scroll -->
+                        <div class="logo-set">
+                            @foreach ([['src' => 'pt-indo-apps-solusindo.png', 'alt' => 'PT Indo Apps Solusindo', 'link' => 'https://indoapps.id'], ['src' => 'denpasar-institute.png', 'alt' => 'Denpasar Institute', 'link' => 'https://denpasarinstitute.ac.id'], ['src' => 'gcom.png', 'alt' => 'GCOM', 'link' => '#'], ['src' => 'indo-berkah-konstruksi.png', 'alt' => 'Indo Berkah Konstruksi', 'link' => '#'], ['src' => 'indo-consulting.png', 'alt' => 'Indo Consulting', 'link' => '#'], ['src' => 'latifaba.png', 'alt' => 'Latifaba', 'link' => 'https://www.latifaba.com/'], ['src' => 'nyaman-care.png', 'alt' => 'Nyaman Care', 'link' => '#'], ['src' => 'penerbit-yaguwipa.png', 'alt' => 'Penerbit Yaguwipa', 'link' => 'https://www.penerbityaguwipa.id/'], ['src' => 'robotic.png', 'alt' => 'Robotic', 'link' => '#'], ['src' => 'teknika-solusinda.png', 'alt' => 'Teknika Solusinda', 'link' => '#']] as $logo)
+                                <div class="logo-item">
+                                    <a href="{{ $logo['link'] }}" target="_blank" rel="noopener noreferrer"
+                                        class="hover:opacity-75 transition-opacity duration-200">
+                                        <img class="max-h-24 w-auto object-contain"
+                                            src="{{ asset('img/lembaga-logo/' . $logo['src']) }}"
+                                            alt="{{ $logo['alt'] }}" width="158" height="48" />
+                                    </a>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
-                @endforelse
-            </div>
-
-            <!-- Indicators (optional) -->
-            @if ($gallery->count() > 1)
-                <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
-                    @forelse ($gallery->take(5) as $inex => $item)
-                        <button type="button" class="w-[6px] h-[6px] rounded-full"
-                            aria-current="{{ $index === 0 ? 'true' : 'false' }}"
-                            aria-label="Slide {{ $index + 1 }}"
-                            data-carousel-slide-to="{{ $index }}"></button>
-                    @endforeach
-                </div>
-            @endif
-        </div>
-    </div>
-    {{-- galleri end --}}
-
-    {{-- lembaga --}}
-    <div class="bg-white py-15 sm:py-32">
-        <div class="mx-auto px-4 sm:px-6 lg:px-14">
-            <h1 class="text-center pb-5 text-4xl font-semibold text-gray-900">
-                LEMBAGA TERKAIT
-            </h1>
-            <div class="mx-auto mt-10 overflow-hidden logo-container">
-                <div class="logo-scroll">
-                    <!-- First set of logos -->
-                    <div class="logo-set">
-                        @foreach ([['src' => 'pt-indo-apps-solusindo.png', 'alt' => 'PT Indo Apps Solusindo', 'link' => 'https://indoapps.id'], ['src' => 'denpasar-institute.png', 'alt' => 'Denpasar Institute', 'link' => 'https://denpasarinstitute.ac.id'], ['src' => 'gcom.png', 'alt' => 'GCOM', 'link' => '#'], ['src' => 'indo-berkah-konstruksi.png', 'alt' => 'Indo Berkah Konstruksi', 'link' => '#'], ['src' => 'indo-consulting.png', 'alt' => 'Indo Consulting', 'link' => '#'], ['src' => 'latifaba.png', 'alt' => 'Latifaba', 'link' => 'https://www.latifaba.com/'], ['src' => 'nyaman-care.png', 'alt' => 'Nyaman Care', 'link' => '#'], ['src' => 'penerbit-yaguwipa.png', 'alt' => 'Penerbit Yaguwipa', 'link' => 'https://www.penerbityaguwipa.id/'], ['src' => 'robotic.png', 'alt' => 'Robotic', 'link' => '#'], ['src' => 'teknika-solusinda.png', 'alt' => 'Teknika Solusinda', 'link' => '#']] as $logo)
-                            <div class="logo-item">
-                                <a href="{{ $logo['link'] }}" target="_blank" rel="noopener noreferrer"
-                                    class="hover:opacity-75 transition-opacity duration-200">
-                                    <img class="max-h-32 w-auto object-contain"
-                                        src="{{ asset('img/lembaga-logo/' . $logo['src']) }}"
-                                        alt="{{ $logo['alt'] }}" width="158" height="48" />
-                                </a>
-                            </div>
-                        @endforeach
-                    </div>
-
-                    <!-- Duplicate set for infinite scroll -->
-                    <div class="logo-set">
-                        @foreach ([['src' => 'pt-indo-apps-solusindo.png', 'alt' => 'PT Indo Apps Solusindo', 'link' => 'https://indoapps.id'], ['src' => 'denpasar-institute.png', 'alt' => 'Denpasar Institute', 'link' => 'https://denpasarinstitute.ac.id'], ['src' => 'gcom.png', 'alt' => 'GCOM', 'link' => '#'], ['src' => 'indo-berkah-konstruksi.png', 'alt' => 'Indo Berkah Konstruksi', 'link' => '#'], ['src' => 'indo-consulting.png', 'alt' => 'Indo Consulting', 'link' => '#'], ['src' => 'latifaba.png', 'alt' => 'Latifaba', 'link' => 'https://www.latifaba.com/'], ['src' => 'nyaman-care.png', 'alt' => 'Nyaman Care', 'link' => '#'], ['src' => 'penerbit-yaguwipa.png', 'alt' => 'Penerbit Yaguwipa', 'link' => 'https://www.penerbityaguwipa.id/'], ['src' => 'robotic.png', 'alt' => 'Robotic', 'link' => '#'], ['src' => 'teknika-solusinda.png', 'alt' => 'Teknika Solusinda', 'link' => '#']] as $logo)
-                            <div class="logo-item">
-                                <a href="{{ $logo['link'] }}" target="_blank" rel="noopener noreferrer"
-                                    class="hover:opacity-75 transition-opacity duration-200">
-                                    <img class="max-h-32 w-auto object-contain"
-                                        src="{{ asset('img/lembaga-logo/' . $logo['src']) }}"
-                                        alt="{{ $logo['alt'] }}" width="158" height="48" />
-                                </a>
-                            </div>
-                        @endforeach
-                    </div>
-
                 </div>
             </div>
             {{-- <div class="mx-auto mt-10 max-w-6xl overflow-hidden logo-container">
@@ -352,10 +367,9 @@
                 </div>
             </div> --}}
         </div>
-    </div>
+    </main>
     {{-- end lembaga --}}
+    <x-footer />
 </body>
-
-<x-footer />
 
 </html>

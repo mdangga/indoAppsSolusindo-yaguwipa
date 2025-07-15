@@ -28,133 +28,141 @@
 @endphp
 
 <body>
+    {{-- loader --}}
+    <x-loader-component />
+    {{-- navbar --}}
     <x-navbar :menus="$menus" />
+    {{-- contact-btt --}}
+    <x-contact-btt-floating email="support@mycompany.com" phone="+62 21-1234-5678" whatsapp="6281234567890"
+        size="default" :auto-hide="true" :auto-hide-delay="3000" :show-back-to-top="true" :scroll-threshold="200" />
+    <main>
+        <div class="px-4 sm:px-6 lg:px-12 py-16">
+            <div class="max-w-7xl mx-auto">
+                <x-header-page title="GALLERI"
+                    description="Galeri ini menyajikan koleksi gambar dari berbagai aktivitas, baik yang diselenggarakan oleh yayasan maupun momen-momen penting lainnya." />
 
-    <div class="px-4 sm:px-6 lg:px-40 py-20">
-        <x-header-page title="GALLERI"
-            description="Galeri ini menyajikan koleksi gambar dari berbagai aktivitas, baik yang diselenggarakan oleh yayasan maupun momen-momen penting lainnya." />
-
-        <!-- Masonry Grid -->
-        <div id="masonry-container" class="columns-1 sm:columns-2 md:columns-3 gap-6">
-            @forelse ($gallery->take(8) as $item)
-                @php
-                    $isYoutube = $item->kategori === 'youtube';
-                    $youtubeId = $isYoutube ? extractYoutubeId($item->link) : null;
-                    $thumbnail =
-                        $isYoutube && $youtubeId
-                            ? "https://img.youtube.com/vi/$youtubeId/hqdefault.jpg"
-                            : asset('storage/' . $item->link);
-                @endphp
-                <div class="break-inside-avoid mb-6 group cursor-pointer gallery-item" data-image="{{ $thumbnail }}"
-                    data-title="{{ $item->alt_text }}" data-type="{{ $item->kategori }}"
-                    data-link="{{ $item->link }}">
-                    <div
-                        class="relative overflow-hidden rounded-xl bg-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 ease-out">
-                        <img src="{{ $thumbnail }}" alt="{{ $item->alt_text }}"
-                            class="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                            loading="lazy" />
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <div class="absolute bottom-0 left-0 right-0 p-4">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center space-x-3">
-                                        <p class="text-white text-sm font-medium">{{ $item->alt_text }}</p>
+                <!-- Masonry Grid -->
+                <div id="masonry-container" class="columns-1 sm:columns-2 md:columns-3 gap-6">
+                    @forelse ($gallery->take(8) as $item)
+                        @php
+                            $isYoutube = $item->kategori === 'youtube';
+                            $youtubeId = $isYoutube ? extractYoutubeId($item->link) : null;
+                            $thumbnail =
+                                $isYoutube && $youtubeId
+                                    ? "https://img.youtube.com/vi/$youtubeId/hqdefault.jpg"
+                                    : asset('storage/' . $item->link);
+                        @endphp
+                        <div class="break-inside-avoid mb-6 group cursor-pointer gallery-item"
+                            data-image="{{ $thumbnail }}" data-title="{{ $item->alt_text }}"
+                            data-type="{{ $item->kategori }}" data-link="{{ $item->link }}">
+                            <div
+                                class="relative overflow-hidden rounded-xl bg-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 ease-out">
+                                <img src="{{ $thumbnail }}" alt="{{ $item->alt_text }}"
+                                    class="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                                    loading="lazy" />
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    <div class="absolute bottom-0 left-0 right-0 p-4">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center space-x-3">
+                                                <p class="text-white text-sm font-medium">{{ $item->alt_text }}</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @empty
+                        <div class="col-span-full text-center py-12">
+                            <div class="text-gray-400 mb-4">
+                                <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <p class="text-gray-500 text-lg">Belum ada gambar di galeri</p>
+                            <p class="text-gray-400 text-sm mt-1">Upload gambar untuk memulai koleksi Anda</p>
+                        </div>
+                    @endforelse
                 </div>
-            @empty
-                <div class="col-span-full text-center py-12">
-                    <div class="text-gray-400 mb-4">
-                        <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <p class="text-gray-500 text-lg">Belum ada gambar di galeri</p>
-                    <p class="text-gray-400 text-sm mt-1">Upload gambar untuk memulai koleksi Anda</p>
-                </div>
-            @endforelse
-        </div>
 
-        @if ($gallery->count() > 8)
-            <div class="text-center mt-12">
-                <button id="load-more-btn"
-                    class="opacity-75 w-full h-15 border border-gray-500 group relative bg-white text-black font-medium py-3 px-8 shadow-sm rounded-md hover:opacity-100 hover:border-gray-800 hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-300 ease-out flex items-center justify-center gap-2">
-                    <span>Load More</span>
+                @if ($gallery->count() > 8)
+                    <div class="text-center mt-12">
+                        <button id="load-more-btn"
+                            class="opacity-75 w-full h-15 border border-gray-500 group relative bg-white text-black font-medium py-3 px-8 shadow-sm rounded-md hover:opacity-100 hover:border-gray-800 hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-300 ease-out flex items-center justify-center gap-2">
+                            <span>Load More</span>
+                        </button>
+                    </div>
+                @endif
+
+                <div id="hidden-gallery" class="hidden">
+                    @foreach ($gallery->skip(8) as $index => $item)
+                        @php
+                            $isYoutube = $item->kategori === 'youtube';
+                            $youtubeId = $isYoutube ? extractYoutubeId($item->link) : null;
+                            $thumbnail =
+                                $isYoutube && $youtubeId
+                                    ? "https://img.youtube.com/vi/$youtubeId/hqdefault.jpg"
+                                    : asset('storage/' . $item->link);
+                        @endphp
+                        <div class="break-inside-avoid mb-6 group cursor-pointer gallery-item-hidden fade-in"
+                            data-index="{{ $index }}" data-image="{{ $thumbnail }}"
+                            data-title="{{ $item->alt_text }}">
+                            <div
+                                class="relative overflow-hidden rounded-xl bg-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 ease-out">
+                                <img src="{{ $thumbnail }}" alt="{{ $item->alt_text }}"
+                                    class="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                                    loading="lazy" />
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    <div class="absolute bottom-0 left-0 right-0 p-4">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center space-x-3">
+                                                <p class="text-white text-sm font-medium">{{ $item->alt_text }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div id="image-modal" class="fixed inset-0 z-50 bg-black/80 hidden items-center justify-center">
+                <!-- Close Button -->
+                <button id="modal-close-btn" class="absolute top-4 right-4 text-white hover:text-red-400 z-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                            d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59L7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12L5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4" />
+                    </svg>
                 </button>
-            </div>
-        @endif
 
-        <div id="hidden-gallery" class="hidden">
-            @foreach ($gallery->skip(8) as $index => $item)
-                @php
-                    $isYoutube = $item->kategori === 'youtube';
-                    $youtubeId = $isYoutube ? extractYoutubeId($item->link) : null;
-                    $thumbnail =
-                        $isYoutube && $youtubeId
-                            ? "https://img.youtube.com/vi/$youtubeId/hqdefault.jpg"
-                            : asset('storage/' . $item->link);
-                @endphp
-                <div class="break-inside-avoid mb-6 group cursor-pointer gallery-item-hidden fade-in"
-                    data-index="{{ $index }}" data-image="{{ $thumbnail }}"
-                    data-title="{{ $item->alt_text }}">
-                    <div
-                        class="relative overflow-hidden rounded-xl bg-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 ease-out">
-                        <img src="{{ $thumbnail }}" alt="{{ $item->alt_text }}"
-                            class="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                            loading="lazy" />
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <div class="absolute bottom-0 left-0 right-0 p-4">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center space-x-3">
-                                        <p class="text-white text-sm font-medium">{{ $item->alt_text }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <!-- Modal Content -->
+                <div class="relative w-full max-w-4xl max-h-[90vh] flex items-center justify-center p-4">
+                    <!-- YouTube Video -->
+                    <div class="w-full aspect-video hidden" id="modal-video-container">
+                        <iframe id="modal-video" class="w-full h-full rounded-md" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
                     </div>
+
+                    <!-- Image -->
+                    <img id="modal-image"
+                        class="hidden max-w-full max-h-[90vh] rounded-md object-contain bg-transparent"
+                        loading="lazy" />
                 </div>
-            @endforeach
-        </div>
-    </div>
 
-    <!-- Modal -->
-    <div id="image-modal" class="fixed inset-0 z-50 bg-black/80 hidden items-center justify-center">
-        <!-- Close Button -->
-        <button id="modal-close-btn" class="absolute top-4 right-4 text-white hover:text-red-400 z-50">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-                <path fill="currentColor"
-                    d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59L7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12L5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4" />
-            </svg>
-        </button>
-
-        <!-- Modal Content -->
-        <div class="relative w-full max-w-4xl max-h-[90vh] flex items-center justify-center p-4">
-            <!-- YouTube Video -->
-            <div class="w-full aspect-video hidden" id="modal-video-container">
-                <iframe id="modal-video" class="w-full h-full rounded-md" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe>
+                <!-- Title -->
+                <div class="absolute bottom-6 text-white text-center px-4 max-w-[80%]">
+                    <h3 id="modal-title" class="text-xl font-semibold drop-shadow-md"></h3>
+                </div>
             </div>
-
-            <!-- Image -->
-            <img id="modal-image" class="hidden max-w-full max-h-[90vh] rounded-md object-contain bg-transparent"
-                loading="lazy" />
         </div>
-
-        <!-- Title -->
-        <div class="absolute bottom-6 text-white text-center px-4 max-w-[80%]">
-            <h3 id="modal-title" class="text-xl font-semibold drop-shadow-md"></h3>
-        </div>
-    </div>
-
-
-
+    </main>
+    <x-footer />
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const loadMoreBtn = document.getElementById('load-more-btn');
@@ -282,6 +290,6 @@
     </script>
 </body>
 
-<x-footer />
+
 
 </html>
