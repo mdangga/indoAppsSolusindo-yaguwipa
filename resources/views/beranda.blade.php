@@ -60,13 +60,16 @@
                             Donasi
                         </a>
                         <a href="#berita-kegiatan"
-                            class="text-sm font-semibold text-gray-700 inline-flex justify-center items-center">
-                            Selengkapnya<svg class="ml-2 -mr-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
+                            class="group relative text-sm font-semibold text-gray-700 inline-flex justify-center items-center hover:text-gray-900 transition-colors duration-500">
+                            Selengkapnya
+                            <svg class="ml-2 w-4 h-4 transition-all duration-300 group-hover:scale-x-125 origin-left"
+                                fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd"
                                     d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
                                     clip-rule="evenodd"></path>
                             </svg>
+                            <span
+                                class="absolute bottom-0 left-0 w-0 h-0.5 bg-amber-300 transition-all duration-500 group-hover:w-full"></span>
                         </a>
                     </div>
                 </div>
