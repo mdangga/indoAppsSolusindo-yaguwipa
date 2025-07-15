@@ -84,31 +84,34 @@
                 @endphp
 
                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-4">
+                    <input type="hidden" name="delete_popup" id="delete_popup" value="0">
+
                     @foreach ($fields as $field => $config)
                         <div
                             class="group relative bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
-                            {{-- menampilkan data --}}
+
+                            {{-- Gambar Preview --}}
                             <div class="relative">
                                 <div
                                     class="relative overflow-hidden group-hover:scale-105 transition-transform duration-300">
                                     <img src="{{ !empty($profiles->$field) ? asset('storage/' . $profiles->$field) : asset('storage/img/img-placeholder.webp') }}"
                                         alt="{{ $config['title'] }}"
-                                        class="object-contain w-full h-32 {{ empty($profiles->$field) ? 'opacity-40 grayscale' : '' }} transition-all duration-300">
+                                        class="object-contain w-full h-32 {{ empty($profiles->$field) ? 'opacity-40 grayscale' : '' }} transition-all duration-300"
+                                        id="{{ $field }}-preview">
 
                                     @if (empty($profiles->$field))
                                         <div class="absolute inset-0 flex items-center justify-center bg-black/10">
                                             <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                                </path>
+                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                             </svg>
                                         </div>
                                     @endif
                                 </div>
 
-                                <!-- Status Badge -->
-                                <div class="absolute top-1 left-1 ">
+                                {{-- Status Badge --}}
+                                <div class="absolute top-2 left-1">
                                     @if (empty($profiles->$field))
                                         <span data-status="{{ $field }}"
                                             class="block items-center px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200">
@@ -121,9 +124,22 @@
                                         </span>
                                     @endif
                                 </div>
+                                {{-- Delete button --}}
+                                <div class="absolute top-2 right-12">
+                                    @if ($field === 'popup' && !empty($profiles->$field))
+                                        <button type="button" onclick="deletePopupImage()"
+                                            class="absolute text-white bg-red-700 hover:bg-red-100 hover:text-red-700 px-2 py-1 text-xs rounded-full transition-all duration-200">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                viewBox="0 0 24 24">
+                                                <path fill="currentColor"
+                                                    d="m20.37 8.91l-1 1.73l-12.13-7l1-1.73l3.04 1.75l1.36-.37l4.33 2.5l.37 1.37zM6 19V7h5.07L18 11v8a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2" />
+                                            </svg>
+                                        </button>
+                                    @endif
+                                </div>
                             </div>
 
-                            {{-- upload section --}}
+                            {{-- Upload Section --}}
                             <div class="p-6">
                                 <div class="space-y-1">
                                     <div class="text-center">
@@ -157,7 +173,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- File Info Display -->
                                     <div data-file-info="{{ $field }}"
                                         class="hidden bg-blue-50 border border-blue-200 rounded-lg p-3">
                                         <div class="flex items-center justify-between">
@@ -166,8 +181,7 @@
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                         stroke-width="2"
-                                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                                    </path>
+                                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                                 </svg>
                                                 <div>
                                                     <p data-file-name="{{ $field }}"
@@ -181,27 +195,23 @@
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                 </svg>
                                             </button>
                                         </div>
                                     </div>
 
-                                    {{-- format --}}
                                     <div class="text-center">
-                                        <p class="text-xs text-gray-500">
-                                            {{ $config['format'] }}
-                                        </p>
+                                        <p class="text-xs text-gray-500">{{ $config['format'] }}</p>
                                     </div>
 
-                                    {{-- error --}}
                                     @error($field)
                                         <div
                                             class="flex items-center space-x-2 text-red-600 bg-red-50 px-3 py-2 rounded-lg border border-red-200">
                                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd"
                                                     d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                                    clip-rule="evenodd"></path>
+                                                    clip-rule="evenodd" />
                                             </svg>
                                             <small class="text-sm">{{ $message }}</small>
                                         </div>
@@ -210,6 +220,7 @@
                             </div>
                         </div>
                     @endforeach
+
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 mt-4 items-start">
@@ -501,6 +512,41 @@
             elements.statusBadge.className =
                 'block items-center px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200';
         }
+
+        function deletePopupImage() {
+            const input = document.getElementById('popup-upload');
+            const image = document.getElementById('popup-preview');
+            const badge = document.querySelector('[data-status="popup"]');
+            const uploadText = document.querySelector('[data-upload-text="popup"]');
+            const uploadIcon = document.querySelector('[data-upload-icon="popup"]');
+            const fileInfo = document.querySelector('[data-file-info="popup"]');
+
+            // kosongkan input
+            input.value = '';
+
+            // tandai ingin hapus
+            document.getElementById('delete_popup').value = '1';
+
+            // update preview jadi placeholder
+            image.src = "{{ asset('storage/img/img-placeholder.webp') }}";
+            image.classList.add('opacity-40', 'grayscale');
+
+            // update badge
+            badge.textContent = 'Akan dihapus';
+            badge.className =
+                'block items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 border border-red-200';
+
+            // update upload
+            uploadText.textContent = 'Pilih file popup';
+            uploadText.className = 'text-sm font-medium';
+            uploadIcon.innerHTML =
+                `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>`;
+            uploadIcon.className = 'w-5 h-5';
+
+            // sembunyikan file info
+            if (fileInfo) fileInfo.classList.add('hidden');
+        }
+
 
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';

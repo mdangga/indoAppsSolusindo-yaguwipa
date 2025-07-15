@@ -59,16 +59,24 @@ class ProfileController extends Controller
         $data = $validator->validated();
 
         foreach (['logo', 'favicon', 'background', 'popup'] as $file) {
+            if ($file === 'popup' && $request->input('delete_popup') == '1') {
+                if ($profile->$file && Storage::disk('public')->exists($profile->$file)) {
+                    Storage::disk('public')->delete($profile->$file);
+                }
+                $data[$file] = null;
+                continue;
+            }
+
             if ($request->hasFile($file)) {
-                $oldFilePath = $profile->$file;
-                if ($oldFilePath && Storage::disk('public')->exists($oldFilePath)) {
-                    Storage::disk('public')->delete($oldFilePath);
+                if ($profile->$file && Storage::disk('public')->exists($profile->$file)) {
+                    Storage::disk('public')->delete($profile->$file);
                 }
                 $data[$file] = $request->file($file)->store('img', 'public');
             } else {
                 $data[$file] = $profile->$file;
             }
         }
+
 
         $profile->update($data);
 

@@ -1,8 +1,6 @@
-{{-- resources/views/components/contact-widget.blade.php --}}
 @props([
-    'email' => 'contact@example.com',
-    'phone' => '+62 812-3456-7890',
-    'whatsapp' => '6281234567890',
+    'email',
+    'phone',
     'autoHide' => true,
     'autoHideDelay' => 5000,
     'showBackToTop' => true,
@@ -11,6 +9,8 @@
 ])
 
 @php
+    $whatsapp = $site['yayasanSosmed']->filter(fn($item) => strtolower($item->nama) === 'whatsapp')->first()->link ?? null;
+
     // Size classes
     $sizes = [
         'sm' => [
@@ -58,7 +58,7 @@
 
             @if ($whatsapp)
                 <!-- WhatsApp -->
-                <a href="https://wa.me/{{ $whatsapp }}" target="_blank" rel="noopener noreferrer"
+                <a href="{{ $whatsapp }}" target="_blank" rel="noopener noreferrer"
                     class="contact-link flex items-center text-green-600 hover:text-green-800 p-2 rounded-md hover:bg-green-50 transition-all duration-200"
                     aria-label="Open WhatsApp chat">
                     <i class="fab fa-whatsapp w-5 mr-3" aria-hidden="true"></i>
