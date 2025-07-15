@@ -6,7 +6,7 @@
     'autoHideDelay' => 5000,
     'showBackToTop' => true,
     'scrollThreshold' => 300,
-    'size' => 'default',
+    'size' => 'default',,
 ])
 
 @php
@@ -90,9 +90,9 @@
 @if ($showBackToTop)
     <!-- Back to Top Button -->
     <button id="back-to-top"
-        class="back-to-top fixed {{ $currentSize['button'] }} items-center justify-center bg-blue-600 hover:bg-blue-700 text-white {{ $currentSize['icon'] }} rounded-full shadow-lg z-40 hover:scale-110 transition-all duration-400 ease-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hidden"
+        class="back-to-top fixed {{ $currentSize['button'] }} items-center justify-center bg-amber-400 hover:bg-amber-500 text-white {{ $currentSize['icon'] }} rounded-full shadow-lg z-40 hover:scale-110 transition-all duration-400 ease-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hidden"
         style="bottom: 6rem; right: 1.75rem;" aria-label="Back to top">
-        <i class="fas fa-arrow-up" aria-hidden="true"></i>
+        <i class="fas fa-arrow-up " aria-hidden="true"></i>
     </button>
 @endif
 
@@ -121,6 +121,39 @@
             transform: translateX(0);
         }
     }
+
+    @keyframes zoom-in {
+        0% {
+            opacity: 0;
+            transform: scale(0.3);
+        }
+
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    @keyframes zoom-out {
+        0% {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        100% {
+            opacity: 0;
+            transform: scale(0.3);
+        }
+    }
+
+    .animate-zoom-out {
+        animation: zoom-out 0.3s ease forwards;
+    }
+
+    .animate-zoom-in {
+        animation: zoom-in 0.3s ease forwards;
+    }
+
 
     .animate-fade-in {
         animation: fade-in 0.3s ease forwards;
@@ -210,7 +243,7 @@
         }
 
         .back-to-top {
-            bottom: 4rem !important;
+            bottom: 5rem !important;
             right: 1rem !important;
         }
 
@@ -395,12 +428,27 @@
 
                 scrollTimeout = setTimeout(() => {
                     if (window.scrollY > config.scrollThreshold) {
-                        backToTopBtn.classList.remove('hidden');
-                        backToTopBtn.classList.add('show');
+                        if (!backToTopBtn.classList.contains('show')) {
+                            backToTopBtn.classList.remove('hidden', 'animate-zoom-out');
+                            backToTopBtn.classList.add('show', 'animate-zoom-in');
+
+                            setTimeout(() => {
+                                backToTopBtn.classList.remove('animate-zoom-in');
+                            }, 300); // sama dengan durasi animasi
+                        }
                     } else {
-                        backToTopBtn.classList.remove('show');
-                        backToTopBtn.classList.add('hidden');
+                        if (backToTopBtn.classList.contains('show')) {
+                            backToTopBtn.classList.remove('animate-zoom-in');
+                            backToTopBtn.classList.add('animate-zoom-out');
+
+                            setTimeout(() => {
+                                backToTopBtn.classList.remove('show',
+                                    'animate-zoom-out');
+                                backToTopBtn.classList.add('hidden');
+                            }, 300);
+                        }
                     }
+
                 }, 10);
             });
 
