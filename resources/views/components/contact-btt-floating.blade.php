@@ -1,4 +1,3 @@
-{{-- resources/views/components/contact-widget.blade.php --}}
 @props([
     'email',
     'phone',
@@ -6,7 +5,7 @@
     'autoHideDelay' => 5000,
     'showBackToTop' => true,
     'scrollThreshold' => 300,
-    'size' => 'default',,
+    'size' => 'default',
 ])
 
 @php
