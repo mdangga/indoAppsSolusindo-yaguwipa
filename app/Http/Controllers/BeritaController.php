@@ -99,7 +99,18 @@ class BeritaController extends Controller
 
         $berita->increment('hit');
 
-        return view('berita', compact('berita'));
+        // berita populer
+        $berita_populer = Berita::orderBy('hit', 'desc')->take(5)->get();
+
+        // Ambil berita terkait berdasarkan kategori yang sama atau keyword
+        $berita_terkait = Berita::where('id_kategori_news_event', $berita->id_kategori_news_event)
+            ->where('id_berita', '!=', $berita->id_berita)
+            ->where('status', 'show')
+            ->latest()
+            ->take(4)
+            ->get();
+
+        return view('berita', compact('berita', 'berita_populer', 'berita_terkait'));
     }
 
     // mengupdate data

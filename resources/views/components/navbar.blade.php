@@ -4,23 +4,26 @@
     /* Styling kotak dropdown sebelum dibuka */
     .goog-te-gadget .goog-te-combo {
         background-color: rgba(255, 255, 255, 0.3) !important;
-        color: rgb(27, 27, 27) !important;
+        color: rgb(47, 47, 47) !important;
+        font-weight: 500 !important;
         border: 2px solid rgba(72, 72, 72, 0.084) !important;
         border-radius: 100px !important;
-        padding: 10px 24px !important;
+        padding: 10px 0px 10px 17px !important;
         font-size: 14px !important;
         font-family: "Instrument Sans", sans-serif !important;
         appearance: none !important;
-        background-image: url("data:image/svg+xml,%3Csvg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg fill='rgb(47, 47, 47)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
         background-repeat: no-repeat;
         background-position: right 0.3rem center;
-        background-size: 1rem;
+        background-size: 1.2rem;
         cursor: pointer;
         display: block !important;
         margin-bottom: 4px !important;
         top: 7.5px !important;
         position: relative !important;
         right: -70px !important;
+        max-width: 160px !important;
+        backdrop-filter: blur(5px) !important;
     }
 
     /* Saat dropdown difokuskan */
@@ -62,7 +65,7 @@
         display: inline-flex !important;
         align-items: center !important;
         gap: 2px !important;
-        font-size: 11px !important;
+        font-size: 9px !important;
         color: #666 !important;
         line-height: 1 !important;
         margin: 0 !important;
@@ -82,7 +85,7 @@
     .goog-logo-link {
         display: inline-flex !important;
         align-items: center !important;
-        font-size: 11px !important;
+        font-size: 10px !important;
         color: #717272 !important;
         text-decoration: none !important;
         font-weight: normal !important;
@@ -158,27 +161,32 @@
         float: none !important;
         clear: both !important;
     }
+
+
+    [x-cloak] {
+        display: none !important;
+    }
 </style>
 
 <script>
     function googleTranslateElementInit() {
         new google.translate.TranslateElement({
             pageLanguage: 'id',
-            includedLanguages: 'en,id,es,fr,de,ja,ko,zh',
+            // includedLanguages: 'en,id,es,fr,de,ja,ko,zh',
             layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL
         }, 'google_translate_element');
     };
 </script>
 
 
-<header class="absolute w-full z-50">
+<header x-data="{ sidebarOpen: false }" class="absolute w-full z-50">
     <!-- Logo dan Login Button -->
     <div class="w-full bg-transparent p-6 lg:px-8">
         <div class="grid grid-cols-2 lg:grid-cols-3 items-center gap-4">
             <div class="flex justify-start">
                 <a href="{{ route('beranda') }}" class="-m-1.5 p-1.5">
-                    <img class="h-[75px] w-auto" src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}"
-                        alt="Company Logo" />
+                    <img class="h-[50px] sm:h-[75px] w-auto"
+                        src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" alt="Company Logo" />
                 </a>
             </div>
 
@@ -194,12 +202,14 @@
                 </a>
             </div>
 
+            <!-- Tombol menu (Mobile) -->
             <div class="flex lg:hidden justify-end">
-                <button type="button" id="mobile-menu-button"
-                    class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
-                    <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                <button @click="sidebarOpen = true" type="button"
+                    class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 bg-white/30 backdrop-blur-sm cursor-pointer">
+                    <span class="sr-only">Open menu</span>
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                        <path clip-rule="evenodd" fill-rule="evenodd"
+                            d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 5.25a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10zm0 5.25a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 15.25z" />
                     </svg>
                 </button>
             </div>
@@ -220,6 +230,10 @@
                             <p
                                 class="relative text-sm font-semibold text-gray-800 drop-shadow-md group transition-transform duration-200">
                                 {{ $menu->title }}
+                                <span
+                                    class="absolute bottom-0 right-0 h-[2px] bg-amber-200 transition-all duration-300 
+                    {{ $isActive ? 'w-full left-0' : 'w-0 group-hover:w-full group-hover:right-auto left-0' }}">
+                                </span>
                             </p>
 
                             <div
@@ -254,73 +268,77 @@
             </div>
         </div>
     </nav>
-    <div id="mobile-menu" class="lg:hidden fixed inset-0 z-50 hidden" role="dialog" aria-modal="true">
-        <div class="fixed inset-0 bg-black/25"></div>
-        <div
-            class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-            <div class="mt-6 px-4 flex items-center justify-between">
-                <a href="#" class="-m-1.5 p-1.5">
-                    <img class="h-8 w-auto" src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}"
-                        alt="" />
-                </a>
-                <button type="button" id="close-menu-button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
-                    <span class="sr-only">Close menu</span>
-                    <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                        aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-            <div class="mt-6 flow-root">
-                <div class="-my-6 divide-y divide-gray-500/10">
-                    <div class="space-y-2 py-6" x-data="{ openDropdown: null }">
-                        @foreach ($menus as $menu)
-                            @php
-                                $isActive = rtrim(request()->url(), '/') === rtrim($menu->url, '/');
-                            @endphp
 
-                            @if ($menu->children->count())
-                                <div class="border border-gray-200 rounded-lg">
-                                    <button
-                                        @click="openDropdown === {{ $menu->id_menus }} ? openDropdown = null : openDropdown = {{ $menu->id_menus }}"
-                                        class="w-full flex justify-between items-center px-3 py-2 font-semibold text-gray-900">
-                                        <span>{{ $menu->title }}</span>
-                                        <svg class="h-5 w-5 transform transition-transform"
-                                            :class="openDropdown === {{ $menu->id_menus }} ? 'rotate-180' : ''"
-                                            fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 9l-7 7-7-7"></path>
-                                        </svg>
-                                    </button>
+    <!-- Overlay -->
+    <div x-show="sidebarOpen" x-cloak x-transition.opacity class="fixed inset-0 bg-black/25 z-40"
+        @click="sidebarOpen = false">
+    </div>
 
-                                    <div x-show="openDropdown === {{ $menu->id_menus }}" x-collapse>
-                                        @foreach ($menu->children as $sub)
-                                            <a href="{{ $sub->url }}"
-                                                class="block px-6 py-2 text-sm text-gray-700 hover:bg-blue-100">
-                                                {{ $sub->title }}
-                                            </a>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            @else
-                                <a href="{{ $menu->url }}"
-                                    class="block px-3 py-2 text-base font-semibold text-gray-900 hover:bg-blue-100">
-                                    {{ $menu->title }}
-                                </a>
-                            @endif
-                        @endforeach
+    <!-- Sidebar panel -->
+    <div x-show="sidebarOpen" x-cloak x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
+        x-transition:leave="transition ease-in duration-200" x-transition:leave-start="translate-x-0"
+        x-transition:leave-end="translate-x-full"
+        class="fixed inset-y-0 right-0 z-50 w-full sm:max-w-sm bg-white p-6 overflow-y-auto ring-1 ring-gray-900/10"
+        @click.away="sidebarOpen = false">
+        <!-- Header Sidebar -->
+        <div class="flex items-center justify-between mb-6">
+            <a href="#" class="-m-1.5 p-1.5">
+                <img class="h-8 w-auto" src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" alt="Logo" />
+            </a>
+            <button @click="sidebarOpen = false" type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+                <span class="sr-only">Close menu</span>
+                <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
 
-                    </div>
+        <!-- Menu List -->
+        <div x-data="{ openDropdown: null }">
+            <div class="space-y-2">
+                @foreach ($menus as $menu)
+                    @php
+                        $isActive = rtrim(request()->url(), '/') === rtrim($menu->url, '/');
+                    @endphp
 
-
-                    <div class="py-6">
-                        <a href="{{ route('login') }}"
-                            class="-mx-3 block px-3 py-2.5 text-base/7 font-semibold text-gray-900 text-center rounded-full hover:bg-blue-100">
-                            Log in
+                    @if ($menu->children->count())
+                        <div class="border border-gray-200 rounded-lg">
+                            <button
+                                @click="openDropdown === {{ $menu->id_menus }} ? openDropdown = null : openDropdown = {{ $menu->id_menus }}"
+                                class="w-full flex justify-between items-center px-3 py-2 font-semibold text-gray-900">
+                                <span>{{ $menu->title }}</span>
+                                <svg class="h-5 w-5 transform transition-transform"
+                                    :class="openDropdown === {{ $menu->id_menus }} ? 'rotate-180' : ''" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div x-show="openDropdown === {{ $menu->id_menus }}" x-collapse>
+                                @foreach ($menu->children as $sub)
+                                    <a href="{{ $sub->url }}"
+                                        class="block px-6 py-2 text-sm text-gray-700 hover:bg-blue-100">
+                                        {{ $sub->title }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @else
+                        <a href="{{ $menu->url }}"
+                            class="block px-3 py-2 text-base font-semibold text-gray-900 hover:bg-blue-100 rounded-lg">
+                            {{ $menu->title }}
                         </a>
-                    </div>
-                </div>
+                    @endif
+                @endforeach
+            </div>
+
+            <!-- Login Button -->
+            <div class="mt-6">
+                <a href="{{ route('login') }}"
+                    class="block w-full text-center bg-amber-100 py-2.5 rounded-full font-semibold text-gray-900 hover:bg-blue-100 md:px-7">
+                    Log in
+                </a>
             </div>
         </div>
     </div>

@@ -1,6 +1,6 @@
 @props(['item'])
 <div
-    class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] flex flex-col h-full">
+    class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] flex flex-col h-full">
 
     <!-- Image Container -->
     <div class="relative">

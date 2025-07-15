@@ -17,7 +17,7 @@
 .logo-scroll {
     display: flex;
     width: max-content;
-    animation: scroll-left 25s linear infinite;
+    animation: scroll-left 40s linear infinite;
     white-space: nowrap;
 }
 
@@ -34,7 +34,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 158px;
+    width: 128px;
 }
 
 .logo-container::before,
@@ -42,7 +42,7 @@
     content: "";
     position: absolute;
     top: 0;
-    width: 100px;
+    width: 200px;
     height: 100%;
     z-index: 1;
     pointer-events: none;
