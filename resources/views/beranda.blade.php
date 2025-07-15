@@ -20,8 +20,13 @@
 </head>
 
 <body>
+    {{-- laoder --}}
+    <x-loader-component />
     {{-- navbar --}}
     <x-navbar :menus="$menus" />
+    {{-- floating button --}}
+    {{-- 6. KONFIGURASI LENGKAP --}}
+    <x-contact-btt-floating email="support@mycompany.com" phone="+62 21-1234-5678" whatsapp="6281234567890" size="default" :auto-hide="true" :auto-hide-delay="3000" :show-back-to-top="true" :scroll-threshold="200" />
 
     {{-- hero --}}
     <div class="relative flex items-center justify-center h-screen">
