@@ -77,7 +77,7 @@
         </div>
         {{-- hero end --}}
         <section class="px-4 sm:px-6 lg:px-12 py-16">
-            <div class="max-w-7xl mx-auto">
+            {{-- <div class="max-w-7xl mx-auto">
                 <h1 class="text-3xl text-center font-semibold text-gray-900 pb-10">
                     PROGRAM UNGGULAN
                 </h1>
@@ -145,7 +145,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </section>
 
         {{-- berita berita --}}

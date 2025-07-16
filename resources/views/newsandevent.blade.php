@@ -34,6 +34,14 @@
                     description="Beragam informasi dan berita terkini dari berbagai bidang, baik seputar yayasan maupun topik umum lainnya yang relevan
                         dan inspiratif." />
 
+                @php
+                    $page = request('page', 1);
+                    $fromCache = Cache::has("berita_page_{$page}");
+                @endphp
+
+                <div class="text-xs text-gray-500 italic mb-2">
+                    {{ $fromCache ? '🟢 Data dari CACHE' : '🔴 Data dari DATABASE' }}
+                </div>
                 <!-- Berita dan Kegiatan Grid - 4 columns, unlimited rows -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-10"
                     data-aos="fade-up">

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Berita extends Model
 {
@@ -32,7 +33,20 @@ class Berita extends Model
         'dibaca' => 'integer',
     ];
 
-    public function KategoriNewsEvent(){
+    public function KategoriNewsEvent()
+    {
         return $this->belongsTo(KategoriNewsEvent::class, 'id_kategori_news_event', 'id_kategori_news_event');
+    }
+
+    public function clearCache()
+    {
+        Cache::forget("berita_detail_{$this->slug}");
+        Cache::forget("berita_terkait_{$this->id_berita}");
+        Cache::forget('berita_populer');
+
+        // Jika ingin fleksibel, bisa sesuaikan jumlah halaman
+        foreach (range(1, 5) as $page) {
+            Cache::forget("berita_page_{$page}");
+        }
     }
 }
