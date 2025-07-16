@@ -97,18 +97,6 @@
 
 <!-- Styles -->
 <style>
-    @keyframes fade-in {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
     @keyframes slide-in {
         from {
             opacity: 0;
@@ -118,6 +106,18 @@
         to {
             opacity: 1;
             transform: translateX(0);
+        }
+    }
+
+    @keyframes slide-out {
+        from {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        to {
+            opacity: 0;
+            transform: translateX(20px);
         }
     }
 
@@ -145,6 +145,20 @@
         }
     }
 
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+        }
+
+        70% {
+            box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+        }
+
+        100% {
+            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+        }
+    }
+
     .animate-zoom-out {
         animation: zoom-out 0.3s ease forwards;
     }
@@ -153,13 +167,12 @@
         animation: zoom-in 0.3s ease forwards;
     }
 
-
-    .animate-fade-in {
-        animation: fade-in 0.3s ease forwards;
-    }
-
     .animate-slide-in {
         animation: slide-in 0.3s ease forwards;
+    }
+
+    .animate-slide-out {
+        animation: slide-out 0.3s ease forwards;
     }
 
     /* Smooth transitions for contact box */
@@ -184,20 +197,6 @@
     /* Pulse animation for toggle button */
     .pulse-animation {
         animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-        0% {
-            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
-        }
-
-        70% {
-            box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
-        }
-
-        100% {
-            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
-        }
     }
 
     /* Hover effects for contact links */
@@ -322,6 +321,7 @@
             if (!contactBox) return;
 
             contactBox.classList.remove('hidden');
+            contactBox.classList.remove('animate-slide-out');
             contactBox.setAttribute('aria-hidden', 'false');
 
             // Force reflow to ensure animation runs
@@ -353,6 +353,7 @@
 
             contactBox.classList.remove('show');
             contactBox.classList.remove('animate-slide-in');
+            contactBox.classList.add('animate-slide-out');
             contactBox.setAttribute('aria-hidden', 'true');
 
             // Update toggle button aria-expanded

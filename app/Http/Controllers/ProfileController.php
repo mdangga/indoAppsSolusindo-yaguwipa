@@ -6,7 +6,8 @@ use App\Models\Profiles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Symfony\Component\HttpKernel\Profiler\Profile;
+use Intervention\Image\Laravel\Facades\Image;
+
 
 class ProfileController extends Controller
 {
@@ -71,7 +72,19 @@ class ProfileController extends Controller
                 if ($profile->$file && Storage::disk('public')->exists($profile->$file)) {
                     Storage::disk('public')->delete($profile->$file);
                 }
-                $data[$file] = $request->file($file)->store('img', 'public');
+
+                if ($file === 'popup') {
+                    $image = $request->file($file);
+                    $filename = 'img/' . uniqid('popup_') . '.webp';
+
+                    $webp = Image::read($image)->toWebp(80);
+                    Storage::disk('public')->put($filename, $webp);
+
+                    $data[$file] = $filename;
+                } else {
+                    // Simpan biasa tanpa konversi
+                    $data[$file] = $request->file($file)->store('img', 'public');
+                }
             } else {
                 $data[$file] = $profile->$file;
             }

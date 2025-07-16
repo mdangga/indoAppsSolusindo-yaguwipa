@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Berita;
 use App\Models\KategoriNewsEvent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Intervention\Image\Laravel\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class BeritaController extends Controller
@@ -14,9 +18,15 @@ class BeritaController extends Controller
     // menampilkan semua data dengan dibagi menjadi 8 data perpage
     public function index()
     {
-        $berita = Berita::latest()
-            ->where('status', 'show')
-            ->paginate(8);
+        $page = request('page', 1);
+
+        $berita = Cache::remember("berita_page_{$page}", now()->addHours(1), function () {
+            Log::info('Querying newsall from DB');
+            return Berita::latest()
+                ->where('status', 'show')
+                ->paginate(8);
+        });
+
 
         return view('newsandevent', compact('berita'));
     }
@@ -51,6 +61,35 @@ class BeritaController extends Controller
             ->make(true);
     }
 
+    // menampilkan data
+    public function show($slug)
+    {
+        $berita = Cache::remember("berita_detail_{$slug}", now()->addHours(1), function () use ($slug) {
+            Log::info('Querying newsslug from DB');
+            return Berita::where('slug', $slug)
+                ->where('status', 'show')
+                ->firstOrFail();
+        });
+
+
+        $berita->increment('hit');
+
+        $berita_populer = Cache::remember('berita_populer', now()->addHours(1), function () {
+            return Berita::orderBy('hit', 'desc')->take(5)->get();
+        });
+
+        $berita_terkait = Cache::remember("berita_terkait_{$berita->id_berita}", now()->addHours(1), function () use ($berita) {
+            return Berita::where('id_kategori_news_event', $berita->id_kategori_news_event)
+                ->where('id_berita', '!=', $berita->id_berita)
+                ->where('status', 'show')
+                ->latest()
+                ->take(4)
+                ->get();
+        });
+
+        return view('berita', compact('berita', 'berita_populer', 'berita_terkait'));
+    }
+
     // mengirim data untuk membuat berita
     public function store(Request $request)
     {
@@ -81,36 +120,20 @@ class BeritaController extends Controller
         $data['tanggal_publish'] = $data['status'] === 'show' ? now() : null;
 
         if ($request->hasFile('thumbnail')) {
-            $path = $request->file('thumbnail')->store('img/thumbnail-berita', 'public');
-            $data['thumbnail'] = $path;
+            $image = $request->file('thumbnail');
+            $filename = 'img/thumbnail-berita/' . uniqid() . '.webp';
+
+            $img = Image::read($image)
+                ->toWebp(80);
+            Storage::disk('public')->put($filename, $img);
+            $data['thumbnail'] = $filename;
         }
 
-        Berita::create($data);
+
+        $berita = Berita::create($data);
+        $berita->clearCache();
 
         return redirect()->route('dashboard')->with('success', 'Berita berhasil ditambahkan!');
-    }
-
-    // menampilkan data
-    public function show($slug)
-    {
-        $berita = Berita::where('slug', $slug)
-            ->where('status', 'show')
-            ->firstOrFail();
-
-        $berita->increment('hit');
-
-        // berita populer
-        $berita_populer = Berita::orderBy('hit', 'desc')->take(5)->get();
-
-        // Ambil berita terkait berdasarkan kategori yang sama atau keyword
-        $berita_terkait = Berita::where('id_kategori_news_event', $berita->id_kategori_news_event)
-            ->where('id_berita', '!=', $berita->id_berita)
-            ->where('status', 'show')
-            ->latest()
-            ->take(4)
-            ->get();
-
-        return view('berita', compact('berita', 'berita_populer', 'berita_terkait'));
     }
 
     // mengupdate data
@@ -160,17 +183,25 @@ class BeritaController extends Controller
 
         // Handle upload thumbnail
         if ($request->hasFile('thumbnail')) {
-            $path = $request->file('thumbnail')->store('img/thumbnail-berita', 'public');
-            $data['thumbnail'] = $path;
+            $image = $request->file('thumbnail');
+            $filename = 'img/thumbnail-berita/' . uniqid() . '.webp';
+
+            $img = Image::read($image)
+                ->toWebp(80);
+
+            Storage::disk('public')->put($filename, $img);
+            $data['thumbnail'] = $filename;
         } else {
             $data['thumbnail'] = $berita->thumbnail;
         }
+
 
         if ($request->has('status') && $request->status && !$berita->status) {
             $data['tanggal_publish'] = now();
         }
 
         $berita->update($data);
+        $berita->clearCache();
 
         return redirect()->route('dashboard')->with('success', 'Berita berhasil diperbarui!');
     }
@@ -185,6 +216,7 @@ class BeritaController extends Controller
         }
 
         $berita->delete();
+        $berita->clearCache();
 
         return redirect()->back()->with('sukses', 'Berita berhasil dihapus');
     }
