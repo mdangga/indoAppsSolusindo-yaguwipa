@@ -3,147 +3,332 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Tambah Berita</title>
-    @vite('resources/css/app.css') {{-- Abaikan ini jika belum pakai Vite --}}
+    <title>Tambah Program</title>
+    @vite('resources/css/app.css')
 </head>
-{{-- <body class="bg-gray-100 py-10">
-    <div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
-        <h1 class="text-2xl font-bold mb-4">Tambah Berita</h1>
+
+<body class="bg-gray-100 p-6">
+    <x-loader-component />
+
+    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-2xl font-bold mb-6 text-gray-800">Tambah Program Baru</h1>
+
         @if ($errors->any())
-            <div class="mb-4 bg-red-100 text-red-700 p-2 rounded">
-                <ul class="list-disc pl-5">
+            <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+                <strong class="font-medium">Terjadi kesalahan:</strong>
+                <ul class="mt-2">
                     @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
+                        <li>• {{ $error }}</li>
                     @endforeach
                 </ul>
             </div>
         @endif
 
-        <form action="/berita" method="POST" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('program.store') }}" enctype="multipart/form-data" class="space-y-6">
             @csrf
-            
-            <div class="mb-4">
-                <label for="judul" class="block font-semibold mb-1">Judul</label>
-                <input type="text" name="judul" id="judul" class="w-full border rounded p-2" required>
-            </div>
 
-            <div class="mb-4">
-                <label for="keyword" class="block font-semibold mb-1">keyword</label>
-                <input type="text" name="keyword" id="keyword" class="w-full border rounded p-2">
-            </div>
-
-            <div class="mb-4">
-                <label for="isi_berita" class="block font-semibold mb-1">Isi Berita</label>
-                <textarea name="isi_berita" id="isi_berita" rows="5" class="w-full border rounded p-2" required></textarea>
-            </div>
-
-            <div class="mb-4">
-                <label for="thumbnail" class="block font-semibold mb-1">Thumbnail</label>
-                <input type="file" name="thumbnail" id="thumbnail" class="w-full">
-            </div>
-
-            <div class="mb-4">
-                <label class="inline-flex items-center">
-                    <input type="checkbox" name="is_dipublish" value="1" class="mr-2">
-                    Publikasikan sekarang
+            <!-- Kategori Program -->
+            <div>
+                <label for="id_kategori_program" class="block mb-2 text-sm font-medium text-gray-900">
+                    Kategori Program <span class="text-red-500">*</span>
                 </label>
-            </div>
-
-            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-                Simpan Berita
-            </button>
-        </form>
-    </div>
-</body> --}}
-
-<body>
-    <x-loader-component />
-    <h1>Upload Galeri</h1>
-
-    @if ($errors->any())
-        <div style="color: red;">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-    <form action="" method="POST" enctype="multipart/form-data">
-        @csrf
-        @php
-            $fields = [
-                'company',
-                'website',
-                'telephone',
-                'fax',
-                'email',
-                'address',
-                'map',
-                'intro',
-                'meta_title',
-                'meta_description',
-                'meta_keyword',
-                'copyright',
-                'tentang',
-                'visi',
-                'misi',
-                'tujuan',
-                'makna_logo',
-            ];
-        @endphp
-
-        @foreach ($fields as $field)
-            <div class="mb-4">
-                <label for="{{ $field }}"
-                    class="block text-sm font-semibold capitalize">{{ str_replace('_', ' ', $field) }}</label>
-                <input type="text" name="{{ $field }}" id="{{ $field }}" value="{{ old($field) }}"
-                    class="w-full border rounded px-4 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-300">
-                @error($field)
-                    <small class="text-red-500">{{ $message }}</small>
+                <select name="id_kategori_program" id="id_kategori_program"
+                    class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                    required>
+                    <option value="">-- Pilih Kategori --</option>
+                    @foreach ($program as $kategoris)
+                        <option value="{{ $kategoris->id_kategori_program }}"
+                            {{ old('id_kategori_program', $kategori->id_kategori_program ?? '') == $kategoris->id_kategori_program ? 'selected' : '' }}>
+                            {{ $kategoris->nama }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('id_kategori_program')
+                    <small class="text-red-600 mt-1 block">{{ $message }}</small>
                 @enderror
             </div>
-        @endforeach
 
-        <div class="mb-4">
-            <label for="logo" class="block text-sm font-semibold">Logo</label>
-            <input type="file" name="logo" id="logo"
-                class="w-full border rounded px-4 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-300">
-            @error('logo')
-                <small class="text-red-500">{{ $message }}</small>
-            @enderror
-        </div>
+            <!-- Nama Program -->
+            <div>
+                <label for="nama" class="block mb-2 text-sm font-medium text-gray-900">
+                    Nama Program <span class="text-red-500">*</span>
+                </label>
+                <input type="text" name="nama" id="nama" value="{{ old('nama') }}" 
+                    placeholder="Masukkan nama program"
+                    class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5" 
+                    required>
+                @error('nama')
+                    <small class="text-red-600 mt-1 block">{{ $message }}</small>
+                @enderror
+            </div>
 
-        <div class="mb-4">
-            <label for="favicon" class="block text-sm font-semibold">Favicon</label>
-            <input type="file" name="favicon" id="favicon"
-                class="w-full border rounded px-4 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-300">
-            @error('favicon')
-                <small class="text-red-500">{{ $message }}</small>
-            @enderror
-        </div>
+            <!-- Deskripsi Program -->
+            <div>
+                <label for="deskripsi" class="block mb-2 text-sm font-medium text-gray-900">
+                    Deskripsi Program
+                </label>
+                <textarea name="deskripsi" id="deskripsi" rows="4" 
+                    placeholder="Masukkan deskripsi program"
+                    class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">{{ old('deskripsi') }}</textarea>
+                @error('deskripsi')
+                    <small class="text-red-600 mt-1 block">{{ $message }}</small>
+                @enderror
+            </div>
 
-        <div class="mb-4">
-            <label for="background" class="block text-sm font-semibold">Background</label>
-            <input type="file" name="background" id="background"
-                class="w-full border rounded px-4 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-300">
-            @error('background')
-                <small class="text-red-500">{{ $message }}</small>
-            @enderror
-        </div>
+            <!-- Upload Gambar -->
+            <div>
+                <label for="image_path" class="block mb-2 text-sm font-medium text-gray-900">
+                    Upload Gambar
+                </label>
+                <input type="file" name="image_path" id="image_path" accept="image/*"
+                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+                <p class="mt-1 text-sm text-gray-500">PNG, JPG, JPEG (Max. 2MB)</p>
+                @error('image_path')
+                    <small class="text-red-600 mt-1 block">{{ $message }}</small>
+                @enderror
+            </div>
 
-        <div class="mb-4">
-            <label for="popup" class="block text-sm font-semibold">Popup</label>
-            <input type="file" name="popup" id="popup"
-                class="w-full border rounded px-4 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-300">
-            @error('popup')
-                <small class="text-red-500">{{ $message }}</small>
-            @enderror
-        </div>
+            <!-- Status -->
+            <div>
+                <label for="status" class="block mb-2 text-sm font-medium text-gray-900">
+                    Status Program <span class="text-red-500">*</span>
+                </label>
+                <select name="status" id="status" 
+                    class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
+                    <option value="aktif" {{ old('status', 'aktif') == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                    <option value="nonaktif" {{ old('status') == 'nonaktif' ? 'selected' : '' }}>Non-Aktif</option>
+                </select>
+                @error('status')
+                    <small class="text-red-600 mt-1 block">{{ $message }}</small>
+                @enderror
+            </div>
 
+            <!-- Institusi Terlibat -->
+            <div>
+                <h2 class="text-lg font-semibold mb-4 text-gray-800">Institusi Terlibat</h2>
+                <div id="institusi-wrapper">
+                    <div class="institusi-group bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-md font-medium text-gray-700">Institusi 1</h3>
+                            <button type="button" onclick="hapusInstitusi(this)" 
+                                class="text-red-600 hover:text-red-800 text-sm font-medium hidden">
+                                Hapus
+                            </button>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1 text-sm font-medium text-gray-700">Pilih Institusi</label>
+                                <select name="institusi[0][id]" class="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
+                                    <option value="">-- Pilih Institusi --</option>
+                                    @foreach ($institusiList as $ins)
+                                        <option value="{{ $ins->id_institusi }}">{{ $ins->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block mb-1 text-sm font-medium text-gray-700">Atau Tambah Nama Baru</label>
+                                <input type="text" name="institusi[0][nama]" placeholder="Nama institusi baru"
+                                    class="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                            <div>
+                                <label class="block mb-1 text-sm font-medium text-gray-700">Alamat</label>
+                                <input type="text" name="institusi[0][alamat]" placeholder="Alamat institusi"
+                                    class="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
+                            </div>
+                            
+                            <div>
+                                <label class="block mb-1 text-sm font-medium text-gray-700">Website</label>
+                                <input type="url" name="institusi[0][website]" placeholder="https://website.com"
+                                    class="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <label class="block mb-1 text-sm font-medium text-gray-700">
+                                Tanggal Mulai <span class="text-red-500">*</span>
+                            </label>
+                            <input type="date" name="institusi[0][tanggal_mulai]" 
+                                class="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5" 
+                                required>
+                        </div>
+                    </div>
+                </div>
 
-        <button type="submit">Simpan</button>
-    </form>
+                <button type="button" onclick="tambahInstitusi()" 
+                    class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Tambah Institusi
+                </button>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="pt-4 border-t">
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="window.history.back()" 
+                        class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                        Batal
+                    </button>
+                    <button type="submit" 
+                        class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200">
+                        Simpan Program
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let index = 1;
+
+        function tambahInstitusi() {
+            const wrapper = document.getElementById('institusi-wrapper');
+            const div = document.createElement('div');
+            div.classList.add('institusi-group', 'bg-gray-50', 'border', 'border-gray-200', 'rounded-lg', 'p-4', 'mb-4');
+            div.innerHTML = `
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-md font-medium text-gray-700">Institusi ${index + 1}</h3>
+                    <button type="button" onclick="hapusInstitusi(this)" 
+                        class="text-red-600 hover:text-red-800 text-sm font-medium">
+                        Hapus
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block mb-1 text-sm font-medium text-gray-700">Pilih Institusi</label>
+                        <select name="institusi[${index}][id]" class="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
+                            <option value="">-- Pilih Institusi --</option>
+                            @foreach ($institusiList as $ins)
+                                <option value="{{ $ins->id_institusi }}">{{ $ins->nama }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block mb-1 text-sm font-medium text-gray-700">Atau Tambah Nama Baru</label>
+                        <input type="text" name="institusi[${index}][nama]" placeholder="Nama institusi baru"
+                            class="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <div>
+                        <label class="block mb-1 text-sm font-medium text-gray-700">Alamat</label>
+                        <input type="text" name="institusi[${index}][alamat]" placeholder="Alamat institusi"
+                            class="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
+                    </div>
+                    
+                    <div>
+                        <label class="block mb-1 text-sm font-medium text-gray-700">Website</label>
+                        <input type="url" name="institusi[${index}][website]" placeholder="https://website.com"
+                            class="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <label class="block mb-1 text-sm font-medium text-gray-700">
+                        Tanggal Mulai <span class="text-red-500">*</span>
+                    </label>
+                    <input type="date" name="institusi[${index}][tanggal_mulai]" 
+                        class="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5" 
+                        required>
+                </div>
+            `;
+            wrapper.appendChild(div);
+            index++;
+            
+            // Show delete button for first institusi if more than one exists
+            updateDeleteButtons();
+        }
+
+        function hapusInstitusi(button) {
+            const institusiGroup = button.closest('.institusi-group');
+            institusiGroup.remove();
+            
+            // Re-index the remaining institusi
+            reIndexInstitusi();
+            updateDeleteButtons();
+        }
+
+        function reIndexInstitusi() {
+            const institusiGroups = document.querySelectorAll('.institusi-group');
+            institusiGroups.forEach((group, newIndex) => {
+                // Update header
+                const header = group.querySelector('h3');
+                header.textContent = `Institusi ${newIndex + 1}`;
+                
+                // Update all input names
+                const inputs = group.querySelectorAll('input, select');
+                inputs.forEach(input => {
+                    const name = input.getAttribute('name');
+                    if (name && name.includes('institusi[')) {
+                        const newName = name.replace(/institusi\[\d+\]/, `institusi[${newIndex}]`);
+                        input.setAttribute('name', newName);
+                    }
+                });
+            });
+            
+            // Update global index
+            index = institusiGroups.length;
+        }
+
+        function updateDeleteButtons() {
+            const institusiGroups = document.querySelectorAll('.institusi-group');
+            const deleteButtons = document.querySelectorAll('.institusi-group button[onclick*="hapusInstitusi"]');
+            
+            deleteButtons.forEach(button => {
+                if (institusiGroups.length > 1) {
+                    button.classList.remove('hidden');
+                } else {
+                    button.classList.add('hidden');
+                }
+            });
+        }
+
+        // Validate form before submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const institusiGroups = document.querySelectorAll('.institusi-group');
+            let hasValidInstitusi = false;
+            
+            institusiGroups.forEach(group => {
+                const selectValue = group.querySelector('select').value;
+                const inputValue = group.querySelector('input[name*="[nama]"]').value;
+                
+                if (selectValue || inputValue.trim()) {
+                    hasValidInstitusi = true;
+                }
+            });
+            
+            if (!hasValidInstitusi) {
+                e.preventDefault();
+                alert('Minimal satu institusi harus diisi (pilih dari dropdown atau tambah nama baru).');
+            }
+        });
+
+        // Auto-hide/show institusi nama input based on select
+        document.addEventListener('change', function(e) {
+            if (e.target.matches('select[name*="institusi"][name*="[id]"]')) {
+                const group = e.target.closest('.institusi-group');
+                const namaInput = group.querySelector('input[name*="[nama]"]');
+                
+                if (e.target.value) {
+                    namaInput.value = '';
+                    namaInput.setAttribute('disabled', 'disabled');
+                    namaInput.style.opacity = '0.5';
+                } else {
+                    namaInput.removeAttribute('disabled');
+                    namaInput.style.opacity = '1';
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>

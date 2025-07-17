@@ -39,9 +39,6 @@
                     $fromCache = Cache::has("berita_page_{$page}");
                 @endphp
 
-                <div class="text-xs text-gray-500 italic mb-2">
-                    {{ $fromCache ? '🟢 Data dari CACHE' : '🔴 Data dari DATABASE' }}
-                </div>
                 <!-- Berita dan Kegiatan Grid - 4 columns, unlimited rows -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-10"
                     data-aos="fade-up">
@@ -110,6 +107,26 @@
                         @endif
                     </div>
                 @endif
+            </div>
+        </section>
+
+        <!-- SECTION: Berita Berdasarkan Kategori -->
+        <section class="px-4 sm:px-6 lg:px-12 pt-16 pb-12">
+            <div class="max-w-7xl mx-auto space-y-14">
+                @foreach ($kategoriBerita as $kategori)
+                    @if ($kategori->berita->isNotEmpty())
+                        <div>
+                            <h2 class="text-xl font-semibold text-gray-700 mb-4">
+                                {{ $kategori->nama }}
+                            </h2>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                @foreach ($kategori->berita as $item)
+                                    <x-berita :item="$item" />
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
             </div>
         </section>
     </main>

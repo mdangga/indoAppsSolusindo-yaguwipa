@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void{
         $profile = Cache::remember('yayasan_profile', now()->addHours(1), function () {
-            Log::info('Querying profile from DB');
+            // Log::info('profile dari DB');
             return Profiles::first();
         });
 

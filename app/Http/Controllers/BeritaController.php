@@ -21,14 +21,21 @@ class BeritaController extends Controller
         $page = request('page', 1);
 
         $berita = Cache::remember("berita_page_{$page}", now()->addHours(1), function () {
-            Log::info('Querying newsall from DB');
             return Berita::latest()
                 ->where('status', 'show')
                 ->paginate(8);
         });
 
+        $kategoriBerita = Cache::remember('berita_per_kategori', now()->addHours(1), function () {
+            return KategoriNewsEvent::with(['berita' => function ($query) {
+                $query->where('status', 'show')->latest()->take(4);
+            }])->get();
+        });
 
-        return view('newsandevent', compact('berita'));
+        return view('newsandevent', [
+            'berita' => $berita,
+            'kategoriBerita' => $kategoriBerita
+        ]);
     }
 
     // menampilkan table di admin
@@ -65,7 +72,7 @@ class BeritaController extends Controller
     public function show($slug)
     {
         $berita = Cache::remember("berita_detail_{$slug}", now()->addHours(1), function () use ($slug) {
-            Log::info('Querying newsslug from DB');
+            Log::info('newsslug dari DB');
             return Berita::where('slug', $slug)
                 ->where('status', 'show')
                 ->firstOrFail();

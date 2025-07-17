@@ -43,8 +43,8 @@ class Berita extends Model
         Cache::forget("berita_detail_{$this->slug}");
         Cache::forget("berita_terkait_{$this->id_berita}");
         Cache::forget('berita_populer');
+        Cache::forget('berita_per_kategori');
 
-        // Jika ingin fleksibel, bisa sesuaikan jumlah halaman
         foreach (range(1, 5) as $page) {
             Cache::forget("berita_page_{$page}");
         }
