@@ -17,7 +17,7 @@ class GeneralController extends Controller
             ->where('status', 'show')
             ->take(4)
             ->get();
-        
+
         $gallery = Gallery::latest()
             ->where('status', 'show')
             ->where('kategori', 'foto')
@@ -27,20 +27,25 @@ class GeneralController extends Controller
         return view('beranda', compact('berita', 'gallery'));
     }
 
-    public function tentangKami(){
+    public function tentangKami()
+    {
         return view('profiles');
     }
-    
-    public function testing(){
-        return view('admin.formSosmed');
+
+    public function testing()
+    {
+        $berita_populer = Berita::orderBy('hit', 'desc')->take(4)->get();
+
+        return view('program', compact('berita_populer'));
     }
 
-    public function mitra(){
+    public function mitra()
+    {
         return view('partners');
     }
 
-    public function teams(){
+    public function teams()
+    {
         return view('teams');
     }
-
 }

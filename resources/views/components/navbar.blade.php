@@ -226,13 +226,19 @@
                     @endphp
 
                     @if ($menu->children->count())
-                        <div class="inline-flex items-center relative group">
+                        <div class="inline-flex items-center relative group cursor-default">
                             <p
-                                class="relative text-sm font-semibold text-gray-800 drop-shadow-md group transition-transform duration-200">
+                                class="relative text-sm font-semibold text-gray-800 drop-shadow-md group transition-transform duration-200 flex items-center gap-1">
                                 {{ $menu->title }}
+                                <svg class="w-3 h-3 text-gray-600 group-hover:rotate-180 transition-transform duration-300"
+                                    fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z"
+                                        clip-rule="evenodd" />
+                                </svg>
                                 <span
                                     class="absolute bottom-0 right-0 h-[2px] bg-amber-200 transition-all duration-300 
-                    {{ $isActive ? 'w-full left-0' : 'w-0 group-hover:w-full group-hover:right-auto left-0' }}">
+        {{ $isActive ? 'w-full left-0' : 'w-0 group-hover:w-full group-hover:right-auto left-0' }}">
                                 </span>
                             </p>
 
