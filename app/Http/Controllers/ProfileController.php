@@ -82,7 +82,6 @@ class ProfileController extends Controller
 
                     $data[$file] = $filename;
                 } else {
-                    // Simpan biasa tanpa konversi
                     $data[$file] = $request->file($file)->store('img', 'public');
                 }
             } else {

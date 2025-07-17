@@ -248,7 +248,7 @@
                             <tr class="text-left">
                                 <th>No</th>
                                 <th>Nama</th>
-                                <th>Deskripsi</th>
+                                <th>Kategori Program</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -318,8 +318,8 @@
                         }
                     },
                     {
-                        data: 'deskripsi',
-                        name: 'deskripsi',
+                        data: 'kategori_program',
+                        name: 'kategori_program',
                         render: function(data, type, row) {
                             return `
                                 <div class="">

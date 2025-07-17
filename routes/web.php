@@ -7,6 +7,7 @@ use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\kategoriNewsEventController;
 use App\Http\Controllers\MenusController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\SosiaMediaController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +40,7 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/gallery', [GalleryController::class, 'adminShow'])->name('admin.gallery');
     Route::get('/menus', [MenusController::class, 'index'])->name('admin.menus');
     Route::get('/sosial-media', [SosiaMediaController::class, 'index'])->name('admin.sosmed');
+    Route::get('/program', [ProgramController::class, 'create'])->name('');
     
     
     // general setting
@@ -51,6 +53,8 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/sosial-media/edit/{id}', [SosiaMediaController::class, 'showFormEdit'])->name('sosmed.formEdit');
     Route::put('/sosial-media/{id}', [SosiaMediaController::class, 'update'])->name('sosmed.update');
     Route::delete('/sosial-media/destroy/{id}', [SosiaMediaController::class, 'destroy'])->name('sosmed.delete');
+    // program
+    Route::post('/program', [ProgramController::class, 'store'])->name('program.store');
     // gallery
     Route::get('/datatable/gallery', [GalleryController::class, 'getDataTables'])->name('gallery.table');
     Route::get('/gallery/store', [GalleryController::class, 'showFormStore'])->name('gallery.formStore');
@@ -81,8 +85,6 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::put('/menu/{id}', [MenusController::class, 'update'])->name('menus.update');
     Route::delete('/menu/destroy/{id}', [MenusController::class, 'destroy'])->name('berita.delete');
     
-
-
     // logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

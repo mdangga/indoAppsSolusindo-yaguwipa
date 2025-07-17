@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('kategori_news_event', function(Blueprint $table){
             $table->id('id_kategori_news_event');
             $table->string('nama')->unique();
-            $table->text('deskripsi')->nullable();
+            $table->unsignedBigInteger('id_kategori_program')->nullable();
             $table->timestamps();
+
+            $table->foreign('id_kategori_program')->references('id_kategori_program')->on('kategori_program')->onDelete('cascade');
         });
 
         Schema::create('news_event', function (Blueprint $table) {

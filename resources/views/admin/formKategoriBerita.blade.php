@@ -58,11 +58,19 @@
                         @enderror
                     </div>
                     <div class="mt-4">
-                        <label for="deskripsi" class="block mb-1 text-sm font-medium text-gray-900">Deskripsi</label>
-                        <input type="text" id="deskripsi" name="deskripsi"
-                            value="{{ old('tanggal_publish', $kategori->deskripsi ?? '') }}"
-                            class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5" />
-                        @error('deskripsi')
+                        <label for="id_kategori_program" class="block mb-1 text-sm font-medium text-gray-900">Kategori Program</label>
+                        <select name="id_kategori_program" id="id_kategori_program"
+                            class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                            required>
+                            <option value="">-- Pilih Kategori --</option>
+                            @foreach ($program as $kategoris)
+                                <option value="{{ $kategoris->id_kategori_program }}"
+                                    {{ old('id_kategori_program', $kategori->id_kategori_program ?? '') == $kategoris->id_kategori_program ? 'selected' : '' }}>
+                                    {{ $kategoris->nama }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('id_kategori_program')
                             <small class="text-red-600">{{ $message }}</small>
                         @enderror
                     </div>

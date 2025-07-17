@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\KategoriNewsEvent;
+use App\Models\KategoriProgram;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
@@ -23,7 +24,8 @@ class kategoriNewsEventController extends Controller
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama' => 'required|string|max:255'
+            'nama' => 'required|string|max:255',
+            'id_kategori_program' => 'nullable|exists:kategori_program,id_kategori_program',
         ]);
 
         if ($validator->fails()) {
@@ -47,7 +49,10 @@ class kategoriNewsEventController extends Controller
             return abort(403, 'Akses tidak diizinkan');
         }
 
-        $kategori = KategoriNewsEvent::select(['id_kategori_news_event', 'nama', 'deskripsi'])->orderBy('updated_at', 'desc');
+        $kategori = KategoriNewsEvent::with('KategoriProgram')
+            ->select(['id_kategori_news_event', 'nama', 'id_kategori_program'])
+            ->orderBy('updated_at', 'desc');
+
 
         return DataTables::of($kategori)
             ->addColumn('aksi', function ($row) {
@@ -59,11 +64,11 @@ class kategoriNewsEventController extends Controller
             ->editColumn('nama', function ($row) {
                 return $row->nama;
             })
-            ->editColumn('deskripsi', function ($row) {
-                return $row->deskripsi;
+            ->editColumn('kategori_program', function ($row) {
+                return $row->KategoriProgram->nama;
             })
-            
-            ->rawColumns(['aksi', 'deskripsi'])
+
+            ->rawColumns(['aksi'])
             ->make(true);
     }
 
@@ -72,15 +77,16 @@ class kategoriNewsEventController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // dd($request->all());
         $kategori = KategoriNewsEvent::find($id);
-        
-        if(!$kategori){
+
+        if (!$kategori) {
             return redirect()->back()->with('gagal', 'Kategori tidak ditemukan');
         }
 
         $validator = Validator::make($request->all(), [
             'nama' => 'required|string|max:255',
-            'deskripsi' => 'required|string',
+            'id_kategori_program' => 'nullable|exists:kategori_program,id_kategori_program',
         ]);
 
         if ($validator->fails()) {
@@ -103,8 +109,8 @@ class kategoriNewsEventController extends Controller
     public function destroy(string $id)
     {
         $kategori = KategoriNewsEvent::find($id);
-        
-        if(!$kategori){
+
+        if (!$kategori) {
             return redirect()->back()->with('gagal', 'Kategori tidak ditemukan');
         }
 
@@ -115,13 +121,15 @@ class kategoriNewsEventController extends Controller
     // Untuk form store
     public function showFormStore()
     {
-        return view('admin.formKategoriBerita');
+        $program = KategoriProgram::all();
+        return view('admin.formKategoriBerita', compact('program'));
     }
 
     // Untuk form edit
     public function showFormEdit($id)
     {
         $kategori = KategoriNewsEvent::findOrFail($id);
-        return view('admin.formKategoriBerita', compact('kategori'));
+        $program = KategoriProgram::all();
+        return view('admin.formKategoriBerita', compact('kategori', 'program'));
     }
 }
