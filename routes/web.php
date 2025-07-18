@@ -129,7 +129,7 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::post('/jenis-publikasi', [JenisPublikasiController::class, 'store'])->name('jenisPublikasi.store');
     
     Route::get('/jenis-publikasi/edit/{id}', [JenisPublikasiController::class, 'showFormEdit'])->name('jenisPublikasi.formEdit');
-    Route::put('/jenis-publikasi/{id{', [JenisPublikasiController::class, 'update'])->name('jenisPublikasi.update');
+    Route::put('/jenis-publikasi/{id}', [JenisPublikasiController::class, 'update'])->name('jenisPublikasi.update');
     
     Route::delete('/jenis-publikasi/destroy/{id}', [JenisPublikasiController::class, 'destroy'])->name('jenisPublikasi.delete');
 

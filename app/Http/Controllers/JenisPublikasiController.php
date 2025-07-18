@@ -73,7 +73,7 @@ class JenisPublikasiController extends Controller
 
         JenisPublikasi::create($data);
 
-        return redirect()->route('admin.berita')->with('success', 'Jenis publikasi berhasil ditambahkan.');
+        return redirect()->route('admin.jenisPublikasi')->with('success', 'Jenis publikasi berhasil ditambahkan.');
     }
 
 
