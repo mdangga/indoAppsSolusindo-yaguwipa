@@ -13,12 +13,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ProgramController extends Controller
 {
+    // fungsi untuk menampilkan halaman program di admin
     public function index()
     {
         return view('admin.showProgram');
     }
 
 
+    // fungsi untuk membuatkan datatable program
     public function getDataTables(Request $request)
     {
         if (!$request->ajax()) {
@@ -49,6 +51,8 @@ class ProgramController extends Controller
             ->make(true);
     }
 
+
+    // fungsi untuk menampilkan form menambahkan data
     public function showFormStore()
     {
         $kategoriProgram = KategoriProgram::all();
@@ -57,6 +61,7 @@ class ProgramController extends Controller
     }
 
 
+    // fungsi untuk menampilkan form memperbarui data
     public function showFormEdit($id)
     {
         $program = Program::with('institusiTerlibat')->findOrFail($id);
@@ -65,13 +70,8 @@ class ProgramController extends Controller
         return view('admin.formProgram', compact('program', 'kategoriProgram', 'institusiList'));
     }
 
-    public function indexProgram($id)
-    {
-        $program = Program::with(['kategoriProgram', 'institusiTerlibat'])->findOrFail($id);
 
-        return view('program.view', compact('program'));
-    }
-
+    // fungsi untuk menambahkan data baru
     public function store(Request $request)
     {
         $request->validate([
@@ -125,6 +125,8 @@ class ProgramController extends Controller
         return redirect()->route('admin.berita')->with('success', 'Program berhasil ditambahkan.');
     }
 
+
+    // fungsi untuk memperbarui data lama
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -190,6 +192,8 @@ class ProgramController extends Controller
         return redirect()->route('admin.berita')->with('success', 'Program berhasil diperbarui.');
     }
 
+
+    // fungsi untuk menghapus data
     public function destroy($id)
     {
         DB::transaction(function () use ($id) {
