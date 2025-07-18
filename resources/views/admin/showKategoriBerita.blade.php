@@ -229,7 +229,7 @@
 
         <div class=" py-4 border-gray-200 bg-gray-50">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <a href="{{ route('kategori.formStore') }}"
+                <a href="{{ route('kategoriBerita.formStore') }}"
                     class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
                     <i class="fas fa-plus w-4 h-4 mr-2"></i>
                     Tambah Kategori
@@ -269,7 +269,7 @@
                 processing: false,
                 serverSide: true,
                 autoWidth: false,
-                ajax: '{{ route('kategori.table') }}',
+                ajax: '{{ route('kategoriBerita.table') }}',
                 dom: '<"flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6"<"flex items-center gap-2"l><"flex items-center gap-2"f>>rt<"flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-6"ip>',
                 language: {
 
@@ -390,7 +390,7 @@
                         .addClass('bg-gray-400 cursor-not-allowed')
                         .html('<i class="fas fa-spinner fa-spin w-3 h-3 mr-1"></i>');
 
-                    fetch(`/kategori/destroy/${id}`, {
+                    fetch(`/kategori-news-event/destroy/${id}`, {
                             method: 'delete', // ubah ke POST
                             headers: {
                                 'Content-Type': 'application/json',
@@ -422,7 +422,7 @@
             // Edit handler
             $('#kategoriTable').on('click', '.editBtn', function() {
                 const id = $(this).data('id');
-                window.location.href = `/kategori/edit/${id}`;
+                window.location.href = `/kategori-news-event/edit/${id}`;
             });
 
             // Notification system

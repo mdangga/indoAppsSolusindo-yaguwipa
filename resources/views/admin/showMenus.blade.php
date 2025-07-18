@@ -402,7 +402,7 @@
                         .addClass('bg-gray-400 cursor-not-allowed')
                         .html('<i class="fas fa-spinner fa-spin w-3 h-3 mr-1"></i>');
 
-                    fetch(`/menu/destroy/${id}`, {
+                    fetch(`/menus/destroy/${id}`, {
                             method: 'delete', // ubah ke POST
                             headers: {
                                 'Content-Type': 'application/json',
@@ -435,7 +435,7 @@
             // Edit handler
             $('#menusTable').on('click', '.editBtn', function() {
                 const id = $(this).data('id');
-                window.location.href = `/menu/edit/${id}`;
+                window.location.href = `/menus/edit/${id}`;
             });
 
             // Notification system

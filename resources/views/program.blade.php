@@ -120,7 +120,7 @@
                         <div class="space-y-4 lg:sticky lg:top-24">
                             <h2 class="text-lg font-semibold text-gray-800">Berita Terkait</h2>
                             @foreach ($berita_populer as $pop)
-                                <a href="{{ route('berita.show', $pop->slug) }}"
+                                <a href="{{ route('berita.slug', $pop->slug) }}"
                                     class="flex items-start gap-4 group hover:bg-gray-100 p-2 rounded-md transition">
                                     <img src="{{ asset('storage/' . $pop->thumbnail) }}" alt="{{ $pop->judul }}"
                                         class="w-20 h-16 object-cover rounded" />

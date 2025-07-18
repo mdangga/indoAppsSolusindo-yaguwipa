@@ -41,7 +41,7 @@
             @php $isEdit = isset($kategori); @endphp
 
             <form
-                action="{{ $isEdit ? route('kategori.update', $kategori->id_kategori_news_event) : route('kategori.store') }}"
+                action="{{ $isEdit ? route('kategoriBerita.update', $kategori->id_kategori_news_event) : route('kategoriBerita.store') }}"
                 method="POST" enctype="multipart/form-data">
                 @csrf
                 @if ($isEdit)

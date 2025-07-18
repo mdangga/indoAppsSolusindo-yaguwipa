@@ -10,21 +10,22 @@ use Yajra\DataTables\Facades\DataTables;
 
 class GalleryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function berandaShow()
+    // fungsi untuk menampilkan halaman gallery di beranda
+    public function show()
     {
         $gallery = Gallery::latest()->get();
         return view('gallery', compact('gallery'));
     }
 
-    public function adminShow()
+
+    // fungsi untuk menampilkan halaman gallery di admin
+    public function index()
     {
         return view('admin.showGallery');
     }
 
-    // menampilkan table di admin
+
+    // fungsi untuk membuatkan datatable gallery
     public function getDataTables(Request $request)
     {
         if (!$request->ajax()) {
@@ -73,9 +74,23 @@ class GalleryController extends Controller
             ->make(true);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
+    // fungsi untuk menampilkan form menambahkan data
+    public function showFormStore()
+    {
+        return view('admin.formGallery');
+    }
+
+
+    // fungsi untuk menampilkan form memperbarui data
+    public function showFormEdit($id)
+    {
+        $gallery = Gallery::findOrFail($id);
+        return view('admin.formGallery', compact('gallery'));
+    }
+
+
+    // fungsi untuk menambahkan data baru
     public function store(Request $request)
     {
         $rules = [
@@ -122,10 +137,7 @@ class GalleryController extends Controller
     }
 
 
-
-    /**
-     * Update the specified resource in storage.
-     */
+    // fungsi untuk memperbarui data lama
     public function update(Request $request, $id)
     {
         $gallery = Gallery::find($id);
@@ -191,9 +203,8 @@ class GalleryController extends Controller
         return redirect()->route('admin.gallery')->with('success', 'Gallery berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
+    // fungsi untuk menghapus data
     public function destroy($id)
     {
         $gallery = Gallery::find($id);
@@ -207,16 +218,4 @@ class GalleryController extends Controller
         return redirect()->back()->with('sukses', 'Gallery berhasil dihapus');
     }
 
-    // Untuk form store
-    public function showFormStore()
-    {
-        return view('admin.formGallery');
-    }
-
-    // Untuk form edit
-    public function showFormEdit($id)
-    {
-        $gallery = Gallery::findOrFail($id);
-        return view('admin.formGallery', compact('gallery'));
-    }
 }
