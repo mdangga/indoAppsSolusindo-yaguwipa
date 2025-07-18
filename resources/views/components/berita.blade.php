@@ -4,7 +4,7 @@
 
     <!-- Image Container -->
     <div class="relative">
-        <a href="{{ route('berita.show', $item->slug) }}" class="block">
+        <a href="{{ route('berita.slug', $item->slug) }}" class="block">
             <img class="w-full h-48 object-cover"
                 src="{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : asset('storage/img/img-placeholder.webp') }}"
                 alt="{{ $item->judul }}" />
@@ -20,7 +20,7 @@
     <div class="p-5 flex flex-col flex-grow">
         <!-- Title -->
         <h5 class="text-lg font-semibold text-gray-900 mb-3 line-clamp-2 hover:text-blue-600 transition-colors">
-            <a href="{{ route('berita.show', $item->slug) }}">
+            <a href="{{ route('berita.slug', $item->slug) }}">
                 {{ $item->judul }}
             </a>
         </h5>

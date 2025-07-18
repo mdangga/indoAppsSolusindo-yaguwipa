@@ -92,11 +92,11 @@
                 </button>
                 <ul id="news-event-content" class="dropdown-content">
                     <li class="py-1">
-                        <a href="{{ route('admin.kategori') }}"
+                        <a href="{{ route('admin.kategoriBerita') }}"
                             class="flex items-center w-full p-2 text-gray-200 transition duration-75 rounded-lg pl-11 group hover:bg-[#535c66] font-normal">Kategori</a>
                     </li>
                     <li class="py-1">
-                        <a href="{{ route('dashboard') }}"
+                        <a href="{{ route('admin.berita') }}"
                             class="flex items-center w-full p-2 text-gray-200 transition duration-75 rounded-lg pl-11 group hover:bg-[#535c66] font-normal">News
                             and Event</a>
                     </li>

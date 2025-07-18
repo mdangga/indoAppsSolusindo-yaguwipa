@@ -9,14 +9,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 class SosiaMediaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // fungsi untuk menampilkan halaman sosial media di admin
     public function index()
     {
         return view('admin.showSosmed');
     }
 
+
+    // fungsi untuk membuatkan datatable sosial media
     public function getDataTables(Request $request)
     {
         if (!$request->ajax()) {
@@ -45,9 +45,23 @@ class SosiaMediaController extends Controller
             ->make(true);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
+    // fungsi untuk menampilkan form menambahkan data
+    public function showFormStore()
+    {
+        return view('admin.formSosmed');
+    }
+
+
+    // fungsi untuk menampilkan form memperbarui data
+    public function showFormEdit($id)
+    {
+        $sosialMedia = SosialMedia::findOrFail($id);
+        return view('admin.formSosmed', compact('sosialMedia'));
+    }
+
+
+    // fungsi untuk menambahkan data baru
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -70,9 +84,8 @@ class SosiaMediaController extends Controller
         return redirect()->route('admin.sosmed')->with('success', 'Berita berhasil ditambahkan!');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
+    // fungsi untuk memperbarui data lama
     public function update(Request $request, $id)
     {
         $sosialMedia = SosialMedia::find($id);
@@ -101,9 +114,8 @@ class SosiaMediaController extends Controller
         return redirect()->route('admin.sosmed')->with('success', 'sosial media berhasil diedit!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
+    // fungsi untuk menghapus data
     public function destroy(string $id)
     {
         $sosialMedia = SosialMedia::find($id);
@@ -114,18 +126,5 @@ class SosiaMediaController extends Controller
 
         $sosialMedia->delete();
         return redirect()->route('admin.sosmed')->with('success', 'sosial media berhasil dihapus!');
-    }
-
-    // Untuk form store
-    public function showFormStore()
-    {
-        return view('admin.formSosmed');
-    }
-
-    // Untuk form edit
-    public function showFormEdit($id)
-    {
-        $sosialMedia = SosialMedia::findOrFail($id);
-        return view('admin.formSosmed', compact('sosialMedia'));
     }
 }

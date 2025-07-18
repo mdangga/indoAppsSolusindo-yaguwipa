@@ -102,7 +102,7 @@
                                 <div class="grid md:grid-cols-2 gap-6">
                                     @foreach ($berita_terkait->take(2) as $item)
                                         <div>
-                                            <a href="{{ route('berita.show', $item->slug) }}"
+                                            <a href="{{ route('berita.slug', $item->slug) }}"
                                                 class="block text-blue-600 hover:underline hover:text-blue-800 transition font-medium">
                                                 {{ Str::limit($item->judul, 80) }}
                                             </a>
@@ -123,7 +123,7 @@
                         </div>
 
                         @foreach ($berita_populer as $pop)
-                            <a href="{{ route('berita.show', $pop->slug) }}"
+                            <a href="{{ route('berita.slug', $pop->slug) }}"
                                 class="flex items-start gap-4 group hover:bg-gray-100 p-2 rounded-md transition">
                                 <img src="{{ asset('storage/' . $pop->thumbnail) }}" alt="{{ $pop->judul }}"
                                     class="w-20 h-16 object-cover rounded" />

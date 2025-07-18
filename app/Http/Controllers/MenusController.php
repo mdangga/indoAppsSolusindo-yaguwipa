@@ -10,21 +10,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class MenusController extends Controller
 {
+    // fungsi untuk menampilkan halaman menu di admin
     public function index(){
         return view('admin.showMenus');
     }
 
-    public function showFormStore(){
-        $menus = Menu::whereNull('parent_menu')->orderBy('id_menus')->get();
-        return view('admin.formMenus', compact('menus'));
-    }
 
-    public function showFormEdit($id){
-        $menus = Menu::whereNull('parent_menu')->orderBy('id_menus')->get();
-        $menu = Menu::with('parent')->findOrFail($id);
-        return view('admin.formMenus', compact('menus', 'menu'));
-    }
-
+    // fungsi untuk membuatkan datatable menu
     public function getDataTables(Request $request)
     {
         if (!$request->ajax()) {
@@ -50,7 +42,22 @@ class MenusController extends Controller
             ->make(true);
     }
 
-    // mengirim data untuk membuat berita
+    // fungsi untuk menampilkan form menambahkan data
+    public function showFormStore(){
+        $menus = Menu::whereNull('parent_menu')->orderBy('id_menus')->get();
+        return view('admin.formMenus', compact('menus'));
+    }
+
+
+    // fungsi untuk menampilkan form memperbarui data
+    public function showFormEdit($id){
+        $menus = Menu::whereNull('parent_menu')->orderBy('id_menus')->get();
+        $menu = Menu::with('parent')->findOrFail($id);
+        return view('admin.formMenus', compact('menus', 'menu'));
+    }
+
+
+    // fungsi untuk menambahkan data baru
     public function store(Request $request)
     {
         // dd($request->all());
@@ -83,6 +90,8 @@ class MenusController extends Controller
         return redirect()->route('admin.menus')->with('success', 'Menu berhasil ditambahkan!');
     }
 
+    
+    // fungsi untuk memperbarui data lama
     public function update(Request $request, $id)
     {
         $menu = Menu::find($id);
@@ -120,6 +129,8 @@ class MenusController extends Controller
         return redirect()->route('admin.menus')->with('success', 'Menu berhasil ditambahkan!');
     }
 
+
+    // fungsi untuk menghapus data
     public function destroy($id){
         $menu = Menu::find($id);
 

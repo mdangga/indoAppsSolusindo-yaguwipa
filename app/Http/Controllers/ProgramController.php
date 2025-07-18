@@ -71,7 +71,7 @@ class ProgramController extends Controller
             }
         });
 
-        return redirect()->route('dashboard')->with('success', 'Program berhasil ditambahkan.');
+        return redirect()->route('admin.berita')->with('success', 'Program berhasil ditambahkan.');
     }
 
     public function update(Request $request, $id)
@@ -143,6 +143,6 @@ class ProgramController extends Controller
             }
         });
 
-        return redirect()->route('dashboard')->with('success', 'Program berhasil diperbarui.');
+        return redirect()->route('admin.berita')->with('success', 'Program berhasil diperbarui.');
     }
 }

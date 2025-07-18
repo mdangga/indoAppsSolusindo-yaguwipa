@@ -11,6 +11,7 @@ use Intervention\Image\Laravel\Facades\Image;
 
 class ProfileController extends Controller
 {
+    // fungsi untuk menampilkan halaman profile website di admin
     public function index()
     {
         $profiles = Profiles::first();
@@ -18,6 +19,7 @@ class ProfileController extends Controller
         return view('admin.generals', compact('profiles'));
     }
 
+    // fungsi untuk memperbarui profile website
     public function update(Request $request, $id)
     {
         $profile = Profiles::find($id);

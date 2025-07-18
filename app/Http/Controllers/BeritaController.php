@@ -15,8 +15,8 @@ use Yajra\DataTables\Facades\DataTables;
 
 class BeritaController extends Controller
 {
-    // menampilkan semua data dengan dibagi menjadi 8 data perpage
-    public function index()
+    // menampilkan halaman news dan event di beranda
+    public function show()
     {
         $page = request('page', 1);
 
@@ -37,8 +37,45 @@ class BeritaController extends Controller
             'kategoriBerita' => $kategoriBerita
         ]);
     }
+    
+    
+    // fungsi untuk menampilkan halaman berita untuk setiap slug di beranda
+    public function showSlug($slug)
+    {
+        $berita = Cache::remember("berita_detail_{$slug}", now()->addHours(1), function () use ($slug) {
+            Log::info('newsslug dari DB');
+            return Berita::where('slug', $slug)
+                ->where('status', 'show')
+                ->firstOrFail();
+        });
 
-    // menampilkan table di admin
+        $berita->increment('hit');
+
+        $berita_populer = Cache::remember('berita_populer', now()->addHours(1), function () {
+            return Berita::orderBy('hit', 'desc')->take(5)->get();
+        });
+
+        $berita_terkait = Cache::remember("berita_terkait_{$berita->id_berita}", now()->addHours(1), function () use ($berita) {
+            return Berita::where('id_kategori_news_event', $berita->id_kategori_news_event)
+                ->where('id_berita', '!=', $berita->id_berita)
+                ->where('status', 'show')
+                ->latest()
+                ->take(4)
+                ->get();
+        });
+
+        return view('berita', compact('berita', 'berita_populer', 'berita_terkait'));
+    }
+    
+    
+    // fungsi untuk menampilkan halaman news dan event di admin
+    public function index()
+    {
+        return view('admin.showBerita');
+    }
+
+
+    // fungsi untuk membuatkan datatable news dan event
     public function getDataTables(Request $request)
     {
         if (!$request->ajax()) {
@@ -68,36 +105,25 @@ class BeritaController extends Controller
             ->make(true);
     }
 
-    // menampilkan data
-    public function show($slug)
+
+    // fungsi untuk menampilkan form menambahkan data
+    public function showFormStore()
     {
-        $berita = Cache::remember("berita_detail_{$slug}", now()->addHours(1), function () use ($slug) {
-            Log::info('newsslug dari DB');
-            return Berita::where('slug', $slug)
-                ->where('status', 'show')
-                ->firstOrFail();
-        });
-
-
-        $berita->increment('hit');
-
-        $berita_populer = Cache::remember('berita_populer', now()->addHours(1), function () {
-            return Berita::orderBy('hit', 'desc')->take(5)->get();
-        });
-
-        $berita_terkait = Cache::remember("berita_terkait_{$berita->id_berita}", now()->addHours(1), function () use ($berita) {
-            return Berita::where('id_kategori_news_event', $berita->id_kategori_news_event)
-                ->where('id_berita', '!=', $berita->id_berita)
-                ->where('status', 'show')
-                ->latest()
-                ->take(4)
-                ->get();
-        });
-
-        return view('berita', compact('berita', 'berita_populer', 'berita_terkait'));
+        $kategoriList = KategoriNewsEvent::all();
+        return view('admin.formBeritaNew', compact('kategoriList'));
     }
 
-    // mengirim data untuk membuat berita
+
+    // fungsi untuk menambahkan data baru
+    public function showFormEdit($id)
+    {
+        $berita = Berita::findOrFail($id);
+        $kategoriList = KategoriNewsEvent::all();
+        return view('admin.formBeritaNew', compact('berita', 'kategoriList'));
+    }
+    
+    
+    // fungsi untuk menambahkan data baru
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -136,14 +162,13 @@ class BeritaController extends Controller
             $data['thumbnail'] = $filename;
         }
 
-
         $berita = Berita::create($data);
         $berita->clearCache();
 
-        return redirect()->route('dashboard')->with('success', 'Berita berhasil ditambahkan!');
+        return redirect()->route('admin.berita')->with('success', 'Berita berhasil ditambahkan!');
     }
 
-    // mengupdate data
+    // fungsi untuk memperbarui data lama
     public function update(Request $request, $id)
     {
         $berita = Berita::find($id);
@@ -188,7 +213,6 @@ class BeritaController extends Controller
 
         $data['slug'] = Str::slug($request->judul);
 
-        // Handle upload thumbnail
         if ($request->hasFile('thumbnail')) {
             $image = $request->file('thumbnail');
             $filename = 'img/thumbnail-berita/' . uniqid() . '.webp';
@@ -210,10 +234,10 @@ class BeritaController extends Controller
         $berita->update($data);
         $berita->clearCache();
 
-        return redirect()->route('dashboard')->with('success', 'Berita berhasil diperbarui!');
+        return redirect()->route('admin.berita')->with('success', 'Berita berhasil diperbarui!');
     }
 
-    // mengahapus data
+    // fungsi untuk menghapus data
     public function destroy($id)
     {
         $berita = Berita::find($id);
@@ -228,18 +252,4 @@ class BeritaController extends Controller
         return redirect()->back()->with('sukses', 'Berita berhasil dihapus');
     }
 
-    // Untuk form store
-    public function showFormStore()
-    {
-        $kategoriList = KategoriNewsEvent::all();
-        return view('admin.formBeritaNew', compact('kategoriList'));
-    }
-
-    // Untuk form edit
-    public function showFormEdit($id)
-    {
-        $berita = Berita::findOrFail($id);
-        $kategoriList = KategoriNewsEvent::all();
-        return view('admin.formBeritaNew', compact('berita', 'kategoriList'));
-    }
 }

@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Galleri</title>
+    <title>Gallery</title>
     <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net" />
@@ -38,7 +38,7 @@
     <main>
         <div class="px-4 sm:px-6 lg:px-12 py-16">
             <div class="max-w-7xl mx-auto">
-                <x-header-page title="GALLERI"
+                <x-header-page title="GALLERY"
                     description="Galeri ini menyajikan koleksi gambar dari berbagai aktivitas, baik yang diselenggarakan oleh yayasan maupun momen-momen penting lainnya." />
 
                 <!-- Masonry Grid -->
