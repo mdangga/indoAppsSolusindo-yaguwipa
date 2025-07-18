@@ -19,6 +19,7 @@
     
     <!-- Flowbite -->
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+
     
     <style>
         * {
@@ -188,110 +189,16 @@
     </style>
 </head>
 
-<body class="bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
-    <!-- Floating Background Shapes -->
-    <div class="floating-shapes">
-        <div class="floating-shape w-20 h-20 left-[10%]" style="animation-delay: 0s; animation-duration: 25s;"></div>
-        <div class="floating-shape w-32 h-32 left-[70%]" style="animation-delay: -5s; animation-duration: 30s;"></div>
-        <div class="floating-shape w-16 h-16 left-[30%]" style="animation-delay: -10s; animation-duration: 20s;"></div>
-        <div class="floating-shape w-24 h-24 left-[80%]" style="animation-delay: -15s; animation-duration: 35s;"></div>
-    </div>
-
-    <div class="main-container">
-        <!-- Header -->
-        <header class="absolute w-full z-50">
-            <!-- Logo dan Login Button -->
-            <div class="w-full bg-transparent p-6 lg:px-8">
-                <div class="grid grid-cols-2 lg:grid-cols-3 items-center gap-4">
-                    <!-- Logo -->
-                    <div class="flex justify-start">
-                        <a href="#" class="-m-1.5 p-1.5">
-                            <span class="sr-only">Your Company</span>
-                            <img class="h-[75px] w-auto drop-shadow-lg" src="img/logo.png" alt="Company Logo" />
-                        </a>
-                    </div>
-
-                    <div class="hidden lg:block"></div>
-
-                    <!-- tombol Login -->
-                    <div class="hidden justify-end items-center lg:flex">
-                        <a href="#" class="glass-effect text-sm font-semibold text-gray-900 rounded-[50px] px-6 py-3.5 hover:bg-white/20 transition-all duration-300 shadow-lg">
-                            Log in
-                        </a>
-                    </div>
-
-                    <!-- tombol menu -->
-                    <div class="flex lg:hidden justify-end">
-                        <button type="button" id="mobile-menu-button" class="glass-effect -m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 hover:bg-white/20 transition-all duration-300">
-                            <span class="sr-only">Open main menu</span>
-                            <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- fixed navbar -->
-            <nav class="fixed top-10 left-1/2 transform -translate-x-1/2 z-50 hidden lg:block">
-                <div class="navbar-glass h-[50px] px-6 flex justify-center items-center rounded-[75px] shadow-lg">
-                    <div class="flex gap-x-12">
-                        <a href="#" class="text-sm font-semibold text-gray-900 border-b-2 border-amber-200 transition duration-200">
-                            Beranda
-                        </a>
-                        <div class="inline-flex items-center relative group">
-                            <a href="#" class="text-sm font-semibold text-gray-900 border-b-2 border-transparent hover:border-amber-200 transition duration-200">
-                                Tentang Kami
-                            </a>
-                            <div class="absolute top-full mt-2 left-0 bg-white shadow-lg rounded-lg py-2 opacity-0 group-hover:opacity-100 group-hover:visible invisible transition duration-200 min-w-[160px]">
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-amber-100 transform translate-x-0.5">Visi & Misi</a>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-amber-100">Struktur Organisasi</a>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-amber-100">Sejarah</a>
-                            </div>
-                        </div>
-                        <a href="#" class="text-sm font-semibold text-gray-900 border-b-2 border-transparent hover:border-amber-200 transition duration-200">
-                            Program
-                        </a>
-                        <a href="#" class="text-sm font-semibold text-gray-900 border-b-2 border-transparent hover:border-amber-200 transition duration-200">
-                            Kegiatan
-                        </a>
-                    </div>
-                </div>
-            </nav>
-
-            <!-- Mobile menu -->
-            <div id="mobile-menu" class="lg:hidden fixed inset-0 z-50 hidden" role="dialog" aria-modal="true">
-                <div class="fixed inset-0 bg-black/25 backdrop-blur-sm"></div>
-                <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white/95 backdrop-blur-lg p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-                    <div class="flex items-center justify-between">
-                        <a href="#" class="-m-1.5 p-1.5">
-                            <span class="sr-only">Your Company</span>
-                            <img class="h-8 w-auto" src="img/LOGO_YAYASAN.png" alt="" />
-                        </a>
-                        <button type="button" id="close-menu-button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
-                            <span class="sr-only">Close menu</span>
-                            <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="mt-6 flow-root">
-                        <div class="-my-6 divide-y divide-gray-500/10">
-                            <div class="space-y-2 py-6">
-                                <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Beranda</a>
-                                <a href="#test" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Tentang Kami</a>
-                                <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Program</a>
-                                <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Kegiatan</a>
-                            </div>
-                            <div class="py-6">
-                                <a href="#" class="-mx-3 block px-3 py-2.5 text-base/7 font-semibold text-gray-900 rounded-full hover:bg-gray-50">Log in</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-
+<body >
+{{-- loader --}}
+    <x-loader-component />
+    {{-- navbar --}}
+    <x-navbar :menus="$menus" />
+    {{-- floating button --}}
+    <x-contact-btt-floating email="{{ $site['yayasanProfile']->email }}"
+        phone="{{ $site['yayasanProfile']->telephone }}" size="default" :auto-hide="true" :auto-hide-delay="3000"
+        :show-back-to-top="true" :scroll-threshold="200" />
+    <div class="bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
         <!-- Main Content -->
         <main class="content-wrapper">
             <div class="px-7 pt-32 lg:px-4">
@@ -429,21 +336,7 @@
         </main>
 
         <!-- Footer -->
-        <footer class="bg-gray-900 text-white py-10 px-6">
-            <div class="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Kiri: Info Yayasan -->
-                <div>
-                    <h2 class="text-xl font-bold uppercase">YAYASAN</h2>
-                    <h2 class="text-xl font-bold uppercase mb-4">GUNA WIDYA PARAMESTHI</h2>
-
-                    <p class="mb-2">
-                        <span class="font-semibold">Alamat :</span>
-                        JLN. GANETRI IV NO. 4 DPS 80237 BALI
-                    </p>
-                    <p class="mb-2">
-                        <span class="font-semibold">No Telepon :</span>
-                        (+62) 87865309966
-                    </p>
-                    <p class="mb-4">
-                        <span class="font-semibold">Email :</span>
-                        info@yayasan-gunawidyaparama.com
+           <x-footer />
+    </div>
+</body>
+</html>

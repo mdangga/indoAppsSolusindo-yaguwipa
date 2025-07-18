@@ -139,249 +139,250 @@
             <h1 class="text-2xl font-semibold tracking-tight text-gray-900 text-center sm:text-7xl">
                 Anggota Yaguwipa
             </h1>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 pt-16 w-11/12 mx-auto">
-                <!-- Team Member 1 -->
-                <div
-                    class="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
-                            alt="John Doe"
-                            class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 max-w-6xl mx-auto pt-10">
+                <!-- Member 1 -->
+                <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 via-gray-50 to-white p-0.5 shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                    <div class="relative h-44 w-full rounded-xl bg-white/95 backdrop-blur-sm overflow-hidden">
+                        <!-- Decorative elements -->
+                        <div class="absolute -top-4 -right-4 w-8 h-8 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                        <div class="absolute -bottom-3 -left-3 w-6 h-6 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                        
+                        <!-- Profile Image -->
+                        <div class="relative pt-4 flex justify-center">
+                            <div class="relative">
+                                <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-white shadow-md transform transition-transform duration-300 group-hover:scale-110">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face" alt="Andika" class="object-cover w-full h-full" />
+                                </div>
+                                <!-- Subtle ring animation -->
+                                <div class="absolute inset-0 rounded-full border border-gray-300 opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-1">John Doe</h3>
-                        <p class="text-blue-600 font-medium mb-3">CEO & Founder</p>
-                        <div class="flex space-x-3">
-                            <a href="#"
-                                class="text-gray-400 hover:text-blue-600 transition-colors duration-200">
-                                <i class="fab fa-linkedin text-lg"></i>
-                            </a>
-                            <a href="#"
-                                class="text-gray-400 hover:text-blue-400 transition-colors duration-200">
-                                <i class="fab fa-twitter text-lg"></i>
-                            </a>
-                            <a href="#"
-                                class="text-gray-400 hover:text-pink-600 transition-colors duration-200">
-                                <i class="fab fa-instagram text-lg"></i>
-                            </a>
+                        
+                        <!-- Content -->
+                        <div class="absolute bottom-0 left-0 right-0 p-3">
+                            <div class="relative z-10 text-center">
+                                <h3 class="text-sm font-bold text-gray-800 mb-1.5 transform transition-transform duration-300 group-hover:scale-105">Andika</h3>
+                                <div class="inline-block px-2 py-1 bg-gradient-to-r from-gray-600 to-gray-700 text-white text-xs font-medium rounded-full shadow-sm transform transition-all duration-300 group-hover:from-gray-700 group-hover:to-gray-800">
+                                    Web Designer
+                                </div>
+                            </div>
+                            
+                            <!-- Background blur effect -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-white/90 to-transparent rounded-b-xl"></div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Team Member 2 -->
-                <div
-                    class="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1710488140847-c076d4e80cc8?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                            alt="Ketut Yudatama"
-                            class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-1">Ketut Yudatama</h3>
-                        <p class="text-blue-600 font-medium mb-3">CTO</p>
-                        <div class="flex space-x-3">
-                            <a href="#"
-                                class="text-gray-400 hover:text-blue-600 transition-colors duration-200">
-                                <i class="fab fa-linkedin text-lg"></i>
-                            </a>
-                            <a href="#"
-                                class="text-gray-400 hover:text-gray-900 transition-colors duration-200">
-                                <i class="fab fa-github text-lg"></i>
-                            </a>
-                            <a href="#"
-                                class="text-gray-400 hover:text-blue-400 transition-colors duration-200">
-                                <i class="fab fa-twitter text-lg"></i>
-                            </a>
+                        
+                        <!-- Subtle shine effect on hover -->
+                        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Team Member 3 -->
-                <div
-                    class="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
-                            alt="Michael Chen"
-                            class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <!-- Member 2 -->
+                <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 via-gray-50 to-white p-0.5 shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                    <div class="relative h-44 w-full rounded-xl bg-white/95 backdrop-blur-sm overflow-hidden">
+                        <div class="absolute -top-4 -right-4 w-8 h-8 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                        <div class="absolute -bottom-3 -left-3 w-6 h-6 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                        
+                        <div class="relative pt-4 flex justify-center">
+                            <div class="relative">
+                                <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-white shadow-md transform transition-transform duration-300 group-hover:scale-110">
+                                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face" alt="Dinata" class="object-cover w-full h-full" />
+                                </div>
+                                <div class="absolute inset-0 rounded-full border border-gray-300 opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-1">Michael Chen</h3>
-                        <p class="text-blue-600 font-medium mb-3">Lead Developer</p>
-                        <div class="flex space-x-3">
-                            <a href="#"
-                                class="text-gray-400 hover:text-gray-900 transition-colors duration-200">
-                                <i class="fab fa-github text-lg"></i>
-                            </a>
-                            <a href="#"
-                                class="text-gray-400 hover:text-blue-600 transition-colors duration-200">
-                                <i class="fab fa-linkedin text-lg"></i>
-                            </a>
-                            <a href="#"
-                                class="text-gray-400 hover:text-blue-400 transition-colors duration-200">
-                                <i class="fab fa-twitter text-lg"></i>
-                            </a>
+                        
+                        <div class="absolute bottom-0 left-0 right-0 p-3">
+                            <div class="relative z-10 text-center">
+                                <h3 class="text-sm font-bold text-gray-800 mb-1.5 transform transition-transform duration-300 group-hover:scale-105">Dinata</h3>
+                                <div class="inline-block px-2 py-1 bg-gradient-to-r from-gray-600 to-gray-700 text-white text-xs font-medium rounded-full shadow-sm transform transition-all duration-300 group-hover:from-gray-700 group-hover:to-gray-800">
+                                    Web Designer
+                                </div>
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-white/90 to-transparent rounded-b-xl"></div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Team Member 4 -->
-                <div
-                    class="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
-                            alt="Emily Rodriguez"
-                            class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-1">Emily Rodriguez</h3>
-                        <p class="text-blue-600 font-medium mb-3">Marketing Manager</p>
-                        <div class="flex space-x-3">
-                            <a href="#"
-                                class="text-gray-400 hover:text-blue-600 transition-colors duration-200">
-                                <i class="fab fa-linkedin text-lg"></i>
-                            </a>
-                            <a href="#"
-                                class="text-gray-400 hover:text-pink-600 transition-colors duration-200">
-                                <i class="fab fa-instagram text-lg"></i>
-                            </a>
-                            <a href="#"
-                                class="text-gray-400 hover:text-blue-400 transition-colors duration-200">
-                                <i class="fab fa-twitter text-lg"></i>
-                            </a>
+                        
+                        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Team Member 5 -->
-                <div
-                    class="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
-                            alt="David Kim"
-                            class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <!-- Member 3 -->
+                <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 via-gray-50 to-white p-0.5 shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                    <div class="relative h-44 w-full rounded-xl bg-white/95 backdrop-blur-sm overflow-hidden">
+                        <div class="absolute -top-4 -right-4 w-8 h-8 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                        <div class="absolute -bottom-3 -left-3 w-6 h-6 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                        
+                        <div class="relative pt-4 flex justify-center">
+                            <div class="relative">
+                                <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-white shadow-md transform transition-transform duration-300 group-hover:scale-110">
+                                    <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=face" alt="Bagas" class="object-cover w-full h-full" />
+                                </div>
+                                <div class="absolute inset-0 rounded-full border border-gray-300 opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-1">David Kim</h3>
-                        <p class="text-blue-600 font-medium mb-3">UI/UX Designer</p>
-                        <div class="flex space-x-3">
-                            <a href="#"
-                                class="text-gray-400 hover:text-pink-500 transition-colors duration-200">
-                                <i class="fab fa-dribbble text-lg"></i>
-                            </a>
-                            <a href="#"
-                                class="text-gray-400 hover:text-blue-600 transition-colors duration-200">
-                                <i class="fab fa-linkedin text-lg"></i>
-                            </a>
-                            <a href="#"
-                                class="text-gray-400 hover:text-purple-600 transition-colors duration-200">
-                                <i class="fab fa-behance text-lg"></i>
-                            </a>
+                        
+                        <div class="absolute bottom-0 left-0 right-0 p-3">
+                            <div class="relative z-10 text-center">
+                                <h3 class="text-sm font-bold text-gray-800 mb-1.5 transform transition-transform duration-300 group-hover:scale-105">Bagas</h3>
+                                <div class="inline-block px-2 py-1 bg-gradient-to-r from-gray-600 to-gray-700 text-white text-xs font-medium rounded-full shadow-sm transform transition-all duration-300 group-hover:from-gray-700 group-hover:to-gray-800">
+                                    IT Polymath
+                                </div>
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-white/90 to-transparent rounded-b-xl"></div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Team Member 6 -->
-                <div
-                    class="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
-                            alt="Lisa Wang"
-                            class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-1">Lisa Wang</h3>
-                        <p class="text-blue-600 font-medium mb-3">Project Manager</p>
-                        <div class="flex space-x-3">
-                            <a href="#"
-                                class="text-gray-400 hover:text-blue-600 transition-colors duration-200">
-                                <i class="fab fa-linkedin text-lg"></i>
-                            </a>
-                            <a href="#"
-                                class="text-gray-400 hover:text-blue-400 transition-colors duration-200">
-                                <i class="fab fa-twitter text-lg"></i>
-                            </a>
-                            <a href="#" class="text-gray-400 hover:text-red-600 transition-colors duration-200">
-                                <i class="fas fa-envelope text-lg"></i>
-                            </a>
+                        
+                        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Team Member 7 -->
-                <div
-                    class="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
-                            alt="Alex Thompson"
-                            class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <!-- Member 4 -->
+                <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 via-gray-50 to-white p-0.5 shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                    <div class="relative h-44 w-full rounded-xl bg-white/95 backdrop-blur-sm overflow-hidden">
+                        <div class="absolute -top-4 -right-4 w-8 h-8 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                        <div class="absolute -bottom-3 -left-3 w-6 h-6 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                        
+                        <div class="relative pt-4 flex justify-center">
+                            <div class="relative">
+                                <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-white shadow-md transform transition-transform duration-300 group-hover:scale-110">
+                                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face" alt="Rendra" class="object-cover w-full h-full" />
+                                </div>
+                                <div class="absolute inset-0 rounded-full border border-gray-300 opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-1">Alex Thompson</h3>
-                        <p class="text-blue-600 font-medium mb-3">Sales Director</p>
-                        <div class="flex space-x-3">
-                            <a href="#"
-                                class="text-gray-400 hover:text-blue-600 transition-colors duration-200">
-                                <i class="fab fa-linkedin text-lg"></i>
-                            </a>
-                            <a href="#"
-                                class="text-gray-400 hover:text-blue-400 transition-colors duration-200">
-                                <i class="fab fa-twitter text-lg"></i>
-                            </a>
-                            <a href="#" class="text-gray-400 hover:text-red-600 transition-colors duration-200">
-                                <i class="fas fa-envelope text-lg"></i>
-                            </a>
+                        
+                        <div class="absolute bottom-0 left-0 right-0 p-3">
+                            <div class="relative z-10 text-center">
+                                <h3 class="text-sm font-bold text-gray-800 mb-1.5 transform transition-transform duration-300 group-hover:scale-105">Rendra</h3>
+                                <div class="inline-block px-2 py-1 bg-gradient-to-r from-gray-600 to-gray-700 text-white text-xs font-medium rounded-full shadow-sm transform transition-all duration-300 group-hover:from-gray-700 group-hover:to-gray-800">
+                                    UI/UX Designer
+                                </div>
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-white/90 to-transparent rounded-b-xl"></div>
+                        </div>
+                        
+                        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Team Member 8 -->
-                <div
-                    class="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
-                            alt="Maya Patel"
-                            class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <!-- Member 5 -->
+                <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 via-gray-50 to-white p-0.5 shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                    <div class="relative h-44 w-full rounded-xl bg-white/95 backdrop-blur-sm overflow-hidden">
+                        <div class="absolute -top-4 -right-4 w-8 h-8 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                        <div class="absolute -bottom-3 -left-3 w-6 h-6 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                        
+                        <div class="relative pt-4 flex justify-center">
+                            <div class="relative">
+                                <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-white shadow-md transform transition-transform duration-300 group-hover:scale-110">
+                                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face" alt="Giri" class="object-cover w-full h-full" />
+                                </div>
+                                <div class="absolute inset-0 rounded-full border border-gray-300 opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="absolute bottom-0 left-0 right-0 p-3">
+                            <div class="relative z-10 text-center">
+                                <h3 class="text-sm font-bold text-gray-800 mb-1.5 transform transition-transform duration-300 group-hover:scale-105">Giri</h3>
+                                <div class="inline-block px-2 py-1 bg-gradient-to-r from-gray-600 to-gray-700 text-white text-xs font-medium rounded-full shadow-sm transform transition-all duration-300 group-hover:from-gray-700 group-hover:to-gray-800">
+                                    Web Designer
+                                </div>
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-white/90 to-transparent rounded-b-xl"></div>
+                        </div>
+                        
+                        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                         </div>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-1">Maya Patel</h3>
-                        <p class="text-blue-600 font-medium mb-3">Data Analyst</p>
-                        <div class="flex space-x-3">
-                            <a href="#"
-                                class="text-gray-400 hover:text-blue-600 transition-colors duration-200">
-                                <i class="fab fa-linkedin text-lg"></i>
-                            </a>
-                            <a href="#"
-                                class="text-gray-400 hover:text-gray-900 transition-colors duration-200">
-                                <i class="fab fa-github text-lg"></i>
-                            </a>
-                            <a href="#"
-                                class="text-gray-400 hover:text-blue-400 transition-colors duration-200">
-                                <i class="fab fa-twitter text-lg"></i>
-                            </a>
+                </div>
+
+                <!-- Member 6 -->
+                <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 via-gray-50 to-white p-0.5 shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                    <div class="relative h-44 w-full rounded-xl bg-white/95 backdrop-blur-sm overflow-hidden">
+                        <div class="absolute -top-4 -right-4 w-8 h-8 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                        <div class="absolute -bottom-3 -left-3 w-6 h-6 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                        
+                        <div class="relative pt-4 flex justify-center">
+                            <div class="relative">
+                                <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-white shadow-md transform transition-transform duration-300 group-hover:scale-110">
+                                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b977?w=400&h=400&fit=crop&crop=face" alt="Nanda" class="object-cover w-full h-full" />
+                                </div>
+                                <div class="absolute inset-0 rounded-full border border-gray-300 opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="absolute bottom-0 left-0 right-0 p-3">
+                            <div class="relative z-10 text-center">
+                                <h3 class="text-sm font-bold text-gray-800 mb-1.5 transform transition-transform duration-300 group-hover:scale-105">Nanda</h3>
+                                <div class="inline-block px-2 py-1 bg-gradient-to-r from-gray-600 to-gray-700 text-white text-xs font-medium rounded-full shadow-sm transform transition-all duration-300 group-hover:from-gray-700 group-hover:to-gray-800">
+                                    UI/UX Expert
+                                </div>
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-white/90 to-transparent rounded-b-xl"></div>
+                        </div>
+                        
+                        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member 7 -->
+                <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 via-gray-50 to-white p-0.5 shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                    <div class="relative h-44 w-full rounded-xl bg-white/95 backdrop-blur-sm overflow-hidden">
+                        <div class="absolute -top-4 -right-4 w-8 h-8 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                        <div class="absolute -bottom-3 -left-3 w-6 h-6 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                        
+                        <div class="relative pt-4 flex justify-center">
+                            <div class="relative">
+                                <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-white shadow-md transform transition-transform duration-300 group-hover:scale-110">
+                                    <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=400&h=400&fit=crop&crop=face" alt="Harta" class="object-cover w-full h-full" />
+                                </div>
+                                <div class="absolute inset-0 rounded-full border border-gray-300 opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="absolute bottom-0 left-0 right-0 p-3">
+                            <div class="relative z-10 text-center">
+                                <h3 class="text-sm font-bold text-gray-800 mb-1.5 transform transition-transform duration-300 group-hover:scale-105">Harta</h3>
+                                <div class="inline-block px-2 py-1 bg-gradient-to-r from-gray-600 to-gray-700 text-white text-xs font-medium rounded-full shadow-sm transform transition-all duration-300 group-hover:from-gray-700 group-hover:to-gray-800">
+                                    Web Developer
+                                </div>
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-white/90 to-transparent rounded-b-xl"></div>
+                        </div>
+                        
+                        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member 8 -->
+                <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 via-gray-50 to-white p-0.5 shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                    <div class="relative h-44 w-full rounded-xl bg-white/95 backdrop-blur-sm overflow-hidden">
+                        <div class="absolute -top-4 -right-4 w-8 h-8 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                        <div class="absolute -bottom-3 -left-3 w-6 h-6 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full opacity-20 group-hover:opacity-30 transition-opacity"></div>
+
+                        <div class="relative pt-4 flex justify-center">
+                            <div class="relative">
+                                <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-white shadow-md transform transition-transform duration-300 group-hover:scale-110">
+                                    <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=400&h=400&fit=crop&crop=face" alt="Harta" class="object-cover w-full h-full" />
+                                </div>
+                                <div class="absolute inset-0 rounded-full border border-gray-300 opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+                            </div>
+                        </div>
+
+                        <div class="absolute bottom-0 left-0 right-0 p-3">
+                            <div class="relative z-10 text-center">
+                                <h3 class="text-sm font-bold text-gray-800 mb-1.5 transform transition-transform duration-300 group-hover:scale-105">Harta</h3>
+                            </div>
                         </div>
                     </div>
                 </div>
