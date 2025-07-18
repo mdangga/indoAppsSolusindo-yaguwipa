@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
 class KategoriProgram extends Model
@@ -12,6 +13,20 @@ class KategoriProgram extends Model
     protected $fillable = [
         'nama'
     ];
+
+    //buat slug saat kategori ditambhkan
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->slug = Str::slug($model->nama);
+        });
+
+        static::updating(function ($model) {
+            $model->slug = Str::slug($model->nama);
+        });
+    }
 
     public function Program()
     {
