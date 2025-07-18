@@ -24,7 +24,35 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('program.store') }}" enctype="multipart/form-data" class="space-y-6">
+        <form method="POST" action="{{ route('jenisPublikasi.store') }}">
+            @csrf
+            <div>
+                <label for="nama" class="block mb-2 text-sm font-medium text-gray-900">
+                    Nama <span class="text-red-500">*</span>
+                </label>
+                <input type="text" name="nama" id="nama" value="{{ old('nama') }}"
+                    placeholder="Masukkan nama program"
+                    class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                    required>
+                @error('nama')
+                    <small class="text-red-600 mt-1 block">{{ $message }}</small>
+                @enderror
+            </div>
+            <div class="pt-4 border-t">
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="window.history.back()" 
+                        class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                        Batal
+                    </button>
+                    <button type="submit" 
+                        class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200">
+                        Simpan Program
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        {{-- <form method="POST" action="{{ route('program.store') }}" enctype="multipart/form-data" class="space-y-6">
             @csrf
 
             <!-- Kategori Program -->
@@ -181,10 +209,10 @@
                     </button>
                 </div>
             </div>
-        </form>
+        </form> --}}
     </div>
 
-    <script>
+    {{-- <script>
         let index = 1;
 
         function tambahInstitusi() {
@@ -328,7 +356,7 @@
                 }
             }
         });
-    </script>
+    </script> --}}
 </body>
 
 </html>

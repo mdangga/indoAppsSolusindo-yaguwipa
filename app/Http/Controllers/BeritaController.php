@@ -114,7 +114,7 @@ class BeritaController extends Controller
     }
 
 
-    // fungsi untuk menambahkan data baru
+    // fungsi untuk menampilkan form memperbarui data
     public function showFormEdit($id)
     {
         $berita = Berita::findOrFail($id);
@@ -150,7 +150,6 @@ class BeritaController extends Controller
         $data = $validator->validated();
 
         $data['slug'] = Str::slug($request->judul);
-        $data['tanggal_publish'] = $data['status'] === 'show' ? now() : null;
 
         if ($request->hasFile('thumbnail')) {
             $image = $request->file('thumbnail');

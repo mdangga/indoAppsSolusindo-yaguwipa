@@ -4,10 +4,12 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\JenisPublikasiController;
 use App\Http\Controllers\kategoriNewsEventController;
 use App\Http\Controllers\MenusController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\PublikasiController;
 use App\Http\Controllers\SosiaMediaController;
 use Illuminate\Support\Facades\Route;
 
@@ -116,7 +118,34 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/menus/edit/{id}', [MenusController::class, 'showFormEdit'])->name('menus.formEdit');
     Route::put('/menus/{id}', [MenusController::class, 'update'])->name('menus.update');
     
-    Route::delete('/menus/destroy/{id}', [MenusController::class, 'destroy'])->name('berita.delete');
+    Route::delete('/menus/destroy/{id}', [MenusController::class, 'destroy'])->name('menus.delete');
+    
+    
+    //jenis-publikasi 
+    Route::get('/jenis-publikasi', [JenisPublikasiController::class, 'index'])->name('admin.jenisPublikasi');
+    Route::get('/datatable/jenis-publikasi', [JenisPublikasiController::class, 'getDataTables'])->name('jenisPublikasi.table');
+    
+    Route::get('/jenis-publikasi/store', [JenisPublikasiController::class, 'showFormStore'])->name('jenisPublikasi.formStore');
+    Route::post('/jenis-publikasi', [JenisPublikasiController::class, 'store'])->name('jenisPublikasi.store');
+    
+    Route::get('/jenis-publikasi/edit/{id}', [JenisPublikasiController::class, 'showFormEdit'])->name('jenisPublikasi.formEdit');
+    Route::put('/jenis-publikasi/{id{', [JenisPublikasiController::class, 'update'])->name('jenisPublikasi.update');
+    
+    Route::delete('/jenis-publikasi/destroy/{id}', [JenisPublikasiController::class, 'destroy'])->name('jenisPublikasi.delete');
+
+
+    //publikasi 
+    Route::get('/publikasi', [PublikasiController::class, 'index'])->name('admin.publikasi');
+    Route::get('/datatable/publikasi', [PublikasiController::class, 'getDataTables'])->name('publikasi.table');
+    
+    Route::get('/publikasi/store', [PublikasiController::class, 'showFormStore'])->name('publikasi.formStore');
+    Route::post('/publikasi', [PublikasiController::class, 'store'])->name('publikasi.store');
+    
+    Route::get('/publikasi/edit/{id}', [PublikasiController::class, 'showFormEdit'])->name('publikasi.formEdit');
+    Route::put('/publikasi/{id{', [PublikasiController::class, 'update'])->name('publikasi.update');
+    
+    Route::delete('/publikasi/destroy/{id}', [PublikasiController::class, 'destroy'])->name('publikasi.delete');
+
     
     // logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
