@@ -19,7 +19,7 @@ class Program extends Model
 
     public function KategoriProgram()
     {
-        return $this->belongsToMany(KategoriProgram::class, 'id_kategori_program', 'id_kategori_program');
+        return $this->belongsTo(KategoriProgram::class, 'id_kategori_program', 'id_kategori_program');
     }
 
     public function institusiTerlibat()

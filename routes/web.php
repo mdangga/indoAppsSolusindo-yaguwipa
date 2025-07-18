@@ -54,9 +54,17 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::delete('/sosial-media/destroy/{id}', [SosiaMediaController::class, 'destroy'])->name('sosmed.delete');
     
     
-    // program (under constructions)
-    Route::get('/program', [ProgramController::class, 'create'])->name('');
+    // program
+    Route::get('/program', [ProgramController::class, 'index'])->name('admin.program');
+    Route::get('/datatable/program', [ProgramController::class, 'getDataTables'])->name('program.table');
+
+    Route::get('/program/store', [ProgramController::class, 'showFormStore'])->name('program.formStore');
     Route::post('/program', [ProgramController::class, 'store'])->name('program.store');
+    
+    Route::get('/program/edit/{id}', [ProgramController::class, 'showFormEdit'])->name('program.formUpdate');
+    Route::put('/program/{id}', [ProgramController::class, 'update'])->name('program.update');
+
+    Route::delete('/program/destroy/{id}', [ProgramController::class, 'destroy'])->name('program.delete');
     
     
     // gallery
