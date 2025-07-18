@@ -6,24 +6,26 @@ use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\JenisPublikasiController;
 use App\Http\Controllers\kategoriNewsEventController;
+use App\Http\Controllers\KategoriProgramController;
 use App\Http\Controllers\MenusController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\PublikasiController;
 use App\Http\Controllers\SosiaMediaController;
+use App\Models\KategoriProgram;
 use Illuminate\Support\Facades\Route;
 
-// testing area
+// testing-area
 Route::get('/testing', [GeneralController::class, 'testing'])->name('testing');
 
 
-// route default
+// route-default
 Route::get('/', [GeneralController::class, 'beranda'])->name('beranda');
 
 // profiles
 Route::get('/tentang-kami', [GeneralController::class, 'tentangKami'])->name('beranda.tentang');
 
-// news & event 
+// news-dan-event 
 Route::get('/berita-dan-kegiatan/show-all', [BeritaController::class, 'show'])->name('beranda.berita');
 Route::get('/berita-dan-kegiatan/show/{slug}', [BeritaController::class, 'showSlug'])->name('berita.slug');
 
@@ -37,17 +39,17 @@ Route::get('/teams', [GeneralController::class, 'teams'])->name('beranda.teams')
 Route::get('/mitra', [GeneralController::class, 'mitra'])->name('beranda.mitra');
 
 // programs
-Route::get('/program/show-all', [ProgramController::class, 'program'])->name('beranda.program');
+Route::get('/program/show-all', [ProgramController::class, 'show'])->name('beranda.program');
+Route::get('/program/kategori/{slug}', [ProgramController::class, 'showSlug'])->name('program.kategori');
 
-Route::get('/program/kategori/{slug}', [ProgramController::class, 'kategori'])->name('program.kategori');
 // middleware authtentication
 Route::middleware(['auth.admin'])->group(function () {
-    // general setting
+    // general-setting
     Route::get('/general-setting', [ProfileController::class, 'index'])->name('admin.profiles');
     Route::put('/general-setting/update/{id}', [ProfileController::class, 'update'])->name('profiles.update');
 
 
-    // sosial media
+    // sosial-media
     Route::get('/sosial-media', [SosiaMediaController::class, 'index'])->name('admin.sosmed');
     Route::get('/datatable/sosial-media', [SosiaMediaController::class, 'getDataTables'])->name('sosmed.table');
 
@@ -58,6 +60,19 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::put('/sosial-media/{id}', [SosiaMediaController::class, 'update'])->name('sosmed.update');
 
     Route::delete('/sosial-media/destroy/{id}', [SosiaMediaController::class, 'destroy'])->name('sosmed.delete');
+
+
+    // kategori-program
+    Route::get('/kategori-program', [KategoriProgramController::class, 'index'])->name('admin.kategoriProgram');
+    Route::get('/datatable/kategori-program', [KategoriProgramController::class, 'getDataTables'])->name('kategoriProgram.table');
+
+    Route::get('/kategori-program/store', [KategoriProgramController::class, 'showFormStore'])->name('kategoriProgram.formStore');
+    Route::post('/kategori-program', [KategoriProgramController::class, 'store'])->name('kategoriProgram.store');
+
+    Route::get('/kategori-program/edit/{id}', [KategoriProgramController::class, 'showFormEdit'])->name('kategoriProgram.formUpdate');
+    Route::put('/kategori-program/{id}', [KategoriProgramController::class, 'update'])->name('kategoriProgram.update');
+
+    Route::delete('/kategori-program/destroy/{id}', [KategoriProgramController::class, 'destroy'])->name('kategoriProgram.delete');
 
 
     // program
@@ -99,7 +114,7 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::delete('/kategori-news-event/destroy/{id}', [kategoriNewsEventController::class, 'destroy'])->name('kategoriBerita.delete');
 
 
-    // news & event 
+    // news-dan-event 
     Route::get('/berita', [BeritaController::class, 'index'])->name('admin.berita');
     Route::get('/datatable/berita', [BeritaController::class, 'getDataTables'])->name('berita.table');
 
@@ -133,8 +148,8 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::post('/jenis-publikasi', [JenisPublikasiController::class, 'store'])->name('jenisPublikasi.store');
 
     Route::get('/jenis-publikasi/edit/{id}', [JenisPublikasiController::class, 'showFormEdit'])->name('jenisPublikasi.formEdit');
-    Route::put('/jenis-publikasi/{id{', [JenisPublikasiController::class, 'update'])->name('jenisPublikasi.update');
-
+    Route::put('/jenis-publikasi/{id}', [JenisPublikasiController::class, 'update'])->name('jenisPublikasi.update');
+    
     Route::delete('/jenis-publikasi/destroy/{id}', [JenisPublikasiController::class, 'destroy'])->name('jenisPublikasi.delete');
 
 
@@ -162,7 +177,7 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 
 
-// personalDataUser
+// personal-data-user
 Route::get('/register/{id}', [AuthController::class, 'showFormUser'])->name('register.dataUser');
 Route::post('/add-data-user', [AuthController::class, 'addDataUser'])->name('add.dataUser');
 

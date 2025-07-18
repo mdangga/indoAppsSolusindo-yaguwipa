@@ -2,34 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JenisPublikasi;
+use App\Models\KategoriProgram;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
 
-class JenisPublikasiController extends Controller
+class KategoriProgramController extends Controller
 {
-    // fungsi untuk menampilkan halaman jenis publikasi di admin
+    // fungsi untuk menampilkan halaman kategori program di admin
     public function index()
     {
-        return view('admin.showJenisPublikasi');
+        return view('admin.showKategoriProgram');
     }
 
 
-    // fungsi untuk membuatkan datatable jenis publikasi
+    // fungsi untuk membuatkan datatable kategori program
     public function getDataTables(Request $request)
     {
         if (!$request->ajax()) {
             return abort(403, 'Akses tidak diizinkan');
         }
 
-        $jenis = JenisPublikasi::select(['id_jenis_publikasi', 'nama'])->orderBy('updated_at', 'desc');
+        $kategori = KategoriProgram::select(['id_kategori_program', 'nama'])->orderBy('updated_at', 'desc');
 
-        return DataTables::of($jenis)
+        return DataTables::of($kategori)
             ->addColumn('aksi', function ($row) {
                 return '
-                <button class="editBtn bg-blue-500 text-white px-2 py-1 rounded text-sm" data-id="' . e($row->id_jenis_publikasi) . '">Edit</button>
-                <button class="deleteBtn bg-red-500 text-white px-2 py-1 rounded text-sm ml-2" data-id="' . e($row->id_jenis_publikasi) . '">Hapus</button>
+                <button class="editBtn bg-blue-500 text-white px-2 py-1 rounded text-sm" data-id="' . e($row->id_kategori_program) . '">Edit</button>
+                <button class="deleteBtn bg-red-500 text-white px-2 py-1 rounded text-sm ml-2" data-id="' . e($row->id_kategori_program) . '">Hapus</button>
             ';
             })
             ->editColumn('nama', function ($row) {
@@ -43,15 +44,15 @@ class JenisPublikasiController extends Controller
     // fungsi untuk menampilkan form menambahkan data
     public function showFormStore()
     {
-        return view('admin.formJenisPublikasi');
+        return view('admin.formKategoriProgram');
     }
 
 
     // fungsi untuk menampilkan form memperbarui data
     public function showFormEdit($id)
     {
-        $jenis_publikasi = JenisPublikasi::findOrFail($id);
-        return view('admin.formJenisPublikasi', compact('jenis_publikasi'));
+        $kategori = KategoriProgram::findOrFail($id);
+        return view('admin.formKategoriProgram', compact('kategori'));
     }
 
 
@@ -70,17 +71,18 @@ class JenisPublikasiController extends Controller
         }
 
         $data = $validator->validate();
+        $data['slug'] = Str::slug($request->nama);
 
-        JenisPublikasi::create($data);
+        KategoriProgram::create($data);
 
-        return redirect()->route('admin.jenisPublikasi')->with('success', 'Jenis publikasi berhasil ditambahkan.');
+        return redirect()->route('admin.kategoriProgram')->with('success', 'Kategori Program berhasil ditambahkan.');
     }
 
 
     // fungsi untuk memperbarui data lama
     public function update(Request $request, $id)
     {
-        $jenis = JenisPublikasi::findOrFail($id);
+        $kategori = KategoriProgram::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
             'nama' => 'required|unique:jenis_publikasi,nama|max:255',
@@ -94,19 +96,20 @@ class JenisPublikasiController extends Controller
         }
 
         $data = $validator->validate();
+        $data['slug'] = Str::slug($request->nama);
 
-        $jenis->update($data);
+        $kategori->update($data);
 
-        return redirect()->route('admin.jenisPublikasi')->with('success', 'Jenis publikasi berhasil ditambahkan.');
+        return redirect()->route('admin.kategoriProgram')->with('success', 'Kategori Program berhasil diperbarui.');
     }
 
 
     // fungsi untuk menghapus data
     public function destroy($id)
     {
-        $jenis = JenisPublikasi::findOrFail($id);
+        $jenis = KategoriProgram::findOrFail($id);
         $jenis->delete();
 
-        return redirect()->back()->with('success', 'Jenis publikasi berhasil dihapus.');
+        return redirect()->back()->with('success', 'Kategori Program berhasil dihapus.');
     }
 }

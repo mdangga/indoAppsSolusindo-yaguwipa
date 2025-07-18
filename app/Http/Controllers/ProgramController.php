@@ -14,14 +14,8 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ProgramController extends Controller
 {
-    // fungsi untuk menampilkan halaman program di admin
-    public function index()
-    {
-        return view('admin.showProgram');
-    }
-
-    // tampilkan program dan berita terkait
-    public function program()
+    // fungsi untuk menampilkan halaman program di beranda
+    public function show()
     {
         $kategoriList = KategoriProgram::with([
             'Program.institusiTerlibat'
@@ -32,26 +26,35 @@ class ProgramController extends Controller
         }])->get()->filter(function ($kategori) {
             return $kategori->program->isNotEmpty();
         });
-
+        
         $kategoriProgramIds = KategoriProgram::has('program')->pluck('id_kategori_program');
-
+        
         $beritaTerkait = Berita::whereHas('kategoriNewsEvent', function ($query) use ($kategoriProgramIds) {
             $query->whereIn('id_kategori_program', $kategoriProgramIds);
         })
-            ->where('status', 'show') // jika hanya ingin yang aktif
-            ->latest()
-            ->take(8) // atau sesuaikan jumlah yang ditampilkan
-            ->get();
-
+        ->where('status', 'show') // jika hanya ingin yang aktif
+        ->latest()
+        ->take(8) // atau sesuaikan jumlah yang ditampilkan
+        ->get();
+        
         return view('program', compact('kategoriList', 'beritaTerkait', 'kategoriPrograms'));
     }
+    
 
-    // buat slug untuk redirect dinamis sesuai kategori
-    public function kategori($slug)
+    // fungsi untuk menampilkan halaman program per kategori dengan slug di beranda
+    public function showSlug($slug)
     {
         $kategori = KategoriProgram::where('slug', $slug)->with('program')->firstOrFail();
         return view('programShowAll', compact('kategori'));
     }
+    
+
+    // fungsi untuk menampilkan halaman program di admin
+    public function index()
+    {
+        return view('admin.showProgram');
+    }
+
 
     // fungsi untuk membuatkan datatable program
     public function getDataTables(Request $request)
