@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Admin - Jenis Publikasi</title>
+    <title>Admin - Kategori Program</title>
     {{-- icon --}}
     <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
 
@@ -229,7 +229,7 @@
 
         <div class=" py-4 border-gray-200 bg-gray-50">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <a href="{{ route('jenisPublikasi.formStore') }}"
+                <a href="{{ route('kategoriProgram.formStore') }}"
                     class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
                     <i class="fas fa-plus w-4 h-4 mr-2"></i>
                     Tambah Kategori
@@ -243,7 +243,7 @@
             <!-- Table Container -->
             <div class="p-5 rounded-lg">
                 <div class="table-container overflow-x-auto">
-                    <table id="jenisPublikasiTable" class="w-full border border-gray-300 ">
+                    <table id="kategoriProgramTable" class="w-full border border-gray-300 ">
                         <thead>
                             <tr class="text-left">
                                 <th>No</th>
@@ -264,11 +264,11 @@
 
     <script>
         $(document).ready(function() {
-            let table = $('#jenisPublikasiTable').DataTable({
+            let table = $('#kategoriProgramTable').DataTable({
                 processing: false,
                 serverSide: true,
                 autoWidth: false,
-                ajax: '{{ route('jenisPublikasi.table') }}',
+                ajax: '{{ route('kategoriProgram.table') }}',
                 dom: '<"flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6"<"flex items-center gap-2"l><"flex items-center gap-2"f>>rt<"flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-6"ip>',
                 language: {
 
@@ -367,7 +367,7 @@
             });
 
             // Delete handler
-            $('#jenisPublikasiTable').on('click', '.deleteBtn', function() {
+            $('#kategoriProgramTable').on('click', '.deleteBtn', function() {
                 const id = $(this).data('id');
                 const button = $(this);
 
@@ -378,7 +378,7 @@
                         .addClass('bg-gray-400 cursor-not-allowed')
                         .html('<i class="fas fa-spinner fa-spin w-3 h-3 mr-1"></i>');
 
-                    fetch(`/jenis-publikasi/destroy/${id}`, {
+                    fetch(`/kategori-program/destroy/${id}`, {
                             method: 'delete', // ubah ke POST
                             headers: {
                                 'Content-Type': 'application/json',
@@ -408,9 +408,9 @@
             });
 
             // Edit handler
-            $('#jenisPublikasiTable').on('click', '.editBtn', function() {
+            $('#kategoriProgramTable').on('click', '.editBtn', function() {
                 const id = $(this).data('id');
-                window.location.href = `/jenis-publikasi/edit/${id}`;
+                window.location.href = `/kategori-program/edit/${id}`;
             });
 
             // Notification system
