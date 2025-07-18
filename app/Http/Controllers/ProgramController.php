@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Institusi;
 use App\Models\KategoriProgram;
 use App\Models\Program;
+use App\Models\Berita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Laravel\Facades\Image;
@@ -19,6 +20,38 @@ class ProgramController extends Controller
         return view('admin.showProgram');
     }
 
+    // tampilkan program dan berita terkait
+    public function program()
+    {
+        $kategoriList = KategoriProgram::with([
+            'Program.institusiTerlibat'
+        ])->get();
+
+        $kategoriPrograms = KategoriProgram::with(['program' => function ($query) {
+            $query->with('institusiTerlibat', 'KategoriProgram');
+        }])->get()->filter(function ($kategori) {
+            return $kategori->program->isNotEmpty();
+        });
+
+        $kategoriProgramIds = KategoriProgram::has('program')->pluck('id_kategori_program');
+
+        $beritaTerkait = Berita::whereHas('kategoriNewsEvent', function ($query) use ($kategoriProgramIds) {
+            $query->whereIn('id_kategori_program', $kategoriProgramIds);
+        })
+            ->where('status', 'show') // jika hanya ingin yang aktif
+            ->latest()
+            ->take(8) // atau sesuaikan jumlah yang ditampilkan
+            ->get();
+
+        return view('program', compact('kategoriList', 'beritaTerkait', 'kategoriPrograms'));
+    }
+
+    // buat slug untuk redirect dinamis sesuai kategori
+    public function kategori($slug)
+    {
+        $kategori = KategoriProgram::where('slug', $slug)->with('program')->firstOrFail();
+        return view('programShowAll', compact('kategori'));
+    }
 
     // fungsi untuk membuatkan datatable program
     public function getDataTables(Request $request)
