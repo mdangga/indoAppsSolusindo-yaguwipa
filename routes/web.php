@@ -12,7 +12,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\PublikasiController;
 use App\Http\Controllers\SosiaMediaController;
-use App\Models\KategoriProgram;
 use Illuminate\Support\Facades\Route;
 
 // testing-area

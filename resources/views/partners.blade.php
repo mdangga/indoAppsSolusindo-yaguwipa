@@ -211,7 +211,7 @@
                     </p> --}}
                 </div>
                     <!-- Partners Grid -->
-                    <div class="px-10 sm:px-6 lg:px-14 py-20">
+                    <div class="px-10 sm:px-6 lg:px-14">
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                         <!-- PT Indo Apps Solusindo -->
                         <div class="partner-card bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/40 stagger-animation" style="animation-delay: 0.1s;" data-aos="zoom-in" data-aos-delay="100">
