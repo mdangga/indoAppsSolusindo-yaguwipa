@@ -28,8 +28,8 @@
     <div class="px-6 pt-17 lg:px-8">
         <div class="py-20">
             <!-- Baris 1: Header -->
-            <div class="flex items-center justify-center my-4">
-                <h1 class="text-3xl font-semibold tracking-tight text-gray-900 text-center sm:text-7xl m-0">
+            <div class="flex items-center justify-center my-4 mb-12">
+                <h1 class="text-xl font-semibold tracking-tight text-gray-900 text-center sm:text-5xl m-0">
                     {{ $site['yayasanProfile']->company }}
                 </h1>
             </div>
@@ -38,7 +38,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center w-full max-w-5xl mx-auto">
                 <!-- Logo -->
                 <div class="flex justify-center">
-                    <img class="h-64 md:h-96 w-auto object-contain"
+                    <img class="h-32 md:h-64 w-auto object-contain"
                         src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" alt="Logo Yayasan">
                 </div>
 
@@ -51,14 +51,13 @@
             </div>
         </div>
     </div>
-
-    <section class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16" data-aos="fade-up">
-                <h2 class="text-4xl md:text-5xl font-bold gradient-text mb-6">
+    <section class="bg-gray-100 px-6 pt-17 lg:px-8">
+        <div class="container mx-auto px-20 py-20">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
                     Nilai-Nilai Kami
                 </h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                <p class="text-xl text-gray-700 max-w-3xl mx-auto">
                     Fondasi yang kuat membangun masa depan yang berkelanjutan
                 </p>
             </div>
@@ -161,7 +160,6 @@
                         Pencapaian yang telah kami raih dalam perjalanan membangun masa depan yang lebih baik
                     </p>
             </div>
-
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
                     <div class="text-center" data-aos="fade-up" data-aos-delay="100">
                     <div class="text-5xl font-bold text-black mb-2">500+</div>
@@ -179,14 +177,9 @@
                     <div class="text-5xl font-bold text-black mb-2">15+</div>
                     <div class="text-black/80">Penelitian Published</div>
                 </div> --}}
-        </div>
-        </div>
     </section>
-    </section>
-    </div>
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <x-footer />
 </body>
-<x-footer />
-
 
 </html>
