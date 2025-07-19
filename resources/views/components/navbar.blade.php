@@ -217,7 +217,7 @@
     </div>
 
     <!-- fixed navbar -->
-    <nav class="fixed mt-[-85px] left-1/2 transform -translate-x-1/2 z-50 hidden lg:block">
+    <nav class="fixed mt-[-87px] left-1/2 transform -translate-x-1/2 z-50 hidden lg:block">
         <div class="h-[50px] px-6 flex justify-center items-center rounded-[75px] bg-white/30 backdrop-blur-md">
             <div class="flex gap-x-12">
                 @foreach ($menus as $menu)
@@ -228,7 +228,8 @@
                     @if ($menu->children->count())
                         <div class="inline-flex items-center relative group cursor-default">
                             <p
-                                class="relative text-sm font-semibold text-gray-800 drop-shadow-md group transition-transform duration-200 flex items-center gap-1">
+                                class="relative text-sm font-semibold text-gray-800 drop-shadow-md group transition-transform duration-200 flex items-center gap-1 whitespace-nowrap overflow-hidden text-ellipsis
+">
                                 {{ $menu->title }}
                                 <svg class="w-3 h-3 text-gray-600 group-hover:rotate-180 transition-transform duration-300"
                                     fill="currentColor" viewBox="0 0 20 20">
@@ -262,7 +263,8 @@
                         </div>
                     @else
                         <a href="{{ $menu->url }}"
-                            class="relative text-sm font-semibold text-gray-800 drop-shadow-md group transition-transform duration-200">
+                            class="relative text-sm font-semibold text-gray-800 drop-shadow-md group transition-transform duration-200 whitespace-nowrap overflow-hidden text-ellipsis
+">
                             {{ $menu->title }}
                             <span
                                 class="absolute bottom-0 right-0 h-[2px] bg-amber-200 transition-all duration-300 
