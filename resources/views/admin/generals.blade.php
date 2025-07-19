@@ -96,7 +96,7 @@
                                     class="relative overflow-hidden group-hover:scale-105 transition-transform duration-300">
                                     <img src="{{ !empty($profiles->$field) ? asset('storage/' . $profiles->$field) : asset('storage/img/img-placeholder.webp') }}"
                                         alt="{{ $config['title'] }}"
-                                        class="object-contain w-full h-32 {{ empty($profiles->$field) ? 'opacity-40 grayscale' : '' }} transition-all duration-300"
+                                        class="object-contain w-full h-32 {{ empty($profiles->$field) ? 'opacity-0 grayscale' : '' }} transition-all duration-300"
                                         id="{{ $field }}-preview">
 
                                     @if (empty($profiles->$field))
@@ -185,7 +185,10 @@
                                                 </svg>
                                                 <div>
                                                     <p data-file-name="{{ $field }}"
-                                                        class="text-sm font-medium text-blue-800"></p>
+                                                        class="text-sm font-medium text-blue-800 truncate whitespace-nowrap overflow-hidden w-full">
+                                                        {{ $field }}
+                                                    </p>
+                                                    </p>
                                                     <p data-file-size="{{ $field }}"
                                                         class="text-xs text-blue-600"></p>
                                                 </div>

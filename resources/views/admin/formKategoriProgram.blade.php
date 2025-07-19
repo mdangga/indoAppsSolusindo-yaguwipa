@@ -26,7 +26,9 @@
     <main class="p-6 sm:ml-64 pt-24 transition-all ">
 
         <div class="w-full bg-white p-6 rounded shadow">
-            <h1 class="text-2xl font-bold mb-4">Tambah Kategori</h1>
+            <h1 class="text-2xl font-bold mb-6 text-gray-800">
+                {{ isset($kategori) ? 'Edit Kategori' : 'Tambah Kategori Baru' }}
+            </h1>
 
             @if ($errors->any())
                 <div class="mb-4 bg-red-100 text-red-700 p-2 rounded">
@@ -41,7 +43,7 @@
             @php $isEdit = isset($kategori); @endphp
 
             <form
-                action="{{ $isEdit ? route('kategoriProgram.update', $kategori->id_jenis_publikasi) : route('kategoriProgram.store') }}"
+                action="{{ $isEdit ? route('kategoriProgram.update', $kategori->id_kategori_program) : route('kategoriProgram.store') }}"
                 method="POST" enctype="multipart/form-data">
                 @csrf
                 @if ($isEdit)

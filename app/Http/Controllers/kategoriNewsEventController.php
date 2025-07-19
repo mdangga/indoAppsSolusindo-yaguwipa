@@ -23,12 +23,12 @@ class kategoriNewsEventController extends Controller
         if (!$request->ajax()) {
             return abort(403, 'Akses tidak diizinkan');
         }
-    
+
         $kategori = KategoriNewsEvent::with('KategoriProgram')
             ->select(['id_kategori_news_event', 'nama', 'id_kategori_program'])
             ->orderBy('updated_at', 'desc');
-    
-    
+
+
         return DataTables::of($kategori)
             ->addColumn('aksi', function ($row) {
                 return '
@@ -40,9 +40,9 @@ class kategoriNewsEventController extends Controller
                 return $row->nama;
             })
             ->editColumn('kategori_program', function ($row) {
-                return $row->KategoriProgram->nama;
+                return optional($row->KategoriProgram)->nama ?? 'Tidak ada';
             })
-    
+
             ->rawColumns(['aksi'])
             ->make(true);
     }
