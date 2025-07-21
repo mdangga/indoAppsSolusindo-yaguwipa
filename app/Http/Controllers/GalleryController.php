@@ -24,15 +24,14 @@ class GalleryController extends Controller
         return view('admin.showGallery');
     }
 
-
     // fungsi untuk membuatkan datatable gallery
-    public function getDataTables(Request $request)
+    public function getDataTablesPhoto(Request $request)
     {
         if (!$request->ajax()) {
             return abort(403, 'Akses tidak diizinkan');
         }
 
-        $gallery = Gallery::select(['id_gallery', 'alt_text', 'kategori', 'link', 'status'])->orderBy('updated_at', 'desc');
+        $gallery = Gallery::select(['id_gallery', 'alt_text', 'kategori', 'link', 'status'])->orderBy('updated_at', 'desc')->where('kategori', 'youtube');
 
         return DataTables::of($gallery)
             ->addIndexColumn()
@@ -47,26 +46,9 @@ class GalleryController extends Controller
             })
             ->editColumn('link', function ($row) {
                 if (!$row->link) {
-                    return null; // atau bisa kembalikan URL /img/no-image.png
+                    return null;
                 }
-
-                $ext = strtolower(pathinfo($row->link, PATHINFO_EXTENSION));
-
-                // Jika kategori YouTube
-                if ($row->kategori === 'youtube') {
-                    // Ambil ID YouTube dari URL
-                    if (preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/|v\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $row->link, $matches)) {
-                        $youtubeId = $matches[1];
-                        return "https://img.youtube.com/vi/{$youtubeId}/mqdefault.jpg";
-                    }
-                }
-
-                // Jika gambar yang diupload
-                if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
-                    return asset('storage/' . $row->link);
-                }
-
-                return null;
+                return asset('storage/' . $row->link);
             })
 
 
@@ -74,7 +56,44 @@ class GalleryController extends Controller
             ->make(true);
     }
 
-    
+    // fungsi untuk membuatkan datatable gallery
+    public function getDataTablesVideo(Request $request)
+    {
+        if (!$request->ajax()) {
+            return abort(403, 'Akses tidak diizinkan');
+        }
+
+        $gallery = Gallery::select(['id_gallery', 'alt_text', 'kategori', 'link', 'status'])->orderBy('updated_at', 'desc')->where('kategori', 'youtube');
+
+        return DataTables::of($gallery)
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($row) {
+                return '
+            <button class="editBtn bg-blue-500 text-white px-2 py-1 rounded text-sm" data-id="' . e($row->id_gallery) . '">Edit</button>
+            <button class="deleteBtn bg-red-500 text-white px-2 py-1 rounded text-sm ml-2" data-id="' . e($row->id_gallery) . '">Hapus</button>
+        ';
+            })
+            ->editColumn('status', function ($row) {
+                return $row->status;
+            })
+            ->editColumn('link', function ($row) {
+                if (!$row->link) {
+                    return null;
+                }
+
+                // Ambil ID YouTube dari URL
+                if (preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/|v\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $row->link, $matches)) {
+                    $youtubeId = $matches[1];
+                    return "https://img.youtube.com/vi/{$youtubeId}/mqdefault.jpg";
+                }
+            })
+
+
+            ->rawColumns(['aksi'])
+            ->make(true);
+    }
+
+
     // fungsi untuk menampilkan form menambahkan data
     public function showFormStore()
     {
@@ -203,7 +222,7 @@ class GalleryController extends Controller
         return redirect()->route('admin.gallery')->with('success', 'Gallery berhasil diperbarui!');
     }
 
-    
+
     // fungsi untuk menghapus data
     public function destroy($id)
     {
@@ -217,5 +236,4 @@ class GalleryController extends Controller
 
         return redirect()->back()->with('sukses', 'Gallery berhasil dihapus');
     }
-
 }

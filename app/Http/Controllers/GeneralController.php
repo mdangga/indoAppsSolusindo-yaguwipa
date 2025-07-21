@@ -35,12 +35,13 @@ class GeneralController extends Controller
 
     public function testing()
     {
-        $kategoriList = KategoriProgram::with([
-            'Program.institusiTerlibat',
-            'Berita'
-        ])->get();
+        // $kategoriList = KategoriProgram::with([
+        //     'Program.institusiTerlibat',
+        //     'Berita'
+        // ])->get();
 
-        return view('program', compact('kategoriList'));
+        // return view('testing', compact('kategoriList'));
+        return view('testing');
     }
 
     public function mitra()
