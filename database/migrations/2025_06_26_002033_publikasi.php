@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('slug');
             $table->longText('deskripsi');
             $table->string('file');
+            $table->integer('halaman');
+            $table->integer('download');
             $table->dateTime('tanggal_terbit')->nullable();
             $table->string('meta_title');
             $table->text('meta_description');
