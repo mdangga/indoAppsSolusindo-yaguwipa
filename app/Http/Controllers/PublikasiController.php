@@ -16,8 +16,22 @@ class PublikasiController extends Controller
     public function show()
     {
         $publikasi = Publikasi::with('JenisPublikasi')->where('status', 'show')->orderBy('tanggal_terbit', 'desc')->get();
-        return view('testing', compact('publikasi'));
+        $jenisPublikasi = JenisPublikasi::all();
+        return view('publikasi', compact('publikasi', 'jenisPublikasi'));
     }
+
+    public function showPdf($filePath)
+    {
+        $path = storage_path('app/public/' . $filePath);
+
+        return response()->stream(function () use ($path) {
+            readfile($path);
+        }, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $filePath . '"',
+        ]);
+    }
+
 
     // fungsi untuk membuatkan datatable news dan event
     public function getDataTables(Request $request)
