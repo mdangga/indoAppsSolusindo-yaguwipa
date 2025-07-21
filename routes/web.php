@@ -41,6 +41,9 @@ Route::get('/mitra', [GeneralController::class, 'mitra'])->name('beranda.mitra')
 Route::get('/program/show-all', [ProgramController::class, 'show'])->name('beranda.program');
 Route::get('/program/kategori/{slug}', [ProgramController::class, 'showSlug'])->name('program.kategori');
 
+// publikasi
+Route::get('/publikasi/show-all/', [PublikasiController::class, 'show'])->name('beranda.publikasi');
+
 // middleware authtentication
 Route::middleware(['auth.admin'])->group(function () {
     // general-setting
@@ -148,7 +151,7 @@ Route::middleware(['auth.admin'])->group(function () {
 
     Route::get('/jenis-publikasi/edit/{id}', [JenisPublikasiController::class, 'showFormEdit'])->name('jenisPublikasi.formEdit');
     Route::put('/jenis-publikasi/{id}', [JenisPublikasiController::class, 'update'])->name('jenisPublikasi.update');
-    
+
     Route::delete('/jenis-publikasi/destroy/{id}', [JenisPublikasiController::class, 'destroy'])->name('jenisPublikasi.delete');
 
 
