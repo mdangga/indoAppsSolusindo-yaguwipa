@@ -15,8 +15,8 @@ class PublikasiController extends Controller
     // menampilkan halaman publikasi di beranda
     public function show()
     {
-        $publikasi = Publikasi::with('jenisPublikasi')->where('status', 'show')->orderBy('tanggal_terbit', 'desc')->get();
-        return view('publikasi', compact('publikasi', 'jenisPublikasi'));
+        $publikasi = Publikasi::with('JenisPublikasi')->where('status', 'show')->orderBy('tanggal_terbit', 'desc')->get();
+        return view('testing', compact('publikasi'));
     }
 
     // fungsi untuk membuatkan datatable news dan event
