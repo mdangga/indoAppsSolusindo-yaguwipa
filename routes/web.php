@@ -43,6 +43,7 @@ Route::get('/program/kategori/{slug}', [ProgramController::class, 'showSlug'])->
 
 // publikasi
 Route::get('/publikasi/show-all/', [PublikasiController::class, 'show'])->name('beranda.publikasi');
+Route::get('/show-pdf/{filePath}', [PublikasiController::class, 'showPdf'])->where('filePath', '.*')->name('publikasi.pdf');
 
 // middleware authtentication
 Route::middleware(['auth.admin'])->group(function () {
