@@ -81,6 +81,8 @@ class PublikasiController extends Controller
             'tanggal_terbit' => 'nullable|date',
             'meta_title' => 'required|string|max:255',
             'meta_description' => 'required|string',
+            'halaman' => 'required|number|min:1',
+            'download' => 'required|number|min:1',
             'id_jenis_publikasi' => 'required|exists:jenis_publikasi,id_jenis_publikasi',
         ]);
 
@@ -115,10 +117,12 @@ class PublikasiController extends Controller
         $validator = Validator::make($request->all(), [
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required',
-            'file' => 'nullable|mimes:pdf,doc,docx|max:10240', // tidak wajib
+            'file' => 'nullable|mimes:pdf,doc,docx|max:10240',
             'tanggal_terbit' => 'nullable|date',
             'meta_title' => 'required|string|max:255',
             'meta_description' => 'required|string',
+            'halaman' => 'required|number|min:1',
+            'download' => 'required|number|min:1',
             'id_jenis_publikasi' => 'required|exists:jenis_publikasi,id_jenis_publikasi',
             'status' => 'nullable|in:show,hide'
         ]);
