@@ -15,8 +15,7 @@ class PublikasiController extends Controller
     // menampilkan halaman publikasi di beranda
     public function show()
     {
-        $publikasi = Publikasi::all();
-        $jenisPublikasi = JenisPublikasi::all();
+        $publikasi = Publikasi::with('jenisPublikasi')->where('status', 'show')->orderBy('tanggal_terbit', 'desc')->get();
         return view('publikasi', compact('publikasi', 'jenisPublikasi'));
     }
 
