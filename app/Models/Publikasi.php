@@ -18,6 +18,8 @@ class Publikasi extends Model
         'meta_title',
         'meta_description',
         'status',
+        'halaman',
+        'download',
         'id_jenis_publikasi'
     ];
 
