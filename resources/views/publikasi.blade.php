@@ -46,7 +46,7 @@
                                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                                     <option value="">Semua Kategori</option>
                                     @foreach ($jenisPublikasi as $jenis)
-                                    <option value="{{ $jenis->nama }}">{{ $jenis->nama }}</option>
+                                        <option value="{{ $jenis->nama }}">{{ $jenis->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -119,11 +119,12 @@
                                         <i class="fas fa-eye"></i>
                                         <span>Lihat</span>
                                     </button>
-                                    
-                                    <a href="{{ route('publikasi.pdf', $filePath) }}" target="_blank"
-                                        class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center">
-                                        <i class="fa-regular fa-file"></i>
-                                    </a>
+                                    @if ($fileExtension === 'PDF')
+                                        <a href="{{ route('publikasi.pdf', $filePath) }}" target="_blank"
+                                            class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center">
+                                            <i class="fa-regular fa-file"></i>
+                                        </a>
+                                    @endif
                                     <a href="{{ asset('storage/' . $item->file) }}" download
                                         class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center">
                                         <i class="fas fa-download"></i>
@@ -140,7 +141,7 @@
         </div>
         <!-- Publication Detail Modal -->
         <div id="publicationModal"
-            class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50 p-4">
+            class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
             <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
                 <div class="flex justify-between items-center p-6 border-b">
                     <h2 id="modalTitle" class="text-2xl font-bold text-gray-800"></h2>
@@ -169,7 +170,7 @@
 
         <!-- Download Toast -->
         <div id="downloadToast"
-            class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+            class="fixed top-4 right-0 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300 z-50">
             <div class="flex items-center gap-3">
                 <i class="fas fa-download"></i>
                 <span>Download dimulai...</span>
@@ -285,6 +286,7 @@
             `;
 
             modal.classList.remove('hidden');
+            modal.classList.add('flex');
             document.body.style.overflow = 'hidden';
         }
 
