@@ -18,16 +18,19 @@ class GalleryController extends Controller
     }
 
 
-    // fungsi untuk menampilkan halaman gallery di admin
+    // fungsi untuk menampilkan halaman photo di admin
     public function indexPhoto()
     {
         return view('admin.showGalleryPhoto');
     }
+    
 
+    // fungsi untuk menampilkan halaman video di admin
     public function indexVideo()
     {
         return view('admin.showGalleryVideo');
     }
+
 
     // fungsi untuk membuatkan datatable gallery
     public function getDataTablesPhoto(Request $request)
