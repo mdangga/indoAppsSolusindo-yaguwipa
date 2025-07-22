@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('alt_text');
             $table->string('link');
             $table->enum('status', ['show', 'hide'])->default('show');
-            $table->enum('kategori', ['foto', 'youtube']);
+            $table->enum('kategori', ['foto', 'video']);
             $table->timestamps();
         });
     }

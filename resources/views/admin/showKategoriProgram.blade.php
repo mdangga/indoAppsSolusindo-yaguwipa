@@ -410,7 +410,7 @@
             // Edit handler
             $('#kategoriProgramTable').on('click', '.editBtn', function() {
                 const id = $(this).data('id');
-                window.location.href = `/kategori-program/edit/${id}`;
+                window.location.href = `/admin/kategori-program/edit/${id}`;
             });
 
             // Notification system

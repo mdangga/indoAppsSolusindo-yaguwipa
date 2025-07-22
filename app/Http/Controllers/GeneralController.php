@@ -36,12 +36,6 @@ class GeneralController extends Controller
 
     public function testing($id)
     {
-        // $kategoriList = KategoriProgram::with([
-        //     'Program.institusiTerlibat',
-        //     'Berita'
-        // ])->get();
-
-        // return view('testing', compact('kategoriList'));
 
         $program=Program::with('institusiTerlibat')->find($id);
 
@@ -58,3 +52,5 @@ class GeneralController extends Controller
         return view('teams');
     }
 }
+
+

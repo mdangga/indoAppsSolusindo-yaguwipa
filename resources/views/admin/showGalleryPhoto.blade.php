@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Admin - Publikasi</title>
+    <title>Admin - Gallery</title>
     {{-- icon --}}
     <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
 
@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+
 
     <!-- Custom DataTables Tailwind Styling -->
     <style>
@@ -202,6 +204,31 @@
                 transform: translateY(0);
             }
         }
+
+        table.dataTable thead th.no-sort-icon.sorting:before,
+        table.dataTable thead th.no-sort-icon.sorting_asc:before,
+        table.dataTable thead th.no-sort-icon.sorting_desc:before {
+            display: none !important;
+        }
+
+        /* Your custom icons remain the same */
+        table.dataTable thead th.no-sort-icon.sorting:after,
+        table.dataTable thead th.no-sort-icon.sorting_asc:after,
+        table.dataTable thead th.no-sort-icon.sorting_desc:after {
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            margin-left: 0.5rem;
+            content: "\f0dc";
+            color: #9ca3af;
+        }
+
+        table.dataTable thead th.no-sort-icon.sorting_asc:after {
+            content: "\f0de";
+        }
+
+        table.dataTable thead th.no-sort-icon.sorting_desc:after {
+            content: "\f0dd";
+        }
     </style>
 </head>
 
@@ -227,29 +254,31 @@
             </div>
         @endif
 
-        <div class=" py-4 border-gray-200 bg-gray-50">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <a href="{{ route('publikasi.formStore') }}"
-                    class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
-                    <i class="fas fa-plus w-4 h-4 mr-2"></i>
-                    Tambah Publikasi
-                </a>
-            </div>
-        </div>
-
-
         <!-- Main Content Card -->
-        <div class="bg-white border rounded-md border-gray-200 overflow-hidden">
+        <div class="bg-white overflow-hidden">
+            <!-- Card Header -->
+            <div class=" py-4 border-gray-200 bg-gray-50">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    @php
+                        $kategori = 'photo'
+                    @endphp
+                    <a href="{{ route('gallery.formStore', $kategori) }}"
+                        class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
+                        <i class="fas fa-plus w-4 h-4 mr-2"></i>
+                        Tambah Gallery
+                    </a>
+                </div>
+            </div>
 
             <!-- Table Container -->
             <div class="p-5 rounded-lg">
                 <div class="table-container overflow-x-auto">
-                    <table id="publikasiTable" class="w-full border border-gray-300 ">
+                    <table id="galleryTable" class="w-full border border-gray-300 ">
                         <thead>
                             <tr class="text-left">
                                 <th>No</th>
-                                <th>Judul</th>
-                                <th>File</th>
+                                <th>Caption</th>
+                                <th>Thumbnail</th>
                                 <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
@@ -267,16 +296,16 @@
 
     <script>
         $(document).ready(function() {
-            let table = $('#publikasiTable').DataTable({
+            let table = $('#galleryTable').DataTable({
                 processing: false,
                 serverSide: true,
                 autoWidth: false,
-                ajax: '{{ route('publikasi.table') }}',
+                ajax: '{{ route('galleryPhoto.table') }}',
                 dom: '<"flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6"<"flex items-center gap-2"l><"flex items-center gap-2"f>>rt<"flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-6"ip>',
                 language: {
 
                     search: "",
-                    searchPlaceholder: "Cari publikasi...",
+                    searchPlaceholder: "Cari...",
                     lengthMenu: "Tampilkan _MENU_ data",
                     info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
                     infoEmpty: "Tidak ada data",
@@ -287,7 +316,7 @@
                         next: "Selanjutnya",
                         previous: "Sebelumnya"
                     },
-                    emptyTable: '<div class="text-center py-8"><i class="fas fa-inbox text-4xl text-gray-300 mb-4"></i><p class="text-gray-500">Belum ada data berita</p></div>',
+                    emptyTable: '<div class="text-center py-8"><i class="fas fa-inbox text-4xl text-gray-300 mb-4"></i><p class="text-gray-500">Belum ada data gallery</p></div>',
                     zeroRecords: '<div class="text-center py-8"><i class="fas fa-search text-4xl text-gray-300 mb-4"></i><p class="text-gray-500">Tidak ada data yang sesuai dengan pencarian</p></div>'
                 },
                 pageLength: 10,
@@ -309,8 +338,8 @@
                         width: '80px'
                     },
                     {
-                        data: 'judul',
-                        name: 'judul',
+                        data: 'alt_text',
+                        name: 'alt_text',
                         render: function(data, type, row) {
                             return `
                                 <div class="">
@@ -320,37 +349,28 @@
                         }
                     },
                     {
-                        data: 'File',
-                        name: 'File',
+                        data: 'link',
+                        name: 'link',
                         render: function(data, type, row) {
                             if (type === 'display') {
-                                let imageUrl = '';
-
-                                // Ambil URL dari <img src="...">
-                                if (typeof data === 'string' && data.includes('<img')) {
-                                    const match = data.match(/src=["']([^"']+)["']/);
-                                    imageUrl = match ? match[1] : '';
-                                } else {
-                                    imageUrl = data;
+                                if (data && typeof data === 'string') {
+                                    return `
+                    <div class="flex justify-center">
+                        <img src="${data}" alt="Thumbnail"
+                             class="w-32 h-20 object-cover border border-gray-200 shadow-sm rounded"
+                             onerror="this.src='/img/no-image.png'; this.classList.add('opacity-50');" />
+                    </div>
+                `;
                                 }
 
-                                if (imageUrl) {
-                                    return `
-                                    <div class="flex justify-center">
-                                        <img src="${imageUrl}" alt="File"
-                                            class="w-32 h-20 object-cover  border border-gray-200 shadow-sm"
-                                            onerror="this.onerror=null; this.src='/img/no-image.png'; this.classList.add('opacity-50');">
-                                    </div>
-                                `;
-                                } else {
-                                    return `
-                                    <div class="flex justify-center">
-                                        <div class="w-32 h-20 bg-gray-100 border border-gray-200 flex items-center justify-center">
-                                            <i class="fas fa-image text-gray-400"></i>
-                                        </div>
-                                    </div>
-                                `;
-                                }
+                                return `
+                <div class="flex justify-center">
+                    <div class="w-32 h-20 bg-gray-100 border border-gray-200 flex items-center justify-center rounded">
+                        <i class="fas fa-image text-gray-400"></i>
+                        <span class="text-xs text-gray-500 ml-1">No Media</span>
+                    </div>
+                </div>
+            `;
                             }
 
                             return data;
@@ -418,7 +438,7 @@
                 scrollX: true,
                 initComplete: function() {
                     // Style the search input
-                    $('.dataTables_filter input').attr('placeholder', 'Cari publikasi...')
+                    $('.dataTables_filter input').attr('placeholder', 'Cari...')
                         .addClass('pl-10 pr-4')
                         .wrap('<div class="relative"></div>')
                     // .before(
@@ -433,18 +453,18 @@
             });
 
             // Delete handler
-            $('#publikasiTable').on('click', '.deleteBtn', function() {
+            $('#galleryTable').on('click', '.deleteBtn', function() {
                 const id = $(this).data('id');
                 const button = $(this);
 
-                if (confirm('Apakah Anda yakin ingin menghapus publikasi ini?')) {
+                if (confirm('Apakah Anda yakin ingin menghapus berita ini?')) {
                     // Show loading state
                     button.prop('disabled', true)
                         .removeClass('bg-red-500 hover:bg-red-600')
                         .addClass('bg-gray-400 cursor-not-allowed')
                         .html('<i class="fas fa-spinner fa-spin w-3 h-3 mr-1"></i>');
 
-                    fetch(`/publikasi/destroy/${id}`, {
+                    fetch(`/gallery/destroy/${id}`, {
                             method: 'delete', // ubah ke POST
                             headers: {
                                 'Content-Type': 'application/json',
@@ -456,9 +476,9 @@
                         .then(response => {
                             if (response.redirected || response.ok) {
                                 table.ajax.reload();
-                                showNotification('publikasi berhasil dihapus!', 'success');
+                                showNotification('Gallery berhasil dihapus!', 'success');
                             } else {
-                                throw new Error('Gagal menghapus publikasi');
+                                throw new Error('Gagal menghapus gallery');
                             }
                         })
                         .catch(error => {
@@ -473,10 +493,11 @@
                 }
             });
 
+
             // Edit handler
-            $('#publikasiTable').on('click', '.editBtn', function() {
+            $('#galleryTable').on('click', '.editBtn', function() {
                 const id = $(this).data('id');
-                window.location.href = `/admin/publikasi/edit/${id}`;
+                window.location.href = `/admin/gallery/edit/${id}`;
             });
 
             // Notification system

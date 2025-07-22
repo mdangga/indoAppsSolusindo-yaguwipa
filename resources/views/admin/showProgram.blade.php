@@ -447,7 +447,7 @@
             // Edit handler
             $('#programTable').on('click', '.editBtn', function() {
                 const id = $(this).data('id');
-                window.location.href = `/program/edit/${id}`;
+                window.location.href = `/admin/program/edit/${id}`;
             });
 
             // Notification system

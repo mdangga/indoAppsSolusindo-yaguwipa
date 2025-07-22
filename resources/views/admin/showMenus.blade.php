@@ -435,7 +435,7 @@
             // Edit handler
             $('#menusTable').on('click', '.editBtn', function() {
                 const id = $(this).data('id');
-                window.location.href = `/menus/edit/${id}`;
+                window.location.href = `/admin/menus/edit/${id}`;
             });
 
             // Notification system

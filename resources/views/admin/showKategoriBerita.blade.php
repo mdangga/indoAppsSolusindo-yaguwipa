@@ -422,7 +422,7 @@
             // Edit handler
             $('#kategoriTable').on('click', '.editBtn', function() {
                 const id = $(this).data('id');
-                window.location.href = `/kategori-news-event/edit/${id}`;
+                window.location.href = `/admin/kategori-news-event/edit/${id}`;
             });
 
             // Notification system
