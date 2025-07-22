@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Berita;
 use App\Models\Gallery;
+use App\Models\Program;
 use App\Models\KategoriProgram;
 use Illuminate\Http\Request;
 use App\Models\Menu;
@@ -33,7 +34,7 @@ class GeneralController extends Controller
         return view('profiles');
     }
 
-    public function testing()
+    public function testing($id)
     {
         // $kategoriList = KategoriProgram::with([
         //     'Program.institusiTerlibat',
@@ -41,7 +42,10 @@ class GeneralController extends Controller
         // ])->get();
 
         // return view('testing', compact('kategoriList'));
-        return view('testing');
+
+        $program=Program::with('institusiTerlibat')->find($id);
+
+        return view('halprogram', compact('program'));
     }
 
     public function mitra()
