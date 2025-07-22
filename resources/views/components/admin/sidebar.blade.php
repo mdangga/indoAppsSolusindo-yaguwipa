@@ -122,11 +122,11 @@
                 </button>
                 <ul id="gallery-content" class="dropdown-content ">
                     <li class="py-1">
-                        <a href="{{ route('admin.gallery') }}"
-                            class="flex items-center w-full p-2 text-gray-200 transition duration-75 rounded-lg pl-11 group hover:bg-[#535c66] font-normal">Foto</a>
+                        <a href="{{ route('admin.galleryPhoto') }}"
+                            class="flex items-center w-full p-2 text-gray-200 transition duration-75 rounded-lg pl-11 group hover:bg-[#535c66] font-normal">Photo</a>
                     </li>
                     <li class="py-1">
-                        <a href="#"
+                        <a href="{{ route('admin.galleryVideo') }}"
                             class="flex items-center w-full p-2 text-gray-200 transition duration-75 rounded-lg pl-11 group hover:bg-[#535c66] font-normal">Video</a>
                     </li>
                 </ul>
@@ -157,6 +157,34 @@
                     <li class="py-1">
                         <a href="{{ route('admin.program') }}"
                             class="flex items-center w-full p-2 text-gray-200 transition duration-75 rounded-lg pl-11 group hover:bg-[#535c66] font-normal">Program</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- Publications Dropdown -->
+            <li>
+                <button type="button"
+                    class="flex items-center w-full p-2 text-base text-gray-200 transition duration-75 rounded-lg group hover:bg-[#535c66]"
+                    onclick="toggleDropdown('Publications')">
+                    <svg class="shrink-0 w-5 h-5 text-gray-200 transition duration-75 group-hover:text-gray-200" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                            d="m19 2l-5 4.5v11l5-4.5zM6.5 5C4.55 5 2.45 5.4 1 6.5v14.66c0 .25.25.5.5.5c.1 0 .15-.07.25-.07c1.35-.65 3.3-1.09 4.75-1.09c1.95 0 4.05.4 5.5 1.5c1.35-.85 3.8-1.5 5.5-1.5c1.65 0 3.35.31 4.75 1.06c.1.05.15.03.25.03c.25 0 .5-.25.5-.5V6.5c-.6-.45-1.25-.75-2-1V19c-1.1-.35-2.3-.5-3.5-.5c-1.7 0-4.15.65-5.5 1.5V6.5C10.55 5.4 8.45 5 6.5 5" />
+                    </svg>
+                    <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap font-normal">Publikasi</span>
+                    <svg class="w-3 h-3 dropdown-arrow" id="Publications-arrow" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 4 4 4-4" />
+                    </svg>
+                </button>
+                <ul id="Publications-content" class="dropdown-content">
+                    <li class="py-1">
+                        <a href="{{ route('admin.jenisPublikasi') }}"
+                            class="flex items-center w-full p-2 text-gray-200 transition duration-75 rounded-lg pl-11 group hover:bg-[#535c66] font-normal">Jenis
+                            Publikasi</a>
+                    </li>
+                    <li class="py-1">
+                        <a href="{{ route('admin.publikasi') }}"
+                            class="flex items-center w-full p-2 text-gray-200 transition duration-75 rounded-lg pl-11 group hover:bg-[#535c66] font-normal">Publikasi</a>
                     </li>
                 </ul>
             </li>

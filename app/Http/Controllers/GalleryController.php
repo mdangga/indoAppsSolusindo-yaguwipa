@@ -19,9 +19,14 @@ class GalleryController extends Controller
 
 
     // fungsi untuk menampilkan halaman gallery di admin
-    public function index()
+    public function indexPhoto()
     {
-        return view('admin.showGallery');
+        return view('admin.showGalleryPhoto');
+    }
+
+    public function indexVideo()
+    {
+        return view('admin.showGalleryVideo');
     }
 
     // fungsi untuk membuatkan datatable gallery
@@ -31,7 +36,7 @@ class GalleryController extends Controller
             return abort(403, 'Akses tidak diizinkan');
         }
 
-        $gallery = Gallery::select(['id_gallery', 'alt_text', 'kategori', 'link', 'status'])->orderBy('updated_at', 'desc')->where('kategori', 'youtube');
+        $gallery = Gallery::select(['id_gallery', 'alt_text', 'kategori', 'link', 'status'])->orderBy('updated_at', 'desc')->where('kategori', 'foto');
 
         return DataTables::of($gallery)
             ->addIndexColumn()
@@ -63,7 +68,7 @@ class GalleryController extends Controller
             return abort(403, 'Akses tidak diizinkan');
         }
 
-        $gallery = Gallery::select(['id_gallery', 'alt_text', 'kategori', 'link', 'status'])->orderBy('updated_at', 'desc')->where('kategori', 'youtube');
+        $gallery = Gallery::select(['id_gallery', 'alt_text', 'kategori', 'link', 'status'])->orderBy('updated_at', 'desc')->where('kategori', 'video');
 
         return DataTables::of($gallery)
             ->addIndexColumn()
@@ -95,9 +100,10 @@ class GalleryController extends Controller
 
 
     // fungsi untuk menampilkan form menambahkan data
-    public function showFormStore()
+    public function showFormStore($kategori)
     {
-        return view('admin.formGallery');
+        $jenis = $kategori;
+        return view('admin.formGallery', compact('jenis'));
     }
 
 
@@ -152,7 +158,11 @@ class GalleryController extends Controller
 
         Gallery::create($data);
 
-        return redirect()->route('admin.gallery')->with('success', 'Gallery berhasil ditambahkan!');
+        if($request->kategori === 'foto'){
+            return redirect()->route('admin.galleryPhoto')->with('success', 'Gallery berhasil ditambahkan!');
+        }else{
+            return redirect()->route('admin.galleryVideo')->with('success', 'Gallery berhasil ditambahkan!');
+        }
     }
 
 
@@ -219,7 +229,11 @@ class GalleryController extends Controller
 
         $gallery->update($data);
 
-        return redirect()->route('admin.gallery')->with('success', 'Gallery berhasil diperbarui!');
+        if($request->kategori === 'foto'){
+            return redirect()->route('admin.galleryPhoto')->with('success', 'Gallery berhasil ditambahkan!');
+        }else{
+            return redirect()->route('admin.galleryVideo')->with('success', 'Gallery berhasil ditambahkan!');
+        }
     }
 
 

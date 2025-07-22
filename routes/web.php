@@ -92,10 +92,12 @@ Route::middleware(['auth.admin'])->group(function () {
 
 
     // gallery
-    Route::get('/gallery', [GalleryController::class, 'index'])->name('admin.gallery');
-    Route::get('/datatable/gallery', [GalleryController::class, 'getDataTables'])->name('gallery.table');
+    Route::get('/gallery-photo', [GalleryController::class, 'indexPhoto'])->name('admin.galleryPhoto');
+    Route::get('/gallery-video', [GalleryController::class, 'indexVideo'])->name('admin.galleryVideo');
+    Route::get('/datatable/gallery-photo', [GalleryController::class, 'getDataTablesPhoto'])->name('galleryPhoto.table');
+    Route::get('/datatable/gallery-video', [GalleryController::class, 'getDataTablesVideo'])->name('galleryVideo.table');
 
-    Route::get('/gallery/store', [GalleryController::class, 'showFormStore'])->name('gallery.formStore');
+    Route::get('/gallery/store/{kategori}', [GalleryController::class, 'showFormStore'])->name('gallery.formStore');
     Route::post('/gallery', [GalleryController::class, 'store'])->name('gallery.store');
 
     Route::get('/gallery/edit/{id}', [GalleryController::class, 'showFormEdit'])->name('gallery.formEdit');

@@ -41,23 +41,24 @@
                 @csrf
                 @if ($isEdit)
                     @method('PUT')
+                    @php
+                        $jenis = $gallery->kategori;
+                    @endphp
                 @endif
 
                 <div id="form-wrapper" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 transition-all duration-300">
                     <!-- Kiri: Form Input -->
                     <div id="form-input" class="flex flex-col space-y-6 col-span-1 transition-all duration-300">
 
-                        <div class="mb-4">
+                        <div class="hidden">
                             <label for="kategori" class="block font-semibold">Kategori</label>
                             <select name="kategori" id="kategori"
                                 class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
                                 required>
-                                <option value="foto"
-                                    {{ old('kategori', $gallery->kategori ?? '') == 'foto' ? 'selected' : '' }}>
+                                <option value="foto" {{ old('kategori', $jenis ?? '') == 'foto' ? 'selected' : '' }}>
                                     Foto
                                 </option>
-                                <option value="youtube"
-                                    {{ old('kategori', $gallery->kategori ?? '') == 'youtube' ? 'selected' : '' }}>
+                                <option value="video" {{ old('kategori', $jenis ?? '') == 'video' ? 'selected' : '' }}>
                                     YouTube
                                 </option>
                             </select>
@@ -70,7 +71,7 @@
                             <label for="youtube_link" class="block font-semibold">YouTube URL</label>
                             <input type="url" name="youtube_link" id="youtube_link"
                                 class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                                value="{{ old('youtube_link') }}">
+                                value="{{ old('youtube_link', $gallery->link ?? '') }}">
                             <small class="text-gray-500">Contoh: https://www.youtube.com/watch?v=dQw4w9WgXcQ</small>
                             @error('youtube_link')
                                 <small class="text-red-600">{{ $message }}</small>
@@ -295,15 +296,15 @@
             const fileUploadContainer = document.getElementById('file-upload');
 
             function toggleFields() {
-                const isYoutube = kategoriSelect.value === 'youtube';
+                const isVideo = kategoriSelect.value === 'video';
 
-                youtubeContainer.style.display = isYoutube ? 'block' : 'none';
-                fileUploadContainer.style.display = isYoutube ? 'none' : 'block';
+                youtubeContainer.style.display = isVideo ? 'block' : 'none';
+                fileUploadContainer.style.display = isVideo ? 'none' : 'block';
 
                 const formWrapper = document.getElementById('form-wrapper');
                 const formInput = document.getElementById('form-input');
 
-                if (isYoutube) {
+                if (isVideo) {
                     formWrapper.classList.remove('md:grid-cols-2');
                     formWrapper.classList.add('md:grid-cols-1');
                     formInput.classList.remove('col-span-1');
