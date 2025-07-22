@@ -445,7 +445,7 @@
             // Edit handler
             $('#sosmedTable').on('click', '.editBtn', function() {
                 const id = $(this).data('id');
-                window.location.href = `/sosial-media/edit/${id}`;
+                window.location.href = `/admin/sosial-media/edit/${id}`;
             });
 
             // Notification system

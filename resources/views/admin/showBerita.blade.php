@@ -476,7 +476,7 @@
             // Edit handler
             $('#beritaTable').on('click', '.editBtn', function() {
                 const id = $(this).data('id');
-                window.location.href = `/berita/edit/${id}`;
+                window.location.href = `/admin/berita/edit/${id}`;
             });
 
             // Notification system

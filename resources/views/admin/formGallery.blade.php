@@ -89,7 +89,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="status">Status</label>
+                            <label for="status" class="block font-semibold">Status</label>
                             <select name="status" id="status"
                                 class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
                                 <option value="show"
@@ -204,9 +204,19 @@
                     </div>
                 </div>
 
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">
-                    {{ $isEdit ? 'Update' : 'Simpan' }}
-                </button>
+                <!-- Submit Button -->
+                <div class="pt-4">
+                    <div class="flex justify-end space-x-3">
+                        <a href="{{ $jenis == 'photo' ? route('admin.galleryPhoto') : route('admin.galleryVideo') }}"
+                            class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                            Batal
+                        </a>
+                        <button type="submit"
+                            class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200">
+                            {{ isset($gallery) ? 'Update Gallery' : 'Simpan Gallery' }}
+                        </button>
+                    </div>
+                </div>
             </form>
         </div>
     </main>
