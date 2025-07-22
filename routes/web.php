@@ -48,124 +48,124 @@ Route::get('/show-pdf/{filePath}', [PublikasiController::class, 'showPdf'])->whe
 // middleware authtentication
 Route::middleware(['auth.admin'])->group(function () {
     // general-setting
-    Route::get('/general-setting', [ProfileController::class, 'index'])->name('admin.profiles');
+    Route::get('/admin/general-setting', [ProfileController::class, 'index'])->name('admin.profiles');
     Route::put('/general-setting/update/{id}', [ProfileController::class, 'update'])->name('profiles.update');
 
 
     // sosial-media
-    Route::get('/sosial-media', [SosiaMediaController::class, 'index'])->name('admin.sosmed');
-    Route::get('/datatable/sosial-media', [SosiaMediaController::class, 'getDataTables'])->name('sosmed.table');
+    Route::get('/admin/sosial-media', [SosiaMediaController::class, 'index'])->name('admin.sosmed');
+    Route::get('/admin/datatable/sosial-media', [SosiaMediaController::class, 'getDataTables'])->name('sosmed.table');
 
-    Route::get('/sosial-media/store', [SosiaMediaController::class, 'showFormStore'])->name('sosmed.formStore');
+    Route::get('/admin/sosial-media/store', [SosiaMediaController::class, 'showFormStore'])->name('sosmed.formStore');
     Route::post('/sosial-media', [SosiaMediaController::class, 'store'])->name('sosmed.store');
 
-    Route::get('/sosial-media/edit/{id}', [SosiaMediaController::class, 'showFormEdit'])->name('sosmed.formEdit');
+    Route::get('/admin/sosial-media/edit/{id}', [SosiaMediaController::class, 'showFormEdit'])->name('sosmed.formEdit');
     Route::put('/sosial-media/{id}', [SosiaMediaController::class, 'update'])->name('sosmed.update');
 
     Route::delete('/sosial-media/destroy/{id}', [SosiaMediaController::class, 'destroy'])->name('sosmed.delete');
 
 
     // kategori-program
-    Route::get('/kategori-program', [KategoriProgramController::class, 'index'])->name('admin.kategoriProgram');
-    Route::get('/datatable/kategori-program', [KategoriProgramController::class, 'getDataTables'])->name('kategoriProgram.table');
+    Route::get('/admin/kategori-program', [KategoriProgramController::class, 'index'])->name('admin.kategoriProgram');
+    Route::get('/admin/datatable/kategori-program', [KategoriProgramController::class, 'getDataTables'])->name('kategoriProgram.table');
 
-    Route::get('/kategori-program/store', [KategoriProgramController::class, 'showFormStore'])->name('kategoriProgram.formStore');
+    Route::get('/admin/kategori-program/store', [KategoriProgramController::class, 'showFormStore'])->name('kategoriProgram.formStore');
     Route::post('/kategori-program', [KategoriProgramController::class, 'store'])->name('kategoriProgram.store');
 
-    Route::get('/kategori-program/edit/{id}', [KategoriProgramController::class, 'showFormEdit'])->name('kategoriProgram.formUpdate');
+    Route::get('/admin/kategori-program/edit/{id}', [KategoriProgramController::class, 'showFormEdit'])->name('kategoriProgram.formUpdate');
     Route::put('/kategori-program/{id}', [KategoriProgramController::class, 'update'])->name('kategoriProgram.update');
 
     Route::delete('/kategori-program/destroy/{id}', [KategoriProgramController::class, 'destroy'])->name('kategoriProgram.delete');
 
 
     // program
-    Route::get('/program', [ProgramController::class, 'index'])->name('admin.program');
-    Route::get('/datatable/program', [ProgramController::class, 'getDataTables'])->name('program.table');
+    Route::get('/admin/program', [ProgramController::class, 'index'])->name('admin.program');
+    Route::get('/admin/datatable/program', [ProgramController::class, 'getDataTables'])->name('program.table');
 
-    Route::get('/program/store', [ProgramController::class, 'showFormStore'])->name('program.formStore');
+    Route::get('/admin/program/store', [ProgramController::class, 'showFormStore'])->name('program.formStore');
     Route::post('/program', [ProgramController::class, 'store'])->name('program.store');
 
-    Route::get('/program/edit/{id}', [ProgramController::class, 'showFormEdit'])->name('program.formUpdate');
+    Route::get('/admin/program/edit/{id}', [ProgramController::class, 'showFormEdit'])->name('program.formUpdate');
     Route::put('/program/{id}', [ProgramController::class, 'update'])->name('program.update');
 
     Route::delete('/program/destroy/{id}', [ProgramController::class, 'destroy'])->name('program.delete');
 
 
     // gallery
-    Route::get('/gallery-photo', [GalleryController::class, 'indexPhoto'])->name('admin.galleryPhoto');
-    Route::get('/gallery-video', [GalleryController::class, 'indexVideo'])->name('admin.galleryVideo');
-    Route::get('/datatable/gallery-photo', [GalleryController::class, 'getDataTablesPhoto'])->name('galleryPhoto.table');
-    Route::get('/datatable/gallery-video', [GalleryController::class, 'getDataTablesVideo'])->name('galleryVideo.table');
+    Route::get('/admin/gallery-photo', [GalleryController::class, 'indexPhoto'])->name('admin.galleryPhoto');
+    Route::get('/admin/gallery-video', [GalleryController::class, 'indexVideo'])->name('admin.galleryVideo');
+    Route::get('/admin/datatable/gallery-photo', [GalleryController::class, 'getDataTablesPhoto'])->name('galleryPhoto.table');
+    Route::get('/admin/datatable/gallery-video', [GalleryController::class, 'getDataTablesVideo'])->name('galleryVideo.table');
 
-    Route::get('/gallery/store/{kategori}', [GalleryController::class, 'showFormStore'])->name('gallery.formStore');
+    Route::get('/admin/gallery/store/{kategori}', [GalleryController::class, 'showFormStore'])->name('gallery.formStore');
     Route::post('/gallery', [GalleryController::class, 'store'])->name('gallery.store');
 
-    Route::get('/gallery/edit/{id}', [GalleryController::class, 'showFormEdit'])->name('gallery.formEdit');
+    Route::get('/admin/gallery/edit/{kategori}/{id}', [GalleryController::class, 'showFormEdit'])->name('gallery.formEdit');
     Route::put('/gallery/{id}', [GalleryController::class, 'update'])->name('gallery.update');
 
     Route::delete('/gallery/destroy/{id}', [GalleryController::class, 'destroy'])->name('gallery.delete');
 
 
     // Kategori-news-event
-    Route::get('/kategori-news-event', [kategoriNewsEventController::class, 'index'])->name('admin.kategoriBerita');
-    Route::get('/datatable/kategori-news-event', [kategoriNewsEventController::class, 'getDataTables'])->name('kategoriBerita.table');
+    Route::get('/admin/kategori-news-event', [kategoriNewsEventController::class, 'index'])->name('admin.kategoriBerita');
+    Route::get('/admin/datatable/kategori-news-event', [kategoriNewsEventController::class, 'getDataTables'])->name('kategoriBerita.table');
 
-    Route::get('/kategori-news-event/store', [kategoriNewsEventController::class, 'showFormStore'])->name('kategoriBerita.formStore');
+    Route::get('/admin/kategori-news-event/store', [kategoriNewsEventController::class, 'showFormStore'])->name('kategoriBerita.formStore');
     Route::post('/kategori-news-event', [kategoriNewsEventController::class, 'store'])->name('kategoriBerita.store');
 
-    Route::get('/kategori-news-event/edit/{id}', [kategoriNewsEventController::class, 'showFormEdit'])->name('kategoriBerita.formEdit');
+    Route::get('/admin/kategori-news-event/edit/{id}', [kategoriNewsEventController::class, 'showFormEdit'])->name('kategoriBerita.formEdit');
     Route::put('/kategori-news-event/{id}', [kategoriNewsEventController::class, 'update'])->name('kategoriBerita.update');
 
     Route::delete('/kategori-news-event/destroy/{id}', [kategoriNewsEventController::class, 'destroy'])->name('kategoriBerita.delete');
 
 
     // news-dan-event 
-    Route::get('/berita', [BeritaController::class, 'index'])->name('admin.berita');
-    Route::get('/datatable/berita', [BeritaController::class, 'getDataTables'])->name('berita.table');
+    Route::get('/admin/berita', [BeritaController::class, 'index'])->name('admin.berita');
+    Route::get('/admin/datatable/berita', [BeritaController::class, 'getDataTables'])->name('berita.table');
 
-    Route::get('/berita/store', [BeritaController::class, 'showFormStore'])->name('berita.formStore');
+    Route::get('/admin/berita/store', [BeritaController::class, 'showFormStore'])->name('berita.formStore');
     Route::post('/berita', [BeritaController::class, 'store'])->name('berita.store');
 
-    Route::get('/berita/edit/{id}', [BeritaController::class, 'showFormEdit'])->name('berita.formEdit');
+    Route::get('/admin/berita/edit/{id}', [BeritaController::class, 'showFormEdit'])->name('berita.formEdit');
     Route::put('/berita/{id}', [BeritaController::class, 'update'])->name('berita.update');
 
     Route::delete('/berita/destroy/{id}', [BeritaController::class, 'destroy'])->name('berita.delete');
 
 
     // menus
-    Route::get('/menus', [MenusController::class, 'index'])->name('admin.menus');
-    Route::get('/datatable/menus', [MenusController::class, 'getDataTables'])->name('menus.table');
+    Route::get('/admin/menus', [MenusController::class, 'index'])->name('admin.menus');
+    Route::get('/admin/datatable/menus', [MenusController::class, 'getDataTables'])->name('menus.table');
 
-    Route::get('/menus/store', [MenusController::class, 'showFormStore'])->name('menus.formStore');
+    Route::get('/admin/menus/store', [MenusController::class, 'showFormStore'])->name('menus.formStore');
     Route::post('/menus', [MenusController::class, 'store'])->name('menus.store');
 
-    Route::get('/menus/edit/{id}', [MenusController::class, 'showFormEdit'])->name('menus.formEdit');
+    Route::get('/admin/menus/edit/{id}', [MenusController::class, 'showFormEdit'])->name('menus.formEdit');
     Route::put('/menus/{id}', [MenusController::class, 'update'])->name('menus.update');
 
     Route::delete('/menus/destroy/{id}', [MenusController::class, 'destroy'])->name('menus.delete');
 
 
     //jenis-publikasi 
-    Route::get('/jenis-publikasi', [JenisPublikasiController::class, 'index'])->name('admin.jenisPublikasi');
-    Route::get('/datatable/jenis-publikasi', [JenisPublikasiController::class, 'getDataTables'])->name('jenisPublikasi.table');
+    Route::get('/admin/jenis-publikasi', [JenisPublikasiController::class, 'index'])->name('admin.jenisPublikasi');
+    Route::get('/admin/datatable/jenis-publikasi', [JenisPublikasiController::class, 'getDataTables'])->name('jenisPublikasi.table');
 
-    Route::get('/jenis-publikasi/store', [JenisPublikasiController::class, 'showFormStore'])->name('jenisPublikasi.formStore');
+    Route::get('/admin/jenis-publikasi/store', [JenisPublikasiController::class, 'showFormStore'])->name('jenisPublikasi.formStore');
     Route::post('/jenis-publikasi', [JenisPublikasiController::class, 'store'])->name('jenisPublikasi.store');
 
-    Route::get('/jenis-publikasi/edit/{id}', [JenisPublikasiController::class, 'showFormEdit'])->name('jenisPublikasi.formEdit');
+    Route::get('/admin/jenis-publikasi/edit/{id}', [JenisPublikasiController::class, 'showFormEdit'])->name('jenisPublikasi.formEdit');
     Route::put('/jenis-publikasi/{id}', [JenisPublikasiController::class, 'update'])->name('jenisPublikasi.update');
 
     Route::delete('/jenis-publikasi/destroy/{id}', [JenisPublikasiController::class, 'destroy'])->name('jenisPublikasi.delete');
 
 
     //publikasi 
-    Route::get('/publikasi', [PublikasiController::class, 'index'])->name('admin.publikasi');
-    Route::get('/datatable/publikasi', [PublikasiController::class, 'getDataTables'])->name('publikasi.table');
+    Route::get('/admin/publikasi', [PublikasiController::class, 'index'])->name('admin.publikasi');
+    Route::get('/admin/datatable/publikasi', [PublikasiController::class, 'getDataTables'])->name('publikasi.table');
 
-    Route::get('/publikasi/store', [PublikasiController::class, 'showFormStore'])->name('publikasi.formStore');
+    Route::get('/admin/publikasi/store', [PublikasiController::class, 'showFormStore'])->name('publikasi.formStore');
     Route::post('/publikasi', [PublikasiController::class, 'store'])->name('publikasi.store');
 
-    Route::get('/publikasi/edit/{id}', [PublikasiController::class, 'showFormEdit'])->name('publikasi.formEdit');
+    Route::get('/admin/publikasi/edit/{id}', [PublikasiController::class, 'showFormEdit'])->name('publikasi.formEdit');
     Route::put('/publikasi/{id{', [PublikasiController::class, 'update'])->name('publikasi.update');
 
     Route::delete('/publikasi/destroy/{id}', [PublikasiController::class, 'destroy'])->name('publikasi.delete');
