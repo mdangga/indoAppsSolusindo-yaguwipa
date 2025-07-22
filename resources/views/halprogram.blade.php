@@ -4,10 +4,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Berita - Yayasan Guna Widya Paramesti</title>
+  <title>{{ $program->name }} - Program Yayasan</title>
 
   {{-- icon --}}
-  <link rel="icon" type="image/png" href="{{ asset('storage/' . $site['yayasanProfile']->favicon) }}">
+  <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.bunny.net" />
@@ -16,50 +16,69 @@
   <!-- Laravel Vite -->
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-  {{-- custom styling --}}
-  <link rel="stylesheet" href="{{ asset('css/beranda.css') }}">
-
-  <!-- AOS Library -->
+  <!-- AOS -->
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 </head>
 
 <body class="font-sans antialiased bg-gray-50 text-gray-800">
 
- {{-- navbar --}}
- <x-navbar :menus="$menus" />
-  {{-- Konten utama --}}
-  <main class="max-w-4xl mx-auto px-4 py-10 pt-30">
-    <article class="bg-white rounded-lg shadow-sm p-8">
-      <h1 class="text-3xl font-bold mb-6 text-gray-900">
-        Di Balik Tagar Save Raja Ampat dan Ekspansi Nikel yang Kian Gawat
-      </h1>
+  {{-- navbar --}}
+  <x-navbar :menus="$menus ?? []" />
 
-      <img src="https://via.placeholder.com/800x450/93C5FD/FFFFFF?text=Gambar+Berita" alt="Aktivitas pertambangan nikel" class="w-full rounded-lg shadow-md mb-4">
-      <p class="text-sm text-gray-500 mb-2">Aktivitas pertambangan nikel di Pulau Kawe, Raja Ampat, Papua.</p>
-      <div class="flex items-center text-sm text-gray-400 mb-6 space-x-4">
-        <span>⏰ 6 hari lalu</span>
-        <span>Bagikan:</span>
-        <div class="flex space-x-2">
-          <button class="text-gray-400 hover:text-blue-600">𝕏</button>
-          <button class="text-gray-400 hover:text-blue-600">📘</button>
-          <button class="text-gray-400 hover:text-green-600">💬</button>
-        </div>
+  {{-- Konten Utama --}}
+  <main class="max-w-4xl mx-auto px-4 pt-32 pb-10">
+    <article class="bg-white rounded-xl shadow-md p-8">
+      {{-- Judul --}}
+      <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ $program->nama }}</h1>
+
+      {{-- Gambar --}}
+      @if($program->image_path)
+        <img src="{{ asset('storage/' . $program->image_path) }}" alt="{{ $program->nama }}"
+          class="w-full h-64 object-cover rounded-lg shadow mb-4">
+      @endif
+
+      {{-- Status dan Kategori --}}
+      <div class="flex flex-wrap items-center gap-2 mb-4">
+        <span class="inline-block px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-800">
+          {{ $program->KategoriProgram->nama ?? 'Tanpa Kategori' }}
+        </span>
+        <span class="inline-block px-3 py-1 text-sm rounded-full 
+          {{ $program->status === 'aktif' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
+          {{ $program->status }}
+        </span>
       </div>
 
-      <div class="prose max-w-none text-justify">
-        <p><strong>Nationalgeographic.co.id</strong> — Aksi kampanye menggunakan tagar <em>"Save <a href="#" class="text-blue-600">Raja Ampat</a>"</em> sedang meramaikan media sosial. Salah satu pemicu awal tagar ini adalah temuan Greenpeace Indonesia yang menyorot adanya aktivitas pertambangan <a href="#" class="text-blue-600">nikel</a> di pulau-pulau kecil Raja Ampat di <a href="#" class="text-blue-600">Papua</a>—wilayah yang sering disebut sebagai surga terakhir di dunia.</p>
-        <p>"Total itu ada sekitar 16 izin penambangan nikel di Raja Ampat yang kita tahu. Terus 5 itu sudah beroperasi," ujar perwakilan Greenpeace.</p>
+      {{-- Deskripsi --}}
+      <div class="prose max-w-none text-justify mb-6">
+        <p>{{ $program->deskripsi }}</p>
+      </div>
+
+      {{-- Pihak yang Terlibat --}}
+      <div>
+        <h2 class="text-lg font-semibold text-gray-800 mb-2">Pihak yang Ikut:</h2>
+        <ul class="list-disc pl-5 space-y-1 text-sm text-gray-700">
+          @forelse($program->institusiTerlibat as $institusi)
+            <li>
+              {{ $institusi->nama }}
+              <span class="text-xs text-gray-400">
+                ({{ \Carbon\Carbon::parse($institusi->joined_at)->translatedFormat('d M Y') }})
+              </span>
+            </li>
+          @empty
+            <li class="text-gray-400 italic">Belum ada institusi terlibat.</li>
+          @endforelse
+        </ul>
       </div>
     </article>
   </main>
 
-    {{-- end lembaga --}}
-    <x-footer />
+  {{-- footer --}}
+  <x-footer />
 
   <script>
     AOS.init();
   </script>
 </body>
+
 </html>
