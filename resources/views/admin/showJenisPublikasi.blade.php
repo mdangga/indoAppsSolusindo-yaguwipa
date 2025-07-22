@@ -410,7 +410,7 @@
             // Edit handler
             $('#jenisPublikasiTable').on('click', '.editBtn', function() {
                 const id = $(this).data('id');
-                window.location.href = `/jenis-publikasi/edit/${id}`;
+                window.location.href = `/admin/jenis-publikasi/edit/${id}`;
             });
 
             // Notification system

@@ -81,11 +81,19 @@
                         <small class="text-red-600">{{ $message }}</small>
                     @enderror
                 </div>
+                
                 {{-- Tombol Submit --}}
-                <div class="mt-6">
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded">
-                        Simpan
-                    </button>
+                <div class="pt-4">
+                    <div class="flex justify-end space-x-3">
+                        <a href="{{ route('admin.sosmed') }}"
+                            class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                            Batal
+                        </a>
+                        <button type="submit"
+                            class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200">
+                            {{ isset($sosialMedia) ? 'Update' : 'Simpan' }}
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>

@@ -100,7 +100,7 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/admin/gallery/store/{kategori}', [GalleryController::class, 'showFormStore'])->name('gallery.formStore');
     Route::post('/gallery', [GalleryController::class, 'store'])->name('gallery.store');
 
-    Route::get('/admin/gallery/edit/{kategori}/{id}', [GalleryController::class, 'showFormEdit'])->name('gallery.formEdit');
+    Route::get('/admin/gallery/edit/{id}', [GalleryController::class, 'showFormEdit'])->name('gallery.formEdit');
     Route::put('/gallery/{id}', [GalleryController::class, 'update'])->name('gallery.update');
 
     Route::delete('/gallery/destroy/{id}', [GalleryController::class, 'destroy'])->name('gallery.delete');

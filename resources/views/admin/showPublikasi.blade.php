@@ -476,7 +476,7 @@
             // Edit handler
             $('#publikasiTable').on('click', '.editBtn', function() {
                 const id = $(this).data('id');
-                window.location.href = `/publikasi/edit/${id}`;
+                window.location.href = `/admin/publikasi/edit/${id}`;
             });
 
             // Notification system

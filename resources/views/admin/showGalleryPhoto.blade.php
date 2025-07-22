@@ -497,7 +497,7 @@
             // Edit handler
             $('#galleryTable').on('click', '.editBtn', function() {
                 const id = $(this).data('id');
-                window.location.href = `/gallery/edit/${id}`;
+                window.location.href = `/admin/gallery/edit/${id}`;
             });
 
             // Notification system
