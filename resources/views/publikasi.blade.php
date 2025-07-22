@@ -7,7 +7,8 @@
     <title>Publikasi</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/beranda.js', 'resources/js/AOS.js'])
+
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
@@ -68,9 +69,9 @@
                 <div id="publicationsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     @forelse($publikasi as $item)
                         <div class="publication-card bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col justify-between h-full"
-                            data-aos="fade-up"
                             data-category="{{ strtolower($item->JenisPublikasi->nama ?? 'lainnya') }}"
-                            data-title="{{ strtolower($item->judul) }}">
+                            data-title="{{ strtolower($item->judul) }}"
+                            data-date="{{ \Carbon\Carbon::parse($item->tanggal_terbit)->format('Y-m-d') }}" ">
 
                             {{-- Thumbnail dan Kategori --}}
                             <div class="relative">
@@ -157,34 +158,34 @@
                                             <span>Lihat</span>
                                         </button>
 
-                                        @if ($fileExtension === 'PDF')
-                                            <a href="{{ route('publikasi.pdf', $filePath) }}" target="_blank"
-                                                class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center">
-                                                <i class="fa-regular fa-file"></i>
-                                            </a>
-                                        @endif
+                                                      @if ($fileExtension === 'PDF')
+                            <a href="{{ route('publikasi.pdf', $filePath) }}" target="_blank"
+                                class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center">
+                                <i class="fa-regular fa-file"></i>
+                            </a>
+                    @endif
 
-                                        <a href="{{ asset('storage/' . $item->file) }}" download
-                                            class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center">
-                                            <i class="fas fa-download"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @empty
-                        <p class="col-span-3 text-center text-gray-600">Belum ada publikasi tersedia.</p>
-                    @endforelse
+                    <a href="{{ asset('storage/' . $item->file) }}" download
+                        class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center">
+                        <i class="fas fa-download"></i>
+                    </a>
                 </div>
-
-
             </div>
+        </div>
+        </div>
+    @empty
+        <p class="col-span-3 text-center text-gray-600">Belum ada publikasi tersedia.</p>
+        @endforelse
+        </div>
+
+
+        </div>
         </div>
         <!-- Modal -->
         <div id="publicationModal"
-            class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden transition-opacity duration-300">
+            class="fixed inset-0 z-50 items-center justify-center bg-black/40 backdrop-blur-sm hidden transition-opacity duration-300">
             <div
-                class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl p-8 overflow-y-auto max-h-[90vh] relative border border-gray-200">
+                class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl p-8 overflow-y-auto max-h-[90vh] relative border border-gray-200 flex flex-col">
 
                 <!-- Tombol close -->
                 <button onclick="closePublicationModal()"
@@ -192,7 +193,7 @@
                     <i class="fas fa-times text-xl"></i>
                 </button>
 
-                <div class="space-y-6">
+                <div class="space-y-6 mb-4">
                     <!-- Judul -->
                     <h2 id="modalJudul" class="text-3xl font-semibold text-gray-800"></h2>
 
@@ -205,7 +206,7 @@
                     <!-- Info Grid -->
                     <div class="grid md:grid-cols-2 gap-6">
                         <!-- Info File -->
-                        <div class="bg-gray-50 rounded-lg p-4 border">
+                        <div>
                             <h4 class="font-semibold text-sm text-gray-700 mb-3">Informasi File</h4>
                             <ul class="text-sm text-gray-600 space-y-1">
                                 <li><strong>Tipe File:</strong> <span id="modalTipeFile"></span></li>
@@ -216,7 +217,7 @@
                         </div>
 
                         <!-- Metadata -->
-                        <div class="bg-gray-50 rounded-lg p-4 border">
+                        <div>
                             <h4 class="font-semibold text-sm text-gray-700 mb-3">Metadata</h4>
                             <ul class="text-sm text-gray-600 space-y-1">
                                 <li><strong>Kategori:</strong> <span id="modalKategori"></span></li>
@@ -224,10 +225,10 @@
                             </ul>
                         </div>
                     </div>
+                </div>
 
-
-                </div><!-- Tombol Download -->
-                <div class="text-right pt-5">
+                <!-- Tombol Download di kanan bawah -->
+                <div class="mt-auto pt-4 text-right">
                     <a id="modalDownloadLink" href="#" target="_blank"
                         class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-md text-sm font-medium shadow-md transition">
                         <i class="fas fa-download"></i> Download File
@@ -235,8 +236,6 @@
                 </div>
             </div>
         </div>
-
-
 
 
         <!-- Download Toast -->
@@ -249,71 +248,39 @@
         </div>
     </main>
     <script>
-        // Initialize AOS
-        AOS.init({
-            duration: 600,
-            once: true,
-            offset: 100
+        const sortSelect = document.getElementById('sortFilter');
+        const publicationsGrid = document.getElementById('publicationsGrid');
+
+        sortSelect.addEventListener('change', () => {
+            const value = sortSelect.value;
+
+            const sortedCards = [...cards].sort((a, b) => {
+                if (value === 'newest') {
+                    return new Date(b.dataset.date) - new Date(a.dataset.date);
+                } else if (value === 'oldest') {
+                    return new Date(a.dataset.date) - new Date(b.dataset.date);
+                } else if (value === 'title') {
+                    const titleA = a.dataset.title.toLowerCase();
+                    const titleB = b.dataset.title.toLowerCase();
+                    return titleA.localeCompare(titleB);
+                }
+                return 0;
+            });
+
+            // Hapus semua kartu
+            publicationsGrid.innerHTML = '';
+
+            // Tambahkan ulang kartu yang telah diurutkan
+            sortedCards.forEach(card => {
+                publicationsGrid.appendChild(card);
+            });
         });
 
-        // Search and Filter Functionality
-        const searchInput = document.getElementById('searchInput');
-        const categoryFilter = document.getElementById('categoryFilter');
-        const sortFilter = document.getElementById('sortFilter');
-        const publicationsGrid = document.getElementById('publicationsGrid');
-        const noResults = document.getElementById('noResults');
-
-        // Event listeners
-        searchInput.addEventListener('input', filterPublications);
-        categoryFilter.addEventListener('change', filterPublications);
-        sortFilter.addEventListener('change', filterPublications);
-
-        function filterPublications() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const categoryTerm = categoryFilter.value.toLowerCase();
-            const sortBy = sortFilter.value;
-            const cards = Array.from(document.querySelectorAll('.publication-card'));
-
-            // Filter cards
-            let visibleCards = cards.filter(card => {
-                const title = card.dataset.title.toLowerCase();
-                const category = card.dataset.category.toLowerCase();
-
-                const matchesSearch = title.includes(searchTerm);
-                const matchesCategory = !categoryTerm || category === categoryTerm;
-
-                return matchesSearch && matchesCategory;
-            });
-
-            // Sort cards
-            visibleCards.sort((a, b) => {
-                switch (sortBy) {
-                    case 'newest':
-                        return new Date(b.dataset.date) - new Date(a.dataset.date);
-                    case 'oldest':
-                        return new Date(a.dataset.date) - new Date(b.dataset.date);
-                    case 'title':
-                        return a.dataset.title.localeCompare(b.dataset.title);
-                    default:
-                        return 0;
-                }
-            });
-
-            // Hide all cards
-            cards.forEach(card => card.style.display = 'none');
-
-            // Show filtered and sorted cards
-            if (visibleCards.length > 0) {
-                visibleCards.forEach(card => card.style.display = 'block');
-                noResults.classList.add('hidden');
-                publicationsGrid.classList.remove('hidden');
-            } else {
-                noResults.classList.remove('hidden');
-                publicationsGrid.classList.add('hidden');
-            }
-        }
+        const cards = Array.from(document.querySelectorAll('.publication-card'));
 
         function viewPublicationModal(data) {
+            const modal = document.getElementById('publicationModal');
+
             document.getElementById('modalJudul').innerText = data.judul;
             document.getElementById('modalDeskripsi').innerText = data.deskripsi;
             document.getElementById('modalTipeFile').innerText = data.fileType;
@@ -324,11 +291,15 @@
             document.getElementById('modalJumlahDownload').innerText = data.jumlahDownload;
             document.getElementById('modalDownloadLink').href = data.file;
 
-            document.getElementById('publicationModal').classList.remove('hidden');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
         }
 
+
         function closePublicationModal() {
-            document.getElementById('publicationModal').classList.add('hidden');
+            const modal = document.getElementById('publicationModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
 
         function closePublicationModal() {
