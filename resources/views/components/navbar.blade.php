@@ -1,37 +1,47 @@
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 <style>
+    select.goog-te-combo {
+        background-color: transparent !important;
+        background-image: none !important;
+    }
+
+
     /* Styling kotak dropdown sebelum dibuka */
     .goog-te-gadget .goog-te-combo {
-        background-color: rgba(255, 255, 255, 0.3) !important;
-        color: rgb(47, 47, 47) !important;
-        font-weight: 500 !important;
-        border: 2px solid rgba(72, 72, 72, 0.084) !important;
-        border-radius: 100px !important;
-        padding: 10px 0px 10px 17px !important;
-        font-size: 14px !important;
+        background-color: transparent !important;
+        /* atau rgba(255,255,255,0) juga bisa */
+        color: #1F2937 !important;
+        font-weight: 600 !important;
+        border: none !important;
+        /* border-radius: 100px !important; */
+        padding-block: 1px !important;
+        font-size: 0.875rem !important;
         font-family: "Instrument Sans", sans-serif !important;
         appearance: none !important;
-        background-image: url("data:image/svg+xml,%3Csvg fill='rgb(47, 47, 47)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+        /* background-image: url("data:image/svg+xml,%3Csvg fill='rgb(47, 47, 47)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
         background-repeat: no-repeat;
         background-position: right 0.3rem center;
-        background-size: 1.2rem;
+        background-size: 1.2rem; */
         cursor: pointer;
         display: block !important;
-        margin-bottom: 4px !important;
-        top: 7.5px !important;
+        margin: 4px -25px 4px 0 !important;
+        top: 6px !important;
         position: relative !important;
-        right: -70px !important;
-        max-width: 160px !important;
-        backdrop-filter: blur(5px) !important;
+        /* right: -70px !important; */
+        max-width: 170px !important;
+        /* backdrop-filter: blur(5px) !important; */
     }
 
     /* Saat dropdown difokuskan */
     .goog-te-combo:focus {
-        /* outline: 2px solid #facc15 !important; */
-        background-color: white !important;
-        color: black !important;
+        outline: none !important;
+        box-shadow: none !important;
+        --tw-ring-shadow: 0 0 #0000 !important;
+        background: transparent !important;
+        --tw-ring-color: transparent !important;
     }
+
 
     /* Untuk iOS/Android */
     .goog-te-combo option {
@@ -43,6 +53,7 @@
         display: block !important;
         width: auto !important;
         font-family: sans-serif !important;
+        font-size: 0px !important;
     }
 
     /* Alternative: Hide just the powered by text content */
@@ -73,8 +84,8 @@
         vertical-align: middle !important;
         white-space: nowrap !important;
         position: relative !important;
-        right: -80px !important;
-        top: 3px !important;
+        /* right: -80px !important;
+        top: 3px !important; */
     }
 
     /* Semua link dalam google translate */
@@ -128,7 +139,8 @@
         display: flex !important;
         align-items: center !important;
         gap: 3px !important;
-        margin-top: 4px !important;
+        /* margin-top: 4px !important; */
+        margin-inline-start: 10px !important;
     }
 
     /* Override inline styles yang mungkin konflik */
@@ -181,6 +193,7 @@
 
 <header x-data="{ sidebarOpen: false }" class="absolute w-full z-50">
     <!-- Logo dan Login Button -->
+
     <div class="w-full bg-transparent p-6 lg:px-8">
         <div class="grid grid-cols-2 lg:grid-cols-3 items-center gap-4">
             <div class="flex justify-start">
@@ -194,7 +207,7 @@
 
             <div class="hidden justify-end items-center lg:flex">
 
-                <div id="google_translate_element" class="mr-5"></div>
+                {{-- <div id="google_translate_element" class="mr-5"></div> --}}
 
                 <a href="{{ route('login') }}"
                     class="bg-amber-100 text-sm font-semibold text-gray-900 rounded-[50px] px-6 py-3.5 hover:bg-amber-200 transition">
@@ -219,7 +232,7 @@
     <!-- fixed navbar -->
     <nav class="fixed mt-[-87px] left-1/2 transform -translate-x-1/2 z-50 hidden lg:block">
         <div class="h-[50px] px-6 flex justify-center items-center rounded-[75px] bg-white/30 backdrop-blur-md">
-            <div class="flex gap-x-12">
+            <div class="flex gap-x-12 items-center">
                 @foreach ($menus as $menu)
                     @php
                         $isActive = rtrim(request()->url(), '/') === rtrim($menu->url, '/');
@@ -273,6 +286,7 @@
                         </a>
                     @endif
                 @endforeach
+                <div id="google_translate_element" class="translate-box"></div>
             </div>
         </div>
     </nav>
