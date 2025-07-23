@@ -45,10 +45,10 @@
                 <div id="masonry-container" class="columns-1 sm:columns-2 md:columns-3 gap-6">
                     @forelse ($gallery->take(8) as $item)
                         @php
-                            $isYoutube = $item->kategori === 'youtube';
-                            $youtubeId = $isYoutube ? extractYoutubeId($item->link) : null;
+                            $isVideo = $item->kategori === 'video';
+                            $youtubeId = $isVideo ? extractYoutubeId($item->link) : null;
                             $thumbnail =
-                                $isYoutube && $youtubeId
+                                $isVideo && $youtubeId
                                     ? "https://img.youtube.com/vi/$youtubeId/hqdefault.jpg"
                                     : asset('storage/' . $item->link);
                         @endphp
@@ -98,10 +98,10 @@
                 <div id="hidden-gallery" class="hidden">
                     @foreach ($gallery->skip(8) as $index => $item)
                         @php
-                            $isYoutube = $item->kategori === 'youtube';
-                            $youtubeId = $isYoutube ? extractYoutubeId($item->link) : null;
+                            $isVideo = $item->kategori === 'youtube';
+                            $youtubeId = $isVideo ? extractYoutubeId($item->link) : null;
                             $thumbnail =
-                                $isYoutube && $youtubeId
+                                $isVideo && $youtubeId
                                     ? "https://img.youtube.com/vi/$youtubeId/hqdefault.jpg"
                                     : asset('storage/' . $item->link);
                         @endphp
@@ -184,7 +184,7 @@
                 imageModal.classList.add('active');
                 document.body.style.overflow = 'hidden';
 
-                if (type === 'youtube') {
+                if (type === 'video') {
                     const youtubeId = extractYoutubeId(link);
                     if (youtubeId) {
                         modalVideo.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&controls=1`;
