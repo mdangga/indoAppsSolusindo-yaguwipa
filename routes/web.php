@@ -27,6 +27,7 @@ Route::get('/tentang-kami', [GeneralController::class, 'tentangKami'])->name('be
 // news-dan-event 
 Route::get('/berita-dan-kegiatan/show-all', [BeritaController::class, 'show'])->name('beranda.berita');
 Route::get('/berita-dan-kegiatan/show/{slug}', [BeritaController::class, 'showSlug'])->name('berita.slug');
+Route::get('/berita-dan-kegiatan/show-all/keyword/{keyword}', [BeritaController::class, 'showKeyword'])->name('berita.keyword');
 
 // gallery
 Route::get('/gallery/show-all', [GalleryController::class, 'show'])->name('beranda.gallery');

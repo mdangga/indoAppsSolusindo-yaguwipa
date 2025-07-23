@@ -30,9 +30,12 @@
         <section class="px-4 sm:px-6 lg:px-12 py-16">
             <div class="max-w-7xl mx-auto">
                 <!-- Header: Judul di kiri dan tombol di kanan -->
-                <x-header-page title="NEWS & EVENT"
-                    description="Beragam informasi dan berita terkini dari berbagai bidang, baik seputar yayasan maupun topik umum lainnya yang relevan
-                        dan inspiratif." />
+
+                    <x-header-page title="NEWS & EVENT"
+                        description="{{ isset($keywords) ? 'Menampilkan berita dengan keyword: '. request()->keyword : 'Beragam informasi dan berita terkini dari berbagai bidang, baik seputar yayasan maupun topik umum lainnya yang relevan
+                            dan inspiratif.' }}" />
+                    
+
 
                 @php
                     $page = request('page', 1);
@@ -42,7 +45,10 @@
                 <!-- Berita dan Kegiatan Grid - 4 columns, unlimited rows -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-10"
                     data-aos="fade-up">
-                    @forelse ($berita as $item)
+                    @php
+                        $listBerita = $keywords ?? ($berita ?? collect()); // fallback
+                    @endphp
+                    @forelse ($listBerita as $item)
                         <x-berita :item="$item" />
                     @empty
                         <div
@@ -61,7 +67,7 @@
                 <!-- Pagination -->
 
                 <!-- Custom Pagination if using simple pagination -->
-                @if (isset($berita) && method_exists($berita, 'hasPages') && $berita->hasPages())
+                @if (isset($berita) && $berita instanceof \Illuminate\Pagination\LengthAwarePaginator && $berita->hasPages())
                     <div class="flex justify-center items-center space-x-4">
                         <!-- Previous Button -->
                         @if ($berita->onFirstPage())
@@ -111,24 +117,26 @@
         </section>
 
         <!-- SECTION: Berita Berdasarkan Kategori -->
-        <section class="px-4 sm:px-6 lg:px-12 pt-16 pb-12">
-            <div class="max-w-7xl mx-auto space-y-14">
-                @foreach ($kategoriBerita as $kategori)
-                    @if ($kategori->berita->isNotEmpty())
-                        <div>
-                            <h2 class="text-xl font-semibold text-gray-700 mb-4">
-                                {{ $kategori->nama }}
-                            </h2>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                                @foreach ($kategori->berita as $item)
-                                    <x-berita :item="$item" />
-                                @endforeach
+        @if (!isset($keywords) && isset($kategoriBerita))
+            <section class="px-4 sm:px-6 lg:px-12 pt-16 pb-12">
+                <div class="max-w-7xl mx-auto space-y-14">
+                    @foreach ($kategoriBerita as $kategori)
+                        @if ($kategori->berita->isNotEmpty())
+                            <div>
+                                <h2 class="text-xl font-semibold text-gray-700 mb-4">
+                                    {{ $kategori->nama }}
+                                </h2>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                    @foreach ($kategori->berita as $item)
+                                        <x-berita :item="$item" />
+                                    @endforeach
+                                </div>
                             </div>
-                        </div>
-                    @endif
-                @endforeach
-            </div>
-        </section>
+                        @endif
+                    @endforeach
+                </div>
+            </section>
+        @endif
     </main>
     <x-footer />
     <script>
