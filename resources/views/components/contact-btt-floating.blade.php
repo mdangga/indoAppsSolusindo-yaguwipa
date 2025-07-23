@@ -9,7 +9,8 @@
 ])
 
 @php
-    $whatsapp = $site['yayasanSosmed']->filter(fn($item) => strtolower($item->nama) === 'whatsapp')->first()->link ?? null;
+    $whatsapp =
+        $site['yayasanSosmed']->filter(fn($item) => strtolower($item->nama) === 'whatsapp')->first()->link ?? null;
 
     // Size classes
     $sizes = [
@@ -293,6 +294,7 @@
         let isContactBoxVisible = false;
         let autoHideTimeout;
         let scrollTimeout;
+        let isAnimating = false;
 
         // Utility functions
         function isMobile() {
@@ -318,7 +320,8 @@
 
         // Functions for show/hide contact box
         function showContactBox() {
-            if (!contactBox) return;
+            if (isAnimating || !contactBox) return;
+            isAnimating = true;
 
             contactBox.classList.remove('hidden');
             contactBox.classList.remove('animate-slide-out');
@@ -340,6 +343,10 @@
                 backToTopBtn.classList.add('contact-active');
             }
 
+            setTimeout(() => {
+                isAnimating = false;
+            }, 300);
+
             isContactBoxVisible = true;
 
             // Set auto-hide timer
@@ -349,7 +356,8 @@
         }
 
         function hideContactBox() {
-            if (!contactBox) return;
+            if (isAnimating || !contactBox) return;
+            isAnimating = true;
 
             contactBox.classList.remove('show');
             contactBox.classList.remove('animate-slide-in');
@@ -368,6 +376,7 @@
 
             setTimeout(() => {
                 contactBox.classList.add('hidden');
+                isAnimating = false;
             }, 300);
 
             isContactBoxVisible = false;
