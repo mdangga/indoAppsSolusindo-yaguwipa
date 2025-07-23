@@ -89,10 +89,10 @@
 
                         <div class="flex flex-wrap gap-2 mt-4">
                             @foreach (explode(';', $berita->keyword) as $tag)
-                                <span
+                                <a href="{{ route('berita.keyword', $tag) }}"
                                     class="px-3 py-1 text-sm bg-gray-100 text-black hover:bg-black hover:text-white cursor-default">
                                     {{ trim($tag) }}
-                                </span>
+                                </a>
                             @endforeach
                         </div>
                         <!-- Baca Juga -->
@@ -155,10 +155,10 @@
                                 @endphp
 
                                 @foreach ($tags as $tag)
-                                    <span
+                                    <a href="{{ route('berita.keyword', $tag) }}"
                                         class="text-sm px-3 py-1 bg-gray-100 text-gray-800 rounded hover:bg-black hover:text-white transition cursor-default">
                                         {{ $tag }}
-                                    </span>
+                                    </a>
                                 @endforeach
                             </div>
                         </div>

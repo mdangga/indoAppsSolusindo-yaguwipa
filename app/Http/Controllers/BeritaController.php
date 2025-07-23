@@ -37,8 +37,26 @@ class BeritaController extends Controller
             'kategoriBerita' => $kategoriBerita
         ]);
     }
-    
-    
+
+    // menampilkan halaman news dan event hanya keyword di beranda
+    public function showKeyword($keyword)
+    {
+        // Normalisasi keyword dari URL: hilangkan encoding dan spasi tambahan
+        $keyword = strtolower(trim(urldecode($keyword)));
+
+        // Query dengan padding ";" agar pencarian akurat
+        $keywords = Berita::whereRaw("REPLACE(LOWER(CONCAT(';', keyword, ';')), ' ', '') LIKE ?", [
+            "%;" . str_replace(' ', '', $keyword) . ";%"
+        ])->get();
+
+        return view('newsandevent', [
+            'keywords' => $keywords
+        ]);
+    }
+
+
+
+
     // fungsi untuk menampilkan halaman berita untuk setiap slug di beranda
     public function showSlug($slug)
     {
@@ -66,8 +84,8 @@ class BeritaController extends Controller
 
         return view('berita', compact('berita', 'berita_populer', 'berita_terkait'));
     }
-    
-    
+
+
     // fungsi untuk menampilkan halaman news dan event di admin
     public function index()
     {
@@ -121,8 +139,8 @@ class BeritaController extends Controller
         $kategoriList = KategoriNewsEvent::all();
         return view('admin.formBeritaNew', compact('berita', 'kategoriList'));
     }
-    
-    
+
+
     // fungsi untuk menambahkan data baru
     public function store(Request $request)
     {
@@ -250,5 +268,4 @@ class BeritaController extends Controller
 
         return redirect()->back()->with('sukses', 'Berita berhasil dihapus');
     }
-
 }
