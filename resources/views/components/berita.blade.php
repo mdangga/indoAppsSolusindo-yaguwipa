@@ -5,9 +5,20 @@
     <!-- Image Container -->
     <div class="relative">
         <a href="{{ route('berita.slug', $item->slug) }}" class="block">
-            <img class="w-full h-48 object-cover"
-                src="{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : asset('storage/img/img-placeholder.webp') }}"
-                alt="{{ $item->judul }}" />
+            @php
+                $thumbnailRelative = $item->thumbnail; // misalnya: img/thumbnail-berita/abc.jpg
+                $thumbnailPublicPath = public_path('storage/' . $thumbnailRelative); // public/storage/img/...
+            @endphp
+
+            @if ($item->thumbnail && file_exists($thumbnailPublicPath))
+                <img class="w-full h-48 object-cover" src="{{ asset('storage/' . $item->thumbnail) }}"
+                    alt="{{ $item->judul }}" />
+            @else
+                <div class="w-full h-48 flex items-center justify-center bg-gray-100 text-gray-500 text-sm">
+                    Tidak ada gambar
+                </div>
+            @endif
+
         </a>
         <!-- Date badge overlay -->
         <div
