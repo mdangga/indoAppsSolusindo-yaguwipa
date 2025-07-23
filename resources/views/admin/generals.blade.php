@@ -283,7 +283,7 @@
 
 
                 <div class="mb-4">
-                    <label class="block font-semibold mb-1">Intro Singkat</label>
+                    <label class="block mb-1 text-sm font-medium text-gray-900">Intro Singkat</label>
 
                     {{-- toolbar --}}
                     <div id="toolbar-container" class="rounded-t-lg">

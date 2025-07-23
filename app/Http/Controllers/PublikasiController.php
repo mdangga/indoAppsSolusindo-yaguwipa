@@ -16,8 +16,9 @@ class PublikasiController extends Controller
     public function show()
     {
         $publikasi = Publikasi::with('JenisPublikasi')->where('status', 'show')->orderBy('tanggal_terbit', 'desc')->get();
+        $mostDownloaded = Publikasi::with('JenisPublikasi')->where('status', 'show')->orderBy('download', 'desc')->take(4)->get();
         $jenisPublikasi = JenisPublikasi::all();
-        return view('publikasi', compact('publikasi', 'jenisPublikasi'));
+        return view('publikasi', compact('publikasi', 'mostDownloaded','jenisPublikasi'));
     }
 
     public function showPdf($filePath)

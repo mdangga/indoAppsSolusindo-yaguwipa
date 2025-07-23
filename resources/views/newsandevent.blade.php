@@ -24,7 +24,7 @@
     {{-- navbar --}}
     <x-navbar :menus="$menus" />
     {{-- contact-btt --}}
-    <x-contact-btt-floating email="support@mycompany.com" phone="+62 21-1234-5678" whatsapp="6281234567890"
+    <x-contact-btt-floating email="support@mycompany.com" phone="+62 21-1234-5678"
         size="default" :auto-hide="true" :auto-hide-delay="3000" :show-back-to-top="true" :scroll-threshold="200" />
     <main>
         <section class="px-4 sm:px-6 lg:px-12 py-16">
