@@ -29,10 +29,8 @@
     {{-- navbar --}}
     <x-navbar :menus="$menus" />
     {{-- floating button --}}
-    <x-contact-btt-floating email="{{ $site['yayasanProfile']->email }}"
-        phone="{{ $site['yayasanProfile']->telephone }}" size="default" :auto-hide="true" :auto-hide-delay="3000"
-        :show-back-to-top="true" :scroll-threshold="200" />
-
+    <x-contact-btt-floating email="support@mycompany.com" phone="+62 21-1234-5678" size="default" :auto-hide="true"
+        :auto-hide-delay="3000" :show-back-to-top="true" :scroll-threshold="200" />
     <main>
         {{-- hero --}}
         <div class="relative flex items-center justify-center h-screen">

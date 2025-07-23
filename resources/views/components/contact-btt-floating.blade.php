@@ -211,6 +211,7 @@
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
+    /*
     .back-to-top.hidden {
         opacity: 0;
         transform: translateY(30px) scale(0.8);
@@ -225,10 +226,10 @@
         visibility: visible;
     }
 
-    /* Back to top button adjustment when contact box is open */
+     Back to top button adjustment when contact box is open
     .back-to-top.contact-active {
-        transform: translateY(-12rem) scale(1);
-    }
+        transform: translateY(-12.5rem) scale(1);
+    } */
 
     /* Responsive design */
     @media (max-width: 640px) {
@@ -318,6 +319,20 @@
             });
         }
 
+        function updateBackToTopPosition() {
+            if (!contactBox || !backToTopBtn) return;
+
+            if (isContactBoxVisible) {
+                const boxHeight = contactBox.offsetHeight + 80;
+                backToTopBtn.style.bottom = `${boxHeight + 28}px`;
+            } else {
+                backToTopBtn.style.bottom = isMobile() ? '5rem' : '6rem';
+            }
+        }
+
+        window.addEventListener('resize', updateBackToTopPosition);
+
+
         // Functions for show/hide contact box
         function showContactBox() {
             if (isAnimating || !contactBox) return;
@@ -348,12 +363,13 @@
             }, 300);
 
             isContactBoxVisible = true;
-
+            updateBackToTopPosition();
             // Set auto-hide timer
             if (config.autoHide) {
                 resetAutoHide();
             }
         }
+
 
         function hideContactBox() {
             if (isAnimating || !contactBox) return;
@@ -386,6 +402,7 @@
                 clearTimeout(autoHideTimeout);
                 autoHideTimeout = null;
             }
+            updateBackToTopPosition();
         }
 
         // Auto-hide functionality
