@@ -29,7 +29,7 @@
 
     <!-- Logo Section -->
     <div class="flex items-center px-3 py-3 border-b border-white/15 lg:px-5 lg:pl-3">
-        <a href="https://flowbite.com" class="flex items-center">
+        <a href="{{ route('admin.profiles') }}" class="flex items-center">
             <img src="{{ asset('img/logo.png') }}" class="h-8 me-3" alt="FlowBite Logo" />
             <span class="self-center text-xl font-semibold whitespace-nowrap text-gray-200">Yaguwipa</span>
         </a>

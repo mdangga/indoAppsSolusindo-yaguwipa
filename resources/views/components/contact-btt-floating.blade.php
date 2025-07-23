@@ -1,6 +1,4 @@
 @props([
-    'email',
-    'phone',
     'autoHide' => true,
     'autoHideDelay' => 5000,
     'showBackToTop' => true,
@@ -11,6 +9,10 @@
 @php
     $whatsapp =
         $site['yayasanSosmed']->filter(fn($item) => strtolower($item->nama) === 'whatsapp')->first()->link ?? null;
+    $email =
+        $site['yayasanProfile']->email ?? null;
+    $phone =
+        $site['yayasanProfile']->telephone ?? null;
 
     // Size classes
     $sizes = [
@@ -50,7 +52,7 @@
             @if ($email)
                 <!-- Email -->
                 <a href="mailto:{{ $email }}"
-                    class="contact-link flex items-center text-blue-600 hover:text-blue-800 p-2 rounded-md hover:bg-blue-50 transition-all duration-200"
+                    class="contact-link flex items-center text-blue-600 hover:text-blue-800 p-2 rounded-md hover:bg-blue-50 transition-all duration-200 cursor-pointer"
                     aria-label="Send email to {{ $email }}">
                     <i class="fas fa-envelope w-5 mr-3" aria-hidden="true"></i>
                     <span>{{ $email }}</span>
@@ -60,7 +62,7 @@
             @if ($whatsapp)
                 <!-- WhatsApp -->
                 <a href="{{ $whatsapp }}" target="_blank" rel="noopener noreferrer"
-                    class="contact-link flex items-center text-green-600 hover:text-green-800 p-2 rounded-md hover:bg-green-50 transition-all duration-200"
+                    class="contact-link flex items-center text-green-600 hover:text-green-800 p-2 rounded-md hover:bg-green-50 transition-all duration-200 cursor-pointer"
                     aria-label="Open WhatsApp chat">
                     <i class="fab fa-whatsapp w-5 mr-3" aria-hidden="true"></i>
                     <span>WhatsApp</span>
@@ -70,7 +72,7 @@
             @if ($phone)
                 <!-- Phone -->
                 <a href="tel:{{ $phone }}"
-                    class="contact-link flex items-center text-purple-600 hover:text-purple-800 p-2 rounded-md hover:bg-purple-50 transition-all duration-200"
+                    class="contact-link flex items-center text-purple-600 hover:text-purple-800 p-2 rounded-md hover:bg-purple-50 transition-all duration-200 cursor-pointer"
                     aria-label="Call {{ $phone }}">
                     <i class="fas fa-phone w-5 mr-3" aria-hidden="true"></i>
                     <span>{{ $phone }}</span>
@@ -81,7 +83,7 @@
 
     <!-- Contact Toggle Button -->
     <button id="contact-toggle"
-        class="{{ $currentSize['button'] }} flex items-center justify-center bg-green-500 hover:bg-green-600 text-white {{ $currentSize['icon'] }} rounded-full shadow-lg transition-all duration-300 pulse-animation hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+        class="{{ $currentSize['button'] }} flex items-center justify-center bg-green-500 hover:bg-green-600 text-white {{ $currentSize['icon'] }} rounded-full shadow-lg transition-all duration-300 pulse-animation hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 cursor-pointer"
         aria-label="Toggle contact information" aria-expanded="false" aria-controls="contact-info">
         <i class="fas fa-comments" aria-hidden="true"></i>
     </button>
@@ -90,7 +92,7 @@
 @if ($showBackToTop)
     <!-- Back to Top Button -->
     <button id="back-to-top"
-        class="back-to-top fixed {{ $currentSize['button'] }} items-center justify-center bg-amber-400 hover:bg-amber-500 text-white {{ $currentSize['icon'] }} rounded-full shadow-lg z-40 hover:scale-110 transition-all duration-400 ease-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hidden"
+        class="back-to-top fixed {{ $currentSize['button'] }} items-center justify-center bg-amber-400 hover:bg-amber-500 text-white {{ $currentSize['icon'] }} rounded-full shadow-lg z-40 hover:scale-110 transition-all duration-400 ease-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hidden cursor-pointer"
         style="bottom: 6rem; right: 1.75rem;" aria-label="Back to top">
         <i class="fas fa-arrow-up " aria-hidden="true"></i>
     </button>
