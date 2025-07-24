@@ -119,6 +119,7 @@
                             </div>
 
 
+
                             <!-- Form -->
                             <form class="space-y-6" action="/login" method="POST">
                                 @csrf
@@ -195,6 +196,7 @@
             </div>
         </div>
     </div>
+
     <script>
         function togglePassword(fieldId, iconId) {
             const field = document.getElementById(fieldId);
@@ -220,6 +222,28 @@
                        12a3 3 0 11-6 0 3 3 0 016 0z" />
                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M3 3l18 18" />`;
+        }
+
+        // Animasi masuk saat halaman dimuat
+        window.addEventListener('DOMContentLoaded', () => {
+            const alertBox = document.getElementById('login-alert');
+            if (alertBox) {
+                alertBox.classList.remove('translate-x-full', 'opacity-0');
+                alertBox.classList.add('translate-x-1', 'opacity-100', 'right-6');
+
+                // Auto close after 5 seconds
+                setTimeout(() => {
+                    alertBox.classList.remove('right-6');
+                    alertBox.classList.add('opacity-0', 'translate-x-full');
+                }, 5000);
+            }
+        });
+
+        function closeLoginAlert() {
+            const alertBox = document.getElementById('login-alert');
+            if (alertBox) {
+                alertBox.classList.add('opacity-0', 'translate-x-full');
+            }
         }
     </script>
 
