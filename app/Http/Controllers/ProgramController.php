@@ -70,8 +70,10 @@ class ProgramController extends Controller
         return DataTables::of($programs)
             ->addColumn('aksi', function ($row) {
                 return '
-                <button class="editBtn bg-blue-500 text-white px-2 py-1 rounded text-sm" data-id="' . e($row->id_program) . '">Edit</button>
-                <button class="deleteBtn bg-red-500 text-white px-2 py-1 rounded text-sm ml-2" data-id="' . e($row->id_program) . '">Hapus</button>
+                <div class="flex items-center">
+                <button class="cursor-pointer editBtn bg-blue-500 text-white px-2 py-1 rounded text-sm" data-id="' . e($row->id_program) . '">Edit</button>
+                <button class="cursor-pointer deleteBtn bg-red-500 text-white px-2 py-1 rounded text-sm ml-2" data-id="' . e($row->id_program) . '">Hapus</button>
+                </div>
             ';
             })
             ->addColumn('kategori', function ($row) {

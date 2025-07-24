@@ -88,6 +88,7 @@
             height: 2.5rem;
             font-size: 0.875rem;
             line-height: 1;
+            cursor: pointer;
         }
 
         .dataTables_paginate .paginate_button:hover {
@@ -273,7 +274,7 @@
                 language: {
 
                     search: "",
-                    searchPlaceholder: "Cari berita...",
+                    searchPlaceholder: "Cari...",
                     lengthMenu: "Tampilkan _MENU_ data",
                     info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
                     infoEmpty: "Tidak ada data",
@@ -352,7 +353,7 @@
                 scrollX: true,
                 initComplete: function() {
                     // Style the search input
-                    $('.dataTables_filter input').attr('placeholder', 'Cari berita...')
+                    $('.dataTables_filter input').attr('placeholder', 'Cari...')
                         .addClass('pl-10 pr-4')
                         .wrap('<div class="relative"></div>')
                     // .before(

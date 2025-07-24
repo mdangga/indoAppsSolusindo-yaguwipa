@@ -23,7 +23,8 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void{
+    public function boot(): void
+    {
         $profile = Cache::remember('yayasan_profile', now()->addHours(1), function () {
             // Log::info('profile dari DB');
             return Profiles::first();
