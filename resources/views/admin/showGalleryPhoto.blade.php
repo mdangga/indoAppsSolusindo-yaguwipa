@@ -464,8 +464,8 @@
                         .addClass('bg-gray-400 cursor-not-allowed')
                         .html('<i class="fas fa-spinner fa-spin w-3 h-3 mr-1"></i>');
 
-                    fetch(`/gallery/destroy/${id}`, {
-                            method: 'delete', // ubah ke POST
+                    fetch(`/admin/gallery/destroy/${id}`, {
+                            method: 'delete',
                             headers: {
                                 'Content-Type': 'application/json',
                                 'X-Requested-With': 'XMLHttpRequest',

@@ -50,7 +50,7 @@ Route::get('/show-pdf/{filePath}', [PublikasiController::class, 'showPdf'])->whe
 Route::middleware(['auth.admin'])->group(function () {
     // general-setting
     Route::get('/admin/general-setting', [ProfileController::class, 'index'])->name('admin.profiles');
-    Route::put('/general-setting/update/{id}', [ProfileController::class, 'update'])->name('profiles.update');
+    Route::put('/admin/general-setting/update/{id}', [ProfileController::class, 'update'])->name('profiles.update');
 
 
     // sosial-media
@@ -58,12 +58,12 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/admin/datatable/sosial-media', [SosiaMediaController::class, 'getDataTables'])->name('sosmed.table');
 
     Route::get('/admin/sosial-media/store', [SosiaMediaController::class, 'showFormStore'])->name('sosmed.formStore');
-    Route::post('/sosial-media', [SosiaMediaController::class, 'store'])->name('sosmed.store');
+    Route::post('/admin/sosial-media', [SosiaMediaController::class, 'store'])->name('sosmed.store');
 
     Route::get('/admin/sosial-media/edit/{id}', [SosiaMediaController::class, 'showFormEdit'])->name('sosmed.formEdit');
-    Route::put('/sosial-media/{id}', [SosiaMediaController::class, 'update'])->name('sosmed.update');
+    Route::put('/admin/sosial-media/{id}', [SosiaMediaController::class, 'update'])->name('sosmed.update');
 
-    Route::delete('/sosial-media/destroy/{id}', [SosiaMediaController::class, 'destroy'])->name('sosmed.delete');
+    Route::delete('/admin/sosial-media/destroy/{id}', [SosiaMediaController::class, 'destroy'])->name('sosmed.delete');
 
 
     // kategori-program
@@ -71,12 +71,12 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/admin/datatable/kategori-program', [KategoriProgramController::class, 'getDataTables'])->name('kategoriProgram.table');
 
     Route::get('/admin/kategori-program/store', [KategoriProgramController::class, 'showFormStore'])->name('kategoriProgram.formStore');
-    Route::post('/kategori-program', [KategoriProgramController::class, 'store'])->name('kategoriProgram.store');
+    Route::post('/admin/kategori-program', [KategoriProgramController::class, 'store'])->name('kategoriProgram.store');
 
     Route::get('/admin/kategori-program/edit/{id}', [KategoriProgramController::class, 'showFormEdit'])->name('kategoriProgram.formUpdate');
-    Route::put('/kategori-program/{id}', [KategoriProgramController::class, 'update'])->name('kategoriProgram.update');
+    Route::put('/admin/kategori-program/{id}', [KategoriProgramController::class, 'update'])->name('kategoriProgram.update');
 
-    Route::delete('/kategori-program/destroy/{id}', [KategoriProgramController::class, 'destroy'])->name('kategoriProgram.delete');
+    Route::delete('/admin/kategori-program/destroy/{id}', [KategoriProgramController::class, 'destroy'])->name('kategoriProgram.delete');
 
 
     // program
@@ -84,12 +84,12 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/admin/datatable/program', [ProgramController::class, 'getDataTables'])->name('program.table');
 
     Route::get('/admin/program/store', [ProgramController::class, 'showFormStore'])->name('program.formStore');
-    Route::post('/program', [ProgramController::class, 'store'])->name('program.store');
+    Route::post('/admin/program', [ProgramController::class, 'store'])->name('program.store');
 
     Route::get('/admin/program/edit/{id}', [ProgramController::class, 'showFormEdit'])->name('program.formUpdate');
-    Route::put('/program/{id}', [ProgramController::class, 'update'])->name('program.update');
+    Route::put('/admin/program/{id}', [ProgramController::class, 'update'])->name('program.update');
 
-    Route::delete('/program/destroy/{id}', [ProgramController::class, 'destroy'])->name('program.delete');
+    Route::delete('/admin/program/destroy/{id}', [ProgramController::class, 'destroy'])->name('program.delete');
 
 
     // gallery
@@ -99,12 +99,12 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/admin/datatable/gallery-video', [GalleryController::class, 'getDataTablesVideo'])->name('galleryVideo.table');
 
     Route::get('/admin/gallery/store/{kategori}', [GalleryController::class, 'showFormStore'])->name('gallery.formStore');
-    Route::post('/gallery', [GalleryController::class, 'store'])->name('gallery.store');
+    Route::post('/admin/gallery', [GalleryController::class, 'store'])->name('gallery.store');
 
     Route::get('/admin/gallery/edit/{id}', [GalleryController::class, 'showFormEdit'])->name('gallery.formEdit');
-    Route::put('/gallery/{id}', [GalleryController::class, 'update'])->name('gallery.update');
+    Route::put('/admin/gallery/{id}', [GalleryController::class, 'update'])->name('gallery.update');
 
-    Route::delete('/gallery/destroy/{id}', [GalleryController::class, 'destroy'])->name('gallery.delete');
+    Route::delete('/admin/gallery/destroy/{id}', [GalleryController::class, 'destroy'])->name('gallery.delete');
 
 
     // Kategori-news-event
@@ -112,12 +112,12 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/admin/datatable/kategori-news-event', [kategoriNewsEventController::class, 'getDataTables'])->name('kategoriBerita.table');
 
     Route::get('/admin/kategori-news-event/store', [kategoriNewsEventController::class, 'showFormStore'])->name('kategoriBerita.formStore');
-    Route::post('/kategori-news-event', [kategoriNewsEventController::class, 'store'])->name('kategoriBerita.store');
+    Route::post('/admin/kategori-news-event', [kategoriNewsEventController::class, 'store'])->name('kategoriBerita.store');
 
     Route::get('/admin/kategori-news-event/edit/{id}', [kategoriNewsEventController::class, 'showFormEdit'])->name('kategoriBerita.formEdit');
-    Route::put('/kategori-news-event/{id}', [kategoriNewsEventController::class, 'update'])->name('kategoriBerita.update');
+    Route::put('/admin/kategori-news-event/{id}', [kategoriNewsEventController::class, 'update'])->name('kategoriBerita.update');
 
-    Route::delete('/kategori-news-event/destroy/{id}', [kategoriNewsEventController::class, 'destroy'])->name('kategoriBerita.delete');
+    Route::delete('/admin/kategori-news-event/destroy/{id}', [kategoriNewsEventController::class, 'destroy'])->name('kategoriBerita.delete');
 
 
     // news-dan-event 
@@ -125,12 +125,12 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/admin/datatable/berita', [BeritaController::class, 'getDataTables'])->name('berita.table');
 
     Route::get('/admin/berita/store', [BeritaController::class, 'showFormStore'])->name('berita.formStore');
-    Route::post('/berita', [BeritaController::class, 'store'])->name('berita.store');
+    Route::post('/admin/berita', [BeritaController::class, 'store'])->name('berita.store');
 
     Route::get('/admin/berita/edit/{id}', [BeritaController::class, 'showFormEdit'])->name('berita.formEdit');
-    Route::put('/berita/{id}', [BeritaController::class, 'update'])->name('berita.update');
+    Route::put('/admin/berita/{id}', [BeritaController::class, 'update'])->name('berita.update');
 
-    Route::delete('/berita/destroy/{id}', [BeritaController::class, 'destroy'])->name('berita.delete');
+    Route::delete('/admin/berita/destroy/{id}', [BeritaController::class, 'destroy'])->name('berita.delete');
 
 
     // menus
@@ -138,12 +138,12 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/admin/datatable/menus', [MenusController::class, 'getDataTables'])->name('menus.table');
 
     Route::get('/admin/menus/store', [MenusController::class, 'showFormStore'])->name('menus.formStore');
-    Route::post('/menus', [MenusController::class, 'store'])->name('menus.store');
+    Route::post('/admin/menus', [MenusController::class, 'store'])->name('menus.store');
 
     Route::get('/admin/menus/edit/{id}', [MenusController::class, 'showFormEdit'])->name('menus.formEdit');
-    Route::put('/menus/{id}', [MenusController::class, 'update'])->name('menus.update');
+    Route::put('/admin/menus/{id}', [MenusController::class, 'update'])->name('menus.update');
 
-    Route::delete('/menus/destroy/{id}', [MenusController::class, 'destroy'])->name('menus.delete');
+    Route::delete('/admin/menus/destroy/{id}', [MenusController::class, 'destroy'])->name('menus.delete');
 
 
     //jenis-publikasi 
@@ -151,12 +151,12 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/admin/datatable/jenis-publikasi', [JenisPublikasiController::class, 'getDataTables'])->name('jenisPublikasi.table');
 
     Route::get('/admin/jenis-publikasi/store', [JenisPublikasiController::class, 'showFormStore'])->name('jenisPublikasi.formStore');
-    Route::post('/jenis-publikasi', [JenisPublikasiController::class, 'store'])->name('jenisPublikasi.store');
+    Route::post('/admin/jenis-publikasi', [JenisPublikasiController::class, 'store'])->name('jenisPublikasi.store');
 
     Route::get('/admin/jenis-publikasi/edit/{id}', [JenisPublikasiController::class, 'showFormEdit'])->name('jenisPublikasi.formEdit');
-    Route::put('/jenis-publikasi/{id}', [JenisPublikasiController::class, 'update'])->name('jenisPublikasi.update');
+    Route::put('/admin/jenis-publikasi/{id}', [JenisPublikasiController::class, 'update'])->name('jenisPublikasi.update');
 
-    Route::delete('/jenis-publikasi/destroy/{id}', [JenisPublikasiController::class, 'destroy'])->name('jenisPublikasi.delete');
+    Route::delete('/admin/jenis-publikasi/destroy/{id}', [JenisPublikasiController::class, 'destroy'])->name('jenisPublikasi.delete');
 
 
     //publikasi 
@@ -164,16 +164,16 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('/admin/datatable/publikasi', [PublikasiController::class, 'getDataTables'])->name('publikasi.table');
 
     Route::get('/admin/publikasi/store', [PublikasiController::class, 'showFormStore'])->name('publikasi.formStore');
-    Route::post('/publikasi', [PublikasiController::class, 'store'])->name('publikasi.store');
+    Route::post('/admin/publikasi', [PublikasiController::class, 'store'])->name('publikasi.store');
 
     Route::get('/admin/publikasi/edit/{id}', [PublikasiController::class, 'showFormEdit'])->name('publikasi.formEdit');
-    Route::put('/publikasi/{id{', [PublikasiController::class, 'update'])->name('publikasi.update');
+    Route::put('/admin/publikasi/{id{', [PublikasiController::class, 'update'])->name('publikasi.update');
 
-    Route::delete('/publikasi/destroy/{id}', [PublikasiController::class, 'destroy'])->name('publikasi.delete');
+    Route::delete('/admin/publikasi/destroy/{id}', [PublikasiController::class, 'destroy'])->name('publikasi.delete');
 
 
     // logout
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('/admin/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 

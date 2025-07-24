@@ -414,7 +414,7 @@
                         .addClass('bg-gray-400 cursor-not-allowed')
                         .html('<i class="fas fa-spinner fa-spin w-3 h-3 mr-1"></i>');
 
-                    fetch(`/program/destroy/${id}`, {
+                    fetch(`/admin/program/destroy/${id}`, {
                             method: 'delete',
                             headers: {
                                 'Content-Type': 'application/json',
