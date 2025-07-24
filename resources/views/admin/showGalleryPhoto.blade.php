@@ -90,6 +90,7 @@
             height: 2.5rem;
             font-size: 0.875rem;
             line-height: 1;
+            cursor: pointer;
         }
 
         .dataTables_paginate .paginate_button:hover {

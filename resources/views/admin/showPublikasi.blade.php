@@ -88,6 +88,7 @@
             height: 2.5rem;
             font-size: 0.875rem;
             line-height: 1;
+            cursor: pointer;
         }
 
         .dataTables_paginate .paginate_button:hover {
@@ -276,7 +277,7 @@
                 language: {
 
                     search: "",
-                    searchPlaceholder: "Cari publikasi...",
+                    searchPlaceholder: "Cari...",
                     lengthMenu: "Tampilkan _MENU_ data",
                     info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
                     infoEmpty: "Tidak ada data",
@@ -390,23 +391,6 @@
                                     .includes('<a'))) {
                                 return data;
                             }
-
-                            return `
-                            <div class="flex items-center justify-center space-x-2 whitespace-nowrap">
-                                <button 
-                                    class="editBtn inline-flex items-center gap-1 px-1 py-1 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold rounded" 
-                                    data-id="${row.id}" 
-                                    title="Edit">
-                                    Edit
-                                </button>
-                                <button 
-                                    class="deleteBtn inline-flex items-center gap-1 px-1 py-1 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded" 
-                                    data-id="${row.id}" 
-                                    title="Hapus">
-                                    Hapus
-                                </button>
-                            </div>
-                        `;
                         },
                         orderable: false,
                         searchable: false,
@@ -418,7 +402,7 @@
                 scrollX: true,
                 initComplete: function() {
                     // Style the search input
-                    $('.dataTables_filter input').attr('placeholder', 'Cari publikasi...')
+                    $('.dataTables_filter input').attr('placeholder', 'Cari...')
                         .addClass('pl-10 pr-4')
                         .wrap('<div class="relative"></div>')
                     // .before(
