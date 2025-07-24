@@ -35,6 +35,8 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        Auth::login($user);
+
         return redirect()->route('register.dataUser', ['id' => $user->id_user]);
     }
 
@@ -62,7 +64,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             $user = Auth::user();
-            
+
             if ($user->role === null) {
                 return redirect()->route('register.dataUser', ['id' => $user->id_user]);
             }
@@ -79,6 +81,10 @@ class AuthController extends Controller
     // data user
     public function showFormUser(Request $request, $id)
     {
+        if (Auth::id() != $id) {
+            abort(403, 'Unauthorized access.');
+        }
+
         $user = User::findOrFail($id);
         return view('formMitraDonatur', compact('user'));
     }

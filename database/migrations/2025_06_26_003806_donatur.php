@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_user');
             $table->string('nama');
             $table->string('no_tlp');
+            $table->string('profile_path');
             $table->string('email')->nullable();
             $table->text('alamat')->nullable();
             $table->enum('status', ['show', 'hide']);

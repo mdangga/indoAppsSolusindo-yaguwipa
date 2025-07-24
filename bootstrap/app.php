@@ -12,7 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'auth.admin' => \App\Http\Middleware\AuthAdmin::class,
+            'auth.null' => \App\Http\Middleware\AuthNullRole::class,
+            'auth.admin' => \App\Http\Middleware\AuthAdminRole::class,
+            'auth.donatur' => \App\Http\Middleware\AuthDonaturRole::class,
+            'auth.mitra' => \App\Http\Middleware\AuthMitraRole::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
