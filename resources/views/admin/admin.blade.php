@@ -506,7 +506,7 @@
                         .addClass('bg-gray-400 cursor-not-allowed')
                         .html('<i class="fas fa-spinner fa-spin w-3 h-3 mr-1"></i>');
 
-                    fetch(`/berita/destroy/${id}`, {
+                    fetch(`/admin/berita/destroy/${id}`, {
                             method: 'delete', // ubah ke POST
                             headers: {
                                 'Content-Type': 'application/json',
