@@ -14,6 +14,7 @@ class Donatur extends Model
         'nama',
         'no_tlp',
         'email',
+        'profile_path',
         'alamat',
         'status',
     ];

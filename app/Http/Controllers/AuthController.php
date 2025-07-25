@@ -67,15 +67,19 @@ class AuthController extends Controller
 
             if ($user->role === null) {
                 return redirect()->route('register.dataUser', ['id' => $user->id_user]);
+            } elseif ($user->role === 'admin') {
+                return redirect()->route('admin.berita', ['id' => $user->id_user]);
             }
 
-            return redirect()->intended('dashboard');
+            // Untuk role mitra dan donatur
+            return redirect()->route('dashboard');
         }
 
         return back()->withErrors([
             'username' => 'Username atau password salah.',
         ])->withInput();
     }
+
 
 
     // data user
@@ -99,46 +103,59 @@ class AuthController extends Controller
             'email' => 'nullable|email|unique:donatur,email|unique:mitra,email',
             'no_tlp' => 'required|string|max:20',
             'alamat' => 'nullable|string',
+            'profile_path' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'role' => 'required|string|in:mitra,donatur',
 
             // Mitra only
-            'website'                 => 'required_if:role,mitra|nullable|url',
-            'penanggung_jawab'       => 'required_if:role,mitra|nullable|string|max:255',
+            'website' => 'nullable|url',
+            'penanggung_jawab' => 'required_if:role,mitra|nullable|string|max:255',
             'jabatan_penanggung_jawab' => 'required_if:role,mitra|nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
+
         $user = User::find($request->id_user);
         $user->update([
             'role' => $request->role,
         ]);
-        // Simpan data tambahan
+
+        // Simpan file profil jika ada
+        $profilePath = null;
+        if ($request->hasFile('profile_path')) {
+            $profilePath = $request->file('profile_path')->store('profile_user', 'public');
+        }
+
+        // Simpan data tambahan sesuai role
         if ($request->role === 'mitra') {
             Mitra::create([
-                'id_user'                 => $request->id_user,
-                'nama'                    => $request->nama,
-                'email'                   => $request->email,
-                'no_tlp'                  => $request->no_tlp,
-                'alamat'                  => $request->alamat,
-                'website'                 => $request->website,
-                'penanggung_jawab'        => $request->penanggung_jawab,
+                'id_user' => $request->id_user,
+                'nama' => $request->nama,
+                'alamat' => $request->alamat,
+                'no_tlp' => $request->no_tlp,
+                'email' => $request->email,
+                'website' => $request->website,
+                'profile_path' => $profilePath,
+                'penanggung_jawab' => $request->penanggung_jawab,
                 'jabatan_penanggung_jawab' => $request->jabatan_penanggung_jawab,
             ]);
-        } else {
+        } elseif ($request->role === 'donatur') {
             Donatur::create([
                 'id_user' => $request->id_user,
-                'nama'    => $request->nama,
-                'email'   => $request->email,
-                'no_tlp'  => $request->no_tlp,
-                'alamat'  => $request->alamat,
+                'nama' => $request->nama,
+                'no_tlp' => $request->no_tlp,
+                'email' => $request->email,
+                'profile_path' => $profilePath,
+                'alamat' => $request->alamat,
             ]);
         }
 
+        $user->refresh();
         Auth::login($user);
         return redirect()->route('dashboard')->with('success', 'Registrasi berhasil');
     }
+
 
     // Logout
     public function logout(Request $request)
@@ -153,6 +170,6 @@ class AuthController extends Controller
 
     public function me()
     {
-        return view('admin.showBerita', ['user' => Auth::user()]);
+        return view('testing', ['user' => Auth::user()]);
     }
 }
