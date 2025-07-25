@@ -18,7 +18,7 @@ return new class extends Migration
         });
         
         Schema::create('donasi', function(Blueprint $table){
-            $table->id();
+            $table->id('id_donasi');
             $table->text('nama');
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
@@ -30,7 +30,7 @@ return new class extends Migration
         });
         
         Schema::create('donasi_donatur', function(Blueprint $table){
-            $table->id();
+            $table->id('id_donasi_donatur');
             $table->decimal('jumlah_donasi', 15, 2)->nullable();
             $table->text('keterangan')->nullable();
             $table->enum('status', ['approved', 'pending', 'rejected'])->default('pending');
