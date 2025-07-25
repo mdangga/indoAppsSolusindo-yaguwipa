@@ -209,10 +209,37 @@
 
                 {{-- <div id="google_translate_element" class="mr-5"></div> --}}
 
-                <a href="{{ route('login') }}"
-                    class="bg-amber-100 text-sm font-semibold text-gray-900 rounded-[50px] px-6 py-3.5 hover:bg-amber-200 transition">
-                    Log in
-                </a>
+                @auth
+                    @php
+                        $colorMap = [
+                            'bg-red-400' => 'hover:bg-red-300',
+                            'bg-blue-400' => 'hover:bg-blue-300',
+                            'bg-green-400' => 'hover:bg-green-300',
+                            'bg-yellow-400' => 'hover:bg-yellow-300',
+                            'bg-purple-400' => 'hover:bg-purple-300',
+                            'bg-pink-400' => 'hover:bg-pink-300',
+                            'bg-teal-400' => 'hover:bg-teal-300',
+                            'bg-orange-400' => 'hover:bg-orange-300',
+                        ];
+
+                        $colors = array_keys($colorMap);
+                        $userIdentifier = auth()->user()->email ?? auth()->id();
+                        $colorIndex = crc32($userIdentifier) % count($colors);
+                        $randomBg = $colors[$colorIndex];
+                        $hoverBg = $colorMap[$randomBg];
+                    @endphp
+
+                    <div
+                        class="relative w-12 h-12 overflow-hidden {{ $randomBg }} {{ $hoverBg }} rounded-full text-white flex items-center justify-center font-semibold uppercase select-none transition-colors duration-200 cursor-pointer text-lg">
+                        {{ strtoupper(substr(auth()->user()->username ?? 'U', 0, 1)) }}
+                    </div>
+                @else
+                    <a href="{{ route('login') }}"
+                        class="bg-amber-100 text-sm font-semibold text-gray-900 rounded-[50px] px-6 py-3.5 hover:bg-amber-200 transition">
+                        Log in
+                    </a>
+                @endauth
+
             </div>
 
             <!-- Tombol menu (Mobile) -->
