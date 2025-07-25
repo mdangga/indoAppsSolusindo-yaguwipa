@@ -17,7 +17,7 @@
             class="bg-white rounded-xl shadow-sm max-w-2xl w-full mx-auto transform transition-all duration-300 scale-100">
             <div class="p-8">
                 <div class="text-center mb-8">
-                    <h2 class="text-3xl font-semi   bold    tracking-tight text-gray-600">Pilih Jenis Registrasi</h2>
+                    <h2 class="text-3xl font-semi bold tracking-tight text-gray-600">Pilih Jenis Registrasi</h2>
                     <p class="mt-2 text-sm text-gray-600">Pilih salah satu kategori untuk melanjutkan pendaftaran</p>
                 </div>
                 <div class="grid md:grid-cols-2 gap-6 ">
@@ -78,6 +78,31 @@
                         <input type="text" name="role" id="role" value="" hidden>
                         <!-- Nama - selalu tampil -->
                         <div class="mt-4">
+                            <!-- Label di luar kotak -->
+                            <p class="text-sm font-semibold text-gray-700 mb-2">Upload Foto Profil <span
+                                    class="text-gray-400"> (Opsional)</span></p>
+
+                            <label
+                                class="flex justify-center w-full h-32 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none">
+                                <span class="flex items-center space-x-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-600" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                    </svg>
+                                    <!-- Ini yang akan berubah -->
+                                    <span id="upload-text" class="font-medium text-gray-600">
+                                        Drag atau drop untuk memilih file
+                                    </span>
+                                </span>
+                                <input type="file" name="profile_path" id="profile_path" class="hidden"
+                                    onchange="updateLabelText(event)">
+                            </label>
+
+                            <p class="text-[12px] text-gray-400 mt-1">Format: JPEG, JPG, PNG • Max: 2MB
+                            </p>
+                        </div>
+                        <div class="mt-4">
                             <label for="nama" class="block text-sm font-medium text-gray-900 mb-2">Nama</label>
                             <div class="relative">
                                 <input type="text" name="nama" id="nama" autocomplete="nama" required
@@ -99,9 +124,10 @@
 
                             <!-- Email - selalu tampil -->
                             <div class="mt-4">
-                                <label for="email" class="block text-sm font-medium text-gray-900 mb-2">Email</label>
+                                <label for="email" class="block text-sm font-medium text-gray-900 mb-2">Email <span
+                                        class="text-gray-400" id="email-opsional"> (Opsional)</span></label>
                                 <div class="relative">
-                                    <input type="email" name="email" id="email" autocomplete="email" required
+                                    <input type="email" name="email" id="email" autocomplete="email"
                                         class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
                                         placeholder="Masukkan email" />
                                 </div>
@@ -109,7 +135,8 @@
                         </div>
                         <!-- Alamat - selalu tampil -->
                         <div class="mt-4">
-                            <label for="alamat" class="block text-sm font-medium text-gray-900 mb-2">Alamat</label>
+                            <label for="alamat" class="block text-sm font-medium text-gray-900 mb-2">Alamat<span
+                                    class="text-gray-400" id="alamat-opsional"> (Opsional)</span></label>
                             <div class="relative">
                                 <textarea
                                     class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
@@ -121,7 +148,8 @@
                             <!-- Website - hanya tampil di mitra -->
                             <div class="mt-4">
                                 <label for="website"
-                                    class="block text-sm font-medium text-gray-900 mb-2">Website</label>
+                                    class="block text-sm font-medium text-gray-900 mb-2">Website<span
+                                        class="text-gray-400" id="website-opsional"> (Opsional)</span></label>
                                 <div class="relative">
                                     <input type="url" name="website" id="website" autocomplete="website"
                                         class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
@@ -167,6 +195,17 @@
     </div>
 
     <script>
+        function updateLabelText(event) {
+            const input = event.target;
+            const textSpan = document.getElementById('upload-text');
+
+            if (input.files.length > 0) {
+                const fileName = input.files[0].name;
+                textSpan.innerHTML = `File dipilih: <span class="text-green-600 font-medium">${fileName}</span>`;
+            }
+        }
+
+
         let selectedType = '';
 
         function selectCard(type) {
@@ -205,9 +244,14 @@
                 document.getElementById('mitra-fields').style.display = 'block';
                 document.getElementById('submit-btn').textContent = 'Daftar sebagai Mitra';
                 // Set required for mitra fields
-                document.getElementById('website').required = true;
+                // document.getElementById('website').required = true;
                 document.getElementById('penanggung_jawab').required = true;
                 document.getElementById('jabatan_penanggung_jawab').required = true;
+
+                document.getElementById('website-opsional').textContent = ' (Opsional)';
+                document.getElementById('email-opsional').textContent = ''; // Email jadi wajib
+                document.getElementById('alamat-opsional').textContent = ''; // Alamat jadi wajib
+
             } else {
                 document.getElementById('form-title').textContent = 'Daftarkan Diri Anda';
                 document.getElementById('form-subtitle').textContent =
@@ -222,6 +266,10 @@
                 // Remove required for donatur optional fields
                 document.getElementById('alamat').required = false;
                 document.getElementById('email').required = false;
+
+                document.getElementById('email-opsional').textContent = ' (Opsional)'; // Email jadi wajib
+                document.getElementById('alamat-opsional').textContent = ' (Opsional)'; // Alamat jadi wajib
+
             }
         }
 
