@@ -72,7 +72,7 @@
                         <p class="mt-2 text-sm text-gray-600" id="form-subtitle"></p>
                     </div>
 
-                    <form action="{{ route('add.dataUser') }}" method="POST">
+                    <form action="{{ route('add.dataUser') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="text" name="id_user" id="id_user" value="{{ $user->id_user }}" hidden>
                         <input type="text" name="role" id="role" value="" hidden>

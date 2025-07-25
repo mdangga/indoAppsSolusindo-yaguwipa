@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('mitra', function (Blueprint $table) {
             $table->id('id_mitra');
             $table->string('nama');
-            $table->string('profile_path');
+            $table->string('profile_path')->nullable();
             $table->text('alamat');
             $table->string('no_tlp');
             $table->string('email');

@@ -16,6 +16,7 @@ class Mitra extends Model
         'no_tlp',
         'email',
         'website',
+        'profile_path',
         'penanggung_jawab',
         'jabatan_penanggung_jawab',
         'status',

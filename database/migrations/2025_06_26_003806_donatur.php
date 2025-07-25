@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_donatur');
             $table->unsignedBigInteger('id_user');
             $table->string('nama');
-            $table->string('profile_path');
+            $table->string('profile_path')->nullable();
             $table->string('no_tlp');
             $table->string('email')->nullable();
             $table->text('alamat')->nullable();

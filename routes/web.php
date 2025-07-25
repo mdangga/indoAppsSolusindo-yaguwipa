@@ -180,11 +180,18 @@ Route::middleware(['auth.admin'])->group(function () {
 
 // Auth routes
 // personal-data-user
+Route::post('/add-data-user', [AuthController::class, 'addDataUser'])->name('add.dataUser');
+
 Route::middleware(['auth.null'])->group(function () {
 Route::get('/register/{id}', [AuthController::class, 'showFormUser'])->name('register.dataUser');
-Route::post('/add-data-user', [AuthController::class, 'addDataUser'])->name('add.dataUser');
 });
 
+Route::middleware(['auth.mitra'])->group(function () {
+    Route::get('/user/dashboard', [AuthController::class, 'me'])->name('dashboard');
+});
+Route::middleware(['auth.donatur'])->group(function () {
+    Route::get('/user/dashboard', [AuthController::class, 'me'])->name('dashboard');
+});
 
 // register
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register.form');
