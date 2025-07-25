@@ -1,3 +1,30 @@
+@php
+    $user = auth()->user();
+
+    // Generalized user data (mitra/donatur)
+    $displayUser = $user->role === 'mitra' ? $user->UserToMitra : $user->UserToDonatur;
+
+    $colorMap = [
+        'bg-red-400' => 'hover:bg-red-300',
+        'bg-blue-400' => 'hover:bg-blue-300',
+        'bg-green-400' => 'hover:bg-green-300',
+        'bg-yellow-400' => 'hover:bg-yellow-300',
+        'bg-purple-400' => 'hover:bg-purple-300',
+        'bg-pink-400' => 'hover:bg-pink-300',
+        'bg-teal-400' => 'hover:bg-teal-300',
+        'bg-orange-400' => 'hover:bg-orange-300',
+    ];
+
+    $colors = array_keys($colorMap);
+    $userIdentifier = $user->email ?? $user->id;
+    $colorIndex = crc32($userIdentifier) % count($colors);
+    $randomBg = $colors[$colorIndex];
+    $hoverBg = $colorMap[$randomBg];
+
+    $profilePath = optional($displayUser)->profile_path;
+@endphp
+
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -5,26 +32,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard User</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/AOS.js', 'resources/js/app.js'])
 </head>
 
 <body>
     <div class="min-h-screen bg-gray-50">
         <!-- Header -->
-        <div class="bg-white shadow-sm border-b">
+        <div class="bg-white shadow-sm border-b border-gray-100">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center py-6">
                     <div>
                         <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
-                        <p class="text-gray-600">Selamat datang kembali, John Doe!</p>
+                        <p class="text-gray-600">Selamat datang kembali, {{ auth()->user()->username }}</p>
                     </div>
                     <div class="flex items-center space-x-4">
                         <div class="text-right">
                             <p class="text-sm text-gray-500">Rabu, 23 Juli 2025</p>
-                            <p class="text-sm font-medium text-gray-900" id="current-time">14:30:25</p>
+                            <p class="text-sm font-medium text-gray-900" id="current-time">14:30</p>
                         </div>
-                        <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                            <span class="text-white font-semibold">JD</span>
+
+                        @if ($profilePath)
+                            <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar">
+                                <img src="{{ asset('storage/' . $profilePath) }}" alt="Profile"
+                                    class="w-12 h-12 rounded-full object-cover border-2 border-gray-300 hover:scale-105 transition" />
+                            </button>
+                        @else
+                            <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar"
+                                class="w-12 h-12 {{ $randomBg }} {{ $hoverBg }} rounded-full text-white flex items-center justify-center font-semibold uppercase select-none transition-colors duration-200 cursor-pointer text-lg">
+                                {{ strtoupper(substr($user->username ?? ($displayUser->nama ?? 'U'), 0, 1)) }}
+                            </button>
+                        @endif
+
+
+                        <!-- Dropdown menu -->
+                        <div id="dropdownAvatar"
+                            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm max-w-60 min-w-44 ">
+                            <div class="px-4 py-3 text-sm text-gray-900 ">
+                                <div class="font-bold mb-1">{{ $displayUser->nama ?? '-' }}
+                                </div>
+                                <div class="text-gray-500">{{ $displayUser->no_tlp ?? '-' }}
+                                </div>
+
+                            </div>
+                            <ul class="py-2 text-sm text-gray-700 " aria-labelledby="dropdownUserAvatarButton">
+                                <li>
+                                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Edit Profile</a>
+                                </li>
+                                <li>
+                                    <form action="{{ route('logout') }}" method="POST" class="py-2">
+                                        @csrf
+                                        <button type="submit"
+                                            class="block px-4 w-full py-2 text-sm text-red-700 hover:bg-red-100 text-left cursor-pointer">Logout</button>
+                                    </form>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -73,7 +134,6 @@
                             </div>
                             <span class="text-xs font-medium text-gray-900">Wishlist</span>
                         </a>
-
                     </div>
                 </div>
             </div>
@@ -366,8 +426,7 @@
             const now = new Date();
             const timeString = now.toLocaleTimeString('id-ID', {
                 hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
+                minute: '2-digit'
             });
             document.getElementById('current-time').textContent = timeString;
         }
