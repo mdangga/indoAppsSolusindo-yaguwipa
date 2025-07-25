@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamps();
         });
         
+        
         Schema::create('kerja_sama', function(Blueprint $table){
             $table->id();
             $table->text('keterangan')->nullable();
@@ -27,15 +28,24 @@ return new class extends Migration
             $table->unsignedBigInteger('id_mitra');
             $table->unsignedBigInteger('id_kategori_kerja_sama');
             $table->timestamps();
-
+            
             $table->foreign('id_mitra')->references('id_mitra')->on('mitra')->onDelete('cascade');
             $table->foreign('id_kategori_kerja_sama')->references('id_kategori_kerja_sama')->on('kategori_kerja_sama')->onDelete('cascade');
         });
+        
+        Schema::create('file_penunjang', function(Blueprint $table){
+            $table->id();
+            $table->string('file_path');
+            $table->unsignedBigInteger('id_kerja_sama');
+            $table->timestamps();
+    
+            $table->foreign('id_kerja_sama')->references('id_kerja_sama')->on('kerja_sama')->onDelete('cascade');
+        });
     }
-
+    
     /**
      * Reverse the migrations.
-     */
+    */
     public function down(): void
     {
         Schema::dropIfExists('kategori_kerja_sama');
