@@ -20,6 +20,7 @@ return new class extends Migration
         Schema::create('donasi', function(Blueprint $table){
             $table->id('id_donasi');
             $table->text('nama');
+            $table->string('file_path');
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
             $table->decimal('total_dana', 15, 2)->nullable();
