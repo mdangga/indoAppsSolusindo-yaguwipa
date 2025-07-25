@@ -20,7 +20,7 @@ return new class extends Migration
         
         
         Schema::create('kerja_sama', function(Blueprint $table){
-            $table->id();
+            $table->id('id_kerja_sama');
             $table->text('keterangan')->nullable();
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
@@ -34,7 +34,7 @@ return new class extends Migration
         });
         
         Schema::create('file_penunjang', function(Blueprint $table){
-            $table->id();
+            $table->id('id_file_penunjang');
             $table->string('file_path');
             $table->unsignedBigInteger('id_kerja_sama');
             $table->timestamps();
@@ -50,5 +50,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('kategori_kerja_sama');
         Schema::dropIfExists('kerja_sama');
+        Schema::dropIfExists('file_penunjang');
     }
 };
