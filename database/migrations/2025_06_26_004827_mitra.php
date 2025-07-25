@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('mitra', function (Blueprint $table) {
             $table->id('id_mitra');
-            $table->unsignedBigInteger('id_user');
-            $table->string('profile_path');
             $table->string('nama');
+            $table->string('profile_path');
             $table->text('alamat');
             $table->string('no_tlp');
             $table->string('email');
@@ -23,6 +22,7 @@ return new class extends Migration
             $table->string('penanggung_jawab');
             $table->string('jabatan_penanggung_jawab');
             $table->enum('status', ['show', 'hide']);
+            $table->unsignedBigInteger('id_user');
             $table->timestamps();
 
             $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');

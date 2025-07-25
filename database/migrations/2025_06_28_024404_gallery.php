@@ -17,7 +17,10 @@ return new class extends Migration
             $table->string('link');
             $table->enum('status', ['show', 'hide'])->default('show');
             $table->enum('kategori', ['foto', 'video']);
+            $table->unsignedBigInteger('id_program')->nullable();
             $table->timestamps();
+
+            $table->foreign('id_program')->references('id_program')->on('program')->onDelete('cascade');
         });
     }
 
