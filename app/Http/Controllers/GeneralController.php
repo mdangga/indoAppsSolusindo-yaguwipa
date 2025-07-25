@@ -34,12 +34,9 @@ class GeneralController extends Controller
         return view('profiles');
     }
 
-    public function testing($id)
+    public function testing()
     {
-
-        $program=Program::with('institusiTerlibat')->find($id);
-
-        return view('halprogram', compact('program'));
+        return view('testing');
     }
 
     public function mitra()
@@ -52,5 +49,3 @@ class GeneralController extends Controller
         return view('teams');
     }
 }
-
-

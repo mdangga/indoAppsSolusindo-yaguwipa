@@ -9,7 +9,7 @@
     <!-- Konten Program -->
     <div class="flex flex-col justify-between flex-1 p-6">
         <div>
-            <a href="#"
+            <a href="{{ route('beranda.showProgram', ['id' => $program->id_program]) }}"
                 class="text-xl font-bold text-gray-800 mb-3 line-clamp-2 hover:text-blue-600 transition-colors"
                 title="{{ $program->nama }}">
                 {{ $program->nama }}

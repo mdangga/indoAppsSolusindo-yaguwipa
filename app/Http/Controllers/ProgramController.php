@@ -26,20 +26,27 @@ class ProgramController extends Controller
         }])->get()->filter(function ($kategori) {
             return $kategori->program->isNotEmpty();
         });
-        
+
         $kategoriProgramIds = KategoriProgram::has('program')->pluck('id_kategori_program');
-        
+
         $beritaTerkait = Berita::whereHas('kategoriNewsEvent', function ($query) use ($kategoriProgramIds) {
             $query->whereIn('id_kategori_program', $kategoriProgramIds);
         })
-        ->where('status', 'show') // jika hanya ingin yang aktif
-        ->latest()
-        ->take(8) // atau sesuaikan jumlah yang ditampilkan
-        ->get();
-        
+            ->where('status', 'show') // jika hanya ingin yang aktif
+            ->latest()
+            ->take(8) // atau sesuaikan jumlah yang ditampilkan
+            ->get();
+
         return view('program', compact('kategoriList', 'beritaTerkait', 'kategoriPrograms'));
     }
-    
+
+    public function showProgam($id)
+    {
+        $program = Program::with('institusiTerlibat')->find($id);
+
+        return view('halprogram', compact('program'));
+    }
+
 
     // fungsi untuk menampilkan halaman program per kategori dengan slug di beranda
     public function showSlug($slug)
@@ -47,7 +54,7 @@ class ProgramController extends Controller
         $kategori = KategoriProgram::where('slug', $slug)->with('program')->firstOrFail();
         return view('programShowAll', compact('kategori'));
     }
-    
+
 
     // fungsi untuk menampilkan halaman program di admin
     public function index()
