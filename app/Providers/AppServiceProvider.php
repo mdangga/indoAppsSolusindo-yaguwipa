@@ -25,32 +25,32 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // $profile = Cache::remember('yayasan_profile', now()->addHours(1), function () {
-        //     // Log::info('profile dari DB');
-        //     return Profiles::first();
-        // });
+        $profile = Cache::remember('yayasan_profile', now()->addHours(1), function () {
+            // Log::info('profile dari DB');
+            return Profiles::first();
+        });
 
-        // $sosialMedia = Cache::remember('yayasan_sosmed', now()->addHours(1), function () {
-        //     return SosialMedia::where('status', 'show')->get();
-        // });
+        $sosialMedia = Cache::remember('yayasan_sosmed', now()->addHours(1), function () {
+            return SosialMedia::where('status', 'show')->get();
+        });
 
-        // View::share('site', [
-        //     'yayasanProfile' => $profile,
-        //     'yayasanSosmed' => $sosialMedia,
-        // ]);
+        View::share('site', [
+            'yayasanProfile' => $profile,
+            'yayasanSosmed' => $sosialMedia,
+        ]);
 
-        // View::composer('*', function ($view) {
-        //     $menus = Cache::remember('yayasan_menus', now()->addHours(1), function () {
-        //         return Menu::with(['children' => function ($q) {
-        //             $q->where('status', 'show')->orderBy('id_menus');
-        //         }])
-        //             ->whereNull('parent_menu')
-        //             ->orderByRaw('id_menus')
-        //             ->where('status', 'show')
-        //             ->get();
-        //     });
+        View::composer('*', function ($view) {
+            $menus = Cache::remember('yayasan_menus', now()->addHours(1), function () {
+                return Menu::with(['children' => function ($q) {
+                    $q->where('status', 'show')->orderBy('id_menus');
+                }])
+                    ->whereNull('parent_menu')
+                    ->orderByRaw('id_menus')
+                    ->where('status', 'show')
+                    ->get();
+            });
 
-        //     $view->with('menus', $menus);
-        // });
+            $view->with('menus', $menus);
+        });
     }
 }
