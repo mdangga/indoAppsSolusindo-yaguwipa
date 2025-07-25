@@ -15,8 +15,19 @@ return new class extends Migration
             $table->id('id_user');
             $table->string('username')->unique();
             $table->string('password');
-            $table->enum('role', ['admin', 'donatur', 'mitra'])->default(null);
+            $table->enum('role', ['admin', 'donatur', 'mitra'])->nullable()->default(null);
             $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create('review', function(Blueprint $table) {
+            $table->id('id_review');
+            $table->integer('bintang')->nullable()->default(null);
+            $table->string('review');
+            $table->unsignedBigInteger('id_user');
+            $table->timestamps();
+
+            $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
         });
     }
 
@@ -26,6 +37,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('users');
+        Schema::dropIfExists('review');
         
     }
 };

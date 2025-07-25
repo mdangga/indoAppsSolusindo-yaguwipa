@@ -11,24 +11,37 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jenis_donasi', function (Blueprint $table) {
-            $table->id('id_jenis_donasi');
+        Schema::create('kanal_donasi', function (Blueprint $table) {
+            $table->id('id_kanal_donasi');
             $table->string('nama')->unique();
-            $table->text('deskripsi')->nullable();
             $table->timestamps();
         });
         
-        Schema::create('riwayat_donasi', function(Blueprint $table){
-            $table->id();
-            $table->unsignedBigInteger('id_donatur');
+        Schema::create('donasi', function(Blueprint $table){
+            $table->id('id_donasi');
+            $table->text('nama');
+            $table->date('tanggal_mulai');
+            $table->date('tanggal_selesai');
+            $table->decimal('total_dana', 15, 2)->nullable();
+            $table->unsignedBigInteger('id_program')->nullable();
+            $table->timestamps();
+            
+            $table->foreign('id_program')->references('id_program')->on('program')->onDelete('cascade');
+        });
+        
+        Schema::create('donasi_donatur', function(Blueprint $table){
+            $table->id('id_donasi_donatur');
             $table->decimal('jumlah_donasi', 15, 2)->nullable();
-            $table->unsignedBigInteger('id_jenis_donasi');
             $table->text('keterangan')->nullable();
             $table->enum('status', ['approved', 'pending', 'rejected'])->default('pending');
             $table->timestamps();
+            $table->unsignedBigInteger('id_donatur')->nullable();
+            $table->unsignedBigInteger('id_kanal_donasi');
+            $table->unsignedBigInteger('id_donasi');
             
             $table->foreign('id_donatur')->references('id_donatur')->on('donatur')->onDelete('cascade');
-            $table->foreign('id_jenis_donasi')->references('id_jenis_donasi')->on('jenis_donasi')->onDelete('restrict');
+            $table->foreign('id_kanal_donasi')->references('id_kanal_donasi')->on('kanal_donasi')->onDelete('restrict');
+            $table->foreign('id_donasi')->references('id_donasi')->on('donasi')->onDelete('cascade');
         });
     }
 

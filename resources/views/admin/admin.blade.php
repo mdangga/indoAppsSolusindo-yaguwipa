@@ -143,6 +143,7 @@
         table.dataTable {
             border-collapse: separate;
             border-spacing: 0;
+            width: 100% !important;
         }
 
         table.dataTable thead th {
@@ -164,18 +165,18 @@
 
         table.dataTable tbody td {
             border-top: none;
-            padding: 1rem 1.5rem;
+            padding: 1rem;
         }
 
         table.dataTable thead th {
-            padding: 0.75rem 1.5rem;
+            padding: 0.75rem 1rem;
         }
-
 
         /* Prevent table overflow issues */
         .table-container {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
+            -ms-overflow-style: -ms-autohiding-scrollbar;
         }
 
         /* Ensure pagination doesn't get cut off */
@@ -230,6 +231,59 @@
                 font-size: 0.875rem;
             }
         }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            main {
+                padding: 1rem;
+                margin-left: 0;
+            }
+
+            .dataTables_wrapper .dataTables_length,
+            .dataTables_wrapper .dataTables_filter {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+
+            .dataTables_wrapper .dataTables_length select,
+            .dataTables_wrapper .dataTables_filter input {
+                width: 100%;
+            }
+
+            #beritaTable thead th,
+            #beritaTable tbody td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.875rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+
+            .action-buttons button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .flex-col.sm\:flex-row {
+                flex-direction: column;
+            }
+
+            .table-container {
+                margin-left: -1rem;
+                margin-right: -1rem;
+                width: calc(100% + 2rem);
+            }
+
+            .dataTables_wrapper .dataTables_info,
+            .dataTables_wrapper .dataTables_paginate {
+                width: 100%;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 
@@ -276,11 +330,11 @@
                     <table id="beritaTable" class="w-full border border-gray-300 ">
                         <thead>
                             <tr class="text-left">
-                                <th>No</th>
+                                <th class="w-10">No</th>
                                 <th>Judul</th>
-                                <th>Thumbnail</th>
-                                <th>Status</th>
-                                <th>Aksi</th>
+                                <th class="w-25">Thumbnail</th>
+                                <th class="w-20">Status</th>
+                                <th class="text-center min-w-[130px]">Aksi</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -372,7 +426,7 @@
                         render: function(data, type, row) {
                             return `
                                 <div class="">
-                                    <h3 class="font-semibold text-gray-900 leading-tight">${data}</h3>
+                                    <h3 class="font-semibold text-gray-900 leading-tight text-sm md:text-base">${data}</h3>
                                 </div>
                             `;
                         }
@@ -384,7 +438,6 @@
                             if (type === 'display') {
                                 let imageUrl = '';
 
-                                // Ambil URL dari <img src="...">
                                 if (typeof data === 'string' && data.includes('<img')) {
                                     const match = data.match(/src=["']([^"']+)["']/);
                                     imageUrl = match ? match[1] : '';
@@ -396,14 +449,14 @@
                                     return `
                                     <div class="flex justify-center">
                                         <img src="${imageUrl}" alt="Thumbnail"
-                                            class="w-32 h-20 object-cover  border border-gray-200 shadow-sm"
+                                            class="w-24 h-16 md:w-32 md:h-20 object-cover border border-gray-200 shadow-sm"
                                             onerror="this.onerror=null; this.src='/img/no-image.png'; this.classList.add('opacity-50');">
                                     </div>
                                 `;
                                 } else {
                                     return `
                                     <div class="flex justify-center">
-                                        <div class="w-32 h-20 bg-gray-100 border border-gray-200 flex items-center justify-center">
+                                        <div class="w-24 h-16 md:w-32 md:h-20 bg-gray-100 border border-gray-200 flex items-center justify-center">
                                             <i class="fas fa-image text-gray-400"></i>
                                         </div>
                                     </div>
@@ -421,7 +474,6 @@
                         data: 'status',
                         name: 'status',
                         render: function(data, type, row) {
-                            // Handle different status formats
                             let isPublished = false;
 
                             if (typeof data === 'string') {
@@ -435,8 +487,8 @@
                             }
 
                             return isPublished ?
-                                '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200"><i class="fas fa-eye w-3 h-3 mr-1.5"></i>Show</span>' :
-                                '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200"><i class="fas fa-eye-slash w-3 h-3 mr-1.5"></i>Hidden</span>';
+                                '<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200"><i class="fas fa-eye w-3 h-3 mr-1"></i>Show</span>' :
+                                '<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200"><i class="fas fa-eye-slash w-3 h-3 mr-1"></i>Hidden</span>';
                         },
                         width: '100px'
                     },
@@ -450,18 +502,20 @@
                             }
 
                             return `
-                            <div class="flex items-center justify-center space-x-2 whitespace-nowrap">
+                            <div class="flex items-center justify-center space-x-2 whitespace-nowrap action-buttons">
                                 <button 
-                                    class="editBtn inline-flex items-center gap-1 px-1 py-1 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold rounded" 
+                                    class="editBtn inline-flex items-center gap-1 px-2 py-1.5 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold rounded" 
                                     data-id="${row.id}" 
                                     title="Edit">
-                                    Edit
+                                    <i class="fas fa-edit w-3 h-3"></i>
+                                    <span class="hidden sm:inline">Edit</span>
                                 </button>
                                 <button 
-                                    class="deleteBtn inline-flex items-center gap-1 px-1 py-1 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded" 
+                                    class="deleteBtn inline-flex items-center gap-1 px-2 py-1.5 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded" 
                                     data-id="${row.id}" 
                                     title="Hapus">
-                                    Hapus
+                                    <i class="fas fa-trash w-3 h-3"></i>
+                                    <span class="hidden sm:inline">Hapus</span>
                                 </button>
                             </div>
                         `;
@@ -470,7 +524,6 @@
                         searchable: false,
                         width: '160px'
                     }
-
                 ],
                 responsive: false,
                 scrollX: true,

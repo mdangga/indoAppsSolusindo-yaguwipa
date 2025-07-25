@@ -179,14 +179,16 @@ Route::middleware(['auth.admin'])->group(function () {
 
 
 // Auth routes
+// personal-data-user
+Route::middleware(['auth.null'])->group(function () {
+Route::get('/register/{id}', [AuthController::class, 'showFormUser'])->name('register.dataUser');
+Route::post('/add-data-user', [AuthController::class, 'addDataUser'])->name('add.dataUser');
+});
+
+
 // register
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register.form');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
-
-
-// personal-data-user
-Route::get('/register/{id}', [AuthController::class, 'showFormUser'])->name('register.dataUser');
-Route::post('/add-data-user', [AuthController::class, 'addDataUser'])->name('add.dataUser');
 
 
 // login

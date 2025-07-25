@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class AuthAdmin
+class AuthDonaturRole
 {
     /**
      * Handle an incoming request.
@@ -16,10 +16,10 @@ class AuthAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->role === 'admin') {
+        if (Auth::check() && Auth::user()->role === 'donatur') {
             return $next($request);
         }
-
+        
         abort(403);
     }
 }

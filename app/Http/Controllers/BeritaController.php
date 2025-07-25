@@ -105,8 +105,10 @@ class BeritaController extends Controller
         return DataTables::of($berita)
             ->addColumn('aksi', function ($row) {
                 return '
-                <button class="editBtn bg-blue-500 text-white px-2 py-1 rounded text-sm" data-id="' . e($row->id_berita) . '">Edit</button>
-                <button class="deleteBtn bg-red-500 text-white px-2 py-1 rounded text-sm ml-2" data-id="' . e($row->id_berita) . '">Hapus</button>
+                <div class="flex items-center">
+                <button class="cursor-pointer editBtn bg-blue-500 text-white px-2 py-1 rounded text-sm" data-id="' . e($row->id_berita) . '">Edit</button>
+                <button class="cursor-pointer deleteBtn bg-red-500 text-white px-2 py-1 rounded text-sm ml-2" data-id="' . e($row->id_berita) . '">Hapus</button>
+                </div>
             ';
             })
             ->editColumn('status', function ($row) {
