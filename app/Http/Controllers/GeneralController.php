@@ -36,7 +36,7 @@ class GeneralController extends Controller
 
     public function testing()
     {
-        return view('admin.admin');
+        return view('testing');
     }
 
     public function mitra()
@@ -49,5 +49,3 @@ class GeneralController extends Controller
         return view('teams');
     }
 }
-
-

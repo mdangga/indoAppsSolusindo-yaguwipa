@@ -41,6 +41,7 @@ Route::get('/mitra', [GeneralController::class, 'mitra'])->name('beranda.mitra')
 // programs
 Route::get('/program/show-all', [ProgramController::class, 'show'])->name('beranda.program');
 Route::get('/program/kategori/{slug}', [ProgramController::class, 'showSlug'])->name('program.kategori');
+Route::get('/program/{id}', [ProgramController::class, 'showProgam'])->name('beranda.showProgram');
 
 // publikasi
 Route::get('/publikasi/show-all/', [PublikasiController::class, 'show'])->name('beranda.publikasi');
