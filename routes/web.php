@@ -182,7 +182,7 @@ Route::middleware(['auth.null'])->group(function () {
     Route::get('/register/{id}', [AuthController::class, 'showFormUser'])->name('register.dataUser');
 });
 
-Route::middleware(['auth', 'auth.user:mitra, donatur'])->group(function () {
+Route::middleware(['auth', 'auth.user:mitra,donatur'])->group(function () {
     Route::get('/user/dashboard', [AuthController::class, 'me'])->name('dashboard');
 });
 
@@ -199,3 +199,10 @@ Route::post('/login', [AuthController::class, 'login']);
 
 // logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// edit profile
+Route::patch('/profile/photo', [ProfileController::class, 'updatePhoto'])->name('profile.update.photo');
+Route::patch('/profile/info', [ProfileController::class, 'updateInfo'])->name('profile.update.info');
+Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.update.password');
+Route::patch('/profile/settings', [ProfileController::class, 'updateSettings'])->name('profile.update.settings');
+Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.delete');

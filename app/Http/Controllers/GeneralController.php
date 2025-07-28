@@ -9,6 +9,7 @@ use App\Models\KategoriProgram;
 use Illuminate\Http\Request;
 use App\Models\Menu;
 use App\Models\Profiles;
+use Illuminate\Support\Facades\Auth;
 
 class GeneralController extends Controller
 {
@@ -36,7 +37,7 @@ class GeneralController extends Controller
 
     public function testing()
     {
-        return view('testing');
+        return view('edit-profile', ['user' => Auth::user()]);
     }
 
     public function mitra()

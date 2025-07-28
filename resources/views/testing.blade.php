@@ -275,7 +275,7 @@
                         </div>
                     </div>
 
-                    <!-- Individual Review -->
+                    {{-- <!-- Individual Review -->
                     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mt-8">
                         <div class="flex items-start space-x-4">
                             <!-- Avatar -->
@@ -328,8 +328,10 @@
                                         </div>
                                     </div>
                                 </div>
+                                
 
                                 <!-- Review Text -->
+
                                 <p class="text-gray-700 text-sm leading-relaxed">
                                     Pelayanan sangat memuaskan! Produk sampai dengan cepat dan kualitas sesuai
                                     ekspektasi.
@@ -337,7 +339,77 @@
                                 </p>
                             </div>
                         </div>
+                    </div> --}}
+                            <div class="min-h-screen bg-gray-50">
+        <!-- Header -->
+        <!-- ... header content unchanged ... -->
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Mobile Quick Actions -->
+            <!-- ... unchanged ... -->
+
+            <!-- Main Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Recent Orders -->
+                <div class="lg:col-span-2">
+                    <!-- ... recent orders unchanged ... -->
+
+                    <!-- Individual Review -->
+                    <!-- ... Andi Susanto review unchanged ... -->
+
+                    <!-- Write a Review -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mt-8">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Tulis Ulasan</h3>
+                        <form action="" method="POST">
+                            @csrf
+                            <div class="mb-4">
+                                <label for="rating" class="block text-sm font-medium text-gray-700 mb-1">Rating</label>
+                                <div class="flex space-x-1 text-yellow-400">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <label class="cursor-pointer text-2xl">
+                                            <input type="radio" name="rating" value="{{ $i }}" class="hidden" required>
+                                            ★
+                                        </label>
+                                    @endfor
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="review" class="block text-sm font-medium text-gray-700 mb-1">Ulasan</label>
+                                <textarea id="review" name="review" rows="4"
+                                    class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 p-3"
+                                    placeholder="Tulis ulasanmu di sini..." required></textarea>
+                            </div>
+                            <button type="submit"
+                                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg transition">
+                                Kirim Ulasan
+                            </button>
+                        </form>
                     </div>
+                </div>
+
+                <!-- Sidebar -->
+                <!-- ... unchanged ... -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.getElementById('current-time').textContent = timeString;
+        }
+
+        updateTime();
+        setInterval(updateTime, 1000);
+    </script>
+</body>
+
+</html>
+
                 </div>
 
                 <!-- Desktop Sidebar - Profile & Quick Actions -->
