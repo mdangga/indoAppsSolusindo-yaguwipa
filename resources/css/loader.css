@@ -1,11 +1,3 @@
-/* .loader-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #ffffff;
-} */
-
 .loader-container {
     position: fixed;
     inset: 0;
@@ -42,12 +34,6 @@
     border: 3px solid transparent;
     border-bottom-color: #ffb900;
 }
-
-/* .loader-hidden {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-} */
 
 .loader-hidden {
     opacity: 0;

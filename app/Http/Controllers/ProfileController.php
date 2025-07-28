@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Laravel\Facades\Image;
-
+use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
@@ -75,21 +75,25 @@ class ProfileController extends Controller
                     Storage::disk('public')->delete($profile->$file);
                 }
 
-                if ($file === 'popup') {
-                    $image = $request->file($file);
-                    $filename = 'img/' . uniqid('popup_') . '.webp';
+                $uploadedFile = $request->file($file);
+                $originalName = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeName = Str::slug($originalName);
+                $extension = 'webp';
+                $filename = "img/{$file}_{$safeName}_" . uniqid() . ".{$extension}";
 
-                    $webp = Image::read($image)->toWebp(80);
+                if (in_array($file, ['popup', 'background'])) {
+                    $webp = Image::read($uploadedFile)->toWebp(80);
                     Storage::disk('public')->put($filename, $webp);
-
-                    $data[$file] = $filename;
                 } else {
-                    $data[$file] = $request->file($file)->store('img', 'public');
+                    $filename = $uploadedFile->storeAs('img', "{$file}_{$safeName}_" . uniqid() . '.' . $uploadedFile->getClientOriginalExtension(), 'public');
                 }
+
+                $data[$file] = $filename;
             } else {
                 $data[$file] = $profile->$file;
             }
         }
+
 
 
         $profile->update($data);
