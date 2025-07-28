@@ -195,6 +195,25 @@
                 </div>
             </div>
         </div>
+        @error('username')
+        <div id="login-alert"
+            class="fixed top-6 right-0 z-50 px-4 py-3 bg-red-100 border border-red-400 text-red-800 rounded-lg shadow-lg transform translate-x-full opacity-0 transition duration-500 ease-out">
+            <div class="flex items-start justify-between space-x-4">
+                <div class="flex items-center space-x-2">
+                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 9v2m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" />
+                    </svg>
+                    <span class="text-sm font-medium">{{ $message }}</span>
+                </div>
+                <button onclick="closeLoginAlert()" class="text-red-500 hover:text-red-700 focus:outline-none">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    @enderror
     </div>
 
     <script>
