@@ -37,7 +37,7 @@ class GeneralController extends Controller
 
     public function testing()
     {
-        return view('edit-profile', ['user' => Auth::user()]);
+        return view('user.edit-profile', ['user' => Auth::user()]);
     }
 
     public function mitra()

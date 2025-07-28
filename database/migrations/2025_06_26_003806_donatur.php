@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('alamat')->nullable();
             $table->enum('status', ['show', 'hide']);
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
         });

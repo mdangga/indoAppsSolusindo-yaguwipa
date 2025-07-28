@@ -3,11 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Mitra extends Model
 {
-     protected $table = 'mitra';
-    protected $primaryKey = 'id_donatur';
+    use SoftDeletes;
+    
+    protected $table = 'mitra';
+    protected $primaryKey = 'id_mitra';
 
     protected $fillable = [
         'id_user',
