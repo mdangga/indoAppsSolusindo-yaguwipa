@@ -1,36 +1,26 @@
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
 <style>
     select.goog-te-combo {
         background-color: transparent !important;
         background-image: none !important;
     }
 
-
     /* Styling kotak dropdown sebelum dibuka */
     .goog-te-gadget .goog-te-combo {
         background-color: transparent !important;
-        /* atau rgba(255,255,255,0) juga bisa */
         color: #1F2937 !important;
         font-weight: 600 !important;
         border: none !important;
-        /* border-radius: 100px !important; */
         padding-block: 1px !important;
         font-size: 0.875rem !important;
         font-family: "Instrument Sans", sans-serif !important;
         appearance: none !important;
-        /* background-image: url("data:image/svg+xml,%3Csvg fill='rgb(47, 47, 47)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 0.3rem center;
-        background-size: 1.2rem; */
         cursor: pointer;
         display: block !important;
         margin: 4px -25px 4px 0 !important;
         top: 6px !important;
         position: relative !important;
-        /* right: -70px !important; */
         max-width: 170px !important;
-        /* backdrop-filter: blur(5px) !important; */
     }
 
     /* Saat dropdown difokuskan */
@@ -41,7 +31,6 @@
         background: transparent !important;
         --tw-ring-color: transparent !important;
     }
-
 
     /* Untuk iOS/Android */
     .goog-te-combo option {
@@ -84,8 +73,6 @@
         vertical-align: middle !important;
         white-space: nowrap !important;
         position: relative !important;
-        /* right: -80px !important;
-        top: 3px !important; */
     }
 
     /* Semua link dalam google translate */
@@ -139,7 +126,6 @@
         display: flex !important;
         align-items: center !important;
         gap: 3px !important;
-        /* margin-top: 4px !important; */
         margin-inline-start: 10px !important;
     }
 
@@ -174,7 +160,6 @@
         clear: both !important;
     }
 
-
     [x-cloak] {
         display: none !important;
     }
@@ -184,31 +169,37 @@
     function googleTranslateElementInit() {
         new google.translate.TranslateElement({
             pageLanguage: 'id',
-            // includedLanguages: 'en,id,es,fr,de,ja,ko,zh',
             layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL
         }, 'google_translate_element');
     };
 </script>
 
-
 <header x-data="{ sidebarOpen: false }" class="absolute w-full z-50">
     <!-- Logo dan Login Button -->
-
     <div class="w-full bg-transparent p-6 lg:px-8">
-        <div class="grid grid-cols-2 lg:grid-cols-3 items-center gap-4">
-            <div class="flex justify-start">
+        <div class="flex justify-between items-center gap-4">
+            <!-- Hamburger menu (Mobile - Left) -->
+            <div class="flex lg:hidden justify-start">
+                <button @click="sidebarOpen = true" type="button"
+                    class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 bg-white/30 backdrop-blur-sm cursor-pointer">
+                    <span class="sr-only">Open menu</span>
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                        <path clip-rule="evenodd" fill-rule="evenodd"
+                            d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 5.25a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10zm0 5.25a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 15.25z" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Logo (Centered on mobile) -->
+            <div class="flex justify-center lg:justify-start">
                 <a href="{{ route('beranda') }}" class="-m-1.5 p-1.5">
                     <img class="h-[50px] sm:h-[75px] w-auto"
                         src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" alt="Company Logo" />
                 </a>
             </div>
 
-            <div class="hidden lg:block"></div>
-
-            <div class="hidden justify-end items-center lg:flex">
-
-                {{-- <div id="google_translate_element" class="mr-5"></div> --}}
-
+            <!-- Login Button (Right on mobile) -->
+            <div class="flex justify-end items-center">
                 @auth
                     @php
                         $colorMap = [
@@ -235,23 +226,10 @@
                     </div>
                 @else
                     <a href="{{ route('login') }}"
-                        class="bg-amber-100 text-sm font-semibold text-gray-900 rounded-[50px] px-6 py-3.5 hover:bg-amber-200 transition">
+                        class="inline-block bg-amber-100 text-sm font-semibold text-gray-900 rounded-[50px] px-4 py-2.5 lg:px-6 lg:py-3.5 hover:bg-amber-200 transition">
                         Log in
                     </a>
                 @endauth
-
-            </div>
-
-            <!-- Tombol menu (Mobile) -->
-            <div class="flex lg:hidden justify-end">
-                <button @click="sidebarOpen = true" type="button"
-                    class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 bg-white/30 backdrop-blur-sm cursor-pointer">
-                    <span class="sr-only">Open menu</span>
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                        <path clip-rule="evenodd" fill-rule="evenodd"
-                            d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 5.25a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10zm0 5.25a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 15.25z" />
-                    </svg>
-                </button>
             </div>
         </div>
     </div>
@@ -268,8 +246,7 @@
                     @if ($menu->children->count())
                         <div class="inline-flex items-center relative group cursor-default">
                             <p
-                                class="relative text-sm font-semibold text-gray-800 drop-shadow-md group transition-transform duration-200 flex items-center gap-1 whitespace-nowrap overflow-hidden text-ellipsis
-">
+                                class="relative text-sm font-semibold text-gray-800 drop-shadow-md group transition-transform duration-200 flex items-center gap-1 whitespace-nowrap overflow-hidden text-ellipsis">
                                 {{ $menu->title }}
                                 <svg class="w-3 h-3 text-gray-600 group-hover:rotate-180 transition-transform duration-300"
                                     fill="currentColor" viewBox="0 0 20 20">
@@ -279,23 +256,23 @@
                                 </svg>
                                 <span
                                     class="absolute bottom-0 right-0 h-[2px] bg-amber-200 transition-all duration-300 
-        {{ $isActive ? 'w-full left-0' : 'w-0 group-hover:w-full group-hover:right-auto left-0' }}">
+                                    {{ $isActive ? 'w-full left-0' : 'w-0 group-hover:w-full group-hover:right-auto left-0' }}">
                                 </span>
                             </p>
 
                             <div
                                 class="absolute top-full mt-2 left-0 bg-white shadow-lg rounded-lg opacity-0 
-                        group-hover:opacity-100 group-hover:visible invisible 
-                        transition duration-200 min-w-[160px]">
+                                group-hover:opacity-100 group-hover:visible invisible 
+                                transition duration-200 min-w-[160px]">
                                 @foreach ($menu->children as $sub)
                                     @php
                                         $subActive = rtrim(request()->url(), '/') === rtrim($sub->url, '/');
                                     @endphp
                                     <a href="{{ $sub->url }}"
                                         class="block px-4 py-2 text-sm font-medium rounded-lg transition duration-200
-                        {{ $subActive
-                            ? 'bg-amber-100 text-gray-800 hover:bg-gray-700 hover:text-white'
-                            : 'text-gray-700 hover:bg-amber-100' }}">
+                                        {{ $subActive
+                                            ? 'bg-amber-100 text-gray-800 hover:bg-gray-700 hover:text-white'
+                                            : 'text-gray-700 hover:bg-amber-100' }}">
                                         {{ $sub->title }}
                                     </a>
                                 @endforeach
@@ -303,12 +280,11 @@
                         </div>
                     @else
                         <a href="{{ $menu->url }}"
-                            class="relative text-sm font-semibold text-gray-800 drop-shadow-md group transition-transform duration-200 whitespace-nowrap overflow-hidden text-ellipsis
-">
+                            class="relative text-sm font-semibold text-gray-800 drop-shadow-md group transition-transform duration-200 whitespace-nowrap overflow-hidden text-ellipsis">
                             {{ $menu->title }}
                             <span
                                 class="absolute bottom-0 right-0 h-[2px] bg-amber-200 transition-all duration-300 
-                    {{ $isActive ? 'w-full left-0' : 'w-0 group-hover:w-full group-hover:right-auto left-0' }}">
+                                {{ $isActive ? 'w-full left-0' : 'w-0 group-hover:w-full group-hover:right-auto left-0' }}">
                             </span>
                         </a>
                     @endif
@@ -380,14 +356,6 @@
                         </a>
                     @endif
                 @endforeach
-            </div>
-
-            <!-- Login Button -->
-            <div class="mt-6">
-                <a href="{{ route('login') }}"
-                    class="block w-full text-center bg-amber-100 py-2.5 rounded-full font-semibold text-gray-900 hover:bg-blue-100 md:px-7">
-                    Log in
-                </a>
             </div>
         </div>
     </div>
