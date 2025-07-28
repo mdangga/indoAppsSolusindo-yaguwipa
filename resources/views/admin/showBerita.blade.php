@@ -327,7 +327,7 @@
                             if (type === 'display') {
                                 let imageUrl = '';
 
-                                // Ambil URL dari <img src="...">
+                                // Ambil URL dari <img src="..."> atau langsung dari string
                                 if (typeof data === 'string' && data.includes('<img')) {
                                     const match = data.match(/src=["']([^"']+)["']/);
                                     imageUrl = match ? match[1] : '';
@@ -335,25 +335,17 @@
                                     imageUrl = data;
                                 }
 
-                                if (imageUrl) {
+                                // Jika ada URL gambar valid
+                                if (imageUrl && imageUrl.trim() !== '') {
                                     return `
-                                    <div class="flex justify-center">
-                                        <img src="${imageUrl}" alt="Thumbnail"
-                                            class="w-32 h-20 object-cover  border border-gray-200 shadow-sm"
-                                            onerror="this.onerror=null; this.src='/img/no-image.png'; this.classList.add('opacity-50');">
-                                    </div>
-                                `;
-                                } else {
-                                    return `
-                                    <div class="flex justify-center">
-                                        <div class="w-32 h-20 bg-gray-100 border border-gray-200 flex items-center justify-center">
-                                            <i class="fas fa-image text-gray-400"></i>
-                                        </div>
-                                    </div>
-                                `;
+                                                <div class="flex justify-center">
+                                                    <img src="${imageUrl}" alt="Thumbnail"
+                                                        class="w-32 h-20 object-cover border border-gray-200 shadow-sm rounded"
+                                                        onerror="this.parentElement.innerHTML = \`<div class='w-32 h-20 bg-gray-100 text-gray-500 text-sm flex items-center justify-center border border-gray-300 rounded text-[12px]'>Tidak ada gambar</div>\`;">
+                                                </div>
+                                            `;
                                 }
                             }
-
                             return data;
                         },
                         orderable: false,
