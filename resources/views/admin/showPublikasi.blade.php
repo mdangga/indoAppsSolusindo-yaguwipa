@@ -211,12 +211,6 @@
     <x-admin.sidebar />
 
     <main class="p-6 md:ml-64 pt-20">
-        <!-- Header -->
-        {{-- <div class="mb-2">
-            <h1 class="text-3xl font-bold text-gray-900">Berita dan Kegiatan</h1>
-            <p class="text-gray-600 mt-2">Kelola konten berita dan kegiatan website</p>
-        </div> --}}
-
         <!-- Success Alert -->
         @if (session('success'))
             <div
@@ -250,7 +244,6 @@
                             <tr class="text-left">
                                 <th>No</th>
                                 <th>Judul</th>
-                                <th>File</th>
                                 <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
@@ -321,46 +314,6 @@
                         }
                     },
                     {
-                        data: 'File',
-                        name: 'File',
-                        render: function(data, type, row) {
-                            if (type === 'display') {
-                                let imageUrl = '';
-
-                                // Ambil URL dari <img src="...">
-                                if (typeof data === 'string' && data.includes('<img')) {
-                                    const match = data.match(/src=["']([^"']+)["']/);
-                                    imageUrl = match ? match[1] : '';
-                                } else {
-                                    imageUrl = data;
-                                }
-
-                                if (imageUrl) {
-                                    return `
-                                    <div class="flex justify-center">
-                                        <img src="${imageUrl}" alt="File"
-                                            class="w-32 h-20 object-cover  border border-gray-200 shadow-sm"
-                                            onerror="this.onerror=null; this.src='/img/no-image.png'; this.classList.add('opacity-50');">
-                                    </div>
-                                `;
-                                } else {
-                                    return `
-                                    <div class="flex justify-center">
-                                        <div class="w-32 h-20 bg-gray-100 border border-gray-200 flex items-center justify-center">
-                                            <i class="fas fa-image text-gray-400"></i>
-                                        </div>
-                                    </div>
-                                `;
-                                }
-                            }
-
-                            return data;
-                        },
-                        orderable: false,
-                        searchable: false,
-                        width: '150px'
-                    },
-                    {
                         data: 'status',
                         name: 'status',
                         render: function(data, type, row) {
@@ -396,7 +349,6 @@
                         searchable: false,
                         width: '160px'
                     }
-
                 ],
                 responsive: false,
                 scrollX: true,

@@ -43,7 +43,8 @@
 
             @php $isEdit = isset($berita); @endphp
 
-            <form id="formBerita" action="{{ $isEdit ? route('berita.update', $berita->id_berita) : route('berita.store') }}"
+            <form id="formBerita"
+                action="{{ $isEdit ? route('berita.update', $berita->id_berita) : route('berita.store') }}"
                 method="POST" enctype="multipart/form-data">
                 @csrf
                 @if ($isEdit)
@@ -151,8 +152,15 @@
                     @enderror
                 </div>
 
-                @if (!empty($berita) && !empty($berita->thumbnail))
-                    {{-- Mode Edit: Tampilkan gambar --}}
+                @php
+                    // Cek apakah thumbnail ada dan file-nya benar-benar tersedia
+                    $thumbnailPath = $berita->thumbnail ?? null;
+                    $thumbnailFullPath = $thumbnailPath ? storage_path('app/public/' . $thumbnailPath) : null;
+                    $thumbnailExists = $thumbnailFullPath && file_exists($thumbnailFullPath);
+                @endphp
+
+                @if (!empty($berita))
+                    {{-- Mode Edit: Tampilkan form + thumbnail jika ada --}}
                     <div class="grid grid-cols-3 gap-4 mt-4">
                         {{-- Kolom 1 dan 2: Upload + Caption --}}
                         <div class="col-span-2 grid grid-rows-2 gap-4">
@@ -178,16 +186,23 @@
                             </div>
                         </div>
 
-                        {{-- Kolom 3: Gambar --}}
+                        {{-- Kolom 3: Gambar atau Placeholder --}}
                         <div class="row-span-2 flex justify-center items-center h-full">
                             <div class="h-full flex items-center">
-                                <img src="{{ asset('storage/' . $berita->thumbnail) }}" alt="Thumbnail lama"
-                                    class="max-h-32 rounded shadow" />
+                                @if ($thumbnailExists)
+                                    <img src="{{ asset('storage/' . $berita->thumbnail) }}" alt="Thumbnail lama"
+                                        class="max-h-32 rounded shadow" />
+                                @else
+                                    <div
+                                        class="w-64 h-32 bg-gray-100 text-gray-500 text-sm flex items-center justify-center border rounded">
+                                        Tidak ada gambar
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
                 @else
-                    {{-- Mode Tambah: Upload + Caption berdampingan --}}
+                    {{-- Mode Tambah: Upload + Caption --}}
                     <div class="grid grid-cols-2 gap-4 mt-4">
                         {{-- Upload Gambar --}}
                         <div>

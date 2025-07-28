@@ -261,7 +261,7 @@
             <div class=" py-4 border-gray-200 bg-gray-50">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     @php
-                        $kategori = 'photo'
+                        $kategori = 'photo';
                     @endphp
                     <a href="{{ route('gallery.formStore', $kategori) }}"
                         class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
@@ -356,24 +356,14 @@
                             if (type === 'display') {
                                 if (data && typeof data === 'string') {
                                     return `
-                    <div class="flex justify-center">
-                        <img src="${data}" alt="Thumbnail"
-                             class="w-32 h-20 object-cover border border-gray-200 shadow-sm rounded"
-                             onerror="this.src='/img/no-image.png'; this.classList.add('opacity-50');" />
-                    </div>
-                `;
+                                        <div class="flex justify-center">
+                                            <img loading="lazy" src="${data}" alt="Thumbnail"
+                                                class="w-32 h-20 object-cover border border-gray-200 shadow-sm rounded"
+                                                onerror="this.parentElement.innerHTML = \`<div class='w-32 h-20 bg-gray-100 text-gray-500 text-sm flex items-center justify-center border border-gray-300 rounded text-[12px]'>Tidak ada gambar</div>\`;">
+                                        </div>
+                                    `;
                                 }
-
-                                return `
-                <div class="flex justify-center">
-                    <div class="w-32 h-20 bg-gray-100 border border-gray-200 flex items-center justify-center rounded">
-                        <i class="fas fa-image text-gray-400"></i>
-                        <span class="text-xs text-gray-500 ml-1">No Media</span>
-                    </div>
-                </div>
-            `;
                             }
-
                             return data;
                         },
                         orderable: false,
