@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Donatur extends Model
 {
+    use SoftDeletes;
+    
     protected $table = 'donatur';
     protected $primaryKey = 'id_donatur';
 

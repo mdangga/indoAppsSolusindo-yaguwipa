@@ -80,83 +80,6 @@ class AuthController extends Controller
         ])->withInput();
     }
 
-
-
-    // data user
-    public function showFormUser(Request $request, $id)
-    {
-        if (Auth::id() != $id) {
-            abort(403, 'Unauthorized access.');
-        }
-
-        $user = User::findOrFail($id);
-        return view('formMitraDonatur', compact('user'));
-    }
-
-    public function addDataUser(Request $request)
-    {
-        // dd($request->all());
-        $validator = Validator::make($request->all(), [
-            // Common
-            'id_user' => 'required|numeric|exists:users,id_user',
-            'nama' => 'required|string|max:255',
-            'email' => 'nullable|email|unique:donatur,email|unique:mitra,email',
-            'no_tlp' => 'required|string|max:20',
-            'alamat' => 'nullable|string',
-            'profile_path' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'role' => 'required|string|in:mitra,donatur',
-
-            // Mitra only
-            'website' => 'nullable|url',
-            'penanggung_jawab' => 'required_if:role,mitra|nullable|string|max:255',
-            'jabatan_penanggung_jawab' => 'required_if:role,mitra|nullable|string|max:255',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        $user = User::find($request->id_user);
-        $user->update([
-            'role' => $request->role,
-        ]);
-
-        // Simpan file profil jika ada
-        $profilePath = null;
-        if ($request->hasFile('profile_path')) {
-            $profilePath = $request->file('profile_path')->store('profile_user', 'public');
-        }
-
-        // Simpan data tambahan sesuai role
-        if ($request->role === 'mitra') {
-            Mitra::create([
-                'id_user' => $request->id_user,
-                'nama' => $request->nama,
-                'alamat' => $request->alamat,
-                'no_tlp' => $request->no_tlp,
-                'email' => $request->email,
-                'website' => $request->website,
-                'profile_path' => $profilePath,
-                'penanggung_jawab' => $request->penanggung_jawab,
-                'jabatan_penanggung_jawab' => $request->jabatan_penanggung_jawab,
-            ]);
-        } elseif ($request->role === 'donatur') {
-            Donatur::create([
-                'id_user' => $request->id_user,
-                'nama' => $request->nama,
-                'no_tlp' => $request->no_tlp,
-                'email' => $request->email,
-                'profile_path' => $profilePath,
-                'alamat' => $request->alamat,
-            ]);
-        }
-
-        $user->refresh();
-        Auth::login($user);
-        return redirect()->route('dashboard')->with('success', 'Registrasi berhasil');
-    }
-
-
     // Logout
     public function logout(Request $request)
     {
@@ -166,10 +89,5 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/login')->with('success', 'Logout berhasil.');
-    }
-
-    public function me()
-    {
-        return view('testing', ['user' => Auth::user()]);
     }
 }

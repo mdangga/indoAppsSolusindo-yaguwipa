@@ -12,13 +12,14 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\PublikasiController;
 use App\Http\Controllers\SosiaMediaController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // testing-area
-Route::get('/testing', [GeneralController::class, 'testing'])->name('testing');
+// Route::get('/testing', [GeneralController::class, 'testing'])->name('testing');
 
 
-// route-default
+// route-default beranda
 Route::get('/', [GeneralController::class, 'beranda'])->name('beranda');
 
 // profiles
@@ -47,7 +48,8 @@ Route::get('/program/{id}', [ProgramController::class, 'showProgam'])->name('ber
 Route::get('/publikasi/show-all/', [PublikasiController::class, 'show'])->name('beranda.publikasi');
 Route::get('/show-pdf/{filePath}', [PublikasiController::class, 'showPdf'])->where('filePath', '.*')->name('publikasi.pdf');
 
-// middleware authtentication
+
+// admin
 Route::middleware(['auth.admin'])->group(function () {
     // general-setting
     Route::get('/admin/general-setting', [ProfileController::class, 'index'])->name('admin.profiles');
@@ -175,15 +177,26 @@ Route::middleware(['auth.admin'])->group(function () {
 
 
 // Auth routes
-// personal-data-user
-Route::post('/add-data-user', [AuthController::class, 'addDataUser'])->name('add.dataUser');
-
+// tanpa role
 Route::middleware(['auth.null'])->group(function () {
-    Route::get('/register/{id}', [AuthController::class, 'showFormUser'])->name('register.dataUser');
+    Route::get('/register/{id}', [UserController::class, 'showFormUser'])->name('register.dataUser');
+    Route::post('/add-data-user', [UserController::class, 'addDataUser'])->name('add.dataUser');
 });
 
+
+// mitra-dan-donatur 
 Route::middleware(['auth', 'auth.user:mitra,donatur'])->group(function () {
-    Route::get('/user/dashboard', [AuthController::class, 'me'])->name('dashboard');
+    // Dashboard
+    Route::get('/user/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+
+
+    // edit profile
+    Route::get('/user/edit-profile', [UserController::class, 'showEditProfile'])->name('user.edit-profile');
+    Route::put('/user/edit-profile/photo', [UserController::class, 'updatePhoto'])->name('edit-profile.photo');
+    Route::put('/user/edit-profile/info', [UserController::class, 'updateInfo'])->name('edit-profile.info');
+    Route::put('/user/edit-profile/password', [UserController::class, 'updatePassword'])->name('edit-profile.password');
+    Route::put('/user/edit-profile/settings', [UserController::class, 'updateSettings'])->name('edit-profile.settings');
+    Route::delete('/user/profile/destroy', [UserController::class, 'destroy'])->name('profile.delete');
 });
 
 
@@ -197,12 +210,13 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
 
+// pulihkan-akun
+Route::get('/restore-account', function () {
+    return view('restore');
+})->name('restore');
+Route::post('/profile/restore', [UserController::class, 'restore'])->name('profile.restore');
+
+
 // logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// edit profile
-Route::patch('/profile/photo', [ProfileController::class, 'updatePhoto'])->name('profile.update.photo');
-Route::patch('/profile/info', [ProfileController::class, 'updateInfo'])->name('profile.update.info');
-Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.update.password');
-Route::patch('/profile/settings', [ProfileController::class, 'updateSettings'])->name('profile.update.settings');
-Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.delete');
