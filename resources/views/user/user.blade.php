@@ -68,13 +68,13 @@
                         <div id="dropdownAvatar"
                             class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm max-w-60 min-w-44 ">
                             <div class="px-4 py-3 text-sm text-gray-900 ">
-                                <div class="font-bold mb-1">{{ $displayUser->nama ?? '-' }}
+                                <div class="font-bold mb-1">{{ '@' . auth()->user()->username ?? '-' }}
                                 </div>
-                                <div class="text-gray-500">{{ $displayUser->no_tlp ?? '-' }}
+                                <div class="text-gray-500">{{ $displayUser->nama ?? '-' }}
                                 </div>
 
                             </div>
-                            <ul class="py-2 text-sm text-gray-700 " aria-labelledby="dropdownUserAvatarButton">
+                            <ul class="pt-2 text-sm text-gray-700 " aria-labelledby="dropdownUserAvatarButton">
                                 <li>
                                     <a href="{{ route('user.edit-profile') }}"
                                         class="block px-4 py-2 hover:bg-gray-100">Edit Profile</a>
