@@ -51,7 +51,16 @@
                             <p class="text-gray-600">Kelola informasi akun Anda</p>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-4">
+                    <div class="flex items-center gap-3">
+                        <div>
+                            <p class="text-sm font-medium text-gray-900 leading-tight">
+                                {{ $displayUser->nama ?? $user->username }}
+                            </p>
+                            <p class="text-xs text-gray-500">
+                                {{ ucfirst($user->role) }}
+                            </p>
+                        </div>
+
                         @if ($profilePath)
                             <img src="{{ asset('storage/' . $profilePath) }}" alt="Profile"
                                 class="w-10 h-10 rounded-full object-cover border-2 border-gray-300" />
@@ -61,8 +70,6 @@
                                 {{ strtoupper(substr($user->username ?? ($displayUser->nama ?? 'U'), 0, 1)) }}
                             </div>
                         @endif
-                        <span
-                            class="text-sm font-medium text-gray-900">{{ $displayUser->nama ?? $user->username }}</span>
                     </div>
                 </div>
             </div>
