@@ -185,17 +185,17 @@
                             <!-- Sign up link -->
                             <div class="mt-8 text-center">
                                 <p class="text-sm text-gray-600">
-                                    Belum Memiliki Akun atau Akun Terhapus?
+                                    Belum Memiliki Akun atau Akun Kamu Terhapus?
                                 </p>
                                 <div class="mt-2 space-x-4">
                                     <a href="{{ route('register') }}"
-                                        class="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">
+                                        class="font-semibold text-gray-400 hover:text-indigo-500 transition-colors">
                                         Daftar
                                     </a>
                                     <span class="text-gray-400">|</span>
                                     <a href="{{ route('restore') }}"
-                                        class="font-semibold text-orange-600 hover:text-orange-500 transition-colors">
-                                        Pulihkan Akun
+                                        class="font-semibold text-gray-400 hover:text-orange-500 transition-colors">
+                                        Pulihkan
                                     </a>
                                 </div>
                             </div>

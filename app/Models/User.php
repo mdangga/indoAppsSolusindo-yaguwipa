@@ -15,6 +15,7 @@ class User extends Authenticatable
 
     protected $table = 'users';
     protected $primaryKey = 'id_user';
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that are mass assignable.

@@ -16,7 +16,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // testing-area
-// Route::get('/testing', [GeneralController::class, 'testing'])->name('testing');
+Route::get('/testing', [GeneralController::class, 'testing'])->name('testing');
 
 
 // route-default beranda
@@ -196,7 +196,8 @@ Route::middleware(['auth', 'auth.user:mitra,donatur'])->group(function () {
     Route::put('/user/edit-profile/info', [UserController::class, 'updateInfo'])->name('edit-profile.info');
     Route::put('/user/edit-profile/password', [UserController::class, 'updatePassword'])->name('edit-profile.password');
     Route::put('/user/edit-profile/settings', [UserController::class, 'updateSettings'])->name('edit-profile.settings');
-    Route::delete('/user/profile/destroy', [UserController::class, 'destroy'])->name('profile.delete');
+    Route::delete('/user/profile/deactivate-account', [UserController::class, 'deactivate'])->name('profile.deactivate');
+    Route::delete('/user/profile/delete-account', [UserController::class, 'forceDelete'])->name('profile.delete');
 });
 
 

@@ -35,7 +35,8 @@ class UserController extends Controller
 
 
     // menampilkan edit profile user
-    public function showEditProfile(){
+    public function showEditProfile()
+    {
         return view('user.edit-profile', ['user' => Auth::user()]);
     }
 
@@ -161,7 +162,7 @@ class UserController extends Controller
     public function updatePhoto(Request $request)
     {
         $request->validate([
-            'profile_path' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'profile_path' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
 
         $user = Auth::user();
@@ -208,7 +209,7 @@ class UserController extends Controller
 
 
     // fungsi untuk menonaktifkan akun 
-    public function destroy(Request $request)
+    public function deactivate(Request $request)
     {
         $user = Auth::user();
 
@@ -245,6 +246,44 @@ class UserController extends Controller
         }
     }
 
+    public function forceDelete(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string|max:255',
+            'password' => 'required|current_password', // Verifikasi password saat ini
+        ]);
+
+        $user = Auth::user();
+
+        // Verifikasi username sesuai
+        if ($user->username !== $request->username) {
+            return back()->withErrors(['username' => 'Username tidak sesuai']);
+        }
+
+        DB::beginTransaction();
+        try {
+            // Force delete relasi terlebih dahulu
+            if ($user->role === 'mitra' && $user->UserToMitra) {
+                $user->UserToMitra->forceDelete();
+            } elseif ($user->role === 'donatur' && $user->UserToDonatur) {
+                $user->UserToDonatur->forceDelete();
+            }
+
+            // Force delete user
+            $user->forceDelete();
+
+            DB::commit();
+
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect('/')->with('warning', 'Akun telah dihapus permanen');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['force_delete' => 'Gagal menghapus permanen: ' . $e->getMessage()]);
+        }
+    }
 
     // fungsi untuk mengaktifkan akun
     public function restore(Request $request)

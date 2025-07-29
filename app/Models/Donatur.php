@@ -11,6 +11,7 @@ class Donatur extends Model
     
     protected $table = 'donatur';
     protected $primaryKey = 'id_donatur';
+    protected $dates = ['deleted_at'];
 
     protected $fillable = [
         'id_user',
