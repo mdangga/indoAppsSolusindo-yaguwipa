@@ -60,24 +60,34 @@ class AuthController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+        // Cek apakah user ada (termasuk yang terhapus)
+        $user = User::withTrashed()->where('username', $credentials['username'])->first();
 
-            $user = Auth::user();
-
-            if ($user->role === null) {
-                return redirect()->route('register.dataUser', ['id' => $user->id_user]);
-            } elseif ($user->role === 'admin') {
-                return redirect()->route('admin.berita', ['id' => $user->id_user]);
-            }
-
-            // Untuk role mitra dan donatur
-            return redirect()->route('dashboard');
+        // Jika user ditemukan tapi status nonaktif
+        if ($user && $user->trashed()) {
+            return back()->withErrors([
+                'username' => 'Akun ini dinonaktifkan. Silakan pulihkan akun untuk login.',
+            ])->withInput();
         }
 
-        return back()->withErrors([
-            'username' => 'Username atau password salah.',
-        ])->withInput();
+        // Jika user tidak ditemukan atau password salah
+        if (!Auth::attempt($credentials)) {
+            return back()->withErrors([
+                'username' => 'Username atau password salah.',
+            ])->withInput();
+        }
+
+        $request->session()->regenerate();
+        $user = Auth::user();
+
+        // Redirect berdasarkan role
+        if ($user->role === null) {
+            return redirect()->route('register.dataUser', ['id' => $user->id_user]);
+        } elseif ($user->role === 'admin') {
+            return redirect()->route('admin.berita');
+        }
+
+        return redirect()->route('dashboard');
     }
 
     // Logout

@@ -166,13 +166,13 @@ class="h-48 bg-gradient-to-br from-blue-100 to-blue-200 rounded-t-lg flex items-
                                         </button>
 
                                                               @if ($fileExtension === 'PDF')
-                                    <a href="{{ route('publikasi.pdf', $filePath) }}" target="_blank"
+                                    <a title="Preview File" href="{{ route('publikasi.pdf', $filePath) }}" target="_blank"
                                         class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center">
                                         <i class="fa-regular fa-file"></i>
                                     </a>
                             @endif
 
-                            <a href="{{ asset('storage/' . $item->file) }}" download onclick="downloadFile()"
+                            <a title="Download" href="{{ asset('storage/' . $item->file) }}" download onclick="downloadFile()"
                                 class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center">
                                 <i class="fas fa-download"></i>
                             </a>
@@ -284,13 +284,13 @@ class="h-48 bg-gradient-to-br from-blue-100 to-blue-200 rounded-t-lg flex items-
                                         </button>
 
                                                               @if ($fileExtension === 'PDF')
-                        <a href="{{ route('publikasi.pdf', $filePath) }}" target="_blank"
+                        <a title="Preview File" href="{{ route('publikasi.pdf', $filePath) }}" target="_blank"
                             class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center">
                             <i class="fa-regular fa-file"></i>
                         </a>
                 @endif
 
-                <a href="{{ asset('storage/' . $item->file) }}" download onclick="downloadFile()"
+                <a title="Download" href="{{ asset('storage/' . $item->file) }}" download onclick="downloadFile()"
                     class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center">
                     <i class="fas fa-download"></i>
                 </a>

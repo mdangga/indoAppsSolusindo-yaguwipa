@@ -324,7 +324,8 @@ class UserController extends Controller
 
 
     // admin
-    public function index(){
+    public function index()
+    {
         return view('admin.showUser');
     }
 
@@ -335,12 +336,12 @@ class UserController extends Controller
         }
 
         $users = User::with(['UserToDonatur', 'UserToMitra'])
+            ->where('role', '!=', 'admin')
             ->select(['id_user', 'username', 'role', 'deleted_at'])
-            ->withTrashed(); // Include soft deleted users
+            ->withTrashed();
 
         return DataTables::of($users)
             ->addColumn('nama', function ($row) {
-                // Ambil nama dari relasi sesuai role
                 if ($row->role === 'mitra' && $row->UserToMitra) {
                     return $row->UserToMitra->nama;
                 } elseif ($row->role === 'donatur' && $row->UserToDonatur) {
