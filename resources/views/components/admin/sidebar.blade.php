@@ -72,6 +72,22 @@
                     </li>
                 </ul>
             </li>
+            <!-- User -->
+            <li>
+                <a type="button" href="{{ route('admin.user') }}"
+                    class="flex items-center w-full p-2 text-base text-gray-200 transition duration-75 rounded-lg group hover:bg-[#535c66]">
+                    <svg class="shrink-0 w-5 h-5 text-gray-200 transition duration-75 group-hover:text-gray-200"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <g fill="none">
+                            <path
+                                d="m12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036q-.016-.004-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z" />
+                            <path fill="currentColor"
+                                d="M11 2a5 5 0 1 0 0 10a5 5 0 0 0 0-10m.123 12.55a1 1 0 0 0-.913-1.525c-2.21.14-4.195.858-5.651 1.813c-.728.478-1.348 1.031-1.796 1.63C2.32 17.057 2 17.755 2 18.5c0 1.535 1.278 2.346 2.495 2.763c1.28.439 2.99.638 4.832.707a1 1 0 0 0 .995-1.29A7.5 7.5 0 0 1 10 18.5a7.46 7.46 0 0 1 1.123-3.95m6.288 6.232a5.4 5.4 0 0 1-.822 0l-.087.325a1 1 0 0 1-1.932-.518l.09-.337q-.362-.18-.693-.42l-.26.259a1 1 0 0 1-1.414-1.414l.33-.331a5.4 5.4 0 0 1-.517-1.202a1 1 0 0 1 1.918-.568c.878 2.963 5.074 2.963 5.952 0a1 1 0 1 1 1.918.568c-.13.44-.306.841-.518 1.202l.331.33a1 1 0 0 1-1.414 1.415l-.26-.26q-.332.24-.693.421l.09.337a1 1 0 1 1-1.932.518z" />
+                        </g>
+                    </svg>
+                    <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap font-normal">Users</span>
+                </a>
+            </li>
             <!-- News and Event Dropdown -->
             <li>
                 <button type="button"
@@ -165,7 +181,8 @@
                 <button type="button"
                     class="flex items-center w-full p-2 text-base text-gray-200 transition duration-75 rounded-lg group hover:bg-[#535c66]"
                     onclick="toggleDropdown('Publications')">
-                    <svg class="shrink-0 w-5 h-5 text-gray-200 transition duration-75 group-hover:text-gray-200" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <svg class="shrink-0 w-5 h-5 text-gray-200 transition duration-75 group-hover:text-gray-200"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path fill="currentColor"
                             d="m19 2l-5 4.5v11l5-4.5zM6.5 5C4.55 5 2.45 5.4 1 6.5v14.66c0 .25.25.5.5.5c.1 0 .15-.07.25-.07c1.35-.65 3.3-1.09 4.75-1.09c1.95 0 4.05.4 5.5 1.5c1.35-.85 3.8-1.5 5.5-1.5c1.65 0 3.35.31 4.75 1.06c.1.05.15.03.25.03c.25 0 .5-.25.5-.5V6.5c-.6-.45-1.25-.75-2-1V19c-1.1-.35-2.3-.5-3.5-.5c-1.7 0-4.15.65-5.5 1.5V6.5C10.55 5.4 8.45 5 6.5 5" />
                     </svg>
