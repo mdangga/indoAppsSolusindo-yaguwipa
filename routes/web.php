@@ -56,6 +56,13 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::put('/admin/general-setting/update/{id}', [ProfileController::class, 'update'])->name('profiles.update');
 
 
+    // user
+    Route::get('/admin/user', [UserController::class, 'index'])->name('admin.user');
+    Route::get('/admin/datatable/user', [UserController::class, 'getDataTables'])->name('user.table');
+    Route::delete('/admin/deactivate-user/{id}', [UserController::class, 'deactivateUser'])->name('user.deactivate');
+    Route::post('/admin/restore-user/{id}', [UserController::class, 'restoreUser'])->name('user.restore');
+
+
     // sosial-media
     Route::get('/admin/sosial-media', [SosiaMediaController::class, 'index'])->name('admin.sosmed');
     Route::get('/admin/datatable/sosial-media', [SosiaMediaController::class, 'getDataTables'])->name('sosmed.table');
