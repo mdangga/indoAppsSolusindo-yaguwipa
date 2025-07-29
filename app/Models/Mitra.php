@@ -11,6 +11,7 @@ class Mitra extends Model
     
     protected $table = 'mitra';
     protected $primaryKey = 'id_mitra';
+    protected $dates = ['deleted_at'];
 
     protected $fillable = [
         'id_user',
