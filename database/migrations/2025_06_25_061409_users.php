@@ -11,18 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function(Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->id('id_user');
             $table->string('username')->unique();
             $table->string('password');
-            $table->enum('role', ['admin', 'donatur', 'mitra'])->nullable()->default(null);
+            $table->enum('role', ['admin', 'donatur', 'mitra'])->default('donatur');
+            $table->string('nama');
+            $table->string('profile_path')->nullable();
+            $table->string('no_tlp');
+            $table->string('email')->unique()->nullable();
+            $table->text('alamat');
             $table->timestamps();
             $table->softDeletes();
         });
 
-        Schema::create('review', function(Blueprint $table) {
+        Schema::create('review', function (Blueprint $table) {
             $table->id('id_review');
-            $table->integer('bintang')->nullable()->default(null);
+            $table->integer('rating')->nullable()->default(null);
             $table->string('review');
             $table->unsignedBigInteger('id_user');
             $table->timestamps();
@@ -38,6 +43,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('users');
         Schema::dropIfExists('review');
-        
     }
 };

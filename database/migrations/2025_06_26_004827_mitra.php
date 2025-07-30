@@ -13,15 +13,9 @@ return new class extends Migration
     {
         Schema::create('mitra', function (Blueprint $table) {
             $table->id('id_mitra');
-            $table->string('nama');
-            $table->string('profile_path')->nullable();
-            $table->text('alamat');
-            $table->string('no_tlp');
-            $table->string('email');
             $table->string('website')->nullable();
             $table->string('penanggung_jawab');
             $table->string('jabatan_penanggung_jawab');
-            $table->enum('status', ['show', 'hide']);
             $table->unsignedBigInteger('id_user');
             $table->timestamps();
             $table->softDeletes();

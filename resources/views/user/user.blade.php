@@ -2,7 +2,7 @@
     $user = auth()->user();
 
     // Generalized user data (mitra/donatur)
-    $displayUser = $user->role === 'mitra' ? $user->UserToMitra : $user->UserToDonatur;
+    // $displayUser = $user->UserToMitra;
     $review = $user->Review;
 
     $colorMap = [
@@ -22,7 +22,7 @@
     $randomBg = $colors[$colorIndex];
     $hoverBg = $colorMap[$randomBg];
 
-    $profilePath = optional($displayUser)->profile_path;
+    $profilePath = optional($user)->profile_path;
 
     $emptyReview = !$review;
     $isEditReview = request()->query('edit') === '1';
@@ -49,7 +49,7 @@
                 <div class="flex justify-between items-center py-6">
                     <div>
                         <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
-                        <p class="text-gray-600">Selamat datang kembali, {{ auth()->user()->username }}</p>
+                        <p class="text-gray-600">Selamat datang kembali, {{ $user->username }}</p>
                     </div>
                     <div class="flex items-center space-x-4">
                         <div class="text-right">
@@ -65,7 +65,7 @@
                         @else
                             <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar"
                                 class="w-12 h-12 {{ $randomBg }} {{ $hoverBg }} rounded-full text-white flex items-center justify-center font-semibold uppercase select-none transition-colors duration-200 cursor-pointer text-lg">
-                                {{ strtoupper(substr($user->username ?? ($displayUser->nama ?? 'U'), 0, 1)) }}
+                                {{ strtoupper(substr($user->username ?? ($user->nama ?? 'U'), 0, 1)) }}
                             </button>
                         @endif
 
@@ -74,9 +74,9 @@
                         <div id="dropdownAvatar"
                             class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm max-w-60 min-w-44 ">
                             <div class="px-4 py-3 text-sm text-gray-900 ">
-                                <div class="font-bold mb-1">{{ '@' . auth()->user()->username ?? '-' }}
+                                <div class="font-bold mb-1">{{ '@' . $user->username ?? '-' }}
                                 </div>
-                                <div class="text-gray-500">{{ $displayUser->nama ?? '-' }}
+                                <div class="text-gray-500">{{ $user->nama ?? '-' }}
                                 </div>
 
                             </div>
@@ -302,7 +302,7 @@
                                 @endif
 
                                 <!-- Rating Input dengan Bintang -->
-                                <div class="mb-4" x-data="{ rating: {{ old('rating', $review->bintang ?? 0) }} }">
+                                <div class="mb-4" x-data="{ rating: {{ old('rating', $review->rating ?? 0) }} }">
                                     <label for="rating"
                                         class="block text-sm font-medium text-gray-700 mb-1">Rating</label>
                                     <div class="flex space-x-1">
@@ -362,7 +362,7 @@
                                 @else
                                     <span
                                         class="w-10 h-10 {{ $randomBg }} {{ $hoverBg }} rounded-full text-white flex items-center justify-center font-semibold uppercase select-none transition-colors duration-200 cursor-pointer text-lg">
-                                        {{ strtoupper(substr($user->username ?? ($displayUser->nama ?? 'U'), 0, 1)) }}
+                                        {{ strtoupper(substr($user->username ?? ($user->nama ?? 'U'), 0, 1)) }}
                                     </span>
                                 @endif
 
@@ -374,7 +374,7 @@
                                         <div class="flex-1">
                                             <div class="flex items-center justify-between mb-1">
                                                 <span
-                                                    class="font-medium text-gray-900">{{ $displayUser->nama }}</span>
+                                                    class="font-medium text-gray-900">{{ $user->nama }}</span>
                                                 <div class="flex items-center space-x-2">
                                                     <a href="{{ url()->current() }}?edit=1" title="Edit Review"
                                                         class="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors">
@@ -393,7 +393,7 @@
                                             <div class="flex items-center space-x-3">
                                                 <div class="flex space-x-0.5">
                                                     @for ($i = 1; $i <= 5; $i++)
-                                                        @if ($i <= $review->bintang)
+                                                        @if ($i <= $review->rating)
                                                             <svg class="w-4 h-4 text-yellow-400 fill-current"
                                                                 viewBox="0 0 24 24">
                                                                 <path
@@ -428,7 +428,7 @@
                     <div class="hidden lg:block bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
                         <div class="space-y-3">
-                            <a href="#"
+                            <a href="{{ route('testing') }}"
                                 class="flex items-center p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
                                 <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
                                     <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor"
@@ -437,7 +437,7 @@
                                             d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                                     </svg>
                                 </div>
-                                <span class="text-sm font-medium text-gray-900">Browse Products</span>
+                                <span class="text-sm font-medium text-gray-900">Kolaborasi CSR</span>
                             </a>
 
                             <a href="#"

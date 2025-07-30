@@ -24,7 +24,7 @@ class ReviewController extends Controller
         }
 
         $review = new Review();
-        $review->bintang = $request->rating;
+        $review->rating = $request->rating;
         $review->review = $request->review;
         $review->id_user = Auth::id();
         $review->save();
@@ -53,7 +53,7 @@ class ReviewController extends Controller
         }
 
         $review->update([
-            'bintang' => $request->rating,
+            'rating' => $request->rating,
             'review' => $request->review,
         ]);
 

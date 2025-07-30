@@ -31,16 +31,29 @@
                     <p class="mt-2 text-sm text-gray-600">Bersama kita bisa membuat perubahan yang lebih baik</p>
                 </div>
                 <!-- Form -->
-                <form class="space-y-6" action="/register" method="POST">
+                <form class="space-y-6" action="/register" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <!-- Username Field -->
+
+                    {{-- Global error messages --}}
+                    @if ($errors->any())
+                        <div class="mb-4 text-sm text-red-600 bg-red-100 p-4 rounded-lg">
+                            <ul class="list-disc list-inside">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    {{-- Username --}}
                     <div>
                         <label for="username" class="block text-sm font-medium text-gray-900 mb-2">Username</label>
-                        <div class="relative">
-                            <input type="text" name="username" id="username" autocomplete="username" required
-                                class="block w-full rounded-lg bg-white px-4 py-3 text-base text-gray-900 border-gray-300 placeholder:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="Masukkan Username" />
-                        </div>
+                        <input type="text" name="username" id="username" value="{{ old('username') }}" required
+                            class="block w-full rounded-lg bg-white px-4 py-3 border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Masukkan Username" />
+                        @error('username')
+                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <!-- Password Field -->
@@ -113,14 +126,72 @@
                         </div>
                     </div>
 
-                    <!-- Submit Button -->
+                    {{-- Nama --}}
+                    <div>
+                        <label for="nama" class="block text-sm font-medium text-gray-900 mb-2">Nama Lengkap</label>
+                        <input type="text" name="nama" id="nama" value="{{ old('nama') }}" required
+                            class="block w-full rounded-lg px-4 py-3 border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Masukkan Nama Lengkap" />
+                        @error('nama')
+                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Email --}}
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-900 mb-2">Email
+                            (opsional)</label>
+                        <input type="email" name="email" id="email" value="{{ old('email') }}"
+                            class="block w-full rounded-lg px-4 py-3 border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="contoh@email.com" />
+                        @error('email')
+                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Nomor Telepon --}}
+                    <div>
+                        <label for="no_tlp" class="block text-sm font-medium text-gray-900 mb-2">Nomor
+                            Telepon</label>
+                        <input type="text" name="no_tlp" id="no_tlp" value="{{ old('no_tlp') }}" required
+                            class="block w-full rounded-lg px-4 py-3 border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="08xxxxxxxxxx" />
+                        @error('no_tlp')
+                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Alamat --}}
+                    <div>
+                        <label for="alamat" class="block text-sm font-medium text-gray-900 mb-2">Alamat</label>
+                        <textarea name="alamat" id="alamat" required
+                            class="block w-full rounded-lg px-4 py-3 border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Masukkan Alamat Lengkap">{{ old('alamat') }}</textarea>
+                        @error('alamat')
+                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Foto Profil (opsional) --}}
+                    <div>
+                        <label for="profile_path" class="block text-sm font-medium text-gray-900 mb-2">Foto Profil
+                            (opsional)</label>
+                        <input type="file" name="profile_path" id="profile_path" accept="image/*"
+                            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
+                        @error('profile_path')
+                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- Tombol Submit --}}
                     <div>
                         <button type="submit"
-                            class="group relative flex w-full justify-center rounded-lg bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-200 hover:shadow-lg cursor-pointer">
+                            class="w-full justify-center rounded-lg bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none transition duration-200">
                             Buat Akun
                         </button>
                     </div>
                 </form>
+
 
                 <!-- Sign in link -->
                 <div class="mt-8 text-center">

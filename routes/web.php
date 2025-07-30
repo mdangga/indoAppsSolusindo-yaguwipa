@@ -186,14 +186,15 @@ Route::middleware(['auth.admin'])->group(function () {
 
 // Auth routes
 // tanpa role
-Route::middleware(['auth.null'])->group(function () {
-    Route::get('/register/{id}', [UserController::class, 'showFormUser'])->name('register.dataUser');
-    Route::post('/add-data-user', [UserController::class, 'addDataUser'])->name('add.dataUser');
-});
+
 
 
 // mitra-dan-donatur 
 Route::middleware(['auth', 'auth.user:mitra,donatur'])->group(function () {
+    // register mitra
+    Route::post('/register/mitra/{id}', [UserController::class, 'addDataMitra'])->name('add.dataMitra');
+
+
     // Dashboard
     Route::get('/user/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
 

@@ -22,6 +22,9 @@ class DatabaseSeeder extends Seeder
            User::create([
                 'username' => 'admin',
                 'password' => Hash::make('12345678'),
+                'nama' => 'admin',
+                'no_tlp' => '123',
+                'alamat' => 'Ganetri',
                 'role' => 'admin',
             ]);
 
