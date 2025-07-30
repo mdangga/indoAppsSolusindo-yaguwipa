@@ -58,4 +58,7 @@ class User extends Authenticatable
     {
         return $this->hasOne(Mitra::class, 'id_user', 'id_user');
     }
+    public function Review(){
+        return $this->hasOne(Review::class, 'id_user', 'id_user');
+    }
 }

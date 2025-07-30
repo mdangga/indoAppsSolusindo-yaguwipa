@@ -3,6 +3,7 @@
 
     // Generalized user data (mitra/donatur)
     $displayUser = $user->role === 'mitra' ? $user->UserToMitra : $user->UserToDonatur;
+    $review = $user->Review;
 
     $colorMap = [
         'bg-red-400' => 'hover:bg-red-300',
@@ -22,6 +23,9 @@
     $hoverBg = $colorMap[$randomBg];
 
     $profilePath = optional($displayUser)->profile_path;
+
+    $emptyReview = !$review;
+    $isEditReview = request()->query('edit') === '1';
 @endphp
 
 
@@ -33,6 +37,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard User</title>
     @vite(['resources/css/app.css', 'resources/js/AOS.js', 'resources/js/app.js'])
+    <script src="https://unpkg.com/alpinejs" defer></script>
+
 </head>
 
 <body>
@@ -277,99 +283,145 @@
                     </div>
 
                     <!-- Individual Review -->
-                    {{-- <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mt-8">
-                        <div class="flex items-start space-x-4">
-                            <!-- Avatar -->
-                            <div
-                                class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                <span class="text-white text-sm font-semibold">AS</span>
-                            </div>
+                    @if ($emptyReview || $isEditReview)
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mt-8">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Tulis Ulasan</h3>
 
-                            <!-- Review Content -->
-                            <div class="flex-1 min-w-0">
-                                <!-- Header with name, date, and actions -->
-                                <div class="flex items-start justify-between mb-3">
-                                    <div class="flex-1">
-                                        <div class="flex items-center justify-between mb-1">
-                                            <span class="font-medium text-gray-900">Andi Susanto</span>
-                                            <div class="flex items-center space-x-2">
-                                                <button
-                                                    class="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors">
-                                                    Edit
-                                                </button>
-                                                <button
-                                                    class="text-red-600 hover:text-red-800 text-sm font-medium transition-colors">
-                                                    Hapus
-                                                </button>
+                            @if (session('success'))
+                                <div class="mb-4 p-4 bg-green-100 text-green-700 rounded-lg">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
+
+                            <form
+                                action="{{ $isEditReview ? route('review.update', $review->id_review) : route('review.store') }}"
+                                method="POST">
+                                @csrf
+                                @if ($isEditReview)
+                                    @method('PUT')
+                                @endif
+
+                                <!-- Rating Input dengan Bintang -->
+                                <div class="mb-4" x-data="{ rating: {{ old('rating', $review->bintang ?? 0) }} }">
+                                    <label for="rating"
+                                        class="block text-sm font-medium text-gray-700 mb-1">Rating</label>
+                                    <div class="flex space-x-1">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <button type="button" @click="rating = {{ $i }}"
+                                                @keydown.enter.prevent="rating = {{ $i }}"
+                                                :class="rating >= {{ $i }} ? 'text-yellow-400' : 'text-gray-300'"
+                                                class="text-2xl focus:outline-none transition">
+                                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                                </svg>
+                                            </button>
+                                        @endfor
+                                    </div>
+                                    <input type="hidden" name="rating" :value="rating">
+                                    @error('rating')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+
+                                <!-- Review Textarea -->
+                                <div class="mb-4">
+                                    <label for="review"
+                                        class="block text-sm font-medium text-gray-700 mb-1">Ulasan</label>
+                                    <textarea id="review" name="review" rows="4"
+                                        class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 p-3"
+                                        placeholder="Tulis ulasanmu di sini..." required>{{ old('review', $review->review ?? '') }}</textarea>
+                                    @error('review')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="pt-4">
+                                    <div class="flex justify-end space-x-3">
+                                        <a href="{{ route('dashboard') }}"
+                                            class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                                            Batal
+                                        </a>
+                                        <button type="submit"
+                                            class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200">
+                                            {{ $isEditReview ? 'Update Ulasan' : 'Kirim Ulasan' }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    @else
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mt-8">
+                            <div class="flex items-start space-x-4">
+                                <!-- Avatar -->
+                                @if ($profilePath)
+                                    <img src="{{ asset('storage/' . $profilePath) }}" alt="Profile"
+                                        class="w-10 h-10 rounded-full object-cover border-2 border-gray-300 hover:scale-105 transition" />
+                                @else
+                                    <span
+                                        class="w-10 h-10 {{ $randomBg }} {{ $hoverBg }} rounded-full text-white flex items-center justify-center font-semibold uppercase select-none transition-colors duration-200 cursor-pointer text-lg">
+                                        {{ strtoupper(substr($user->username ?? ($displayUser->nama ?? 'U'), 0, 1)) }}
+                                    </span>
+                                @endif
+
+
+                                <!-- Review Content -->
+                                <div class="flex-1 min-w-0">
+                                    <!-- Header with name, date, and actions -->
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div class="flex-1">
+                                            <div class="flex items-center justify-between mb-1">
+                                                <span
+                                                    class="font-medium text-gray-900">{{ $displayUser->nama }}</span>
+                                                <div class="flex items-center space-x-2">
+                                                    <a href="{{ url()->current() }}?edit=1" title="Edit Review"
+                                                        class="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors">
+                                                        Edit
+                                                    </a>
+                                                    <form action="{{ route('review.delete', $review->id_review) }}" method="POST">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button type="submit" title="Hapus Review"
+                                                            class="text-red-600 hover:text-red-800 text-sm font-medium transition-colors">
+                                                            Hapus
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="flex items-center space-x-3">
-                                            <div class="flex space-x-0.5">
-                                                <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
-                                                    <path
-                                                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                                </svg>
-                                                <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
-                                                    <path
-                                                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                                </svg>
-                                                <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
-                                                    <path
-                                                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                                </svg>
-                                                <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
-                                                    <path
-                                                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                                </svg>
-                                                <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
-                                                    <path
-                                                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                                </svg>
+                                            <div class="flex items-center space-x-3">
+                                                <div class="flex space-x-0.5">
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        @if ($i <= $review->bintang)
+                                                            <svg class="w-4 h-4 text-yellow-400 fill-current"
+                                                                viewBox="0 0 24 24">
+                                                                <path
+                                                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                                            </svg>
+                                                        @else
+                                                            <svg class="w-4 h-4 text-gray-300 fill-current"
+                                                                viewBox="0 0 24 24">
+                                                                <path
+                                                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                                            </svg>
+                                                        @endif
+                                                    @endfor
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <!-- Review Text -->
-                                <p class="text-gray-700 text-sm leading-relaxed">
-                                    Pelayanan sangat memuaskan! Produk sampai dengan cepat dan kualitas sesuai
-                                    ekspektasi.
-                                    Customer service juga responsif membantu ketika ada pertanyaan. Highly recommended!
-                                </p>
+                                    <!-- Review Text -->
+                                    <p class="text-gray-700 text-sm leading-relaxed">
+                                        {{ $review->review }}
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div> --}}
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mt-8">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Tulis Ulasan</h3>
-                        <form action="" method="POST">
-                            @csrf
-                            <div class="mb-4">
-                                <label for="rating"
-                                    class="block text-sm font-medium text-gray-700 mb-1">Rating</label>
-                                <div class="flex space-x-1 text-yellow-400">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        <label class="cursor-pointer text-2xl">
-                                            <input type="radio" name="rating" value="{{ $i }}"
-                                                class="hidden" required>
-                                            ★
-                                        </label>
-                                    @endfor
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <label for="review"
-                                    class="block text-sm font-medium text-gray-700 mb-1">Ulasan</label>
-                                <textarea id="review" name="review" rows="4"
-                                    class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 p-3"
-                                    placeholder="Tulis ulasanmu di sini..." required></textarea>
-                            </div>
-                            <button type="submit"
-                                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg transition">
-                                Kirim Ulasan
-                            </button>
-                        </form>
-                    </div>
+                    @endif
                 </div>
+
                 <!-- Desktop Sidebar - Profile & Quick Actions -->
                 <div class="md:space-y-6 lg:block">
                     <!-- Desktop Quick Actions - Hidden on mobile -->

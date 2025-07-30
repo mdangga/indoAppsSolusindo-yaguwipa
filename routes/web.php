@@ -11,6 +11,7 @@ use App\Http\Controllers\MenusController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\PublikasiController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SosiaMediaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -195,6 +196,12 @@ Route::middleware(['auth.null'])->group(function () {
 Route::middleware(['auth', 'auth.user:mitra,donatur'])->group(function () {
     // Dashboard
     Route::get('/user/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+
+    
+    // review
+    Route::post('/user/review/store', [ReviewController::class, 'store'])->name('review.store');
+    Route::put('/user/review/edit/{id}', [ReviewController::class, 'update'])->name('review.update');
+    Route::delete('/user/review/destroy/{id}', [ReviewController::class, 'destroy'])->name('review.delete');
 
 
     // edit profile
