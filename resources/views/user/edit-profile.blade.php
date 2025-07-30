@@ -327,6 +327,7 @@
                         </form>
                     </div>
                 </div>
+
                 <!-- Danger Zone Section -->
                 <div class="bg-white rounded-lg shadow-sm border border-red-200">
                     <div class="px-6 py-4 border-b border-red-200">
@@ -379,18 +380,18 @@
                                 @method('DELETE')
 
                                 <div id="usernameGroup" class="mb-4">
-                                    <label for="username"
+                                    <label for="usernameDelete"
                                         class="block text-sm font-medium text-gray-700 mb-1">Username</label>
-                                    <input type="text" id="username" name="username" required
+                                    <input type="text" id="usernameDelete" name="username" required
                                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500">
                                     @error('username')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
                                 </div>
                                 <div class="mb-4">
-                                    <label for="password"
+                                    <label for="passwordDelete"
                                         class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                                    <input type="password" id="password" name="password" required
+                                    <input type="password" id="passwordDelete" name="password" required
                                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500">
                                     @error('password')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -403,7 +404,7 @@
                                         Batal
                                     </button>
                                     <button id="submitButton" type="submit"
-                                        class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 text-sm font-medium">
+                                        class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 text-sm font-medium">nonaktif
                                     </button>
                                 </div>
                             </form>
@@ -456,8 +457,10 @@
                     const form = document.getElementById('deleteAccountForm');
                     const submitButton = document.getElementById('submitButton');
                     const usernameGroup = document.getElementById('usernameGroup');
+                    const usernameInput = document.getElementById('usernameDelete');
 
                     if (actionType === 'deactivate') {
+                        usernameInput.removeAttribute('required');
                         title.textContent = 'Konfirmasi Nonaktifkan Akun';
                         description.textContent = 'Masukkan password Anda untuk mengonfirmasi penonaktifan akun.';
                         form.action = '{{ route('profile.deactivate') }}';
