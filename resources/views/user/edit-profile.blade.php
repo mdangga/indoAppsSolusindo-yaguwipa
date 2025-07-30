@@ -1,7 +1,9 @@
 @php
     $user = auth()->user();
 
-    $displayUser = $user->role === 'mitra' ? $user->UserToMitra : $user->UserToDonatur;
+    if ($user->role === 'mitra') {
+        $displayUser = $user->Mitra;
+    }
 
     $colorMap = [
         'bg-red-400' => 'hover:bg-red-300',
@@ -20,7 +22,7 @@
     $randomBg = $colors[$colorIndex];
     $hoverBg = $colorMap[$randomBg];
 
-    $profilePath = optional($displayUser)->profile_path;
+    $profilePath = optional($user)->profile_path;
 @endphp
 
 <!DOCTYPE html>
@@ -56,7 +58,7 @@
                     <div class="flex items-center gap-3">
                         <div>
                             <p class="text-right text-sm font-medium text-gray-900 leading-tight">
-                                {{ $displayUser->nama ?? $user->username }}
+                                {{ $user->nama ?? $user->username }}
                             </p>
                             <p class="text-right text-xs text-gray-500">
                                 {{ ucfirst($user->role) }}
@@ -69,7 +71,7 @@
                         @else
                             <div
                                 class="w-10 h-10 {{ $randomBg }} rounded-full text-white flex items-center justify-center font-semibold uppercase text-sm">
-                                {{ strtoupper(substr($user->username ?? ($displayUser->nama ?? 'U'), 0, 1)) }}
+                                {{ strtoupper(substr($user->username ?? ($user->nama ?? 'U'), 0, 1)) }}
                             </div>
                         @endif
                     </div>
@@ -100,7 +102,7 @@
                                     @else
                                         <div id="imagePreviewWrapper"
                                             class="w-20 h-20 {{ $randomBg }} rounded-full text-white flex items-center justify-center font-bold text-2xl">
-                                            {{ strtoupper(substr($user->username ?? ($displayUser->nama ?? 'U'), 0, 1)) }}
+                                            {{ strtoupper(substr($user->username ?? ($user->nama ?? 'U'), 0, 1)) }}
                                         </div>
                                     @endif
                                 </div>
@@ -163,7 +165,7 @@
                                     <label for="nama" class="block text-sm font-medium text-gray-700 mb-2">Nama
                                         Lengkap</label>
                                     <input type="text" id="nama" name="nama"
-                                        value="{{ old('nama', $displayUser->nama ?? '') }}"
+                                        value="{{ old('nama', $user->nama ?? '') }}"
                                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                     @error('nama')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -174,7 +176,7 @@
                                     <label for="email"
                                         class="block text-sm font-medium text-gray-700 mb-2">Email</label>
                                     <input type="email" id="email" name="email"
-                                        value="{{ old('email', $displayUser->email ?? '') }}"
+                                        value="{{ old('email', $user->email ?? '') }}"
                                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                     @error('email')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -185,7 +187,7 @@
                                     <label for="no_tlp" class="block text-sm font-medium text-gray-700 mb-2">Nomor
                                         Telepon</label>
                                     <input type="tel" id="no_tlp" name="no_tlp"
-                                        value="{{ old('no_tlp', $displayUser->no_tlp ?? '') }}"
+                                        value="{{ old('no_tlp', $user->no_tlp ?? '') }}"
                                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                     @error('no_tlp')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -198,7 +200,7 @@
                                     <label for="alamat"
                                         class="block text-sm font-medium text-gray-700 mb-2">Alamat</label>
                                     <textarea id="alamat" name="alamat" rows="3"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">{{ old('alamat', $displayUser->alamat ?? '') }}</textarea>
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">{{ old('alamat', $user->alamat ?? '') }}</textarea>
                                     @error('alamat')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror

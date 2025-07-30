@@ -25,14 +25,13 @@ class UserController extends Controller
 
 
     // menampilkan form untuk mengisi data user
-    public function showFormUser(Request $request, $id)
+    public function showFormMitra(Request $request, $id)
     {
         if (Auth::id() != $id) {
             abort(403, 'Unauthorized access.');
         }
 
-        $user = User::findOrFail($id);
-        return view('formMitraDonatur', compact('user'));
+        return view('formMitra');
     }
 
 
@@ -44,67 +43,49 @@ class UserController extends Controller
 
 
     // fungsi untuk menyimpan data user
-    public function addDataUser(Request $request)
+    public function addDataMitra(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            // Common
-            'id_user' => 'required|numeric|exists:users,id_user',
-            'nama' => 'required|string|max:255',
-            'email' => 'nullable|email|unique:donatur,email|unique:mitra,email',
-            'no_tlp' => 'required|string|max:20',
-            'alamat' => 'nullable|string',
-            'profile_path' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'role' => 'required|string|in:mitra,donatur',
+        $user = User::findOrFail($id);
 
-            // Mitra only
+        $rules = [
             'website' => 'nullable|url',
-            'penanggung_jawab' => 'required_if:role,mitra|nullable|string|max:255',
-            'jabatan_penanggung_jawab' => 'required_if:role,mitra|nullable|string|max:255',
-        ]);
+            'penanggung_jawab' => 'required|string|max:255',
+            'jabatan_penanggung_jawab' => 'required|string|max:255',
+        ];
+
+        // Jika user belum punya email, wajib isi
+        if (!$user->email) {
+            $rules['email'] = 'required|email|unique:users,email';
+        }
+
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $user = User::find($request->id_user);
-        $user->update([
-            'role' => $request->role,
+        // Simpan email hanya jika belum ada dan request mengirimkannya
+        if (!$user->email && $request->filled('email')) {
+            $user->email = $request->email;
+            $user->save();
+        }
+
+        Mitra::create([
+            'id_user' => $id,
+            'website' => $request->website,
+            'penanggung_jawab' => $request->penanggung_jawab,
+            'jabatan_penanggung_jawab' => $request->jabatan_penanggung_jawab,
         ]);
 
-        // Simpan file profil jika ada
-        $profilePath = null;
-        if ($request->hasFile('profile_path')) {
-            $profilePath = $request->file('profile_path')->store('profile_user', 'public');
-        }
+        $user->update([
+            'role' => 'mitra',
+        ]);
 
-        // Simpan data tambahan sesuai role
-        if ($request->role === 'mitra') {
-            Mitra::create([
-                'id_user' => $request->id_user,
-                'nama' => $request->nama,
-                'alamat' => $request->alamat,
-                'no_tlp' => $request->no_tlp,
-                'email' => $request->email,
-                'website' => $request->website,
-                'profile_path' => $profilePath,
-                'penanggung_jawab' => $request->penanggung_jawab,
-                'jabatan_penanggung_jawab' => $request->jabatan_penanggung_jawab,
-            ]);
-        } elseif ($request->role === 'donatur') {
-            Donatur::create([
-                'id_user' => $request->id_user,
-                'nama' => $request->nama,
-                'no_tlp' => $request->no_tlp,
-                'email' => $request->email,
-                'profile_path' => $profilePath,
-                'alamat' => $request->alamat,
-            ]);
-        }
+        Auth::login($user->fresh());
 
-        $user->refresh();
-        Auth::login($user);
         return redirect()->route('dashboard')->with('success', 'Registrasi berhasil');
     }
+
 
     /*
     ============
@@ -120,7 +101,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|max:255|unique:users,username,' . $user->id_user . ',id_user',
             'nama' => 'required|string|max:255',
-            'email' => 'nullable|email|unique:donatur,email,' . ($user->UserToDonatur ? $user->UserToDonatur->id_donatur : 'NULL') . ',id_donatur|unique:mitra,email,' . ($user->UserToMitra ? $user->UserToMitra->id_mitra : 'NULL') . ',id_mitra',
+            'email' => 'nullable|email|unique:users',
             'no_tlp' => 'required|string|max:20',
             'alamat' => 'nullable|string',
 
@@ -135,24 +116,17 @@ class UserController extends Controller
         }
 
         $user->username = $request->username;
+        $user->nama = $request->nama;
+        $user->email = $request->email;
+        $user->no_tlp = $request->no_tlp;
+        $user->alamat = $request->alamat;
         $user->save();
 
-        if ($user->role === 'mitra' && $user->UserToMitra) {
-            $user->UserToMitra->update([
-                'nama' => $request->nama,
-                'email' => $request->email,
-                'no_tlp' => $request->no_tlp,
-                'alamat' => $request->alamat,
+        if ($user->role === 'mitra' && $user->Mitra) {
+            $user->Mitra->update([
                 'website' => $request->website,
                 'penanggung_jawab' => $request->penanggung_jawab,
                 'jabatan_penanggung_jawab' => $request->jabatan_penanggung_jawab,
-            ]);
-        } elseif ($user->role === 'donatur' && $user->UserToDonatur) {
-            $user->UserToDonatur->update([
-                'nama' => $request->nama,
-                'email' => $request->email,
-                'no_tlp' => $request->no_tlp,
-                'alamat' => $request->alamat,
             ]);
         }
 
@@ -169,21 +143,13 @@ class UserController extends Controller
 
         $user = Auth::user();
 
-        if ($user->role === 'mitra' && $user->UserToMitra) {
-            $model = $user->UserToMitra;
-        } elseif ($user->role === 'donatur' && $user->UserToDonatur) {
-            $model = $user->UserToDonatur;
-        } else {
-            return back()->with('error', 'Profil tidak ditemukan.');
-        }
-
-        if ($model->profile_path) {
-            Storage::disk('public')->delete($model->profile_path);
+        if ($user->profile_path) {
+            Storage::disk('public')->delete($user->profile_path);
         }
 
         $path = $request->file('profile_path')->store('profile_user', 'public');
-        $model->profile_path = $path;
-        $model->save();
+        $user->profile_path = $path;
+        $user->save();
 
         return back()->with('success', 'Foto profil berhasil diperbarui.');
     }
@@ -226,10 +192,8 @@ class UserController extends Controller
         try {
             DB::beginTransaction();
 
-            if ($user->role === 'mitra' && $user->UserToMitra) {
-                $user->UserToMitra->delete();
-            } elseif ($user->role === 'donatur' && $user->UserToDonatur) {
-                $user->UserToDonatur->delete();
+            if ($user->role === 'mitra' && $user->Mitra) {
+                $user->Mitra->delete();
             }
 
             // Soft delete user
@@ -265,10 +229,8 @@ class UserController extends Controller
         DB::beginTransaction();
         try {
             // Force delete relasi terlebih dahulu
-            if ($user->role === 'mitra' && $user->UserToMitra) {
-                $user->UserToMitra->forceDelete();
-            } elseif ($user->role === 'donatur' && $user->UserToDonatur) {
-                $user->UserToDonatur->forceDelete();
+            if ($user->role === 'mitra' && $user->Mitra) {
+                $user->Mitra->forceDelete();
             }
 
             // Force delete user
@@ -314,8 +276,6 @@ class UserController extends Controller
 
             if ($user->role === 'mitra') {
                 Mitra::onlyTrashed()->where('id_user', $user->id_user)->restore();
-            } elseif ($user->role === 'donatur') {
-                Donatur::onlyTrashed()->where('id_user', $user->id_user)->restore();
             }
         });
 
@@ -335,17 +295,17 @@ class UserController extends Controller
             return abort(403, 'Akses tidak diizinkan');
         }
 
-        $users = User::with(['UserToDonatur', 'UserToMitra'])
+        $users = User::with(['Mitra'])
             ->where('role', '!=', 'admin')
             ->select(['id_user', 'username', 'role', 'deleted_at'])
             ->withTrashed();
 
         return DataTables::of($users)
             ->addColumn('nama', function ($row) {
-                if ($row->role === 'mitra' && $row->UserToMitra) {
-                    return $row->UserToMitra->nama;
-                } elseif ($row->role === 'donatur' && $row->UserToDonatur) {
-                    return $row->UserToDonatur->nama;
+                if ($row->role === 'mitra' && $row->Mitra) {
+                    return $row->Mitra->nama;
+                } else {
+                    return $row->nama;
                 }
                 return '-';
             })
@@ -395,10 +355,8 @@ class UserController extends Controller
             DB::transaction(function () use ($user) {
                 $user->delete();
 
-                if ($user->role === 'mitra' && $user->UserToMitra) {
-                    $user->UserToMitra->delete();
-                } elseif ($user->role === 'donatur' && $user->UserToDonatur) {
-                    $user->UserToDonatur->delete();
+                if ($user->role === 'mitra' && $user->Mitra) {
+                    $user->Mitra->delete();
                 }
             });
 
@@ -418,10 +376,6 @@ class UserController extends Controller
 
                 if ($user->role === 'mitra') {
                     Mitra::onlyTrashed()
-                        ->where('id_user', $user->id_user)
-                        ->restore();
-                } elseif ($user->role === 'donatur') {
-                    Donatur::onlyTrashed()
                         ->where('id_user', $user->id_user)
                         ->restore();
                 }

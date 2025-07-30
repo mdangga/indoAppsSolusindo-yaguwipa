@@ -15,15 +15,9 @@ class Mitra extends Model
 
     protected $fillable = [
         'id_user',
-        'nama',
-        'alamat',
-        'no_tlp',
-        'email',
         'website',
-        'profile_path',
         'penanggung_jawab',
         'jabatan_penanggung_jawab',
-        'status',
     ];
 
     public function User()
