@@ -3,8 +3,8 @@
     $donatur = $user?->UserToDonatur;
     $displayUser = null;
 
-    if ($user) {
-        $displayUser = $user->role === 'mitra' ? $user->UserToMitra : $user->UserToDonatur;
+    if ($user && $user->role === 'mitra') {
+        $displayUser = $user->Mitra;
     }
 
     $colorMap = [
@@ -24,7 +24,7 @@
     $randomBg = $colors[$colorIndex];
     $hoverBg = $colorMap[$randomBg];
 
-    $profilePath = optional($displayUser)->profile_path;
+    $profilePath = optional($user)->profile_path;
 @endphp
 
 <!DOCTYPE html>
@@ -155,7 +155,7 @@
                                         @else
                                             <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar"
                                                 class="w-8 h-8 {{ $randomBg }} {{ $hoverBg }} rounded-full text-white flex items-center justify-center font-semibold uppercase select-none transition-colors duration-200 cursor-pointer text-md">
-                                                {{ strtoupper(substr($user->username ?? ($displayUser->nama ?? 'U'), 0, 1)) }}
+                                                {{ strtoupper(substr($user->username ?? ($user->nama ?? 'U'), 0, 1)) }}
                                             </button>
                                         @endif
                                     @endauth
@@ -524,7 +524,7 @@
                                             Nama Lengkap *
                                         </label>
                                         <input type="text" name="nama" required
-                                            value="{{ old('nama') ?? ($displayUser->nama ?? '') }}"
+                                            value="{{ old('nama') ?? ($user->nama ?? '') }}"
                                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 outline-0"
                                             placeholder="Masukkan nama lengkap">
                                     </div>
@@ -534,7 +534,7 @@
                                             Email atau No Telepon *
                                         </label>
                                         <input type="text" name="email_tlp" required
-                                            value="{{ old('email_tlp') ?? ($user->email ?? ($displayUser->no_tlp ?? '')) }}"
+                                            value="{{ old('email_tlp') ?? ($user->email ?? ($user->no_tlp ?? '')) }}"
                                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 outline-0"
                                             placeholder="Email atau No Telepon">
                                     </div>

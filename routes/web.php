@@ -48,6 +48,7 @@ Route::get('/program/{id}', [ProgramController::class, 'showProgam'])->name('ber
 // publikasi
 Route::get('/publikasi/show-all/', [PublikasiController::class, 'show'])->name('beranda.publikasi');
 Route::get('/show-pdf/{filePath}', [PublikasiController::class, 'showPdf'])->where('filePath', '.*')->name('publikasi.pdf');
+Route::post('/download-file/{id}', [PublikasiController::class, 'downloadFile'])->name('file.Download');
 
 
 // admin
