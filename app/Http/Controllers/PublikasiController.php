@@ -18,7 +18,7 @@ class PublikasiController extends Controller
         $publikasi = Publikasi::with('JenisPublikasi')->where('status', 'show')->orderBy('tanggal_terbit', 'desc')->get();
         $mostDownloaded = Publikasi::with('JenisPublikasi')->where('status', 'show')->orderBy('download', 'desc')->take(4)->get();
         $jenisPublikasi = JenisPublikasi::all();
-        return view('publikasi', compact('publikasi', 'mostDownloaded','jenisPublikasi'));
+        return view('publikasi', compact('publikasi', 'mostDownloaded', 'jenisPublikasi'));
     }
 
     public function showPdf($filePath)
@@ -33,6 +33,14 @@ class PublikasiController extends Controller
         ]);
     }
 
+
+    // download
+    public function downloadFile($id)
+    {
+        $item = Publikasi::findOrFail($id);
+        $item->increment('download');
+        return response()->json(['success' => true]);
+    }
 
     // fungsi untuk membuatkan datatable news dan event
     public function getDataTables(Request $request)

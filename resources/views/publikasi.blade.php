@@ -165,15 +165,17 @@ class="h-48 bg-gradient-to-br from-blue-100 to-blue-200 rounded-t-lg flex items-
                                             <span>Lihat</span>
                                         </button>
 
-                                                              @if ($fileExtension === 'PDF')
-                                    <a title="Preview File" href="{{ route('publikasi.pdf', $filePath) }}" target="_blank"
+                                                                 @if ($fileExtension === 'PDF')
+                                    <a title="Preview File" href="{{ route('publikasi.pdf', $filePath) }}"
+                                        target="_blank"
                                         class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center">
                                         <i class="fa-regular fa-file"></i>
                                     </a>
                             @endif
 
-                            <a title="Download" href="{{ asset('storage/' . $item->file) }}" download onclick="downloadFile()"
-                                class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center">
+                            <a title="Download" href="{{ asset('storage/' . $item->file) }}"
+                                class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center"
+                                onclick="downloadFile(event, {{ $item->id_publikasi }}, '{{ asset('storage/' . $item->file) }}')">
                                 <i class="fas fa-download"></i>
                             </a>
                         </div>
@@ -283,17 +285,19 @@ class="h-48 bg-gradient-to-br from-blue-100 to-blue-200 rounded-t-lg flex items-
                                             <span>Lihat</span>
                                         </button>
 
-                                                              @if ($fileExtension === 'PDF')
+                                                                 @if ($fileExtension === 'PDF')
                         <a title="Preview File" href="{{ route('publikasi.pdf', $filePath) }}" target="_blank"
                             class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center">
                             <i class="fa-regular fa-file"></i>
                         </a>
                 @endif
 
-                <a title="Download" href="{{ asset('storage/' . $item->file) }}" download onclick="downloadFile()"
-                    class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center">
+                <a title="Download" href="{{ asset('storage/' . $item->file) }}"
+                    class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center"
+                    onclick="downloadFile(event, {{ $item->id_publikasi }}, '{{ asset('storage/' . $item->file) }}')">
                     <i class="fas fa-download"></i>
                 </a>
+
             </div>
         </div>
         </div>
@@ -504,13 +508,37 @@ class="h-48 bg-gradient-to-br from-blue-100 to-blue-200 rounded-t-lg flex items-
             return true;
         }
 
+        function downloadFile(event, id, fileUrl) {
+            event.preventDefault();
+
+            fetch(`/download-file/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const link = document.createElement('a');
+                    link.href = fileUrl;
+                    link.setAttribute('download', '');
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                })
+                .catch(error => {
+                    console.error('Gagal log download:', error);
+                });
+        }
+
         // Jalankan fungsi saat halaman pertama kali dimuat
         document.addEventListener('DOMContentLoaded', () => {
             filterAndSortPublications();
             updateMostDownloadedVisibility();
         });
     </script>
-<x-footer />
+    <x-footer />
 </body>
 
 </html>
