@@ -18,26 +18,41 @@ class AuthController extends Controller
         return view('signup');
     }
 
-    // register
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'email' => 'nullable|email|unique:users',
+            'nama' => 'required|string|max:100',
+            'no_tlp' => 'required|string|max:20',
+            'alamat' => 'required|string',
+            'profile_path' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $profilePath = null;
+        if ($request->hasFile('profile')) {
+            $profilePath = $request->file('profile')->store('profiles', 'public');
+        }
+
+        // Membuat user dengan semua field
         $user = User::create([
             'username' => $request->username,
             'password' => Hash::make($request->password),
+            'email' => $request->email,
+            'nama' => $request->nama,
+            'no_tlp' => $request->no_tlp,
+            'alamat' => $request->alamat,
+            'profile_path' => $profilePath,
         ]);
 
         Auth::login($user);
 
-        return redirect()->route('register.dataUser', ['id' => $user->id_user]);
+        return redirect()->route('dashboard');
     }
 
     // form login

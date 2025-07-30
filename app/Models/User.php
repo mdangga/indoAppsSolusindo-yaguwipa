@@ -26,6 +26,11 @@ class User extends Authenticatable
         'username',
         'password',
         'role',
+        'nama',
+        'profile_path',
+        'no_tlp',
+        'email',
+        'alamat',
     ];
 
     /**
@@ -50,11 +55,7 @@ class User extends Authenticatable
         ];
     }
 
-    public function UserToDonatur()
-    {
-        return $this->hasOne(Donatur::class, 'id_user', 'id_user');
-    }
-    public function UserToMitra()
+    public function Mitra()
     {
         return $this->hasOne(Mitra::class, 'id_user', 'id_user');
     }

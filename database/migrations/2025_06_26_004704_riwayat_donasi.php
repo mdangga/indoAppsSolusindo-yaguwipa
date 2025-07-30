@@ -36,11 +36,11 @@ return new class extends Migration
             $table->text('keterangan')->nullable();
             $table->enum('status', ['approved', 'pending', 'rejected'])->default('pending');
             $table->timestamps();
-            $table->unsignedBigInteger('id_donatur')->nullable();
+            $table->unsignedBigInteger('id_user')->nullable();
             $table->unsignedBigInteger('id_kanal_donasi');
             $table->unsignedBigInteger('id_donasi');
             
-            $table->foreign('id_donatur')->references('id_donatur')->on('donatur')->onDelete('cascade');
+            $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
             $table->foreign('id_kanal_donasi')->references('id_kanal_donasi')->on('kanal_donasi')->onDelete('restrict');
             $table->foreign('id_donasi')->references('id_donasi')->on('donasi')->onDelete('cascade');
         });

@@ -26,7 +26,7 @@ class Mitra extends Model
         'status',
     ];
 
-    public function MitraToUser()
+    public function User()
     {
         return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
