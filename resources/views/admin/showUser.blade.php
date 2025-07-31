@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Admin - Berita dan Kegiatan</title>
+    <title>Admin - User</title>
     {{-- icon --}}
     <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
 
@@ -212,10 +212,10 @@
 
     <main class="p-6 md:ml-64 pt-20">
         <!-- Header -->
-        {{-- <div class="mb-2">
-            <h1 class="text-3xl font-bold text-gray-900">Berita dan Kegiatan</h1>
-            <p class="text-gray-600 mt-2">Kelola konten berita dan kegiatan website</p>
-        </div> --}}
+        <div class="mb-2">
+            <h1 class="text-3xl font-bold text-gray-900">User</h1>
+            <p class="text-gray-600 mt-2">Kelola User</p>
+        </div>
 
         <!-- Success Alert -->
         @if (session('success'))
@@ -386,7 +386,7 @@
                 const id = $(this).data('id');
                 const button = $(this);
 
-                if (confirm('Apakah Anda yakin ingin menghapus berita ini?')) {
+                if (confirm('Apakah Anda yakin ingin menonaktifkan akun ini?')) {
                     // Show loading state
                     button.prop('disabled', true)
                         .removeClass('bg-red-500 hover:bg-red-600')

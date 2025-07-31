@@ -428,7 +428,7 @@
                     <div class="hidden lg:block bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
                         <div class="space-y-3">
-                            <a href="{{ route('testing') }}"
+                            <a href="{{ route('mitra.kerja-sama') }}"
                                 class="flex items-center p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
                                 <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
                                     <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor"
@@ -437,7 +437,7 @@
                                             d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                                     </svg>
                                 </div>
-                                <span class="text-sm font-medium text-gray-900">Kolaborasi CSR</span>
+                                <span class="text-sm font-medium text-gray-900">Kolaborasi</span>
                             </a>
 
                             <a href="#"
