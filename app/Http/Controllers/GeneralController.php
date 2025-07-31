@@ -37,7 +37,7 @@ class GeneralController extends Controller
 
     public function testing()
     {
-        return view('testing');
+        return view('testing2', ['user' => Auth::user()]);
     }
 
     public function mitra()

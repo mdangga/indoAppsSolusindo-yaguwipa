@@ -1,11 +1,9 @@
 @php
-    $user = auth()->check() ? auth()->user() : null;
-    $donatur = $user?->UserToDonatur;
-    $displayUser = null;
-
-    if ($user && $user->role === 'mitra') {
-        $displayUser = $user->Mitra;
-    }
+    // Ambil user yang sedang login
+    $user = auth()->user();
+    $isLoggedIn = isset($user);
+    // Tentukan data tampilan utama berdasarkan peran
+    $displayUser = $user?->role === 'mitra' ? $user->mitra : null;
 
     $colorMap = [
         'bg-red-400' => 'hover:bg-red-300',
@@ -133,7 +131,7 @@
                                     class="flex items-center text-gray-600 hover:text-gray-800 transition duration-200 cursor-pointer">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                                         viewBox="0 0 24 24"
-                                        class="bg-none md:bg-gray-100 rounded-lg mr-2 text-gray-400 hover:text-gray-800 transition">
+                                        class="bg-none md:bg-gray-100 rounded-lg mr-2 text-gray-400 transition">
                                         <path fill="none" stroke="currentColor" stroke-linecap="round"
                                             stroke-linejoin="round" stroke-width="1.5" d="m14 7l-5 5l5 5" />
                                     </svg>
@@ -150,7 +148,7 @@
                                         @if ($profilePath)
                                             <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar">
                                                 <img src="{{ asset('storage/' . $profilePath) }}" alt="Profile"
-                                                    class="w-8 h-8 rounded-full object-cover border-2 border-gray-300 hover:scale-105 transition" />
+                                                    class="w-8 h-8 rounded-full object-cover border-2 border-gray-300 hover:brightness-90 transition" />
                                             </button>
                                         @else
                                             <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar"
@@ -431,6 +429,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <!-- Info untuk Donasi Barang/Jasa -->
                                 <div id="non-payment-info" class="hidden">
                                     <div class="bg-teal-50 border border-teal-200 rounded-lg p-6">
@@ -519,13 +518,15 @@
                                 </div>
 
                                 <div class="grid md:grid-cols-2 gap-6 mb-6">
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">
                                             Nama Lengkap *
                                         </label>
                                         <input type="text" name="nama" required
                                             value="{{ old('nama') ?? ($user->nama ?? '') }}"
-                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 outline-0"
+                                            @if ($isLoggedIn) readonly @endif
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 outline-0 {{ $isLoggedIn ? 'bg-gray-100 cursor-none' : '' }}"
                                             placeholder="Masukkan nama lengkap">
                                     </div>
 
@@ -535,7 +536,8 @@
                                         </label>
                                         <input type="text" name="email_tlp" required
                                             value="{{ old('email_tlp') ?? ($user->email ?? ($user->no_tlp ?? '')) }}"
-                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 outline-0"
+                                            @if ($isLoggedIn) readonly @endif
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 outline-0 {{ $isLoggedIn ? 'bg-gray-100 cursor-none' : '' }}"
                                             placeholder="Email atau No Telepon">
                                     </div>
                                 </div>
@@ -629,7 +631,7 @@
 
     <script>
         // Add this JavaScript code to replace the existing script section in your HTML
-        const user = @json($donatur);
+        const user = @json($user);
 
         // Form state management
         let currentStep = 1;
@@ -651,7 +653,7 @@
             'ovo': 'OVO',
             'dana': 'DANA',
             'qris': 'QRIS',
-            'bni': 'Transfer Bank BNI'
+            'bni': 'Transfer Bank'
         };
         const paymentMethodLogos = {
             gopay: "{{ asset('img/payment/gopay.png') }}",
@@ -741,6 +743,11 @@
 
             updateStepper();
             updateMobileStepper();
+
+            if (step == 2) {
+                handlePaymentMethodsVisibility();
+            }
+
             // Update step 3 display when showing it
             if (step === 3) {
                 updateStep3Display();
@@ -1127,6 +1134,7 @@
 
         // Show default donation section
         const defaultDonationType = document.querySelector('input[name="jenis_donasi"]:checked');
+
         if (defaultDonationType && donationSections[defaultDonationType.value]) {
             donationSections[defaultDonationType.value].classList.remove('hidden');
             selectedDonationType = defaultDonationType.value;
