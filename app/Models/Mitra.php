@@ -24,4 +24,10 @@ class Mitra extends Model
     {
         return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
+
+    public function KerjaSama()
+    {
+        return $this->hasMany(KerjaSama::class, 'id_kerja_sama', 'id_kerja_sama');
+    }
+
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\JenisPublikasiController;
 use App\Http\Controllers\kategoriNewsEventController;
 use App\Http\Controllers\KategoriProgramController;
+use App\Http\Controllers\KerjaSamaController;
 use App\Http\Controllers\MenusController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
@@ -214,6 +215,14 @@ Route::middleware(['auth', 'auth.user:mitra,donatur'])->group(function () {
     Route::put('/user/edit-profile/settings', [UserController::class, 'updateSettings'])->name('edit-profile.settings');
     Route::delete('/user/profile/deactivate-account', [UserController::class, 'deactivate'])->name('profile.deactivate');
     Route::delete('/user/profile/delete-account', [UserController::class, 'forceDelete'])->name('profile.delete');
+});
+
+
+Route::middleware(['auth', 'auth.user:mitra'])->group(function () {
+    // kerja sama
+    Route::get('/mitra/kerja-sama', [KerjaSamaController::class, 'show'])->name('mitra.kerja-sama');
+    Route::post('/mitra/kerja-sama/store', [KerjaSamaController::class, 'store'])->name('kerja-sama.store');
+    
 });
 
 

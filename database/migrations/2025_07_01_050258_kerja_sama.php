@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('kategori_kerja_sama', function(Blueprint $table){
             $table->id('id_kategori_kerja_sama');
             $table->string('nama')->unique();
-            $table->text('deskripsi')->nullable();
             $table->timestamps();
         });
         
@@ -24,11 +23,13 @@ return new class extends Migration
             $table->text('keterangan')->nullable();
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
-            $table->enum('status', ['approved', 'pending', 'rejected'])->default('pending');
+            $table->enum('status', ['approved', 'pending', 'rejected', 'expired'])->default('pending');
             $table->unsignedBigInteger('id_mitra');
+            $table->unsignedBigInteger('id_program');
             $table->unsignedBigInteger('id_kategori_kerja_sama');
             $table->timestamps();
             
+            $table->foreign('id_program')->references('id_program')->on('program')->onDelete('cascade');
             $table->foreign('id_mitra')->references('id_mitra')->on('mitra')->onDelete('cascade');
             $table->foreign('id_kategori_kerja_sama')->references('id_kategori_kerja_sama')->on('kategori_kerja_sama')->onDelete('cascade');
         });
@@ -48,8 +49,8 @@ return new class extends Migration
     */
     public function down(): void
     {
-        Schema::dropIfExists('kategori_kerja_sama');
-        Schema::dropIfExists('kerja_sama');
         Schema::dropIfExists('file_penunjang');
+        Schema::dropIfExists('kerja_sama');
+        Schema::dropIfExists('kategori_kerja_sama');
     }
 };

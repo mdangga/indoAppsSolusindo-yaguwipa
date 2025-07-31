@@ -21,11 +21,16 @@ class Program extends Model
     {
         return $this->belongsTo(KategoriProgram::class, 'id_kategori_program', 'id_kategori_program');
     }
-
+    
     public function institusiTerlibat()
     {
         return $this->belongsToMany(Institusi::class, 'program_institusi', 'id_program', 'id_institusi')
-            ->withPivot('tanggal')
-            ->withTimestamps();
+        ->withPivot('tanggal')
+        ->withTimestamps();
+    }
+    
+    public function KerjaSama()
+    {
+        return $this->hasMany(KerjaSama::class, 'id_program', 'id_program');
     }
 }
