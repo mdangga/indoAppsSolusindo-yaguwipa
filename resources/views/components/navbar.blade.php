@@ -200,8 +200,9 @@
 
             <!-- Login Button (Right on mobile) -->
             <div class="flex justify-end items-center">
-                @auth
+                @if (auth()->check())
                     @php
+                        $user = auth()->user();
                         $colorMap = [
                             'bg-red-400' => 'hover:bg-red-300',
                             'bg-blue-400' => 'hover:bg-blue-300',
@@ -214,22 +215,57 @@
                         ];
 
                         $colors = array_keys($colorMap);
-                        $userIdentifier = auth()->user()->email ?? auth()->id();
+                        $userIdentifier = $user->email ?? $user->id;
                         $colorIndex = crc32($userIdentifier) % count($colors);
                         $randomBg = $colors[$colorIndex];
                         $hoverBg = $colorMap[$randomBg];
+
+                        $profilePath = optional($user)->profile_path;
                     @endphp
 
-                    <div
-                        class="relative w-12 h-12 overflow-hidden {{ $randomBg }} {{ $hoverBg }} rounded-full text-white flex items-center justify-center font-semibold uppercase select-none transition-colors duration-200 cursor-pointer text-lg">
-                        {{ strtoupper(substr(auth()->user()->username ?? 'U', 0, 1)) }}
+                    @if ($profilePath)
+                        <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar">
+                            <img src="{{ asset('storage/' . $profilePath) }}" alt="Profile"
+                                class="w-12 h-12 rounded-full object-cover border-2 border-gray-100/10 hover:scale-105 transition" />
+                        </button>
+                    @else
+                        <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar"
+                            class="w-12 h-12 {{ $randomBg }} {{ $hoverBg }} rounded-full text-white flex items-center justify-center font-semibold uppercase select-none transition-colors duration-200 cursor-pointer text-lg">
+                            {{ strtoupper(substr($user->username ?? ($user->nama ?? 'U'), 0, 1)) }}
+                        </button>
+                    @endif
+
+                    <!-- Dropdown menu -->
+                    <div id="dropdownAvatar"
+                        class="z-10 right-0 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-xl max-w-60 min-w-44 ">
+                        <div class="px-4 py-3 text-sm text-gray-900 ">
+                            <div class="font-bold mb-1">{{ '@' . ($user->username ?? '-') }}</div>
+                            <div class="text-gray-500">{{ $user->nama ?? '-' }}</div>
+                        </div>
+                        <ul class="pt-2 text-sm text-gray-700" aria-labelledby="dropdownUserAvatarButton">
+                            <li>
+                                <a href="{{ $user->role === 'admin' ? route('admin.profiles') : route('dashboard') }}"
+                                    class="block px-4 py-2 hover:bg-gray-100">Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('user.edit-profile') }}"
+                                    class="block px-4 py-2 hover:bg-gray-100">Edit Profile</a>
+                            </li>
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST" class="py-2">
+                                    @csrf
+                                    <button type="submit"
+                                        class="block px-4 w-full py-2 text-sm text-red-700 hover:bg-red-100 text-left cursor-pointer">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
                     </div>
                 @else
                     <a href="{{ route('login') }}"
                         class="inline-block bg-amber-100 text-sm font-semibold text-gray-900 rounded-[50px] px-4 py-2.5 lg:px-6 lg:py-3.5 hover:bg-amber-200 transition">
                         Log in
                     </a>
-                @endauth
+                @endif
             </div>
         </div>
     </div>
@@ -314,7 +350,8 @@
             <button @click="sidebarOpen = false" type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
                 <span class="sr-only">Close menu</span>
                 <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
         </div>
