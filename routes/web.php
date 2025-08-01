@@ -9,6 +9,7 @@ use App\Http\Controllers\kategoriNewsEventController;
 use App\Http\Controllers\KategoriProgramController;
 use App\Http\Controllers\KerjaSamaController;
 use App\Http\Controllers\MenusController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\PublikasiController;
@@ -57,6 +58,10 @@ Route::middleware(['auth.admin'])->group(function () {
     // general-setting
     Route::get('/admin/general-setting', [ProfileController::class, 'index'])->name('admin.profiles');
     Route::put('/admin/general-setting/update/{id}', [ProfileController::class, 'update'])->name('profiles.update');
+    
+    
+    // notifikasi
+    Route::get('/notifications/read/{id}', [NotificationController::class, 'bacaSatuNotif'])->name('notifications.read');
 
 
     // user
@@ -183,24 +188,35 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::put('/admin/publikasi/{id{', [PublikasiController::class, 'update'])->name('publikasi.update');
 
     Route::delete('/admin/publikasi/destroy/{id}', [PublikasiController::class, 'destroy'])->name('publikasi.delete');
+
+
+    // kerja-sama
+    Route::get('/admin/kerja-sama', [KerjaSamaController::class, 'index'])->name('admin.kerjaSama');
+    Route::get('/admin/datatable/kerja-sama', [KerjaSamaController::class, 'getDataTables'])->name('kerjaSama.table');
+    Route::get('/admin/kerja-sama/detail-kerja-sama/{id}', [KerjaSamaController::class, 'detailKerjaSama'])->name('kerjaSama.detail');
+
+    Route::post('/admin/kerja-sama/approved/{id}', [KerjaSamaController::class, 'approved'])->name('kerjaSama.approved');
+    Route::post('/admin/kerja-sama/rejected{id}', [KerjaSamaController::class, 'rejected'])->name('kerjaSama.rejected');
+
+    Route::delete('/admin/publikasi/destroy/{id}', [KerjaSamaController::class, 'destroy'])->name('kerjaSama.delete');
 });
-
-
-// Auth routes
-// tanpa role
-
 
 
 // mitra-dan-donatur 
 Route::middleware(['auth', 'auth.user:mitra,donatur'])->group(function () {
+    // notifikasi
+    Route::post('/notifications/read-all', [NotificationController::class, 'bacaSemuaNotif'])->name('notifications.readAll');
+
+
     // register mitra
+    Route::get('/register/mitra/store', [UserController::class, 'showJoinMitra'])->name('mitra.join');
     Route::post('/register/mitra/{id}', [UserController::class, 'addDataMitra'])->name('add.dataMitra');
 
 
     // Dashboard
     Route::get('/user/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
 
-    
+
     // review
     Route::post('/user/review/store', [ReviewController::class, 'store'])->name('review.store');
     Route::put('/user/review/edit/{id}', [ReviewController::class, 'update'])->name('review.update');
@@ -222,7 +238,6 @@ Route::middleware(['auth', 'auth.user:mitra'])->group(function () {
     // kerja sama
     Route::get('/mitra/kerja-sama', [KerjaSamaController::class, 'show'])->name('mitra.kerja-sama');
     Route::post('/mitra/kerja-sama/store', [KerjaSamaController::class, 'store'])->name('kerja-sama.store');
-    
 });
 
 
@@ -245,4 +260,3 @@ Route::post('/profile/restore', [UserController::class, 'restore'])->name('profi
 
 // logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-

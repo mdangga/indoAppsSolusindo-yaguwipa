@@ -11,6 +11,8 @@ class FilePenunjang extends Model
 
     protected $fillable = [
         'file_path',
+        'nama_file',
+        'file_size',
         'id_kerja_sama',
     ];
 

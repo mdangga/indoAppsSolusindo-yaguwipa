@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Donatur;
 use App\Models\Mitra;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,7 +11,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules;
-use Psy\TabCompletion\Matcher\FunctionsMatcher;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
@@ -39,6 +37,13 @@ class UserController extends Controller
     public function showEditProfile()
     {
         return view('user.edit-profile', ['user' => Auth::user()]);
+    }
+
+
+    // menampilkan edit profile user
+    public function showJoinMitra()
+    {
+        return view('testing');
     }
 
 
