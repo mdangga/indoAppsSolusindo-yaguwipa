@@ -12,7 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'auth.null' => \App\Http\Middleware\AuthNullRole::class,
+            'auth.check' => \App\Http\Middleware\checkUserStatus::class,
             'auth.admin' => \App\Http\Middleware\AuthAdminRole::class,
             'auth.user' => \App\Http\Middleware\AuthUserRole::class,
 

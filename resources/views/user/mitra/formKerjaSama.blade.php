@@ -61,6 +61,9 @@
                                 x-bind:required="kategoriDipilih === 'other'"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                         </div>
+                        @error('id_kategori_kerja_sama')
+                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
 
@@ -72,12 +75,18 @@
                                 <option value="{{ $program->id_program }}">{{ $program->nama }}</option>
                             @endforeach
                         </select>
+                        @error('id_program')
+                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div>
                         <label for="keterangan" class="block text-sm font-medium text-gray-700">Keterangan</label>
                         <textarea name="keterangan" required
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></textarea>
+                        @error('keterangan')
+                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -86,12 +95,18 @@
                                 Mulai</label>
                             <input type="date" name="tanggal_mulai" required
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            @error('tanggal_mulai')
+                                <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div>
                             <label for="tanggal_selesai" class="block text-sm font-medium text-gray-700">Tanggal
                                 Selesai</label>
                             <input type="date" name="tanggal_selesai" required
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            @error('tanggal_selesai')
+                                <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
 
@@ -99,10 +114,16 @@
                         <label for="file_penunjang" class="block text-sm font-medium text-gray-700">File
                             Penunjang</label>
                         <input type="file" name="file_penunjang[]" id="file_penunjang" multiple
+                            accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onchange="validateFileCount(this)"
                             class="mt-1 block w-full text-sm text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
-                        <p class="mt-1 text-sm text-gray-500">Kamu dapat mengunggah lebih dari satu file. Format yang
-                            diizinkan: PDF, DOCX, JPG, PNG. Maks 2MB per file.</p>
+                        <p class="mt-1 text-sm text-gray-500">Unggah maksimal 4 file: Profil Lembaga, Proposal
+                            Kemitraan/Program, Surat Permohonan, dan Dokumen Legalitas (jika ada). Format: PDF, DOCX,
+                            JPG, PNG. Maks 2MB per file.</p>
+                        @error('file_penunjang')
+                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
+
 
                     <div>
                         <button type="submit"
@@ -120,6 +141,15 @@
             const fileList = Array.from(e.target.files).map(f => f.name).join(', ');
             alert("File yang dipilih:\n" + fileList);
         });
+
+        function validateFileCount(input) {
+            if (input.files.length > 4) {
+                alert(
+                    'Maksimal hanya boleh mengunggah 4 file sesuai lampiran: Profil Lembaga, Proposal, Surat, dan Legalitas.'
+                );
+                input.value = ''; // Reset input file
+            }
+        }
     </script>
 </body>
 

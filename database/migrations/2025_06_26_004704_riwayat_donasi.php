@@ -35,12 +35,13 @@ return new class extends Migration
             $table->decimal('jumlah_donasi', 15, 2)->nullable();
             $table->text('keterangan')->nullable();
             $table->enum('status', ['approved', 'pending', 'rejected'])->default('pending');
-            $table->timestamps();
             $table->unsignedBigInteger('id_user')->nullable();
             $table->unsignedBigInteger('id_kanal_donasi');
             $table->unsignedBigInteger('id_donasi');
+            $table->timestamps();
+            $table->softDeletes();
             
-            $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
+            $table->foreign('id_user')->references('id_user')->on('users');
             $table->foreign('id_kanal_donasi')->references('id_kanal_donasi')->on('kanal_donasi')->onDelete('restrict');
             $table->foreign('id_donasi')->references('id_donasi')->on('donasi')->onDelete('cascade');
         });
@@ -51,7 +52,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jenis_donasi');
-        Schema::dropIfExists('riwayat_donasi');
+        Schema::dropIfExists('donasi_donatur');
+        Schema::dropIfExists('donasi');
+        Schema::dropIfExists('kanal_donasi');
     }
 };
