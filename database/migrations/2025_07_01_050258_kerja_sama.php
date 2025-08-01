@@ -28,19 +28,22 @@ return new class extends Migration
             $table->unsignedBigInteger('id_program');
             $table->unsignedBigInteger('id_kategori_kerja_sama');
             $table->timestamps();
+            $table->softDeletes();
             
             $table->foreign('id_program')->references('id_program')->on('program')->onDelete('cascade');
-            $table->foreign('id_mitra')->references('id_mitra')->on('mitra')->onDelete('cascade');
+            $table->foreign('id_mitra')->references('id_mitra')->on('mitra');
             $table->foreign('id_kategori_kerja_sama')->references('id_kategori_kerja_sama')->on('kategori_kerja_sama')->onDelete('cascade');
         });
         
         Schema::create('file_penunjang', function(Blueprint $table){
             $table->id('id_file_penunjang');
             $table->string('file_path');
+            $table->string('nama_file');
+            $table->integer('file_size');
             $table->unsignedBigInteger('id_kerja_sama');
             $table->timestamps();
     
-            $table->foreign('id_kerja_sama')->references('id_kerja_sama')->on('kerja_sama')->onDelete('cascade');
+            $table->foreign('id_kerja_sama')->references('id_kerja_sama')->on('kerja_sama');
         });
     }
     
