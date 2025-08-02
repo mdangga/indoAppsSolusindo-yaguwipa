@@ -188,6 +188,14 @@
                                 </div>
 
                             </div>
+                            @if ($user->role === 'donatur')
+                                <ul class="text-sm text-gray-700 " aria-labelledby="dropdownUserAvatarButton">
+                                    <li>
+                                        <a href="{{ route('mitra.join') }}"
+                                            class="block px-4 py-2 hover:bg-gray-100">Join Mitra</a>
+                                    </li>
+                                </ul>
+                            @endif
                             <ul class="pt-2 text-sm text-gray-700 " aria-labelledby="dropdownUserAvatarButton">
                                 <li>
                                     <a href="{{ route('user.edit-profile') }}"
@@ -212,7 +220,7 @@
             <div class="lg:hidden mb-6">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
                     <div class="flex justify-around items-center">
-                        <a href="#"
+                        <a href="{{ $user->role === 'mitra' ? route('mitra.kerja-sama') : route('mitra.join') }}"
                             class="flex flex-col items-center p-2 hover:bg-gray-50 rounded-lg transition-colors">
                             <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-2">
                                 <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
@@ -221,7 +229,7 @@
                                         d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                                 </svg>
                             </div>
-                            <span class="text-xs font-medium text-gray-900">Products</span>
+                            <span class="text-xs font-medium text-gray-900">Kolaborasi</span>
                         </a>
 
                         <a href="#"
@@ -253,11 +261,71 @@
                 </div>
             </div>
 
-            <!-- Main Content Grid -->
+            {{-- Main Content Grid --}}
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Recent Orders -->
+                {{-- Recent Activity --}}
                 <div class="lg:col-span-2">
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    @if ($user->role === 'mitra')
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
+                            <div class="px-6 py-4 border-b border-gray-200">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg font-semibold text-gray-900">Aktivitas Terbaru</h3>
+                                    <a href="#" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                        Lihat Semua
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="divide-y divide-gray-200">
+                                @foreach ($recentActivities as $activity)
+                                    <div class="px-6 py-4">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        class="w-5 h-5 text-blue-600" viewBox="0 0 640 512">
+                                                        <path fill="currentColor"
+                                                            d="m323.4 85.2l-96.8 78.4c-16.1 13-19.2 36.4-7 53.1c12.9 17.8 38 21.3 55.3 7.8l99.3-77.2c7-5.4 17-4.2 22.5 2.8s4.2 17-2.8 22.5L373 188.8l139 128V128h-.7l-3.9-2.5L434.8 79c-15.3-9.8-33.2-15-51.4-15c-21.8 0-43 7.5-60 21.2m22.8 124.4l-51.7 40.2c-31.5 24.6-77.2 18.2-100.8-14.2c-22.2-30.5-16.6-73.1 12.7-96.8l83.2-67.3c-11.6-4.9-24.1-7.4-36.8-7.4C234 64 215.7 69.6 200 80l-72 48v224h28.2l91.4 83.4c19.6 17.9 49.9 16.5 67.8-3.1c5.5-6.1 9.2-13.2 11.1-20.6l17 15.6c19.5 17.9 49.9 16.6 67.8-2.9c4.5-4.9 7.8-10.6 9.9-16.5c19.4 13 45.8 10.3 62.1-7.5c17.9-19.5 16.6-49.9-2.9-67.8zM16 128c-8.8 0-16 7.2-16 16v208c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V128zm32 192a16 16 0 1 1 0 32a16 16 0 1 1 0-32m496-192v224c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V144c0-8.8-7.2-16-16-16zm32 208a16 16 0 1 1 32 0a16 16 0 1 1-32 0" />
+                                                    </svg>
+                                                </div>
+                                                <div class="ml-4">
+                                                    <p class="text-sm font-medium text-gray-900">
+                                                        {{ $activity->kategoriKerjaSama->nama ?? 'Tanpa Kategori' }}
+                                                    </p>
+                                                    <p class="text-sm text-gray-500">
+                                                        {{ $activity->keterangan }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="text-right">
+                                                <p class="text-sm font-medium text-gray-900 mb-2">
+                                                    {{ $activity->updated_at->format('d M Y') }}</p>
+                                                <span
+                                                    class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium 
+                                                        @switch($activity->status)
+                                                            @case('approved')
+                                                              bg-green-100 text-green-800
+                                                                @break
+                                                            @case('rejected')
+                                                              bg-red-100 text-red-800
+                                                                @break
+                                                            @case('pending')
+                                                              bg-yellow-100 text-yellow-800
+                                                                @break
+                                                            @default
+                                                              bg-gray-100 text-gray-800
+                                                            @endswitch
+                                                ">
+                                                    {{ str_replace('_', ' ', ucfirst($activity->status ?? '-')) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                    {{-- <div class="bg-white rounded-lg shadow-sm border border-gray-200">
                         <div class="px-6 py-4 border-b border-gray-200">
                             <div class="flex items-center justify-between">
                                 <h3 class="text-lg font-semibold text-gray-900">Pesanan Terbaru</h3>
@@ -388,11 +456,11 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <!-- Individual Review -->
                     @if ($emptyReview || $isEditReview)
-                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mt-8">
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                             <h3 class="text-lg font-semibold text-gray-900 mb-4">Tulis Ulasan</h3>
 
                             @if (session('success'))
@@ -536,13 +604,13 @@
                     <div class="hidden lg:block bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
                         <div class="space-y-3">
-                            <a href="{{ route('mitra.kerja-sama') }}"
+                            <a href="{{ $user->role === 'mitra' ? route('mitra.kerja-sama') : route('mitra.join') }}"
                                 class="flex items-center p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
                                 <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-blue-600"
+                                        viewBox="0 0 640 512">
+                                        <path fill="currentColor"
+                                            d="m323.4 85.2l-96.8 78.4c-16.1 13-19.2 36.4-7 53.1c12.9 17.8 38 21.3 55.3 7.8l99.3-77.2c7-5.4 17-4.2 22.5 2.8s4.2 17-2.8 22.5L373 188.8l139 128V128h-.7l-3.9-2.5L434.8 79c-15.3-9.8-33.2-15-51.4-15c-21.8 0-43 7.5-60 21.2m22.8 124.4l-51.7 40.2c-31.5 24.6-77.2 18.2-100.8-14.2c-22.2-30.5-16.6-73.1 12.7-96.8l83.2-67.3c-11.6-4.9-24.1-7.4-36.8-7.4C234 64 215.7 69.6 200 80l-72 48v224h28.2l91.4 83.4c19.6 17.9 49.9 16.5 67.8-3.1c5.5-6.1 9.2-13.2 11.1-20.6l17 15.6c19.5 17.9 49.9 16.6 67.8-2.9c4.5-4.9 7.8-10.6 9.9-16.5c19.4 13 45.8 10.3 62.1-7.5c17.9-19.5 16.6-49.9-2.9-67.8zM16 128c-8.8 0-16 7.2-16 16v208c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V128zm32 192a16 16 0 1 1 0 32a16 16 0 1 1 0-32m496-192v224c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V144c0-8.8-7.2-16-16-16zm32 208a16 16 0 1 1 32 0a16 16 0 1 1-32 0" />
                                     </svg>
                                 </div>
                                 <span class="text-sm font-medium text-gray-900">Kolaborasi</span>
@@ -577,7 +645,7 @@
                     </div>
 
                     <!-- Notifications -->
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    {{-- <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">Notifications</h3>
                         <div class="space-y-3">
                             <div class="flex items-start p-3 bg-blue-50 rounded-lg">
@@ -604,7 +672,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
@@ -659,9 +727,9 @@
                         .then(data => {
                             // Remove all 'new' badges and blue background
                             document.querySelectorAll('#notificationDropdown .bg-blue-50').forEach(
-                            el => {
-                                el.classList.remove('bg-blue-50');
-                            });
+                                el => {
+                                    el.classList.remove('bg-blue-50');
+                                });
                             document.querySelectorAll('#notificationDropdown [class*="bg-blue-100"]')
                                 .forEach(el => {
                                     el.remove();
