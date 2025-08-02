@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-gradient-to-br from-blue-50 to-indigo-100">
+<html lang="en">
 
 <head>
     <meta charset="utf-8" />
@@ -18,7 +18,7 @@
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .form-input {
@@ -27,8 +27,8 @@
         }
 
         .form-input:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
             transform: translateY(-1px);
         }
 
@@ -50,30 +50,26 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
             transition: all 0.3s ease;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
         }
 
-        .section-divider {
-            border-top: 1px solid #e5e7eb;
-            margin: 2rem 0;
-            position: relative;
+        .btn-secondary {
+            background: white;
+            border: 2px solid #e5e7eb;
+            color: #6b7280;
+            transition: all 0.3s ease;
         }
 
-        .section-divider::before {
-            content: '';
-            position: absolute;
-            top: -1px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 2px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .btn-secondary:hover {
+            border-color: #6366f1;
+            color: #6366f1;
+            transform: translateY(-1px);
         }
 
         .grid-2 {
@@ -82,54 +78,133 @@
             gap: 1rem;
         }
 
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .stepper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .stepper-line {
+            height: 3px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stepper-progress {
+            height: 100%;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+
+        .stepper-text {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
         @media (max-width: 640px) {
             .grid-2 {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
+                gap: 1rem;
             }
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fade-in 0.4s ease-out;
         }
     </style>
 </head>
 
-<body class="h-full bg-gradient-to-br from-blue-50 to-indigo-100">
+<body class="h-full bg-gray-50 ">
     <div class="flex min-h-full items-center justify-center px-4 py-8 lg:px-8">
-        <div class="w-full max-w-2xl">
+        <div class="w-full max-w-lg">
             <!-- Card Container -->
-            <div class="card-container rounded-3xl shadow-2xl p-8 lg:p-10">
+            <div class="card-container rounded-2xl shadow-xl p-6 lg:p-8">
                 <!-- Logo and Header -->
-                <div class="text-center mb-10">
+                <div class="text-center mb-6">
                     <div class="relative inline-block">
-                        <img class="mx-auto h-20 w-auto drop-shadow-lg" src="{{ asset('img/logo.png') }}"
+                        <img class="mx-auto h-16 w-auto drop-shadow-lg" src="{{ asset('img/logo.png') }}"
                             alt="yaguwipa logo" />
                         <div
-                            class="absolute -inset-4 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-20 blur-lg">
+                            class="absolute -inset-3 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full opacity-20 blur-lg">
                         </div>
                     </div>
                     <h2
-                        class="mt-8 text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+                        class="mt-6 text-2xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
                         Buat Akun Anda
                     </h2>
-                    <p class="mt-3 text-sm text-gray-600 max-w-sm mx-auto leading-relaxed">
+                    <p class="mt-2 text-sm text-gray-600 max-w-sm mx-auto leading-relaxed">
                         Bersama kita bisa membuat perubahan yang lebih baik
                     </p>
                 </div>
 
+                <!-- Progress Stepper -->
+                <div class="stepper">
+                    <div class="w-full">
+                        <div class="stepper-line w-full">
+                            <div id="stepper-progress" class="stepper-progress" style="width: 33.33%"></div>
+                        </div>
+                        <div class="stepper-text">
+                            <span id="step-text">Langkah 1 dari 3 - Informasi Akun</span>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Form -->
-                <form class="space-y-0" action="/register" method="POST" enctype="multipart/form-data">
+                <form id="register-form" class="space-y-0" action="/register" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
 
-                    {{-- Global error messages --}}
                     @if ($errors->any())
-                        <div class="mb-6 text-sm text-red-600 bg-red-50 border border-red-200 p-4 rounded-xl">
-                            <div class="flex items-center mb-2">
+                        <div
+                            class="fixed top-6 right-6 z-50 w-full max-w-xs bg-red-50 border border-red-200 text-red-600 text-sm p-4 rounded-xl shadow-lg space-y-2 animate-fade-in">
+                            <div class="flex items-center">
                                 <svg class="w-5 h-5 text-red-500 mr-2" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 9v2m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" />
                                 </svg>
-                                <span class="font-medium">Terdapat kesalahan:</span>
+                                <span class="font-semibold">Terdapat kesalahan:</span>
                             </div>
-                            <ul class="list-disc list-inside space-y-1">
+                            <ul class="list-disc list-inside pl-4">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
@@ -137,41 +212,23 @@
                         </div>
                     @endif
 
-                    <!-- Informasi Pribadi Section -->
-                    <div class="space-y-6">
-                        <div class="text-center">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-1">Informasi Pribadi</h3>
-                            <p class="text-xs text-gray-500">Lengkapi data diri Anda</p>
-                        </div>
 
-                        {{-- Nama --}}
-                        <div class="form-group">
-                            <label for="nama" class="form-label text-sm">Nama Lengkap</label>
-                            <input type="text" name="nama" id="nama" value="{{ old('nama') }}" required
-                                class="form-input block w-full rounded-xl px-4 py-3.5 text-gray-900 placeholder:text-gray-400"
-                                placeholder="Masukkan Nama Lengkap" />
-                            @error('nama')
-                                <p class="text-sm text-red-600 mt-2 flex items-center">
-                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 9v2m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" />
-                                    </svg>
-                                    {{ $message }}
-                                </p>
-                            @enderror
-                        </div>
+                    <!-- Step 1: Informasi Akun -->
+                    <div id="step-1" class="step active">
+                        <div class="space-y-4">
+                            {{-- <div class="text-center mb-4">
+                                <h3 class="text-lg font-semibold text-gray-800">Informasi Akun</h3>
+                                <p class="text-xs text-gray-500">Buat username dan password untuk akun Anda</p>
+                            </div> --}}
 
-                        {{-- Email dan Nomor Telepon dalam satu baris --}}
-                        <div class="grid-2">
+                            {{-- Username --}}
                             <div class="form-group">
-                                <label for="email" class="form-label text-sm">
-                                    Email
-                                    <span class="text-xs text-gray-500 font-normal">(opsional)</span>
-                                </label>
-                                <input type="email" name="email" id="email" value="{{ old('email') }}"
-                                    class="form-input block w-full rounded-xl px-4 py-3.5 text-gray-900 placeholder:text-gray-400"
-                                    placeholder="contoh@email.com" />
-                                @error('email')
+                                <label for="username" class="form-label text-sm">Username</label>
+                                <input type="text" name="username" id="username" value="{{ old('username') }}"
+                                    required
+                                    class="form-input block w-full rounded-xl bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400"
+                                    placeholder="Masukkan Username" />
+                                @error('username')
                                     <p class="text-sm text-red-600 mt-2 flex items-center">
                                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -182,99 +239,13 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group">
-                                <label for="no_tlp" class="form-label text-sm">Nomor Telepon</label>
-                                <input type="text" name="no_tlp" id="no_tlp" value="{{ old('no_tlp') }}" required
-                                    class="form-input block w-full rounded-xl px-4 py-3.5 text-gray-900 placeholder:text-gray-400"
-                                    placeholder="08xxxxxxxxxx" />
-                                @error('no_tlp')
-                                    <p class="text-sm text-red-600 mt-2 flex items-center">
-                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 9v2m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" />
-                                        </svg>
-                                        {{ $message }}
-                                    </p>
-                                @enderror
-                            </div>
-                        </div>
-
-                        {{-- Alamat --}}
-                        <div class="form-group">
-                            <label for="alamat" class="form-label text-sm">Alamat</label>
-                            <textarea name="alamat" id="alamat" required rows="3"
-                                class="form-input block w-full rounded-xl px-4 py-3.5 text-gray-900 placeholder:text-gray-400 resize-none"
-                                placeholder="Masukkan Alamat Lengkap">{{ old('alamat') }}</textarea>
-                            @error('alamat')
-                                <p class="text-sm text-red-600 mt-2 flex items-center">
-                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 9v2m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" />
-                                    </svg>
-                                    {{ $message }}
-                                </p>
-                            @enderror
-                        </div>
-
-                        {{-- Foto Profil (opsional) --}}
-                        <div class="form-group">
-                            <label for="profile_path" class="form-label text-sm">
-                                Foto Profil
-                                <span class="text-xs text-gray-500 font-normal">(opsional)</span>
-                            </label>
-                            <div class="relative">
-                                <input type="file" name="profile_path" id="profile_path" accept="image/*"
-                                    class="block w-full text-sm text-gray-600 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 file:transition-colors border-2 border-gray-200 rounded-xl p-2" />
-                            </div>
-                            @error('profile_path')
-                                <p class="text-sm text-red-600 mt-2 flex items-center">
-                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 9v2m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" />
-                                    </svg>
-                                    {{ $message }}
-                                </p>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <!-- Section Divider -->
-                    <div class="section-divider"></div>
-
-                    <!-- Informasi Akun Section -->
-                    <div class="space-y-6">
-                        <div class="text-center">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-1">Informasi Akun</h3>
-                            <p class="text-xs text-gray-500">Buat username dan password untuk akun Anda</p>
-                        </div>
-
-                        {{-- Username --}}
-                        <div class="form-group">
-                            <label for="username" class="form-label text-sm">Username</label>
-                            <input type="text" name="username" id="username" value="{{ old('username') }}"
-                                required
-                                class="form-input block w-full rounded-xl bg-white px-4 py-3.5 text-gray-900 placeholder:text-gray-400"
-                                placeholder="Masukkan Username" />
-                            @error('username')
-                                <p class="text-sm text-red-600 mt-2 flex items-center">
-                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 9v2m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" />
-                                    </svg>
-                                    {{ $message }}
-                                </p>
-                            @enderror
-                        </div>
-
-                        {{-- Password dan Konfirmasi Password dalam satu baris --}}
-                        <div class="grid-2">
-                            <!-- Password Field -->
+                            {{-- Password --}}
                             <div class="form-group">
                                 <label for="password" class="form-label text-sm">Password</label>
                                 <div class="relative">
-                                    <input type="password" name="password" id="password"
-                                        autocomplete="new-password" required
-                                        class="form-input block w-full rounded-xl bg-white px-4 py-3.5 pr-12 text-gray-900 placeholder:text-gray-400"
+                                    <input type="password" name="password" id="password" autocomplete="new-password"
+                                        required
+                                        class="form-input block w-full rounded-xl bg-white px-4 py-3 pr-12 text-gray-900 placeholder:text-gray-400"
                                         placeholder="Masukkan Password" />
                                     <div class="absolute inset-y-0 right-0 flex items-center pr-4">
                                         <button type="button"
@@ -290,16 +261,26 @@
                                         </button>
                                     </div>
                                 </div>
+                                <!-- Password strength indicator -->
+                                <div class="mt-2">
+                                    <div class="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+                                        <div id="password-strength"
+                                            class="h-2 bg-red-500 rounded-full transition-all duration-500"
+                                            style="width: 0%"></div>
+                                    </div>
+                                    <p id="password-hint" class="text-xs text-gray-500 mt-1">Kekuatan password: lemah
+                                    </p>
+                                </div>
                             </div>
 
-                            <!-- Confirm Password Field -->
+                            {{-- Konfirmasi Password --}}
                             <div class="form-group">
                                 <label for="password_confirmation" class="form-label text-sm">Konfirmasi
                                     Password</label>
                                 <div class="relative">
                                     <input type="password" name="password_confirmation" id="password_confirmation"
                                         autocomplete="new-password" required
-                                        class="form-input block w-full rounded-xl bg-white px-4 py-3.5 pr-12 text-gray-900 placeholder:text-gray-400"
+                                        class="form-input block w-full rounded-xl bg-white px-4 py-3 pr-12 text-gray-900 placeholder:text-gray-400"
                                         placeholder="Ulangi Password" />
                                     <div class="absolute inset-y-0 right-0 flex items-center pr-4">
                                         <button type="button"
@@ -315,43 +296,187 @@
                                         </button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- Password strength indicator dan match indicator -->
-                        <div class="space-y-3">
-                            <!-- Password strength indicator -->
-                            <div>
-                                <div class="flex space-x-1">
-                                    <div class="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                                        <div id="password-strength"
-                                            class="h-2 bg-red-500 rounded-full transition-all duration-500"
-                                            style="width: 0%"></div>
-                                    </div>
+                                <!-- Password match indicator -->
+                                <div id="password-match" class="text-xs mt-1 hidden">
+                                    <span class="text-red-500 flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                        Password tidak cocok
+                                    </span>
                                 </div>
-                                <p id="password-hint" class="text-xs text-gray-500 mt-2">Kekuatan password: lemah</p>
-                            </div>
-
-                            <!-- Password match indicator -->
-                            <div id="password-match" class="text-xs hidden">
-                                <span class="text-red-500 flex items-center">
-                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                    Password tidak cocok
-                                </span>
                             </div>
                         </div>
                     </div>
 
-                    {{-- Tombol Submit --}}
-                    <div class="pt-6">
-                        <button type="submit"
-                            class="btn-primary w-full justify-center rounded-xl px-6 py-4 text-base font-semibold text-white shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-300">
-                            <span class="flex items-center justify-center">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <!-- Step 2: Informasi Pribadi -->
+                    <div id="step-2" class="step">
+                        <div class="space-y-4">
+                            {{-- <div class="text-center mb-4">
+                                <h3 class="text-lg font-semibold text-gray-800">Informasi Pribadi</h3>
+                                <p class="text-xs text-gray-500">Lengkapi data diri Anda</p>
+                            </div> --}}
+
+                            {{-- Nama --}}
+                            <div class="form-group">
+                                <label for="nama" class="form-label text-sm">Nama Lengkap</label>
+                                <input type="text" name="nama" id="nama" value="{{ old('nama') }}"
+                                    required
+                                    class="form-input block w-full rounded-xl px-4 py-3 text-gray-900 placeholder:text-gray-400"
+                                    placeholder="Masukkan Nama Lengkap" />
+                                @error('nama')
+                                    <p class="text-sm text-red-600 mt-2 flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 9v2m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" />
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+
+                            {{-- Email --}}
+                            <div class="form-group">
+                                <label for="email" class="form-label text-sm">
+                                    Email
+                                    <span class="text-xs text-gray-500 font-normal">(opsional)</span>
+                                </label>
+                                <input type="email" name="email" id="email" value="{{ old('email') }}"
+                                    class="form-input block w-full rounded-xl px-4 py-3 text-gray-900 placeholder:text-gray-400"
+                                    placeholder="contoh@email.com" />
+                                @error('email')
+                                    <p class="text-sm text-red-600 mt-2 flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 9v2m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" />
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+
+                            {{-- Nomor Telepon --}}
+                            <div class="form-group">
+                                <label for="no_tlp" class="form-label text-sm">Nomor Telepon</label>
+                                <input type="text" name="no_tlp" id="no_tlp" value="{{ old('no_tlp') }}"
+                                    required
+                                    class="form-input block w-full rounded-xl px-4 py-3 text-gray-900 placeholder:text-gray-400"
+                                    placeholder="08xxxxxxxxxx" />
+                                @error('no_tlp')
+                                    <p class="text-sm text-red-600 mt-2 flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 9v2m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" />
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+
+                            {{-- Alamat --}}
+                            <div class="form-group">
+                                <label for="alamat" class="form-label text-sm">Alamat</label>
+                                <textarea name="alamat" id="alamat" required rows="3"
+                                    class="form-input block w-full rounded-xl px-4 py-3 text-gray-900 placeholder:text-gray-400 resize-none"
+                                    placeholder="Masukkan Alamat Lengkap">{{ old('alamat') }}</textarea>
+                                @error('alamat')
+                                    <p class="text-sm text-red-600 mt-2 flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 9v2m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" />
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Foto Profil -->
+                    <div id="step-3" class="step">
+                        <div class="space-y-4">
+                            <div class="text-center mb-4">
+                                <h3 class="text-lg font-semibold text-gray-800">Foto Profil</h3>
+                                <p class="text-xs text-gray-500">Upload foto profil Anda (opsional)</p>
+                            </div>
+
+                            {{-- Foto Profil --}}
+                            <div class="form-group">
+                                <label for="profile_path" class="form-label text-sm">
+                                    Foto Profil
+                                    <span class="text-xs text-gray-500 font-normal">(opsional)</span>
+                                </label>
+                                <div class="relative">
+                                    <input type="file" name="profile_path" id="profile_path" accept="image/*"
+                                        class="block w-full text-sm text-gray-600 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 file:transition-colors border-2 border-gray-200 rounded-xl p-2" />
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2">Format yang didukung: JPG, PNG, GIF (Max: 2MB)
+                                </p>
+                                @error('profile_path')
+                                    <p class="text-sm text-red-600 mt-2 flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 9v2m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" />
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+
+                            <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-4">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-indigo-600 mr-3" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <div>
+                                        <p class="text-sm font-medium text-indigo-800">Hampir selesai!</p>
+                                        <p class="text-xs text-indigo-600">Anda dapat melewati langkah ini dan
+                                            menambahkan foto nanti.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="flex justify-between pt-6">
+                        <button type="button" id="prev-btn"
+                            class="btn-secondary px-6 py-3 rounded-xl font-semibold text-sm hidden"
+                            onclick="previousStep()">
+                            <span class="flex items-center">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 19l-7-7 7-7" />
+                                </svg>
+                                Kembali
+                            </span>
+                        </button>
+
+                        <button type="button" id="next-btn"
+                            class="btn-primary ml-auto px-6 py-3 rounded-xl font-semibold text-sm text-white"
+                            onclick="nextStep()">
+                            <span class="flex items-center">
+                                Selanjutnya
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5l7 7-7 7" />
+                                </svg>
+                            </span>
+                        </button>
+
+                        <button type="submit" id="submit-btn"
+                            class="btn-primary ml-auto px-6 py-3 rounded-xl font-semibold text-sm text-white hidden">
+                            <span class="flex items-center">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 4v16m8-8H4" />
                                 </svg>
@@ -362,11 +487,11 @@
                 </form>
 
                 <!-- Sign in link -->
-                <div class="mt-8 text-center border-t border-gray-200 pt-6">
+                <div class="mt-6 text-center border-t border-gray-200 pt-4">
                     <p class="text-sm text-gray-600">
                         Sudah memiliki akun?
                         <a href="{{ route('login') }}"
-                            class="font-semibold text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text hover:from-blue-700 hover:to-purple-700 transition-all duration-300">
+                            class="font-semibold text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text hover:from-indigo-700 hover:to-purple-700 transition-all duration-300">
                             Masuk Sekarang
                         </a>
                     </p>
@@ -375,32 +500,10 @@
         </div>
     </div>
 
-    @error('username')
-        <div id="login-alert"
-            class="fixed top-6 right-0 z-50 px-6 py-4 bg-red-50 border-l-4 border-red-400 text-red-800 rounded-r-xl shadow-2xl transform translate-x-full opacity-0 transition-all duration-500 ease-out max-w-md">
-            <div class="flex items-start justify-between space-x-4">
-                <div class="flex items-center space-x-3">
-                    <svg class="w-6 h-6 text-red-600 flex-shrink-0" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 9v2m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" />
-                    </svg>
-                    <div>
-                        <p class="font-medium text-sm">Terjadi Kesalahan</p>
-                        <p class="text-sm">{{ $message }}</p>
-                    </div>
-                </div>
-                <button onclick="closeLoginAlert()"
-                    class="text-red-500 hover:text-red-700 focus:outline-none flex-shrink-0">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-        </div>
-    @enderror
-
     <script>
+        let currentStep = 1;
+        const totalSteps = 3;
+
         // Toggle password visibility
         function togglePassword(fieldId, iconId) {
             const field = document.getElementById(fieldId);
@@ -426,6 +529,129 @@
                        12a3 3 0 11-6 0 3 3 0 016 0z" />
                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M3 3l18 18" />`;
+        }
+
+        // Step navigation functions
+        function nextStep() {
+            if (validateCurrentStep()) {
+                if (currentStep < totalSteps) {
+                    document.getElementById(`step-${currentStep}`).classList.remove('active');
+                    currentStep++;
+                    document.getElementById(`step-${currentStep}`).classList.add('active');
+                    updateStepper();
+                    updateButtons();
+                }
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 1) {
+                document.getElementById(`step-${currentStep}`).classList.remove('active');
+                currentStep--;
+                document.getElementById(`step-${currentStep}`).classList.add('active');
+                updateStepper();
+                updateButtons();
+            }
+        }
+
+        function updateStepper() {
+            const progress = (currentStep / totalSteps) * 100;
+            document.getElementById('stepper-progress').style.width = progress + '%';
+
+            let stepText = '';
+            switch (currentStep) {
+                case 1:
+                    stepText = 'Langkah 1 dari 3 - Informasi Akun';
+                    break;
+                case 2:
+                    stepText = 'Langkah 2 dari 3 - Informasi Pribadi';
+                    break;
+                case 3:
+                    stepText = 'Langkah 3 dari 3 - Foto Profil';
+                    break;
+            }
+            document.getElementById('step-text').textContent = stepText;
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+
+            if (currentStep === 1) {
+                prevBtn.classList.add('hidden');
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+            } else if (currentStep === totalSteps) {
+                prevBtn.classList.remove('hidden');
+                nextBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+            }
+        }
+
+        function validateCurrentStep() {
+            let isValid = true;
+            const currentStepEl = document.getElementById(`step-${currentStep}`);
+            const requiredFields = currentStepEl.querySelectorAll('input[required], textarea[required]');
+
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.classList.add('border-red-500');
+                    isValid = false;
+                } else {
+                    field.classList.remove('border-red-500');
+                }
+            });
+
+            // Additional validation for step 1 (password confirmation)
+            if (currentStep === 1) {
+                const password = document.getElementById('password').value;
+                const passwordConfirmation = document.getElementById('password_confirmation').value;
+
+                if (password !== passwordConfirmation) {
+                    document.getElementById('password_confirmation').classList.add('border-red-500');
+                    document.getElementById('password-match').classList.remove('hidden');
+                    isValid = false;
+                } else {
+                    document.getElementById('password_confirmation').classList.remove('border-red-500');
+                    document.getElementById('password-match').classList.add('hidden');
+                }
+            }
+
+            if (!isValid) {
+                // Show error message
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'text-sm text-red-600 bg-red-50 border border-red-200 p-3 rounded-xl mb-4';
+                errorDiv.innerHTML = `
+                    <div class="flex items-center">
+                        <svg class="w-4 h-4 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" />
+                        </svg>
+                        <span class="font-medium">Mohon lengkapi semua field yang wajib diisi</span>
+                    </div>
+                `;
+
+                // Remove existing error if any
+                const existingError = currentStepEl.querySelector('.text-red-600.bg-red-50');
+                if (existingError) {
+                    existingError.remove();
+                }
+
+                currentStepEl.insertBefore(errorDiv, currentStepEl.firstChild);
+
+                // Auto remove error after 3 seconds
+                setTimeout(() => {
+                    if (errorDiv.parentNode) {
+                        errorDiv.remove();
+                    }
+                }, 3000);
+            }
+
+            return isValid;
         }
 
         // Password strength checker
@@ -463,7 +689,7 @@
             strengthBar.className = `h-2 rounded-full transition-all duration-500 ${color}`;
             strengthText.textContent = `Kekuatan password: ${strengthLabel.toLowerCase()}`;
             strengthText.className =
-                `text-xs mt-2 ${strength >= 75 ? 'text-green-600' : strength >= 50 ? 'text-yellow-600' : 'text-gray-500'}`;
+                `text-xs mt-1 ${strength >= 75 ? 'text-green-600' : strength >= 50 ? 'text-yellow-600' : 'text-gray-500'}`;
         });
 
         // Password confirmation checker
@@ -479,47 +705,10 @@
             }
         });
 
-        // Animasi masuk saat halaman dimuat
-        window.addEventListener('DOMContentLoaded', () => {
-            const alertBox = document.getElementById('login-alert');
-            if (alertBox) {
-                setTimeout(() => {
-                    alertBox.classList.remove('translate-x-full', 'opacity-0');
-                    alertBox.classList.add('translate-x-0', 'opacity-100', 'right-6');
-                }, 100);
-
-                // Auto close after 5 seconds
-                setTimeout(() => {
-                    closeLoginAlert();
-                }, 5000);
-            }
-        });
-
-        function closeLoginAlert() {
-            const alertBox = document.getElementById('login-alert');
-            if (alertBox) {
-                alertBox.classList.remove('translate-x-0', 'opacity-100');
-                alertBox.classList.add('opacity-0', 'translate-x-full');
-
-                setTimeout(() => {
-                    alertBox.style.display = 'none';
-                }, 500);
-            }
-        }
-
-        // Add smooth scrolling animation when form loads
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            const formElements = document.querySelectorAll('.form-group');
-            formElements.forEach((element, index) => {
-                element.style.opacity = '0';
-                element.style.transform = 'translateY(20px)';
-
-                setTimeout(() => {
-                    element.style.transition = 'all 0.6s ease';
-                    element.style.opacity = '1';
-                    element.style.transform = 'translateY(0)';
-                }, index * 100);
-            });
+            updateButtons();
+            updateStepper();
         });
     </script>
 </body>
