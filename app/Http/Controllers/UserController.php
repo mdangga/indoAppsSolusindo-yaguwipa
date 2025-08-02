@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KerjaSama;
 use App\Models\Mitra;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,7 +19,18 @@ class UserController extends Controller
     // menampilkan halaman dashboard user
     public function dashboard()
     {
-        return view('user.user', ['user' => Auth::user()]);
+        $user = Auth::user();
+        $recentActivities = $user->role === 'mitra'
+            ? KerjaSama::with('kategoriKerjaSama')
+            ->orderBy('updated_at', 'desc')
+            ->take(5)
+            ->get()
+            : collect();
+
+        return view('user.user', [
+            'user' => $user,
+            'recentActivities' => $recentActivities,
+        ]);
     }
 
 
@@ -43,7 +55,7 @@ class UserController extends Controller
     // menampilkan edit profile user
     public function showJoinMitra()
     {
-        return view('testing');
+        return view('user.formMitra');
     }
 
 
@@ -307,7 +319,7 @@ class UserController extends Controller
 
         return DataTables::of($users)
             ->addColumn('nama', function ($row) {
-                    return $row->nama;
+                return $row->nama;
             })
             ->addColumn('status', function ($row) {
                 return $row->trashed()
