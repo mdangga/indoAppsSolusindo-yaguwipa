@@ -32,7 +32,7 @@ class GalleryController extends Controller
     }
 
 
-    // fungsi untuk membuatkan datatable gallery
+    // fungsi untuk membuatkan datatable gallery photo
     public function getDataTablesPhoto(Request $request)
     {
         if (!$request->ajax()) {
@@ -66,7 +66,7 @@ class GalleryController extends Controller
             ->make(true);
     }
 
-    // fungsi untuk membuatkan datatable gallery
+    // fungsi untuk membuatkan datatable gallery video
     public function getDataTablesVideo(Request $request)
     {
         if (!$request->ajax()) {

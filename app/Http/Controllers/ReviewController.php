@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ReviewController extends Controller
 {
+    // fungsi untuk menyimpan ulasan baru
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -32,6 +33,8 @@ class ReviewController extends Controller
         return redirect()->route('dashboard')->with('success', 'Ulasan berhasil dikirim!');
     }
 
+
+    // fungsi untuk memperbarui ulasan
     public function update(Request $request, $id)
     {
         $review = Review::find($id);

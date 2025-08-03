@@ -21,6 +21,8 @@ class PublikasiController extends Controller
         return view('publikasi', compact('publikasi', 'mostDownloaded', 'jenisPublikasi'));
     }
 
+
+    // fungsi untuk menampilkan file pdf
     public function showPdf($filePath)
     {
         $path = storage_path('app/public/' . $filePath);
@@ -34,7 +36,7 @@ class PublikasiController extends Controller
     }
 
 
-    // download
+    // fungsi untuk download
     public function downloadFile($id)
     {
         $item = Publikasi::findOrFail($id);
@@ -42,7 +44,8 @@ class PublikasiController extends Controller
         return response()->json(['success' => true]);
     }
 
-    // fungsi untuk membuatkan datatable news dan event
+
+    // fungsi untuk membuatkan datatable publikasi
     public function getDataTables(Request $request)
     {
         if (!$request->ajax()) {
@@ -138,6 +141,10 @@ class PublikasiController extends Controller
     {
         $publikasi = Publikasi::findOrFail($id);
 
+        if(!$publikasi){
+            return redirect()->back()->with('gagal', 'Publikasi tidak ditemukan');
+        }
+
         $validator = Validator::make($request->all(), [
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required',
@@ -181,6 +188,10 @@ class PublikasiController extends Controller
     {
         $publikasi = Publikasi::findOrFail($id);
 
+        if(!$publikasi){
+            return redirect()->back()->with('gagal', 'Publikasi tidak ditemukan');
+        }
+        
         if ($publikasi->file && Storage::disk('public')->exists($publikasi->file)) {
             Storage::disk('public')->delete($publikasi->file);
         }

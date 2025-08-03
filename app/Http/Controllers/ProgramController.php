@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Laravel\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProgramController extends Controller
@@ -32,14 +33,16 @@ class ProgramController extends Controller
         $beritaTerkait = Berita::whereHas('kategoriNewsEvent', function ($query) use ($kategoriProgramIds) {
             $query->whereIn('id_kategori_program', $kategoriProgramIds);
         })
-            ->where('status', 'show') // jika hanya ingin yang aktif
+            ->where('status', 'show')
             ->latest()
-            ->take(8) // atau sesuaikan jumlah yang ditampilkan
+            ->take(8)
             ->get();
 
         return view('program', compact('kategoriList', 'beritaTerkait', 'kategoriPrograms'));
     }
 
+
+    // // fungsi untuk menampilkan halaman program di beranda berdasarkan id
     public function showProgam($id)
     {
         $program = Program::with('institusiTerlibat')->find($id);
@@ -167,14 +170,20 @@ class ProgramController extends Controller
             }
         });
 
-        return redirect()->route('admin.berita')->with('success', 'Program berhasil ditambahkan.');
+        return redirect()->route('admin.program')->with('success', 'Program berhasil ditambahkan.');
     }
 
 
     // fungsi untuk memperbarui data lama
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $program = Program::find($id);
+
+        if (!$program) {
+            return redirect()->back()->with('gagal', 'Program tidak ditemukan');
+        }
+
+        $validator = Validator::make($request->all(),[
             'nama' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
@@ -186,6 +195,13 @@ class ProgramController extends Controller
             'institusi.*.nama' => 'required_without:institusi.*.id|string|nullable',
             'institusi.*.tanggal_mulai' => 'required|date',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('message', 'Validasi gagal.');
+        }
 
         DB::transaction(function () use ($request, $id) {
             $program = Program::findOrFail($id);
@@ -234,7 +250,7 @@ class ProgramController extends Controller
             }
         });
 
-        return redirect()->route('admin.berita')->with('success', 'Program berhasil diperbarui.');
+        return redirect()->route('admin.program')->with('success', 'Program berhasil diperbarui.');
     }
 
 
@@ -253,6 +269,6 @@ class ProgramController extends Controller
             $program->delete();
         });
 
-        return redirect()->route('admin.berita')->with('success', 'Program berhasil dihapus.');
+        return redirect()->route('admin.program')->with('success', 'Program berhasil dihapus.');
     }
 }

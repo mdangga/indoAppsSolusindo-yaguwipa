@@ -38,13 +38,12 @@ class BeritaController extends Controller
         ]);
     }
 
+
     // menampilkan halaman news dan event hanya keyword di beranda
     public function showKeyword($keyword)
     {
-        // Normalisasi keyword dari URL: hilangkan encoding dan spasi tambahan
         $keyword = strtolower(trim(urldecode($keyword)));
 
-        // Query dengan padding ";" agar pencarian akurat
         $keywords = Berita::whereRaw("REPLACE(LOWER(CONCAT(';', keyword, ';')), ' ', '') LIKE ?", [
             "%;" . str_replace(' ', '', $keyword) . ";%"
         ])->get();
@@ -53,8 +52,6 @@ class BeritaController extends Controller
             'keywords' => $keywords
         ]);
     }
-
-
 
 
     // fungsi untuk menampilkan halaman berita untuk setiap slug di beranda
