@@ -45,14 +45,14 @@ class UserController extends Controller
     }
 
 
-    // menampilkan edit profile user
+    // menampilkan halaman edit profile user
     public function showEditProfile()
     {
         return view('user.edit-profile', ['user' => Auth::user()]);
     }
 
 
-    // menampilkan edit profile user
+    // menampilkan form join mitra
     public function showJoinMitra()
     {
         return view('user.formMitra');
@@ -64,13 +64,16 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
+        if(!$user){
+            return redirect()->back()->with('gagal', 'User tidak ditemukan');
+        }
+
         $rules = [
             'website' => 'nullable|url',
             'penanggung_jawab' => 'required|string|max:255',
             'jabatan_penanggung_jawab' => 'required|string|max:255',
         ];
 
-        // Jika user belum punya email, wajib isi
         if (!$user->email) {
             $rules['email'] = 'required|email|unique:users,email';
         }
@@ -81,7 +84,6 @@ class UserController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // Simpan email hanya jika belum ada dan request mengirimkannya
         if (!$user->email && $request->filled('email')) {
             $user->email = $request->email;
             $user->save();
@@ -103,12 +105,6 @@ class UserController extends Controller
         return redirect()->route('dashboard')->with('success', 'Registrasi berhasil');
     }
 
-
-    /*
-    ============
-    Profile User
-    ============
-    */
 
     // fungsi untuk memperbarui info akun
     public function updateInfo(Request $request)
@@ -233,7 +229,7 @@ class UserController extends Controller
     {
         $request->validate([
             'username' => 'required|string|max:255',
-            'password' => 'required|current_password', // Verifikasi password saat ini
+            'password' => 'required|current_password',
         ]);
 
         $user = Auth::user();
@@ -300,12 +296,17 @@ class UserController extends Controller
     }
 
 
-    // admin
+    /**
+     * admin
+     */
+    // fungsi menampilan data user di halaman admin
     public function index()
     {
         return view('admin.showUser');
     }
 
+
+    // fungsi untuk membuat datatable data user
     public function getDataTables(Request $request)
     {
         if (!$request->ajax()) {
@@ -326,39 +327,12 @@ class UserController extends Controller
                     ? '<span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs">Nonaktif</span>'
                     : '<span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Aktif</span>';
             })
-            ->addColumn('aksi', function ($row) {
-                // if ($row->trashed()) {
-                //     // Tombol restore untuk user yang nonaktif
-                //     return '
-                // <div class="flex items-center">
-                //     <button class="cursor-pointer restoreBtn bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm" 
-                //             data-id="' . e($row->id_user) . '">
-                //         <i class="fas fa-undo mr-1"></i> Aktifkan
-                //     </button>
-                //     <button class="cursor-pointer forceDeleteBtn bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm ml-2" 
-                //             data-id="' . e($row->id_user) . '">
-                //         <i class="fas fa-trash-alt mr-1"></i> Hapus Permanen
-                //     </button>
-                // </div>';
-                // } else {
-                //     // Tombol deactivate untuk user aktif
-                //     return '
-                // <div class="flex items-center">
-                //     <button class="cursor-pointer editBtn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm" 
-                //             data-id="' . e($row->id_user) . '">
-                //         <i class="fas fa-edit mr-1"></i> Edit
-                //     </button>
-                //     <button class="cursor-pointer deactivateBtn bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm ml-2" 
-                //             data-id="' . e($row->id_user) . '">
-                //         <i class="fas fa-ban mr-1"></i> Nonaktifkan
-                //     </button>
-                // </div>';
-                // }
-            })
             ->rawColumns(['status', 'aksi'])
             ->make(true);
     }
 
+
+    // fungsi untuk menonaktifkan user di admin
     public function deactivateUser($id)
     {
         try {
@@ -378,6 +352,8 @@ class UserController extends Controller
         }
     }
 
+    
+    // fungsi untuk mengaktifkan user diadmin
     public function restoreUser($id)
     {
         try {

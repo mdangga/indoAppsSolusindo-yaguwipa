@@ -44,6 +44,7 @@ class MenusController extends Controller
             ->make(true);
     }
 
+
     // fungsi untuk menampilkan form menambahkan data
     public function showFormStore(){
         $menus = Menu::whereNull('parent_menu')->orderBy('id_menus')->get();
@@ -99,7 +100,7 @@ class MenusController extends Controller
         $menu = Menu::find($id);
 
         if(!$menu){
-            return redirect()->back()->with('gagal', 'menu tidak ditemukan');
+            return redirect()->back()->with('gagal', 'Menu tidak ditemukan');
         }
         // dd($request->all());
         $validator = Validator::make($request->all(), [
@@ -137,10 +138,10 @@ class MenusController extends Controller
         $menu = Menu::find($id);
 
         if(!$menu){
-            return redirect()->back()->with('gagal', 'menu tidak ditemukan');
+            return redirect()->back()->with('gagal', 'Menu tidak ditemukan');
         }
         
         $menu->delete();
-        return redirect()->back()->with('sukses', 'menu berhasil dihapus');
+        return redirect()->back()->with('sukses', 'Menu berhasil dihapus');
     }
 }

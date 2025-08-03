@@ -19,6 +19,7 @@ class ProfileController extends Controller
         return view('admin.generals', compact('profiles'));
     }
 
+    
     // fungsi untuk memperbarui profile website
     public function update(Request $request, $id)
     {

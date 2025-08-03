@@ -529,7 +529,7 @@
                             </form>
                         </div>
                     @else
-                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mt-8">
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                             <div class="flex items-start space-x-4">
                                 <!-- Avatar -->
                                 @if ($profilePath)

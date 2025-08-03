@@ -19,7 +19,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class KerjaSamaController extends Controller
 {
-
+    // fungsi menampilkan form pengajuan kerja sama di user
     public function show()
     {
         $kategoriKerjaSama = KategoriKerjaSama::all();
@@ -29,6 +29,7 @@ class KerjaSamaController extends Controller
     }
 
 
+    // fungsi untuk menambahkan data kerja sama
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -70,7 +71,6 @@ class KerjaSamaController extends Controller
                 return back()->with('error', 'Anda bukan mitra terdaftar.');
             }
 
-            // Handle kategori
             if ($request->id_kategori_kerja_sama == 'other') {
                 $kategori = KategoriKerjaSama::create([
                     'nama' => $request->kategori_baru
@@ -84,7 +84,6 @@ class KerjaSamaController extends Controller
                 }
             }
 
-            // Validate file count again (in case of direct API call bypassing client-side validation)
             if ($request->hasFile('file_penunjang') && count($request->file('file_penunjang')) > 4) {
                 return back()->withErrors(['file_penunjang' => 'Maksimal 4 file yang boleh diunggah.']);
             }
@@ -100,7 +99,6 @@ class KerjaSamaController extends Controller
                 'created_by' => $user->id,
             ]);
 
-            // Handle file uploads
             if ($request->hasFile('file_penunjang')) {
                 foreach ($request->file('file_penunjang') as $file) {
                     $originalName = $file->getClientOriginalName();
@@ -118,7 +116,6 @@ class KerjaSamaController extends Controller
                 }
             }
 
-            // Send notification to admins
             $pengajuanNotif = [
                 'nama' => $user->nama,
                 'keterangan' => $kerjaSama->keterangan,
@@ -142,12 +139,17 @@ class KerjaSamaController extends Controller
     }
 
 
-    // admin
+    /**
+     * Admin
+     */
+    // fungsi menampilkan kerja sama di halaman admin
     public function index()
     {
         return view('admin.showKerjaSama');
     }
 
+
+    // fungsi membuatkan datatable kerja sama di halaman admin
     public function getDataTables(Request $request)
     {
         if (!$request->ajax()) {
@@ -169,6 +171,8 @@ class KerjaSamaController extends Controller
             ->make(true);
     }
 
+
+    // fungsi untuk menerima kerja sama
     public function approved($id)
     {
         try {
@@ -190,6 +194,7 @@ class KerjaSamaController extends Controller
     }
 
 
+    // fungsi untuk menolak kerja sama
     public function rejected($id)
     {
         try {
@@ -210,6 +215,8 @@ class KerjaSamaController extends Controller
         }
     }
 
+
+    // fungsi untuk melihat detail kerja sama
     public function detailKerjaSama($id)
     {
         $kerjasama = KerjaSama::with('Mitra.User', 'FilePenunjang', 'KategoriKerjaSama', 'Program')

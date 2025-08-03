@@ -18,6 +18,8 @@ class AuthController extends Controller
         return view('signup');
     }
 
+
+    // fungsi untuk daftar user
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -39,7 +41,6 @@ class AuthController extends Controller
             $profilePath = $request->file('profile')->store('profiles', 'public');
         }
 
-        // Membuat user dengan semua field
         $user = User::create([
             'username' => $request->username,
             'password' => Hash::make($request->password),
@@ -55,13 +56,15 @@ class AuthController extends Controller
         return redirect()->route('dashboard');
     }
 
+    
     // form login
     public function showLoginForm()
     {
         return view('signin');
     }
 
-    // login
+
+    // fungsi login
     public function login(Request $request)
     {
         $credentials = $request->only('username', 'password');
@@ -75,17 +78,14 @@ class AuthController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // Cek apakah user ada (termasuk yang terhapus)
         $user = User::withTrashed()->where('username', $credentials['username'])->first();
 
-        // Jika user ditemukan tapi status nonaktif
         if ($user && $user->trashed()) {
             return back()->withErrors([
                 'username' => 'Akun ini dinonaktifkan. Silakan pulihkan akun untuk login.',
             ])->withInput();
         }
 
-        // Jika user tidak ditemukan atau password salah
         if (!Auth::attempt($credentials)) {
             return back()->withErrors([
                 'username' => 'Username atau password salah.',
@@ -95,17 +95,16 @@ class AuthController extends Controller
         $request->session()->regenerate();
         $user = Auth::user();
 
-        // Redirect berdasarkan role
-        if ($user->role === null) {
-            return redirect()->route('register.dataUser', ['id' => $user->id_user]);
-        } elseif ($user->role === 'admin') {
+
+        if ($user->role === 'admin') {
             return redirect()->route('admin.berita');
         }
 
         return redirect()->route('dashboard');
     }
 
-    // Logout
+
+    // fungsi Logout
     public function logout(Request $request)
     {
         Auth::logout();
