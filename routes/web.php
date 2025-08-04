@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\DonasiController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\JenisPublikasiController;
 use App\Http\Controllers\kategoriNewsEventController;
@@ -48,11 +49,12 @@ Route::get('/program/kategori/{slug}', [ProgramController::class, 'showSlug'])->
 Route::get('/program/{id}', [ProgramController::class, 'showProgam'])->name('beranda.showProgram');
 
 // publikasi
-Route::get('/publikasi/show-all/', [PublikasiController::class, 'show'])->name('beranda.publikasi');
+Route::get('/publikasi/show-all', [PublikasiController::class, 'show'])->name('beranda.publikasi');
 Route::get('/show-pdf/{filePath}', [PublikasiController::class, 'showPdf'])->where('filePath', '.*')->name('publikasi.pdf');
 Route::post('/download-file/{id}', [PublikasiController::class, 'downloadFile'])->name('file.Download');
 
-
+// donasi
+Route::get('/donasi', [DonasiController::class, 'show'])->name('form.donasi');
 // admin
 Route::middleware(['auth.admin'])->group(function () {
     // general-setting

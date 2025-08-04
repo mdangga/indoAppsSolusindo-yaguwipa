@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Donatur;
 use Illuminate\Http\Request;
 
-class DonaturController extends Controller
+class DonasiController extends Controller
 {
+    public function show()
+    {
+        return view('formDonasi');
+    }
     /**
      * Display a listing of the resource.
      */
@@ -34,10 +38,10 @@ class DonaturController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Donatur $donatur)
-    {
-        //
-    }
+    // public function show(Donatur $donatur)
+    // {
+    //     //
+    // }
 
     /**
      * Show the form for editing the specified resource.
