@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Berita;
 use App\Models\KategoriNewsEvent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -32,9 +33,26 @@ class BeritaController extends Controller
             }])->get();
         });
 
+        $beritaPopuler = Cache::remember('berita_populer', now()->addHours(1), function () {
+            return Berita::orderBy('hit', 'desc')->take(6)->get();
+        });
+
+        $startOfRange = Carbon::now()->subDays(7);
+        $endOfRange = Carbon::now();
+
+        $beritaPopulerMingguan = Cache::remember("beritaPopulerMingguan", now()->addHours(1), function () use ($startOfRange, $endOfRange) {
+            return Berita::whereBetween('created_at', [$startOfRange, $endOfRange])
+                ->where('status', 'show')
+                ->orderBy('hit', 'desc')
+                ->take(6)
+                ->get();
+        });
+
         return view('newsandevent', [
             'berita' => $berita,
-            'kategoriBerita' => $kategoriBerita
+            'kategoriBerita' => $kategoriBerita,
+            'beritaPopulerMingguan' => $beritaPopulerMingguan,
+            'beritaPopuler' => $beritaPopuler,
         ]);
     }
 
@@ -44,14 +62,17 @@ class BeritaController extends Controller
     {
         $keyword = strtolower(trim(urldecode($keyword)));
 
-        $keywords = Berita::whereRaw("REPLACE(LOWER(CONCAT(';', keyword, ';')), ' ', '') LIKE ?", [
+        $beritaKeyword = Berita::whereRaw("REPLACE(LOWER(CONCAT(';', keyword, ';')), ' ', '') LIKE ?", [
             "%;" . str_replace(' ', '', $keyword) . ";%"
         ])->get();
 
         return view('newsandevent', [
-            'keywords' => $keywords
+            'keyword' => $keyword,
+            'beritaKeyword' => $beritaKeyword,
         ]);
     }
+
+
 
 
     // fungsi untuk menampilkan halaman berita untuk setiap slug di beranda
