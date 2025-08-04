@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Schema\ForeignKeyDefinition;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -11,39 +12,83 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kanal_donasi', function (Blueprint $table) {
-            $table->id('id_kanal_donasi');
-            $table->string('nama')->unique();
-            $table->timestamps();
-        });
-        
-        Schema::create('donasi', function(Blueprint $table){
-            $table->id('id_donasi');
-            $table->text('nama');
-            $table->string('file_path');
+        Schema::create('campaign', function (Blueprint $table) {
+            $table->id('id_campaign');
+            $table->string('nama');
+            $table->text('deskripsi');
+            $table->string('image_path');
+            $table->decimal('target_dana', 15, 2)->nullable();
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
-            $table->decimal('total_dana', 15, 2)->nullable();
-            $table->unsignedBigInteger('id_program')->nullable();
+            $table->enum('status', ['aktif', 'selesai', 'pending'])->default('pending');
+            $table->string('lokasi');
+            $table->unsignedBigInteger('id_program');
             $table->timestamps();
-            
-            $table->foreign('id_program')->references('id_program')->on('program')->onDelete('cascade');
+
+            $table->foreign('id_program')->references('id_program')->on('program');
         });
-        
-        Schema::create('donasi_donatur', function(Blueprint $table){
-            $table->id('id_donasi_donatur');
-            $table->decimal('jumlah_donasi', 15, 2)->nullable();
-            $table->text('keterangan')->nullable();
-            $table->enum('status', ['approved', 'pending', 'rejected'])->default('pending');
+
+        Schema::create('jenis_donasi', function (Blueprint $table) {
+            $table->id('id_jenis_donasi');
+            $table->string('nama');
+            $table->timestamps();
+        });
+
+        Schema::create('donasi', function (Blueprint $table) {
+            $table->id('id_donasi');
+            $table->text('slug');
+            $table->text('nama');
+            $table->text('email');
+            $table->enum('status', ['pending', 'paid', 'verified', 'expired', 'failed'])->default('pending');
+            $table->text('pesan');
+            $table->boolean('anonim');
             $table->unsignedBigInteger('id_user')->nullable();
-            $table->unsignedBigInteger('id_kanal_donasi');
+            $table->unsignedBigInteger('id_campaign');
+            $table->unsignedBigInteger('id_jenis_donasi');
+            $table->timestamps();
+
+            $table->foreign('id_user')->references('id_user')->on('users');
+            $table->foreign('id_campaign')->references('id_campaign')->on('campaign');
+            $table->foreign('id_jenis_donasi')->references('id_jenis_donasi')->on('jenis_donasi');
+        });
+
+        Schema::create('donasi_dana', function (Blueprint $table) {
+            $table->id('id_donasi_dana');
+            $table->decimal('nominal', 15, 2);
+            $table->string('payment_id')->nullable();
+            $table->string('payment_method')->nullable();
+            $table->string('payment_token')->nullable();
+            $table->string('payment_url')->nullable();
+            $table->enum('status_verifikasi', ['approved', 'pending', 'rejected'])->default('pending');
+            $table->string('expired_at')->nullable();
             $table->unsignedBigInteger('id_donasi');
             $table->timestamps();
-            $table->softDeletes();
-            
-            $table->foreign('id_user')->references('id_user')->on('users');
-            $table->foreign('id_kanal_donasi')->references('id_kanal_donasi')->on('kanal_donasi')->onDelete('restrict');
-            $table->foreign('id_donasi')->references('id_donasi')->on('donasi')->onDelete('cascade');
+
+            $table->foreign('id_donasi')->references('id_donasi')->on('donasi');
+        });
+
+        Schema::create('donasi_barang', function (Blueprint $table) {
+            $table->id('id_donasi_barang');
+            $table->string('nama_barang')->nullable();
+            $table->string('jumlah_barang')->nullable();
+            $table->string('deskripsi')->nullable();
+            $table->enum('kondisi', ['baru', 'bekas']);
+            $table->enum('status_verifikasi', ['approved', 'pending', 'rejected'])->default('pending');
+            $table->unsignedBigInteger('id_donasi');
+            $table->timestamps();
+
+            $table->foreign('id_donasi')->references('id_donasi')->on('donasi');
+        });
+
+        Schema::create('donasi_jasa', function (Blueprint $table) {
+            $table->id('id_donasi_jasa');
+            $table->string('jenis_jasa')->nullable();
+            $table->string('durasi_jasa')->nullable();
+            $table->enum('status_verifikasi', ['approved', 'pending', 'rejected'])->default('pending');
+            $table->unsignedBigInteger('id_donasi');
+            $table->timestamps();
+
+            $table->foreign('id_donasi')->references('id_donasi')->on('donasi');
         });
     }
 
@@ -52,8 +97,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('donasi_donatur');
+        Schema::dropIfExists('donasi_jasa');
+        Schema::dropIfExists('donasi_barang');
+        Schema::dropIfExists('donasi_dana');
         Schema::dropIfExists('donasi');
-        Schema::dropIfExists('kanal_donasi');
+        Schema::dropIfExists('jenis_donasi');
+        Schema::dropIfExists('campaign');
     }
 };

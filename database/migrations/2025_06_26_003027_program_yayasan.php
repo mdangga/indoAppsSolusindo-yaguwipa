@@ -34,6 +34,7 @@ return new class extends Migration
             $table->id('id_institusi');
             $table->string('nama');
             $table->string('alamat');
+            $table->string('image_path');
             $table->string('website')->nullable();
             $table->timestamps();
         });
@@ -55,9 +56,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kategori_program');
-        Schema::dropIfExists('program');
-        Schema::dropIfExists('institusi_terlibat');
         Schema::dropIfExists('program_institusi');
+        Schema::dropIfExists('institusi_terlibat');
+        Schema::dropIfExists('program');
+        Schema::dropIfExists('kategori_program');
     }
 };
