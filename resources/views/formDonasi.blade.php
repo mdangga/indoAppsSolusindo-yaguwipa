@@ -1098,7 +1098,7 @@
         // Back button handler
         document.getElementById('prevStep').addEventListener('click', function() {
             if (currentStep === 1) {
-                window.location.href = "{{ route('beranda') }}";
+                window.location.href = "{{ url()->previous() }}";
             } else {
                 showStep(currentStep - 1);
                 if (currentStep === 2) {

@@ -56,77 +56,6 @@
     @if ($site['yayasanProfile']->popup)
         <x-pop-up image-src="{{ $site['yayasanProfile']->popup }}" image-alt="Welcome Image" />
     @endif
-    <div id="modal-overlay"
-        class="fixed hidden inset-0 bg-gray-50 bg-opacity-50 backdrop-blur-sm z-50 justify-center items-center transition-opacity duration-300 ease-in-out p-4">
-
-        <!-- Modal Content -->
-        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-auto transform transition-all duration-300 scale-95 relative"
-            id="modal-content">
-
-            <!-- Header dengan tombol close -->
-            <div class="flex justify-between items-center p-6 border-b border-gray-200">
-                <div>
-                    <h2 class="text-2xl font-semibold tracking-tight text-gray-800">Pilih Jenis Donasi</h2>
-                    <p class="mt-1 text-sm text-gray-600">Pilih salah satu kategori untuk melanjutkan</p>
-                </div>
-                <button onclick="closeModalDonasi()"
-                    class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full p-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Body Modal -->
-            <div class="p-6">
-                <div class="grid md:grid-cols-2 gap-6">
-
-                    <!-- Card Anonim -->
-                    <div class="card-selector border-2 border-gray-200 rounded-xl p-6 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50 transition-all duration-200 hover:scale-102 group"
-                        onclick="selectCard('anonim')" id="anonim-card">
-                        <div class="text-center">
-                            <div
-                                class="w-16 h-16 mx-auto bg-indigo-100 group-hover:bg-indigo-200 rounded-full flex items-center justify-center mb-4 transition-colors duration-200">
-                                <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Donasi Anonim</h3>
-                            <p class="text-gray-600 text-sm">Berdonasi tanpa menampilkan identitas</p>
-                        </div>
-                    </div>
-
-                    <!-- Card Donatur Terdaftar -->
-                    <div class="card-selector border-2 border-gray-200 rounded-xl p-6 cursor-pointer hover:border-green-500 hover:bg-green-50 transition-all duration-200 hover:scale-102 group"
-                        onclick="selectCard('donatur')" id="donatur-card">
-                        <div class="text-center">
-                            <div
-                                class="w-16 h-16 mx-auto bg-green-100 group-hover:bg-green-200 rounded-full flex items-center justify-center mb-4 transition-colors duration-200">
-                                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Donatur Terdaftar</h3>
-                            <p class="text-gray-600 text-sm">Login untuk donasi dengan identitas</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tombol Lanjutkan -->
-                <div class="mt-8 flex justify-end">
-                    <button id="continue-btn" onclick="continueSelection()" disabled
-                        class="bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                        Lanjutkan
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     {{-- navbar --}}
     <x-navbar :menus="$menus" />
@@ -154,10 +83,10 @@
                         {!! str_replace(['<p>', '</p>'], '', $site['yayasanProfile']->intro) !!}
                     </p>
                     <div class="mt-10 flex items-center justify-center gap-x-6">
-                        <div onclick="openModalDonasi()"
+                        <a href="{{ route('form.donasi') }}"
                             class="rounded-full px-6 py-3 text-md font-semibold text-white bg-gray-700 hover:bg-gray-500 shadow-sm focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-gray-600 cursor-pointer">
                             Donasi
-                        </div>
+                        </a>
                         <a href="#berita-kegiatan"
                             class="group relative text-sm font-semibold text-gray-700 inline-flex justify-center items-center hover:text-gray-900 transition-colors duration-500">
                             Selengkapnya
@@ -472,7 +401,7 @@
     </main>
     {{-- end lembaga --}}
     <x-footer />
-
+{{-- 
     <script>
         let selectedType = null;
 
@@ -574,7 +503,7 @@
                 closeModalDonasi();
             }
         });
-    </script>
+    </script> --}}
 </body>
 
 </html>
