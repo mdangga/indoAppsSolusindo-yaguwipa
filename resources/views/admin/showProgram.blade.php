@@ -339,7 +339,7 @@
 
                             if (typeof data === 'string') {
                                 isPublished = data.toLowerCase().includes('published') ||
-                                    data.toLowerCase().includes('aktif') ||
+                                    data.toLowerCase() === 'aktif' ||
                                     data.toLowerCase().includes('show');
                             } else if (typeof data === 'number') {
                                 isPublished = data == 1;

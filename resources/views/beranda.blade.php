@@ -355,13 +355,13 @@
                     <div class="logo-scroll">
                         <!-- First set of logos -->
                         <div class="logo-set">
-                            @foreach ([['src' => 'pt-indo-apps-solusindo.png', 'alt' => 'PT Indo Apps Solusindo', 'link' => 'https://indoapps.id'], ['src' => 'denpasar-institute.png', 'alt' => 'Denpasar Institute', 'link' => 'https://denpasarinstitute.ac.id'], ['src' => 'gcom.png', 'alt' => 'GCOM', 'link' => '#'], ['src' => 'indo-berkah-konstruksi.png', 'alt' => 'Indo Berkah Konstruksi', 'link' => '#'], ['src' => 'indo-consulting.png', 'alt' => 'Indo Consulting', 'link' => '#'], ['src' => 'latifaba.png', 'alt' => 'Latifaba', 'link' => 'https://www.latifaba.com/'], ['src' => 'nyaman-care.png', 'alt' => 'Nyaman Care', 'link' => '#'], ['src' => 'penerbit-yaguwipa.png', 'alt' => 'Penerbit Yaguwipa', 'link' => 'https://www.penerbityaguwipa.id/'], ['src' => 'robotic.png', 'alt' => 'Robotic', 'link' => '#'], ['src' => 'teknika-solusinda.png', 'alt' => 'Teknika Solusinda', 'link' => '#']] as $logo)
+                            @foreach ($site['lembaga'] as $logo)
                                 <div class="logo-item">
-                                    <a href="{{ $logo['link'] }}" target="_blank" rel="noopener noreferrer"
+                                    <a href="{{ $logo['website'] }}" target="_blank" rel="noopener noreferrer"
                                         class="hover:opacity-75 transition-opacity duration-200">
                                         <img class="max-h-24 w-auto object-contain"
-                                            src="{{ asset('img/lembaga-logo/' . $logo['src']) }}"
-                                            alt="{{ $logo['alt'] }}" width="158" height="48" />
+                                            src="{{ asset('storage/' . $logo['image_path']) }}"
+                                            alt="{{ $logo['nama'] }}" width="158" height="48" />
                                     </a>
                                 </div>
                             @endforeach
@@ -369,13 +369,13 @@
 
                         <!-- Duplicate set for infinite scroll -->
                         <div class="logo-set">
-                            @foreach ([['src' => 'pt-indo-apps-solusindo.png', 'alt' => 'PT Indo Apps Solusindo', 'link' => 'https://indoapps.id'], ['src' => 'denpasar-institute.png', 'alt' => 'Denpasar Institute', 'link' => 'https://denpasarinstitute.ac.id'], ['src' => 'gcom.png', 'alt' => 'GCOM', 'link' => '#'], ['src' => 'indo-berkah-konstruksi.png', 'alt' => 'Indo Berkah Konstruksi', 'link' => '#'], ['src' => 'indo-consulting.png', 'alt' => 'Indo Consulting', 'link' => '#'], ['src' => 'latifaba.png', 'alt' => 'Latifaba', 'link' => 'https://www.latifaba.com/'], ['src' => 'nyaman-care.png', 'alt' => 'Nyaman Care', 'link' => '#'], ['src' => 'penerbit-yaguwipa.png', 'alt' => 'Penerbit Yaguwipa', 'link' => 'https://www.penerbityaguwipa.id/'], ['src' => 'robotic.png', 'alt' => 'Robotic', 'link' => '#'], ['src' => 'teknika-solusinda.png', 'alt' => 'Teknika Solusinda', 'link' => '#']] as $logo)
+                            @foreach ($site['lembaga'] as $logo)
                                 <div class="logo-item">
-                                    <a href="{{ $logo['link'] }}" target="_blank" rel="noopener noreferrer"
+                                    <a href="{{ $logo['website'] }}" target="_blank" rel="noopener noreferrer"
                                         class="hover:opacity-75 transition-opacity duration-200">
                                         <img class="max-h-24 w-auto object-contain"
-                                            src="{{ asset('img/lembaga-logo/' . $logo['src']) }}"
-                                            alt="{{ $logo['alt'] }}" width="158" height="48" />
+                                            src="{{ asset('storage/' . $logo['image_path']) }}"
+                                            alt="{{ $logo['nama'] }}" width="158" height="48" />
                                     </a>
                                 </div>
                             @endforeach

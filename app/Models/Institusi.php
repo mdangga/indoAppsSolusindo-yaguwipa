@@ -13,6 +13,7 @@ class Institusi extends Model
         'nama',
         'alamat',
         'website',
+        'image_path',
         'status',
     ];
 

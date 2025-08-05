@@ -33,4 +33,9 @@ class Program extends Model
     {
         return $this->hasMany(KerjaSama::class, 'id_program', 'id_program');
     }
+
+    public function Campaign()
+    {
+        return $this->hasMany(Campaign::class, 'id_program', 'id_program');
+    }
 }

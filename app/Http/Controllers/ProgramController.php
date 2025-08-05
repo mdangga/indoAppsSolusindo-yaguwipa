@@ -128,11 +128,13 @@ class ProgramController extends Controller
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'status' => 'required|in:aktif,nonaktif',
             'id_kategori_program' => 'nullable|exists:kategori_program,id_kategori_program',
-
-            'institusi' => 'array',
+            'institusi' => 'nullable|array',
             'institusi.*.id' => 'nullable|exists:institusi_terlibat,id_institusi',
             'institusi.*.nama' => 'required_without:institusi.*.id|string|nullable',
-            'institusi.*.tanggal_mulai' => 'required|date',
+            'institusi.*.alamat' => 'nullable|string',
+            'institusi.*.website' => 'nullable|url',
+            'institusi.*.tanggal' => 'required|date',
+            'institusi.*.logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
         DB::transaction(function () use ($request) {
@@ -141,7 +143,6 @@ class ProgramController extends Controller
             if ($request->hasFile('image_path')) {
                 $gambar = $request->file('image_path');
                 $namaFile = 'img/program/' . uniqid() . '.webp';
-
                 $gambarWebp = Image::read($gambar)->toWebp(80);
                 Storage::disk('public')->put($namaFile, $gambarWebp);
                 $dataProgram['image_path'] = $namaFile;
@@ -149,21 +150,30 @@ class ProgramController extends Controller
 
             $program = Program::create($dataProgram);
 
-            if ($request->has('institusi')) {
+            if ($request->filled('institusi')) {
                 foreach ($request->institusi as $dataInstitusi) {
                     if (!empty($dataInstitusi['id'])) {
                         $program->institusiTerlibat()->attach($dataInstitusi['id'], [
-                            'tanggal' => $dataInstitusi['tanggal_mulai']
+                            'tanggal' => $dataInstitusi['tanggal']
                         ]);
                     } elseif (!empty($dataInstitusi['nama'])) {
-                        $institusiBaru = Institusi::create([
+                        $institusiData = [
                             'nama' => $dataInstitusi['nama'],
                             'alamat' => $dataInstitusi['alamat'] ?? null,
                             'website' => $dataInstitusi['website'] ?? null,
-                        ]);
+                        ];
 
+                        if (!empty($dataInstitusi['logo']) && $dataInstitusi['logo'] instanceof \Illuminate\Http\UploadedFile) {
+                            $logo = $dataInstitusi['logo'];
+                            $namaFileLogo = 'img/institusi/' . uniqid() . '.webp';
+                            $logoWebp = Image::read($logo)->toWebp(80);
+                            Storage::disk('public')->put($namaFileLogo, $logoWebp);
+                            $institusiData['image_path'] = $namaFileLogo;
+                        }
+
+                        $institusiBaru = Institusi::create($institusiData);
                         $program->institusiTerlibat()->attach($institusiBaru->id_institusi, [
-                            'tanggal' => $dataInstitusi['tanggal_mulai']
+                            'tanggal' => $dataInstitusi['tanggal']
                         ]);
                     }
                 }
@@ -172,6 +182,7 @@ class ProgramController extends Controller
 
         return redirect()->route('admin.program')->with('success', 'Program berhasil ditambahkan.');
     }
+
 
 
     // fungsi untuk memperbarui data lama
@@ -183,34 +194,27 @@ class ProgramController extends Controller
             return redirect()->back()->with('gagal', 'Program tidak ditemukan');
         }
 
-        $validator = Validator::make($request->all(),[
+        $request->validate([
             'nama' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'status' => 'required|in:aktif,nonaktif',
             'id_kategori_program' => 'nullable|exists:kategori_program,id_kategori_program',
-
-            'institusi' => 'array',
+            'institusi' => 'nullable|array',
             'institusi.*.id' => 'nullable|exists:institusi_terlibat,id_institusi',
             'institusi.*.nama' => 'required_without:institusi.*.id|string|nullable',
-            'institusi.*.tanggal_mulai' => 'required|date',
+            'institusi.*.alamat' => 'nullable|string',
+            'institusi.*.website' => 'nullable|url',
+            'institusi.*.tanggal' => 'required|date',
+            'institusi.*.logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput()
-                ->with('message', 'Validasi gagal.');
-        }
-
-        DB::transaction(function () use ($request, $id) {
-            $program = Program::findOrFail($id);
+        DB::transaction(function () use ($request, $program) {
             $dataProgram = $request->only(['nama', 'deskripsi', 'status', 'id_kategori_program']);
 
             if ($request->hasFile('image_path')) {
                 $gambar = $request->file('image_path');
                 $namaFile = 'img/program/' . uniqid() . '.webp';
-
                 $gambarWebp = Image::read($gambar)->toWebp(80);
                 Storage::disk('public')->put($namaFile, $gambarWebp);
                 $dataProgram['image_path'] = $namaFile;
@@ -220,30 +224,40 @@ class ProgramController extends Controller
 
             $idInstitusiInput = [];
 
-            if ($request->has('institusi')) {
+            if ($request->filled('institusi')) {
                 foreach ($request->institusi as $dataInstitusi) {
                     if (!empty($dataInstitusi['id'])) {
                         $idInstitusiInput[] = $dataInstitusi['id'];
                         $program->institusiTerlibat()->syncWithoutDetaching([
-                            $dataInstitusi['id'] => ['tanggal' => $dataInstitusi['tanggal_mulai']]
+                            $dataInstitusi['id'] => ['tanggal' => $dataInstitusi['tanggal']]
                         ]);
                     } elseif (!empty($dataInstitusi['nama'])) {
-                        $institusiBaru = Institusi::create([
+                        $institusiData = [
                             'nama' => $dataInstitusi['nama'],
                             'alamat' => $dataInstitusi['alamat'] ?? null,
                             'website' => $dataInstitusi['website'] ?? null,
-                        ]);
+                        ];
 
+                        if (!empty($dataInstitusi['logo']) && $dataInstitusi['logo'] instanceof \Illuminate\Http\UploadedFile) {
+                            $logo = $dataInstitusi['logo'];
+                            $namaFileLogo = 'img/institusi/' . uniqid() . '.webp';
+                            $logoWebp = Image::read($logo)->toWebp(80);
+                            Storage::disk('public')->put($namaFileLogo, $logoWebp);
+                            $institusiData['image_path'] = $namaFileLogo;
+                        }
+
+                        $institusiBaru = Institusi::create($institusiData);
                         $idInstitusiInput[] = $institusiBaru->id_institusi;
                         $program->institusiTerlibat()->attach($institusiBaru->id_institusi, [
-                            'tanggal' => $dataInstitusi['tanggal_mulai']
+                            'tanggal' => $dataInstitusi['tanggal']
                         ]);
                     }
                 }
             }
 
-            $idInstitusiTersimpan = $program->institusiTerlibat()->pluck('institusi_terlibat.id_institusi')->toArray();
-            $idRelasiDihapus = array_diff($idInstitusiTersimpan, $idInstitusiInput);
+            // Hapus institusi yang tidak termasuk dalam input
+            $idTersimpan = $program->institusiTerlibat()->pluck('institusi_terlibat.id_institusi')->toArray();
+            $idRelasiDihapus = array_diff($idTersimpan, $idInstitusiInput);
 
             if (!empty($idRelasiDihapus)) {
                 $program->institusiTerlibat()->detach($idRelasiDihapus);
@@ -252,6 +266,7 @@ class ProgramController extends Controller
 
         return redirect()->route('admin.program')->with('success', 'Program berhasil diperbarui.');
     }
+
 
 
     // fungsi untuk menghapus data
