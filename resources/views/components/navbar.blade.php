@@ -247,10 +247,13 @@
                                 <a href="{{ $user->role === 'admin' ? route('admin.profiles') : route('dashboard') }}"
                                     class="block px-4 py-2 hover:bg-gray-100">Dashboard</a>
                             </li>
+                            @if (!$user->role === 'admin')
+                                
                             <li>
                                 <a href="{{ route('user.edit-profile') }}"
-                                    class="block px-4 py-2 hover:bg-gray-100">Edit Profile</a>
+                                class="block px-4 py-2 hover:bg-gray-100">Edit Profile</a>
                             </li>
+                            @endif
                             <li>
                                 <form action="{{ route('logout') }}" method="POST" class="py-2">
                                     @csrf

@@ -14,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('campaign', function (Blueprint $table) {
             $table->id('id_campaign');
+            $table->string('slug')->unique();
             $table->string('nama');
             $table->text('deskripsi');
             $table->string('image_path');
@@ -36,11 +37,11 @@ return new class extends Migration
 
         Schema::create('donasi', function (Blueprint $table) {
             $table->id('id_donasi');
-            $table->text('slug');
-            $table->text('nama');
-            $table->text('email');
+            $table->string('nama');
+            $table->string('email');
+            $table->text('pesan')->nullable();
+
             $table->enum('status', ['pending', 'paid', 'verified', 'expired', 'failed'])->default('pending');
-            $table->text('pesan');
             $table->boolean('anonim');
             $table->unsignedBigInteger('id_user')->nullable();
             $table->unsignedBigInteger('id_campaign');
@@ -60,7 +61,7 @@ return new class extends Migration
             $table->string('payment_token')->nullable();
             $table->string('payment_url')->nullable();
             $table->enum('status_verifikasi', ['approved', 'pending', 'rejected'])->default('pending');
-            $table->string('expired_at')->nullable();
+            $table->datetime('expired_at')->nullable();
             $table->unsignedBigInteger('id_donasi');
             $table->timestamps();
 
@@ -70,8 +71,8 @@ return new class extends Migration
         Schema::create('donasi_barang', function (Blueprint $table) {
             $table->id('id_donasi_barang');
             $table->string('nama_barang')->nullable();
-            $table->string('jumlah_barang')->nullable();
-            $table->string('deskripsi')->nullable();
+            $table->unsignedInteger('jumlah_barang')->nullable();
+            $table->text('deskripsi')->nullable();
             $table->enum('kondisi', ['baru', 'bekas']);
             $table->enum('status_verifikasi', ['approved', 'pending', 'rejected'])->default('pending');
             $table->unsignedBigInteger('id_donasi');

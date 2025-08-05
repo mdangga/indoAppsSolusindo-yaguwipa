@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Institusi;
 use App\Models\Menu;
 use App\Models\Profiles;
 use App\Models\SosialMedia;
@@ -25,18 +26,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $profile = Cache::remember('yayasan_profile', now()->addHours(1), function () {
-            // Log::info('profile dari DB');
-            return Profiles::first();
-        });
+        $profile = Profiles::first();
 
-        $sosialMedia = Cache::remember('yayasan_sosmed', now()->addHours(1), function () {
-            return SosialMedia::where('status', 'show')->get();
-        });
+        $sosialMedia = SosialMedia::where('status', 'show')->get();
+
+        $lembaga = Institusi::get();
 
         View::share('site', [
             'yayasanProfile' => $profile,
             'yayasanSosmed' => $sosialMedia,
+            'lembaga' => $lembaga,
         ]);
 
         View::composer('*', function ($view) {

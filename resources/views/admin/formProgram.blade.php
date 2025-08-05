@@ -262,12 +262,33 @@
                                         </div>
                                     </div>
 
+                                    <!-- Logo Institusi -->
+                                    <div class="mt-4">
+                                        <label class="block mb-1 text-sm font-medium text-gray-700">
+                                            Logo Institusi
+                                        </label>
+                                        <div class="flex items-center gap-4">
+                                            <div class="flex-1">
+                                                <input type="file" name="institusi[{{ $index }}][logo]" accept="image/*"
+                                                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
+                                                <p class="mt-1 text-sm text-gray-500">
+                                                    PNG, JPG, JPEG (Max. 2MB)
+                                                </p>
+                                            </div>
+                                            @if($institusi->logo_path)
+                                            <div class="w-16 h-16">
+                                                <img src="{{ asset('storage/' . $institusi->logo_path) }}" alt="Logo Institusi" class="w-full h-full object-contain">
+                                            </div>
+                                            @endif
+                                        </div>
+                                    </div>
+
                                     <div class="mt-4">
                                         <label class="block mb-1 text-sm font-medium text-gray-700">
                                             Tanggal Mulai <span class="text-red-500">*</span>
                                         </label>
-                                        <input type="date" name="institusi[{{ $index }}][tanggal_mulai]"
-                                            value="{{ old('institusi.' . $index . '.tanggal_mulai', $institusi->tanggal_mulai ? date('Y-m-d', strtotime($institusi->tanggal_mulai)) : '') }}"
+                                        <input type="date" name="institusi[{{ $index }}][tanggal]"
+                                            value="{{ old('institusi.' . $index . '.tanggal', $institusi->pivot->tanggal ? date('Y-m-d', strtotime($institusi->pivot->tanggal)) : '') }}"
                                             class="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
                                             required>
                                     </div>
@@ -321,11 +342,23 @@
                                     </div>
                                 </div>
 
+                                <!-- Logo Institusi -->
+                                <div class="mt-4">
+                                    <label class="block mb-1 text-sm font-medium text-gray-700">
+                                        Logo Institusi
+                                    </label>
+                                    <input type="file" name="institusi[0][logo]" accept="image/*"
+                                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
+                                    <p class="mt-1 text-sm text-gray-500">
+                                        PNG, JPG, JPEG (Max. 2MB)
+                                    </p>
+                                </div>
+
                                 <div class="mt-4">
                                     <label class="block mb-1 text-sm font-medium text-gray-700">
                                         Tanggal Mulai <span class="text-red-500">*</span>
                                     </label>
-                                    <input type="date" name="institusi[0][tanggal_mulai]"
+                                    <input type="date" name="institusi[0][tanggal]"
                                         class="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
                                         required>
                                 </div>
@@ -413,11 +446,23 @@
                     </div>
                 </div>
                 
+                <!-- Logo Institusi -->
+                <div class="mt-4">
+                    <label class="block mb-1 text-sm font-medium text-gray-700">
+                        Logo Institusi
+                    </label>
+                    <input type="file" name="institusi[${index}][logo]" accept="image/*"
+                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
+                    <p class="mt-1 text-sm text-gray-500">
+                        PNG, JPG, JPEG (Max. 2MB)
+                    </p>
+                </div>
+                
                 <div class="mt-4">
                     <label class="block mb-1 text-sm font-medium text-gray-700">
                         Tanggal Mulai <span class="text-red-500">*</span>
                     </label>
-                    <input type="date" name="institusi[${index}][tanggal_mulai]" 
+                    <input type="date" name="institusi[${index}][tanggal]" 
                         class="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5" 
                         required>
                 </div>
@@ -526,6 +571,6 @@
             updateDeleteButtons();
         });
     </script>
-
+</body>
 
 </html>
