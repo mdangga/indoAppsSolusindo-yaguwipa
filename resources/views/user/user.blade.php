@@ -150,14 +150,14 @@
                                     </div>
                                 @endforelse
 
-                                {{-- @if (Auth::user()->notifications->count() > 0)
+                                @if (Auth::user()->notifications->count() > 0)
                                     <div class="p-3 bg-gray-50 text-center border-t border-gray-200">
                                         <a href="{{ route('notifications.index') }}"
                                             class="text-sm font-medium text-blue-600 hover:text-blue-800">
                                             Lihat semua notifikasi
                                         </a>
                                     </div>
-                                @endif --}}
+                                @endif
                             </div>
                         </div>
                         <div class="text-right">

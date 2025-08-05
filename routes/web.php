@@ -53,6 +53,11 @@ Route::get('/publikasi/show-all', [PublikasiController::class, 'show'])->name('b
 Route::get('/show-pdf/{filePath}', [PublikasiController::class, 'showPdf'])->where('filePath', '.*')->name('publikasi.pdf');
 Route::post('/download-file/{id}', [PublikasiController::class, 'downloadFile'])->name('file.Download');
 
+// notifikasi
+Route::get('/notifications/read/{id}', [NotificationController::class, 'bacaSatuNotif'])->name('notifications.read');
+Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+Route::post('/notifications/read-all', [NotificationController::class, 'bacaSemuaNotif'])->name('notifications.readAll');
+
 // donasi
 Route::get('/donasi', [DonasiController::class, 'show'])->name('form.donasi');
 // admin
@@ -62,8 +67,6 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::put('/admin/general-setting/update/{id}', [ProfileController::class, 'update'])->name('profiles.update');
     
     
-    // notifikasi
-    Route::get('/notifications/read/{id}', [NotificationController::class, 'bacaSatuNotif'])->name('notifications.read');
 
 
     // user
@@ -206,8 +209,6 @@ Route::middleware(['auth.admin'])->group(function () {
 
 // mitra-dan-donatur 
 Route::middleware(['auth', 'auth.user:mitra,donatur'])->group(function () {
-    // notifikasi
-    Route::post('/notifications/read-all', [NotificationController::class, 'bacaSemuaNotif'])->name('notifications.readAll');
 
 
     // register mitra

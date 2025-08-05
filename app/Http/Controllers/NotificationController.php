@@ -16,6 +16,21 @@ class NotificationController extends Controller
     }
 
     // admin
+    public function index(Request $request)
+    {
+        $filter = $request->get('filter', 'all');
+
+        $notificationsQuery = auth()->user()->notifications()->orderBy('created_at', 'desc');
+
+        if ($filter === 'unread') {
+            $notificationsQuery->whereNull('read_at');
+        }
+
+        $notifications = $notificationsQuery->paginate(10);
+
+        return view('notification', compact('notifications'));
+    }
+
     public function bacaSatuNotif($id)
     {
         $notification = auth()->user()->notifications()->findOrFail($id);

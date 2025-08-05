@@ -86,6 +86,6 @@ class GeneralController extends Controller
 
     public function teams()
     {
-        return view('teams');
+        return view('notification');
     }
 }
