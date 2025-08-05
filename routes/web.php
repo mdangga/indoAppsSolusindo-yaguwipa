@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\DonasiController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\JenisPublikasiController;
@@ -48,6 +49,9 @@ Route::get('/program/show-all', [ProgramController::class, 'show'])->name('beran
 Route::get('/program/kategori/{slug}', [ProgramController::class, 'showSlug'])->name('program.kategori');
 Route::get('/program/{id}', [ProgramController::class, 'showProgam'])->name('beranda.showProgram');
 
+// campaign
+Route::get('/program/campaign/{slug}', [CampaignController::class, 'showSlug'])->name('campaign.slug');
+
 // publikasi
 Route::get('/publikasi/show-all', [PublikasiController::class, 'show'])->name('beranda.publikasi');
 Route::get('/show-pdf/{filePath}', [PublikasiController::class, 'showPdf'])->where('filePath', '.*')->name('publikasi.pdf');
@@ -61,12 +65,21 @@ Route::post('/notifications/read-all', [NotificationController::class, 'bacaSemu
 // donasi
 Route::get('/donasi', [DonasiController::class, 'show'])->name('form.donasi');
 // admin
-Route::middleware(['auth.admin'])->group(function () {
+Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
     // general-setting
     Route::get('/admin/general-setting', [ProfileController::class, 'index'])->name('admin.profiles');
     Route::put('/admin/general-setting/update/{id}', [ProfileController::class, 'update'])->name('profiles.update');
-    
-    
+
+
+    Route::prefix('campaigns')->group(function () {
+        Route::get('/', [CampaignController::class, 'index'])->name('campaigns.index');
+        Route::get('/create', [CampaignController::class, 'create'])->name('campaigns.create');
+        Route::post('/', [CampaignController::class, 'store'])->name('campaigns.store');
+        Route::get('/{campaign}', [CampaignController::class, 'show'])->name('campaigns.show');
+        Route::get('/edit/{slug}', [CampaignController::class, 'edit'])->name('campaigns.edit');
+        Route::put('/{campaign}', [CampaignController::class, 'update'])->name('campaigns.update');
+        Route::delete('/{campaign}', [CampaignController::class, 'destroy'])->name('campaigns.destroy');
+    });
 
 
     // user

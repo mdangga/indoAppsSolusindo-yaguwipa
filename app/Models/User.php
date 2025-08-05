@@ -62,4 +62,7 @@ class User extends Authenticatable
     public function Review(){
         return $this->hasOne(Review::class, 'id_user', 'id_user');
     }
+    public function Donasi(){
+        return $this->hasMany(Donasi::class, 'id_user', 'id_user');
+    }
 }

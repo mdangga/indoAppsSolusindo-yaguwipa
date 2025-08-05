@@ -6,6 +6,7 @@ use App\Models\Institusi;
 use App\Models\KategoriProgram;
 use App\Models\Program;
 use App\Models\Berita;
+use App\Models\Campaign;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Laravel\Facades\Image;
@@ -45,9 +46,14 @@ class ProgramController extends Controller
     // // fungsi untuk menampilkan halaman program di beranda berdasarkan id
     public function showProgam($id)
     {
-        $program = Program::with('institusiTerlibat')->find($id);
+        $campaigns = Campaign::where('id_program', $id)
+            ->latest()
+            ->take(3)
+            ->get();
+        $program = Program::with('institusiTerlibat')
+            ->find($id);
 
-        return view('halprogram', compact('program'));
+        return view('halprogram', compact('program', 'campaigns'));
     }
 
 

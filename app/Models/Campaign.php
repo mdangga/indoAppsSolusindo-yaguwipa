@@ -10,6 +10,7 @@ class Campaign extends Model
     protected $primaryKey = 'id_campaign';
 
     protected $fillable = [
+        'slug',
         'nama',
         'deskripsi',
         'image_path',
@@ -24,5 +25,10 @@ class Campaign extends Model
     public function Program()
     {
         return $this->belongsTo(Program::class, 'id_program', 'id_program');
+    }
+
+    public function Donasi()
+    {
+        return $this->hasMany(Donasi::class, 'id_campaign', 'id_campaign');
     }
 }
