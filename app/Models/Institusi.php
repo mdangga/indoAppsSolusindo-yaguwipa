@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Laravel\Facades\Image;
 
 class Institusi extends Model
 {
@@ -16,6 +18,26 @@ class Institusi extends Model
         'image_path',
         'status',
     ];
+
+    public static function createFromRequest(array $data): self
+    {
+        $institusiData = [
+            'nama' => $data['nama'],
+            'alamat' => $data['alamat'],
+            'website' => $data['website'],
+            'status' => $data['status'],
+        ];
+
+        if (!empty($data['logo']) && $data['logo'] instanceof \Illuminate\Http\UploadedFile) {
+            $logo = $data['logo'];
+            $namaFileLogo = 'img/institusi/' . uniqid() . '.webp';
+            $logoWebp = Image::read($logo)->toWebp(80);
+            Storage::disk('public')->put($namaFileLogo, $logoWebp);
+            $institusiData['image_path'] = $namaFileLogo;
+        }
+
+        return self::create($institusiData);
+    }
 
     public function program()
     {

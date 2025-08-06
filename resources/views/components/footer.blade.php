@@ -7,7 +7,7 @@
             <div class="flex flex-col justify-between">
                 <div>
                     <h2 class="text-xl font-bold uppercase border-b border-gray-700 pb-2 mb-4">
-                        {{ $site['yayasanProfile']->company }}</h2>
+                        {{ $site['yayasanProfile']->nama_yayasan }}</h2>
                     @php
                         $fields = [
                             'Alamat' => ['text' => 'Alamat', 'key' => 'address'],

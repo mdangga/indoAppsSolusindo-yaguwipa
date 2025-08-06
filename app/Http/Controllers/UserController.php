@@ -20,18 +20,26 @@ class UserController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
-        $recentActivities = $user->role === 'mitra'
-            ? KerjaSama::with('kategoriKerjaSama')
-            ->orderBy('updated_at', 'desc')
-            ->take(5)
-            ->get()
-            : collect();
+        $recentActivities = collect();
+
+        if ($user->role === 'mitra') {
+            $mitra = $user->UserToMitra;
+
+            if ($mitra) {
+                $recentActivities = KerjaSama::with('kategoriKerjaSama')
+                    ->where('id_mitra', $mitra->id_mitra) // ambil dari relasi, bukan user langsung
+                    ->orderBy('updated_at', 'desc')
+                    ->take(5)
+                    ->get();
+            }
+        }
 
         return view('user.user', [
             'user' => $user,
             'recentActivities' => $recentActivities,
         ]);
     }
+
 
 
     // menampilkan form untuk mengisi data user
@@ -64,7 +72,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        if(!$user){
+        if (!$user) {
             return redirect()->back()->with('gagal', 'User tidak ditemukan');
         }
 
@@ -352,7 +360,7 @@ class UserController extends Controller
         }
     }
 
-    
+
     // fungsi untuk mengaktifkan user diadmin
     public function restoreUser($id)
     {

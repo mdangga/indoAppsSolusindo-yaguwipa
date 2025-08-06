@@ -20,7 +20,7 @@ class Profiles extends Model
         'logo',
         'favicon',
         'background',
-        'company',
+        'nama_yayasan',
         'website',
         'telephone',
         'fax',

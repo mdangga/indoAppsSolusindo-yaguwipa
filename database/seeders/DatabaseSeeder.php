@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
                 'logo' => 'img-placeholder.webp',
                 'favicon' => 'img-placeholder.webp',
                 'background' => 'img-placeholder.webp',
-                'company' => 'Yayasan Contoh',
+                'nama_yayasan' => 'Yayasan Contoh',
                 'website' => 'https://yayasan.test',
                 'telephone' => '08123456789',
                 'fax' => '021123456',

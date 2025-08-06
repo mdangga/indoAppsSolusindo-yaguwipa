@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('logo')->nullable();
             $table->string('favicon')->nullable();
             $table->string('background')->nullable();
-            $table->string('company');
+            $table->string('nama_yayasan');
             $table->string('website')->nullable();
             $table->string('telephone')->nullable();
             $table->string('fax')->nullable();

@@ -137,10 +137,10 @@ class ProgramController extends Controller
             'institusi' => 'nullable|array',
             'institusi.*.id' => 'nullable|exists:institusi_terlibat,id_institusi',
             'institusi.*.nama' => 'required_without:institusi.*.id|string|nullable',
-            'institusi.*.alamat' => 'nullable|string',
-            'institusi.*.website' => 'nullable|url',
+            'institusi.*.alamat' => 'required_without:institusi.*.id|string|nullable',
+            'institusi.*.website' => 'required_without:institusi.*.id|url|nullable',
             'institusi.*.tanggal' => 'required|date',
-            'institusi.*.logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'institusi.*.logo' => 'required_without:institusi.*.id|image|mimes:jpeg,png,jpg,webp|max:2048|nullable',
         ]);
 
         DB::transaction(function () use ($request) {
@@ -163,21 +163,8 @@ class ProgramController extends Controller
                             'tanggal' => $dataInstitusi['tanggal']
                         ]);
                     } elseif (!empty($dataInstitusi['nama'])) {
-                        $institusiData = [
-                            'nama' => $dataInstitusi['nama'],
-                            'alamat' => $dataInstitusi['alamat'] ?? null,
-                            'website' => $dataInstitusi['website'] ?? null,
-                        ];
+                        $institusiBaru = Institusi::createFromRequest($dataInstitusi);
 
-                        if (!empty($dataInstitusi['logo']) && $dataInstitusi['logo'] instanceof \Illuminate\Http\UploadedFile) {
-                            $logo = $dataInstitusi['logo'];
-                            $namaFileLogo = 'img/institusi/' . uniqid() . '.webp';
-                            $logoWebp = Image::read($logo)->toWebp(80);
-                            Storage::disk('public')->put($namaFileLogo, $logoWebp);
-                            $institusiData['image_path'] = $namaFileLogo;
-                        }
-
-                        $institusiBaru = Institusi::create($institusiData);
                         $program->institusiTerlibat()->attach($institusiBaru->id_institusi, [
                             'tanggal' => $dataInstitusi['tanggal']
                         ]);
@@ -209,10 +196,10 @@ class ProgramController extends Controller
             'institusi' => 'nullable|array',
             'institusi.*.id' => 'nullable|exists:institusi_terlibat,id_institusi',
             'institusi.*.nama' => 'required_without:institusi.*.id|string|nullable',
-            'institusi.*.alamat' => 'nullable|string',
-            'institusi.*.website' => 'nullable|url',
+            'institusi.*.alamat' => 'required_without:institusi.*.id|string|nullable',
+            'institusi.*.website' => 'required_without:institusi.*.id|url|nullable',
             'institusi.*.tanggal' => 'required|date',
-            'institusi.*.logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'institusi.*.logo' => 'required_without:institusi.*.id|image|mimes:jpeg,png,jpg,webp|max:2048|nullable',
         ]);
 
         DB::transaction(function () use ($request, $program) {
@@ -238,21 +225,7 @@ class ProgramController extends Controller
                             $dataInstitusi['id'] => ['tanggal' => $dataInstitusi['tanggal']]
                         ]);
                     } elseif (!empty($dataInstitusi['nama'])) {
-                        $institusiData = [
-                            'nama' => $dataInstitusi['nama'],
-                            'alamat' => $dataInstitusi['alamat'] ?? null,
-                            'website' => $dataInstitusi['website'] ?? null,
-                        ];
-
-                        if (!empty($dataInstitusi['logo']) && $dataInstitusi['logo'] instanceof \Illuminate\Http\UploadedFile) {
-                            $logo = $dataInstitusi['logo'];
-                            $namaFileLogo = 'img/institusi/' . uniqid() . '.webp';
-                            $logoWebp = Image::read($logo)->toWebp(80);
-                            Storage::disk('public')->put($namaFileLogo, $logoWebp);
-                            $institusiData['image_path'] = $namaFileLogo;
-                        }
-
-                        $institusiBaru = Institusi::create($institusiData);
+                        $institusiBaru = Institusi::createFromRequest($dataInstitusi);
                         $idInstitusiInput[] = $institusiBaru->id_institusi;
                         $program->institusiTerlibat()->attach($institusiBaru->id_institusi, [
                             'tanggal' => $dataInstitusi['tanggal']

@@ -194,7 +194,7 @@
             <div class="flex justify-center lg:justify-start">
                 <a href="{{ route('beranda') }}" class="-m-1.5 p-1.5">
                     <img class="h-[50px] sm:h-[75px] w-auto"
-                        src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" alt="Company Logo" />
+                        src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" alt="Logo Yayasan" />
                 </a>
             </div>
 

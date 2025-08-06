@@ -41,7 +41,7 @@
                     <strong class="font-medium">Terjadi kesalahan:</strong>
                     <ul class="mt-2">
                         @foreach ($errors->all() as $error)
-                            <li>• {{ $error }}</li>
+                            <li>{{ $error }}</li>
                         @endforeach
                     </ul>
                 </div>
@@ -269,16 +269,18 @@
                                         </label>
                                         <div class="flex items-center gap-4">
                                             <div class="flex-1">
-                                                <input type="file" name="institusi[{{ $index }}][logo]" accept="image/*"
+                                                <input type="file" name="institusi[{{ $index }}][logo]"
+                                                    accept="image/*"
                                                     class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
                                                 <p class="mt-1 text-sm text-gray-500">
                                                     PNG, JPG, JPEG (Max. 2MB)
                                                 </p>
                                             </div>
-                                            @if($institusi->logo_path)
-                                            <div class="w-16 h-16">
-                                                <img src="{{ asset('storage/' . $institusi->logo_path) }}" alt="Logo Institusi" class="w-full h-full object-contain">
-                                            </div>
+                                            @if ($institusi->logo_path)
+                                                <div class="w-16 h-16">
+                                                    <img src="{{ asset('storage/' . $institusi->logo_path) }}"
+                                                        alt="Logo Institusi" class="w-full h-full object-contain">
+                                                </div>
                                             @endif
                                         </div>
                                     </div>
@@ -433,29 +435,32 @@
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    <div>
-                        <label class="block mb-1 text-sm font-medium text-gray-700">Alamat</label>
-                        <input type="text" name="institusi[${index}][alamat]" placeholder="Alamat institusi"
-                            class="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
-                    </div>
-                    
-                    <div>
-                        <label class="block mb-1 text-sm font-medium text-gray-700">Website</label>
-                        <input type="url" name="institusi[${index}][website]" placeholder="https://website.com"
-                            class="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
+                <div>
+                    <label class="block mb-1 text-sm font-medium text-gray-700">Alamat <span class="text-red-500">*</span></label>
+                    <input type="text" name="institusi[${index}][alamat]" placeholder="Alamat institusi"
+                        class="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                        required>
+                </div>
+            
+                <div>
+                    <label class="block mb-1 text-sm font-medium text-gray-700">Website <span class="text-red-500">*</span></label>
+                    <input type="url" name="institusi[${index}][website]" placeholder="https://website.com"
+                        class="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                        required>
                     </div>
                 </div>
-                
+        
                 <!-- Logo Institusi -->
                 <div class="mt-4">
                     <label class="block mb-1 text-sm font-medium text-gray-700">
                         Logo Institusi
+                        <span class="text-red-500 logo-required" style="display:none">*</span>
                     </label>
                     <input type="file" name="institusi[${index}][logo]" accept="image/*"
                         class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
-                    <p class="mt-1 text-sm text-gray-500">
-                        PNG, JPG, JPEG (Max. 2MB)
-                    </p>
+                        <p class="mt-1 text-sm text-gray-500">
+                            PNG, JPG, JPEG (Max. 2MB)
+                        </p>
                 </div>
                 
                 <div class="mt-4">
@@ -467,6 +472,19 @@
                         required>
                 </div>
             `;
+            const select = div.querySelector('select[name*="[id]"]');
+            const logoRequired = div.querySelector('.logo-required');
+            const logoInput = div.querySelector('input[name*="[logo]"]');
+
+            select.addEventListener('change', function() {
+                if (this.value) {
+                    logoInput.removeAttribute('required');
+                    logoRequired.style.display = 'none';
+                } else {
+                    logoInput.setAttribute('required', 'required');
+                    logoRequired.style.display = 'inline';
+                }
+            });
             wrapper.appendChild(div);
             index++;
 
@@ -522,19 +540,52 @@
         document.querySelector('form').addEventListener('submit', function(e) {
             const institusiGroups = document.querySelectorAll('.institusi-group');
             let hasValidInstitusi = false;
+            let isValid = true;
+            const errorMessages = [];
 
-            institusiGroups.forEach(group => {
+            institusiGroups.forEach((group, index) => {
                 const selectValue = group.querySelector('select').value;
-                const inputValue = group.querySelector('input[name*="[nama]"]').value;
+                const namaInput = group.querySelector('input[name*="[nama]"]');
+                const alamatInput = group.querySelector('input[name*="[alamat]"]');
+                const websiteInput = group.querySelector('input[name*="[website]"]');
+                const logoInput = group.querySelector('input[name*="[logo]"]');
+                const existingLogo = group.querySelector('img');
 
-                if (selectValue || inputValue.trim()) {
+                if (selectValue) {
                     hasValidInstitusi = true;
+                } else {
+                    if (!namaInput.value.trim()) {
+                        errorMessages.push(`Nama institusi ke-${index + 1} wajib diisi`);
+                        isValid = false;
+                    }
+                    if (!alamatInput.value.trim()) {
+                        errorMessages.push(`Alamat institusi ke-${index + 1} wajib diisi`);
+                        isValid = false;
+                    }
+                    if (!websiteInput.value.trim()) {
+                        errorMessages.push(`Website institusi ke-${index + 1} wajib diisi`);
+                        isValid = false;
+                    }
+                    if (!logoInput.files[0] && !existingLogo) {
+                        errorMessages.push(`Logo institusi ke-${index + 1} wajib diupload`);
+                        isValid = false;
+                    }
+
+                    if (namaInput.value.trim()) {
+                        hasValidInstitusi = true;
+                    }
                 }
             });
 
             if (!hasValidInstitusi) {
+                errorMessages.push(
+                    'Minimal satu institusi harus diisi (pilih dari dropdown atau tambah nama baru)');
+                isValid = false;
+            }
+
+            if (!isValid) {
                 e.preventDefault();
-                alert('Minimal satu institusi harus diisi (pilih dari dropdown atau tambah nama baru).');
+                alert('Terjadi kesalahan:\n\n' + errorMessages.join('\n'));
             }
         });
 
@@ -543,14 +594,26 @@
             if (e.target.matches('select[name*="institusi"][name*="[id]"]')) {
                 const group = e.target.closest('.institusi-group');
                 const namaInput = group.querySelector('input[name*="[nama]"]');
+                const alamatInput = group.querySelector('input[name*="[alamat]"]');
+                const websiteInput = group.querySelector('input[name*="[website]"]');
 
                 if (e.target.value) {
                     namaInput.value = '';
                     namaInput.setAttribute('disabled', 'disabled');
                     namaInput.style.opacity = '0.5';
+                    alamatInput.value = '';
+                    alamatInput.setAttribute('disabled', 'disabled');
+                    alamatInput.style.opacity = '0.5';
+                    websiteInput.value = '';
+                    websiteInput.setAttribute('disabled', 'disabled');
+                    websiteInput.style.opacity = '0.5';
                 } else {
                     namaInput.removeAttribute('disabled');
                     namaInput.style.opacity = '1';
+                    alamatInput.removeAttribute('disabled');
+                    alamatInput.style.opacity = '1';
+                    websiteInput.removeAttribute('disabled');
+                    websiteInput.style.opacity = '1';
                 }
             }
         });
@@ -561,10 +624,16 @@
             document.querySelectorAll('select[name*="institusi"][name*="[id]"]').forEach(select => {
                 const group = select.closest('.institusi-group');
                 const namaInput = group.querySelector('input[name*="[nama]"]');
+                const alamatInput = group.querySelector('input[name*="[alamat]"]');
+                const websiteInput = group.querySelector('input[name*="[website]"]');
 
                 if (select.value) {
                     namaInput.setAttribute('disabled', 'disabled');
                     namaInput.style.opacity = '0.5';
+                    alamatInput.setAttribute('disabled', 'disabled');
+                    alamatInput.style.opacity = '0.5';
+                    websiteInput.setAttribute('disabled', 'disabled');
+                    websiteInput.style.opacity = '0.5';
                 }
             });
 

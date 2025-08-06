@@ -34,7 +34,7 @@ class ProfileController extends Controller
             'favicon' => 'nullable|image|mimes:jpeg,png,jpg,svg,ico|max:2048',
             'background' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
             'popup' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
-            'company' => 'nullable|string',
+            'nama_yayasan' => 'nullable|string',
             'website' => 'nullable|string',
             'telephone' => 'nullable|string',
             'fax' => 'nullable|string',

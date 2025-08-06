@@ -30,7 +30,7 @@
             <!-- Baris 1: Header -->
             <div class="flex items-center justify-center my-4 mb-12">
                 <h1 class="text-xl font-semibold tracking-tight text-gray-900 text-center sm:text-5xl m-0">
-                    {{ $site['yayasanProfile']->company }}
+                    {{ $site['yayasanProfile']->nama_yayasan }}
                 </h1>
             </div>
 

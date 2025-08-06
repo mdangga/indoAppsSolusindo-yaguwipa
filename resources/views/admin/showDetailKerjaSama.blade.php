@@ -27,7 +27,7 @@
     <main class="p-4 md:p-6 md:ml-64 pt-16 md:pt-20 min-h-screen">
         <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
             <!-- Header -->
-            <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+            <div class="bg-gradient-to-r from-amber-600 to-amber-700 px-6 py-4">
                 <h2 class="text-2xl font-bold text-white">Detail Pengajuan Kerja Sama</h2>
             </div>
 
@@ -35,7 +35,7 @@
                 <!-- Informasi Lembaga -->
                 <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                        <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor"
+                        <svg class="w-5 h-5 mr-2 text-gray-600" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
@@ -59,8 +59,16 @@
                             </div>
 
                             <div class="flex flex-col">
-                                <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">No. Telp</span>
-                                <span class="text-sm text-gray-700 mt-1">{{ $kerjasama->Mitra->User->no_tlp }}</span>
+                                <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Penanggung Jawab</span>
+                                <span
+                                class="text-sm font-medium text-gray-700 mt-1">{{ $kerjasama->Mitra->penanggung_jawab }}</span>
+                            </div>
+                            
+                            <div class="flex flex-col">
+                                <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Jenis Kerja
+                                    Sama</span>
+                                    <span
+                                    class="text-sm font-medium text-amber-700 mt-1">{{ $kerjasama->KategoriKerjaSama->nama }}</span>
                             </div>
                         </div>
 
@@ -69,12 +77,16 @@
                                 <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Alamat</span>
                                 <span class="text-sm text-gray-700 mt-1">{{ $kerjasama->Mitra->User->alamat }}</span>
                             </div>
+                            
+                            <div class="flex flex-col">
+                                <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">No. Telp</span>
+                                <span class="text-sm text-gray-700 mt-1">{{ $kerjasama->Mitra->User->no_tlp }}</span>
+                            </div>
 
                             <div class="flex flex-col">
-                                <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Jenis Kerja
-                                    Sama</span>
+                                <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Jabatan Penanggung Jawab</span>
                                 <span
-                                    class="text-sm font-medium text-blue-700 mt-1">{{ $kerjasama->KategoriKerjaSama->nama }}</span>
+                                    class="text-sm font-medium text-gray-700 mt-1">{{ $kerjasama->Mitra->jabatan_penanggung_jawab }}</span>
                             </div>
 
                             <div class="flex flex-col">
@@ -135,9 +147,9 @@
                 </div>
 
                 <!-- Lampiran File -->
-                <div class="bg-blue-50 rounded-lg p-6 border border-blue-200">
+                <div class="bg-amber-50 rounded-lg p-6 border border-amber-200">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                        <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor"
+                        <svg class="w-5 h-5 mr-2 text-amber-600" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13">
@@ -145,7 +157,7 @@
                         </svg>
                         Lampiran File
                     </h3>
-                    
+
                     <div class="space-y-2">
                         @forelse ($kerjasama->FilePenunjang as $lampiran)
                             <div

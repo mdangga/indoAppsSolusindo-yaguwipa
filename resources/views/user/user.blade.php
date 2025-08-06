@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 @php
     $user = auth()->user();
 
@@ -276,7 +277,7 @@
                                 </div>
                             </div>
                             <div class="divide-y divide-gray-200">
-                                @foreach ($recentActivities as $activity)
+                                @forelse ($recentActivities as $activity)
                                     <div class="px-6 py-4">
                                         <div class="flex items-center justify-between">
                                             <div class="flex items-center">
@@ -321,7 +322,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
+                                @empty
+                                    <div class="text-center py-8"><i
+                                            class="fas fa-inbox text-4xl text-gray-300 mb-4"></i>
+                                        <p class="text-gray-500">Belum ada data</p>
+                                    </div>
+                                @endforelse
                             </div>
                         </div>
                     @endif
