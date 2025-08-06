@@ -230,7 +230,7 @@
                     {{-- Text Inputs --}}
                     <div class="mb-4">
                         <label class="block mb-1 text-sm font-medium text-gray-900">Nama Yayasan</label>
-                        <input type="text" name="company" value="{{ old('company', $profiles->company ?? '') }}"
+                        <input type="text" name="nama_yayasan" value="{{ old('nama_yayasan', $profiles->nama_yayasan ?? '') }}"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Nama Yayasan" />
                     </div>

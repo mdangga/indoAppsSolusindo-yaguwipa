@@ -30,8 +30,12 @@
     <!-- Logo Section -->
     <div class="flex items-center px-3 py-3 border-b border-white/15 lg:px-5 lg:pl-3">
         <a href="{{ route('admin.profiles') }}" class="flex items-center">
-            <img src="{{ asset('img/logo.png') }}" class="h-8 me-3" alt="FlowBite Logo" />
-            <span class="self-center text-xl font-semibold whitespace-nowrap text-gray-200">Yaguwipa</span>
+            <img src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" class="h-8 me-3" alt="Logo Yayasan" />
+            <span
+                class="hidden sm:inline self-center text-sm font-semibold  text-gray-200 max-w-[150px]"
+                title="{{ $site['yayasanProfile']->nama_yayasan }}">
+                {{ $site['yayasanProfile']->nama_yayasan }}
+            </span>
         </a>
     </div>
 
@@ -86,6 +90,22 @@
                         </g>
                     </svg>
                     <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap font-normal">Users</span>
+                </a>
+            </li>
+            <!-- Institusi -->
+            <li>
+                <a type="button" href="{{ route('admin.institusi') }}"
+                    class="flex items-center w-full p-2 text-base text-gray-200 transition duration-75 rounded-lg group hover:bg-[#535c66]">
+                    <svg class="shrink-0 w-5 h-5 text-gray-200 transition duration-75 group-hover:text-gray-200"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <g fill="none">
+                            <path
+                                d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
+                            <path fill="currentColor"
+                                d="M3 19h1V6.36a1.5 1.5 0 0 1 1.026-1.423l8-2.666A1.5 1.5 0 0 1 15 3.694V19h1V9.99a.5.5 0 0 1 .598-.49l2.196.44A1.5 1.5 0 0 1 20 11.41V19h1a1 1 0 1 1 0 2H3a1 1 0 1 1 0-2" />
+                        </g>
+                    </svg>
+                    <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap font-normal">Institusi</span>
                 </a>
             </li>
             <!-- News and Event Dropdown -->

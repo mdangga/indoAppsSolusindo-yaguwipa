@@ -77,7 +77,7 @@
             <div class="relative px-6 pt-14 lg:px-8">
                 <div class="mx-auto max-w-2xl text-center">
                     <h1 class="text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
-                        {{ $site['yayasanProfile']->company }}
+                        {{ $site['yayasanProfile']->nama_yayasan }}
                     </h1>
                     <p class="mt-8 text-lg font-medium text-gray-600">
                         {!! str_replace(['<p>', '</p>'], '', $site['yayasanProfile']->intro) !!}

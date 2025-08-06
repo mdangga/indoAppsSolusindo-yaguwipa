@@ -111,7 +111,7 @@
                         <div class="max-w-md mx-auto">
                             <!-- Logo -->
                             <div class="text-center mb-8">
-                                <img class="mx-auto h-24 w-auto" src="{{ asset('img/logo.png') }}" alt="Your Company" />
+                                <img class="mx-auto h-24 w-auto" src="{{ asset('img/logo.png') }}" alt="logo yayasan" />
                                 {{-- <h2 class="mt-6 text-2xl font-bold tracking-tight text-gray-900">Masuk ke Yaguwipa
                                 </h2>
                                 <p class="mt-2 text-sm text-gray-600">Isi form dengan benar
