@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
 
         $sosialMedia = SosialMedia::where('status', 'show')->get();
 
-        $lembaga = Institusi::get();
+        $lembaga = Institusi::where('status', 'show')->get();
 
         View::share('site', [
             'yayasanProfile' => $profile,

@@ -228,7 +228,7 @@
                         <!-- Additional Stats -->
                         <div class="grid grid-cols-2 gap-4 mb-8 p-4 bg-gray-50 rounded-xl">
                             <div class="text-center">
-                                <div class="text-xl font-bold text-orange-600">{{ $totalDonatur }}</div>
+                                <div class="text-xl font-bold text-amber-600">{{ $totalDonatur }}</div>
                                 <div class="text-xs text-gray-600">Donatur</div>
                             </div>
                             <div class="text-center">
@@ -244,7 +244,7 @@
 
                         <!-- CTA Button -->
                         <button type="button" aria-label="Donasi Sekarang"
-                            class="flex items-center justify-center gap-2 w-full bg-orange-600 hover:bg-orange-700 text-white py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl">
+                            class="flex items-center justify-center gap-2 w-full bg-amber-600 hover:bg-amber-700 text-white py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                 <path fill="currentColor"
                                     d="M20 17q.86 0 1.45.6t.58 1.4L14 22l-7-2v-9h1.95l7.27 2.69q.78.31.78 1.12q0 .47-.34.82t-.86.37H13l-1.75-.67l-.33.94L13 17zM16 3.23Q17.06 2 18.7 2q1.36 0 2.3 1t1 2.3q0 1.03-1 2.46t-1.97 2.39T16 13q-2.08-1.89-3.06-2.85t-1.97-2.39T10 5.3q0-1.36.97-2.3t2.34-1q1.6 0 2.69 1.23M.984 11H5v11H.984z" />
@@ -274,11 +274,11 @@
                     <div class="space-y-4 max-h-96 overflow-y-auto">
                         @forelse ($donations as $donation)
                             <div
-                                class="donor-card p-4 rounded-xl card-hover {{ $loop->first ? 'border-2 border-orange-300' : '' }}">
+                                class="donor-card p-4 rounded-xl card-hover {{ $loop->first ? 'border-2 border-amber-300' : '' }}">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center space-x-4">
                                         <div
-                                            class="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center text-white font-bold shadow-sm">
+                                            class="w-12 h-12 bg-gradient-to-r from-amber-500 to-amber-800 rounded-full flex items-center justify-center text-white font-bold shadow-sm">
                                             {{ strtoupper(substr($donation->nama, 0, 2)) }}
                                         </div>
                                         <div>
@@ -291,7 +291,7 @@
                                     </div>
                                     <div class="text-right">
                                         @if ($donation->id_jenis_donasi == 1)
-                                            <p class="font-bold text-orange-600">
+                                            <p class="font-bold text-amber-600">
                                                 Rp
                                                 {{ number_format(optional($donation->DonasiDana)->nominal, 0, ',', '.') }}
                                             </p>
@@ -305,7 +305,7 @@
                                             @endphp
 
                                             @foreach ($barang->take(2) as $item)
-                                                <div class="font-bold text-orange-600">
+                                                <div class="font-bold text-amber-600">
                                                     {{ $item->nama_barang }} ({{ $item->jumlah_barang }} unit)
                                                 </div>
                                                 <div class="text-gray-600 text-sm mb-2">
@@ -329,7 +329,7 @@
                         @endforelse
                     </div>
                     <div class="mt-6 text-center">
-                        <button class="text-orange-600 hover:text-orange-800 font-medium transition-colors">
+                        <button class="text-amber-600 hover:text-amber-800 font-medium transition-colors">
                             Lihat Semua Donatur <i class="fas fa-arrow-right ml-1"></i>
                         </button>
                     </div>
@@ -348,7 +348,7 @@
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
                             <span class="text-gray-600">Hari tersisa</span>
-                            <span class="font-semibold text-orange-600">{{ $interval->days }} hari</span>
+                            <span class="font-semibold text-amber-600">{{ $interval->days }} hari</span>
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-gray-600">Campaign dimulai</span>

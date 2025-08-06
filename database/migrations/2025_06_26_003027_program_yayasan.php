@@ -35,6 +35,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('alamat');
             $table->string('image_path');
+            $table->enum('status', ['show', 'hide'])->default('show');
             $table->string('website')->nullable();
             $table->timestamps();
         });

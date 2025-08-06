@@ -6,6 +6,7 @@ use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\DonasiController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\InstitusiController;
 use App\Http\Controllers\JenisPublikasiController;
 use App\Http\Controllers\kategoriNewsEventController;
 use App\Http\Controllers\KategoriProgramController;
@@ -67,10 +68,12 @@ Route::get('/donasi', [DonasiController::class, 'show'])->name('form.donasi');
 // admin
 Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
     // general-setting
-    Route::get('/admin/general-setting', [ProfileController::class, 'index'])->name('admin.profiles');
-    Route::put('/admin/general-setting/update/{id}', [ProfileController::class, 'update'])->name('profiles.update');
+    Route::prefix('general-setting')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('admin.profiles');
+        Route::put('/update/{id}', [ProfileController::class, 'update'])->name('profiles.update');
+    });
 
-
+    // campaigns
     Route::prefix('campaigns')->group(function () {
         Route::get('/', [CampaignController::class, 'index'])->name('campaigns.index');
         Route::get('/create', [CampaignController::class, 'create'])->name('campaigns.create');
@@ -81,179 +84,193 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
         Route::delete('/{campaign}', [CampaignController::class, 'destroy'])->name('campaigns.destroy');
     });
 
-
     // user
-    Route::get('/admin/user', [UserController::class, 'index'])->name('admin.user');
-    Route::get('/admin/datatable/user', [UserController::class, 'getDataTables'])->name('user.table');
-    Route::delete('/admin/deactivate-user/{id}', [UserController::class, 'deactivateUser'])->name('user.deactivate');
-    Route::post('/admin/restore-user/{id}', [UserController::class, 'restoreUser'])->name('user.restore');
-
+    Route::prefix('user')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('admin.user');
+        Route::get('/datatable', [UserController::class, 'getDataTables'])->name('user.table');
+        Route::delete('/deactivate/{id}', [UserController::class, 'deactivateUser'])->name('user.deactivate');
+        Route::post('/restore/{id}', [UserController::class, 'restoreUser'])->name('user.restore');
+    });
 
     // sosial-media
-    Route::get('/admin/sosial-media', [SosiaMediaController::class, 'index'])->name('admin.sosmed');
-    Route::get('/admin/datatable/sosial-media', [SosiaMediaController::class, 'getDataTables'])->name('sosmed.table');
+    Route::prefix('sosial-media')->group(function () {
+        Route::get('/', [SosiaMediaController::class, 'index'])->name('admin.sosmed');
+        Route::get('/datatable', [SosiaMediaController::class, 'getDataTables'])->name('sosmed.table');
+        Route::get('/create', [SosiaMediaController::class, 'showFormStore'])->name('sosmed.formStore');
+        Route::post('/', [SosiaMediaController::class, 'store'])->name('sosmed.store');
+        Route::get('/edit/{id}', [SosiaMediaController::class, 'showFormEdit'])->name('sosmed.formEdit');
+        Route::put('/{id}', [SosiaMediaController::class, 'update'])->name('sosmed.update');
+        Route::delete('/destroy/{id}', [SosiaMediaController::class, 'destroy'])->name('sosmed.delete');
+    });
 
-    Route::get('/admin/sosial-media/store', [SosiaMediaController::class, 'showFormStore'])->name('sosmed.formStore');
-    Route::post('/admin/sosial-media', [SosiaMediaController::class, 'store'])->name('sosmed.store');
-
-    Route::get('/admin/sosial-media/edit/{id}', [SosiaMediaController::class, 'showFormEdit'])->name('sosmed.formEdit');
-    Route::put('/admin/sosial-media/{id}', [SosiaMediaController::class, 'update'])->name('sosmed.update');
-
-    Route::delete('/admin/sosial-media/destroy/{id}', [SosiaMediaController::class, 'destroy'])->name('sosmed.delete');
-
+    // institusi-terlibat
+    Route::prefix('institusi-terlibat')->group(function () {
+        Route::get('/', [InstitusiController::class, 'index'])->name('admin.institusi');
+        Route::get('/datatable', [InstitusiController::class, 'getDataTables'])->name('institusi.table');
+        Route::get('/create', [InstitusiController::class, 'showFormStore'])->name('institusi.formStore');
+        Route::post('/', [InstitusiController::class, 'store'])->name('institusi.store');
+        Route::get('/edit/{id}', [InstitusiController::class, 'showFormEdit'])->name('institusi.formEdit');
+        Route::put('/{id}', [InstitusiController::class, 'update'])->name('institusi.update');
+        Route::delete('/destroy/{id}', [InstitusiController::class, 'destroy'])->name('institusi.delete');
+    });
 
     // kategori-program
-    Route::get('/admin/kategori-program', [KategoriProgramController::class, 'index'])->name('admin.kategoriProgram');
-    Route::get('/admin/datatable/kategori-program', [KategoriProgramController::class, 'getDataTables'])->name('kategoriProgram.table');
-
-    Route::get('/admin/kategori-program/store', [KategoriProgramController::class, 'showFormStore'])->name('kategoriProgram.formStore');
-    Route::post('/admin/kategori-program', [KategoriProgramController::class, 'store'])->name('kategoriProgram.store');
-
-    Route::get('/admin/kategori-program/edit/{id}', [KategoriProgramController::class, 'showFormEdit'])->name('kategoriProgram.formUpdate');
-    Route::put('/admin/kategori-program/{id}', [KategoriProgramController::class, 'update'])->name('kategoriProgram.update');
-
-    Route::delete('/admin/kategori-program/destroy/{id}', [KategoriProgramController::class, 'destroy'])->name('kategoriProgram.delete');
-
+    Route::prefix('kategori-program')->group(function () {
+        Route::get('/', [KategoriProgramController::class, 'index'])->name('admin.kategoriProgram');
+        Route::get('/datatable', [KategoriProgramController::class, 'getDataTables'])->name('kategoriProgram.table');
+        Route::get('/create', [KategoriProgramController::class, 'showFormStore'])->name('kategoriProgram.formStore');
+        Route::post('/', [KategoriProgramController::class, 'store'])->name('kategoriProgram.store');
+        Route::get('/edit/{id}', [KategoriProgramController::class, 'showFormEdit'])->name('kategoriProgram.formUpdate');
+        Route::put('/{id}', [KategoriProgramController::class, 'update'])->name('kategoriProgram.update');
+        Route::delete('/destroy/{id}', [KategoriProgramController::class, 'destroy'])->name('kategoriProgram.delete');
+    });
 
     // program
-    Route::get('/admin/program', [ProgramController::class, 'index'])->name('admin.program');
-    Route::get('/admin/datatable/program', [ProgramController::class, 'getDataTables'])->name('program.table');
-
-    Route::get('/admin/program/store', [ProgramController::class, 'showFormStore'])->name('program.formStore');
-    Route::post('/admin/program', [ProgramController::class, 'store'])->name('program.store');
-
-    Route::get('/admin/program/edit/{id}', [ProgramController::class, 'showFormEdit'])->name('program.formUpdate');
-    Route::put('/admin/program/{id}', [ProgramController::class, 'update'])->name('program.update');
-
-    Route::delete('/admin/program/destroy/{id}', [ProgramController::class, 'destroy'])->name('program.delete');
+    Route::prefix('program')->group(function () {
+        Route::get('/', [ProgramController::class, 'index'])->name('admin.program');
+        Route::get('/datatable', [ProgramController::class, 'getDataTables'])->name('program.table');
+        Route::get('/create', [ProgramController::class, 'showFormStore'])->name('program.formStore');
+        Route::post('/', [ProgramController::class, 'store'])->name('program.store');
+        Route::get('/edit/{id}', [ProgramController::class, 'showFormEdit'])->name('program.formUpdate');
+        Route::put('/{id}', [ProgramController::class, 'update'])->name('program.update');
+        Route::delete('/destroy/{id}', [ProgramController::class, 'destroy'])->name('program.delete');
+    });
 
 
     // gallery
-    Route::get('/admin/gallery-photo', [GalleryController::class, 'indexPhoto'])->name('admin.galleryPhoto');
-    Route::get('/admin/gallery-video', [GalleryController::class, 'indexVideo'])->name('admin.galleryVideo');
-    Route::get('/admin/datatable/gallery-photo', [GalleryController::class, 'getDataTablesPhoto'])->name('galleryPhoto.table');
-    Route::get('/admin/datatable/gallery-video', [GalleryController::class, 'getDataTablesVideo'])->name('galleryVideo.table');
-
-    Route::get('/admin/gallery/store/{kategori}', [GalleryController::class, 'showFormStore'])->name('gallery.formStore');
-    Route::post('/admin/gallery', [GalleryController::class, 'store'])->name('gallery.store');
-
-    Route::get('/admin/gallery/edit/{id}', [GalleryController::class, 'showFormEdit'])->name('gallery.formEdit');
-    Route::put('/admin/gallery/{id}', [GalleryController::class, 'update'])->name('gallery.update');
-
-    Route::delete('/admin/gallery/destroy/{id}', [GalleryController::class, 'destroy'])->name('gallery.delete');
+    Route::prefix('gallery')->group(function () {
+        Route::get('/photo', [GalleryController::class, 'indexPhoto'])->name('admin.galleryPhoto');
+        Route::get('/video', [GalleryController::class, 'indexVideo'])->name('admin.galleryVideo');
+        Route::get('/datatable/photo', [GalleryController::class, 'getDataTablesPhoto'])->name('galleryPhoto.table');
+        Route::get('/datatable/video', [GalleryController::class, 'getDataTablesVideo'])->name('galleryVideo.table');
+        Route::get('/create/{kategori}', [GalleryController::class, 'showFormStore'])->name('gallery.formStore');
+        Route::post('/', [GalleryController::class, 'store'])->name('gallery.store');
+        Route::get('/edit/{id}', [GalleryController::class, 'showFormEdit'])->name('gallery.formEdit');
+        Route::put('/{id}', [GalleryController::class, 'update'])->name('gallery.update');
+        Route::delete('/destroy/{id}', [GalleryController::class, 'destroy'])->name('gallery.delete');
+    });
 
 
     // Kategori-news-event
-    Route::get('/admin/kategori-news-event', [kategoriNewsEventController::class, 'index'])->name('admin.kategoriBerita');
-    Route::get('/admin/datatable/kategori-news-event', [kategoriNewsEventController::class, 'getDataTables'])->name('kategoriBerita.table');
-
-    Route::get('/admin/kategori-news-event/store', [kategoriNewsEventController::class, 'showFormStore'])->name('kategoriBerita.formStore');
-    Route::post('/admin/kategori-news-event', [kategoriNewsEventController::class, 'store'])->name('kategoriBerita.store');
-
-    Route::get('/admin/kategori-news-event/edit/{id}', [kategoriNewsEventController::class, 'showFormEdit'])->name('kategoriBerita.formEdit');
-    Route::put('/admin/kategori-news-event/{id}', [kategoriNewsEventController::class, 'update'])->name('kategoriBerita.update');
-
-    Route::delete('/admin/kategori-news-event/destroy/{id}', [kategoriNewsEventController::class, 'destroy'])->name('kategoriBerita.delete');
+    Route::prefix('kategori-news-event')->group(function () {
+        Route::get('/', [kategoriNewsEventController::class, 'index'])->name('admin.kategoriBerita');
+        Route::get('/datatable', [kategoriNewsEventController::class, 'getDataTables'])->name('kategoriBerita.table');
+        Route::get('/create', [kategoriNewsEventController::class, 'showFormStore'])->name('kategoriBerita.formStore');
+        Route::post('/', [kategoriNewsEventController::class, 'store'])->name('kategoriBerita.store');
+        Route::get('/edit/{id}', [kategoriNewsEventController::class, 'showFormEdit'])->name('kategoriBerita.formEdit');
+        Route::put('/{id}', [kategoriNewsEventController::class, 'update'])->name('kategoriBerita.update');
+        Route::delete('/destroy/{id}', [kategoriNewsEventController::class, 'destroy'])->name('kategoriBerita.delete');
+    });
 
 
     // news-dan-event 
-    Route::get('/admin/berita', [BeritaController::class, 'index'])->name('admin.berita');
-    Route::get('/admin/datatable/berita', [BeritaController::class, 'getDataTables'])->name('berita.table');
-
-    Route::get('/admin/berita/store', [BeritaController::class, 'showFormStore'])->name('berita.formStore');
-    Route::post('/admin/berita', [BeritaController::class, 'store'])->name('berita.store');
-
-    Route::get('/admin/berita/edit/{id}', [BeritaController::class, 'showFormEdit'])->name('berita.formEdit');
-    Route::put('/admin/berita/{id}', [BeritaController::class, 'update'])->name('berita.update');
-
-    Route::delete('/admin/berita/destroy/{id}', [BeritaController::class, 'destroy'])->name('berita.delete');
+    Route::prefix('news-event')->group(function () {
+        Route::get('/', [BeritaController::class, 'index'])->name('admin.berita');
+        Route::get('/datatable', [BeritaController::class, 'getDataTables'])->name('berita.table');
+        Route::get('/create', [BeritaController::class, 'showFormStore'])->name('berita.formStore');
+        Route::post('/', [BeritaController::class, 'store'])->name('berita.store');
+        Route::get('/edit/{id}', [BeritaController::class, 'showFormEdit'])->name('berita.formEdit');
+        Route::put('/{id}', [BeritaController::class, 'update'])->name('berita.update');
+        Route::delete('/destroy/{id}', [BeritaController::class, 'destroy'])->name('berita.delete');
+    });
 
 
     // menus
-    Route::get('/admin/menus', [MenusController::class, 'index'])->name('admin.menus');
-    Route::get('/admin/datatable/menus', [MenusController::class, 'getDataTables'])->name('menus.table');
-
-    Route::get('/admin/menus/store', [MenusController::class, 'showFormStore'])->name('menus.formStore');
-    Route::post('/admin/menus', [MenusController::class, 'store'])->name('menus.store');
-
-    Route::get('/admin/menus/edit/{id}', [MenusController::class, 'showFormEdit'])->name('menus.formEdit');
-    Route::put('/admin/menus/{id}', [MenusController::class, 'update'])->name('menus.update');
-
-    Route::delete('/admin/menus/destroy/{id}', [MenusController::class, 'destroy'])->name('menus.delete');
-
-
-    //jenis-publikasi 
-    Route::get('/admin/jenis-publikasi', [JenisPublikasiController::class, 'index'])->name('admin.jenisPublikasi');
-    Route::get('/admin/datatable/jenis-publikasi', [JenisPublikasiController::class, 'getDataTables'])->name('jenisPublikasi.table');
-
-    Route::get('/admin/jenis-publikasi/store', [JenisPublikasiController::class, 'showFormStore'])->name('jenisPublikasi.formStore');
-    Route::post('/admin/jenis-publikasi', [JenisPublikasiController::class, 'store'])->name('jenisPublikasi.store');
-
-    Route::get('/admin/jenis-publikasi/edit/{id}', [JenisPublikasiController::class, 'showFormEdit'])->name('jenisPublikasi.formEdit');
-    Route::put('/admin/jenis-publikasi/{id}', [JenisPublikasiController::class, 'update'])->name('jenisPublikasi.update');
-
-    Route::delete('/admin/jenis-publikasi/destroy/{id}', [JenisPublikasiController::class, 'destroy'])->name('jenisPublikasi.delete');
+    Route::prefix('menus')->group(function () {
+        Route::get('/', [MenusController::class, 'index'])->name('admin.menus');
+        Route::get('/datatable', [MenusController::class, 'getDataTables'])->name('menus.table');
+    
+        Route::get('/create', [MenusController::class, 'showFormStore'])->name('menus.formStore');
+        Route::post('/', [MenusController::class, 'store'])->name('menus.store');
+    
+        Route::get('/edit/{id}', [MenusController::class, 'showFormEdit'])->name('menus.formEdit');
+        Route::put('/{id}', [MenusController::class, 'update'])->name('menus.update');
+    
+        Route::delete('/destroy/{id}', [MenusController::class, 'destroy'])->name('menus.delete');
+    });
 
 
-    //publikasi 
-    Route::get('/admin/publikasi', [PublikasiController::class, 'index'])->name('admin.publikasi');
-    Route::get('/admin/datatable/publikasi', [PublikasiController::class, 'getDataTables'])->name('publikasi.table');
+    // jenis-publikasi 
+    Route::prefix('jenis-publikasi')->group(function () {
+        Route::get('/', [JenisPublikasiController::class, 'index'])->name('admin.jenisPublikasi');
+        Route::get('/datatable', [JenisPublikasiController::class, 'getDataTables'])->name('jenisPublikasi.table');
+    
+        Route::get('/create', [JenisPublikasiController::class, 'showFormStore'])->name('jenisPublikasi.formStore');
+        Route::post('/', [JenisPublikasiController::class, 'store'])->name('jenisPublikasi.store');
+    
+        Route::get('/edit/{id}', [JenisPublikasiController::class, 'showFormEdit'])->name('jenisPublikasi.formEdit');
+        Route::put('/{id}', [JenisPublikasiController::class, 'update'])->name('jenisPublikasi.update');
+    
+        Route::delete('/destroy/{id}', [JenisPublikasiController::class, 'destroy'])->name('jenisPublikasi.delete');
+    });
 
-    Route::get('/admin/publikasi/store', [PublikasiController::class, 'showFormStore'])->name('publikasi.formStore');
-    Route::post('/admin/publikasi', [PublikasiController::class, 'store'])->name('publikasi.store');
 
-    Route::get('/admin/publikasi/edit/{id}', [PublikasiController::class, 'showFormEdit'])->name('publikasi.formEdit');
-    Route::put('/admin/publikasi/{id{', [PublikasiController::class, 'update'])->name('publikasi.update');
-
-    Route::delete('/admin/publikasi/destroy/{id}', [PublikasiController::class, 'destroy'])->name('publikasi.delete');
+    // publikasi 
+    Route::prefix('publikasi')->group(function () {
+        Route::get('/', [PublikasiController::class, 'index'])->name('admin.publikasi');
+        Route::get('/datatable', [PublikasiController::class, 'getDataTables'])->name('publikasi.table');
+    
+        Route::get('/create', [PublikasiController::class, 'showFormStore'])->name('publikasi.formStore');
+        Route::post('/', [PublikasiController::class, 'store'])->name('publikasi.store');
+    
+        Route::get('/edit/{id}', [PublikasiController::class, 'showFormEdit'])->name('publikasi.formEdit');
+        Route::put('/{id{', [PublikasiController::class, 'update'])->name('publikasi.update');
+    
+        Route::delete('/destroy/{id}', [PublikasiController::class, 'destroy'])->name('publikasi.delete');
+    });
 
 
     // kerja-sama
-    Route::get('/admin/kerja-sama', [KerjaSamaController::class, 'index'])->name('admin.kerjaSama');
-    Route::get('/admin/datatable/kerja-sama', [KerjaSamaController::class, 'getDataTables'])->name('kerjaSama.table');
-    Route::get('/admin/kerja-sama/detail-kerja-sama/{id}', [KerjaSamaController::class, 'detailKerjaSama'])->name('kerjaSama.detail');
-
-    Route::post('/admin/kerja-sama/approved/{id}', [KerjaSamaController::class, 'approved'])->name('kerjaSama.approved');
-    Route::post('/admin/kerja-sama/rejected{id}', [KerjaSamaController::class, 'rejected'])->name('kerjaSama.rejected');
-
-    Route::delete('/admin/publikasi/destroy/{id}', [KerjaSamaController::class, 'destroy'])->name('kerjaSama.delete');
+    Route::prefix('kerja-sama')->group(function () {
+        Route::get('/', [KerjaSamaController::class, 'index'])->name('admin.kerjaSama');
+        Route::get('/datatable', [KerjaSamaController::class, 'getDataTables'])->name('kerjaSama.table');
+        Route::get('/detail-kerja-sama/{id}', [KerjaSamaController::class, 'detailKerjaSama'])->name('kerjaSama.detail');
+        Route::post('/approved/{id}', [KerjaSamaController::class, 'approved'])->name('kerjaSama.approved');
+        Route::post('/rejected{id}', [KerjaSamaController::class, 'rejected'])->name('kerjaSama.rejected');  
+        Route::delete('/destroy/{id}', [KerjaSamaController::class, 'destroy'])->name('kerjaSama.delete');
+    });
 });
 
 
 // mitra-dan-donatur 
-Route::middleware(['auth', 'auth.user:mitra,donatur'])->group(function () {
-
-
+Route::middleware(['auth', 'auth.user:mitra,donatur'])->prefix('user')->group(function () {
     // register mitra
-    Route::get('/register/mitra/store', [UserController::class, 'showJoinMitra'])->name('mitra.join');
-    Route::post('/register/mitra/{id}', [UserController::class, 'addDataMitra'])->name('add.dataMitra');
-
+    Route::prefix('mitra/register')->group(function () {
+        Route::get('/create', [UserController::class, 'showJoinMitra'])->name('mitra.join');
+        Route::post('/{id}', [UserController::class, 'addDataMitra'])->name('add.dataMitra');
+    });
 
     // Dashboard
-    Route::get('/user/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
 
 
     // review
-    Route::post('/user/review/store', [ReviewController::class, 'store'])->name('review.store');
-    Route::put('/user/review/edit/{id}', [ReviewController::class, 'update'])->name('review.update');
-    Route::delete('/user/review/destroy/{id}', [ReviewController::class, 'destroy'])->name('review.delete');
+    Route::prefix('ulasan')->group(function () {
+        Route::post('/create', [ReviewController::class, 'store'])->name('review.store');
+        Route::put('/edit/{id}', [ReviewController::class, 'update'])->name('review.update');
+        Route::delete('/destroy/{id}', [ReviewController::class, 'destroy'])->name('review.delete');
+    });
 
 
     // edit profile
-    Route::get('/user/edit-profile', [UserController::class, 'showEditProfile'])->name('user.edit-profile');
-    Route::put('/user/edit-profile/photo', [UserController::class, 'updatePhoto'])->name('edit-profile.photo');
-    Route::put('/user/edit-profile/info', [UserController::class, 'updateInfo'])->name('edit-profile.info');
-    Route::put('/user/edit-profile/password', [UserController::class, 'updatePassword'])->name('edit-profile.password');
-    Route::put('/user/edit-profile/settings', [UserController::class, 'updateSettings'])->name('edit-profile.settings');
-    Route::delete('/user/profile/deactivate-account', [UserController::class, 'deactivate'])->name('profile.deactivate');
-    Route::delete('/user/profile/delete-account', [UserController::class, 'forceDelete'])->name('profile.delete');
+    Route::prefix('edit-profile')->group(function () {
+        Route::get('/', [UserController::class, 'showEditProfile'])->name('user.edit-profile');
+        Route::put('/photo', [UserController::class, 'updatePhoto'])->name('edit-profile.photo');
+        Route::put('/info', [UserController::class, 'updateInfo'])->name('edit-profile.info');
+        Route::put('/password', [UserController::class, 'updatePassword'])->name('edit-profile.password');
+        Route::put('/settings', [UserController::class, 'updateSettings'])->name('edit-profile.settings');
+        Route::delete('/deactivate-account', [UserController::class, 'deactivate'])->name('profile.deactivate');
+        Route::delete('/delete-account', [UserController::class, 'forceDelete'])->name('profile.delete');
+    });
 });
 
 
-Route::middleware(['auth', 'auth.user:mitra'])->group(function () {
+Route::middleware(['auth', 'auth.user:mitra'])->prefix('mitra')->group(function () {
     // kerja sama
-    Route::get('/mitra/kerja-sama', [KerjaSamaController::class, 'show'])->name('mitra.kerja-sama');
-    Route::post('/mitra/kerja-sama/store', [KerjaSamaController::class, 'store'])->name('kerja-sama.store');
+    Route::prefix('kerja-sama')->group(function () {
+        Route::get('/', [KerjaSamaController::class, 'show'])->name('mitra.kerja-sama');
+        Route::post('/create', [KerjaSamaController::class, 'store'])->name('kerja-sama.store');
+    });
 });
 
 

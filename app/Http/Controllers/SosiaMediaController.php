@@ -83,7 +83,7 @@ class SosiaMediaController extends Controller
 
         SosialMedia::create($data);
 
-        return redirect()->route('admin.sosmed')->with('success', 'Berita berhasil ditambahkan!');
+        return redirect()->route('admin.sosmed')->with('success', 'Sosial Media berhasil ditambahkan!');
     }
 
 
