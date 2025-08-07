@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Admin - User</title>
+    <title>Admin - Kerja Sama</title>
     {{-- icon --}}
     <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
 
@@ -213,8 +213,8 @@
     <main class="p-6 md:ml-64 pt-20">
         <!-- Header -->
         <div class="mb-2">
-            <h1 class="text-3xl font-bold text-gray-900">User</h1>
-            <p class="text-gray-600 mt-2">Kelola User</p>
+            <h1 class="text-3xl font-bold text-gray-900">Kerja Sama</h1>
+            {{-- <p class="text-gray-600 mt-2">Kelola User</p> --}}
         </div>
 
         <!-- Success Alert -->
@@ -295,14 +295,16 @@
                             return `<span class="text-gray-700">${meta.row + meta.settings._iDisplayStart + 1}</span>`;
                         },
                         orderable: false,
+                        searchable: false,
                         width: '50px'
                     },
                     {
                         data: 'nama',
-                        name: 'nama',
+                        name: 'Mitra.User.nama',
                         render: function(data) {
                             return `<div class="font-medium">${data || '-'}</div>`;
-                        }
+                        },
+                        searchable:true,
                     },
                     {
                         data: 'keterangan',
@@ -329,15 +331,8 @@
                                 'expired': 'bg-gray-100 text-gray-800'
                             };
 
-                            const statusText = {
-                                'pending': 'Menunggu',
-                                'approved': 'Disetujui',
-                                'rejected': 'Ditolak',
-                                'expired': 'Kadaluarsa'
-                            };
-
                             return `<span class="px-2 py-1 rounded-full text-xs ${statusClasses[data] || 'bg-gray-100'}">
-                        ${statusText[data] || 'Tidak Diketahui'}
+                        ${data || 'Tidak Diketahui'}
                     </span>`;
                         },
                         width: '120px'
@@ -364,9 +359,12 @@
                 initComplete: function() {
                     $('.dataTables_filter input')
                         .attr('placeholder', 'Cari nama/keterangan/kategori...')
-                        .addClass('px-3 py-2 border rounded-lg');
+                        .addClass('pl-10 pr-4')
+                        .wrap('<div class="relative"></div>')
 
-                    $('.dataTables_length select').addClass('px-3 py-2 border rounded-lg');
+                    $('.dataTables_length label').addClass(
+                        'flex items-center gap-2 text-sm text-gray-700');
+                    $('.dataTables_length select').addClass('text-sm');
                 }
             });
 
