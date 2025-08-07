@@ -64,8 +64,8 @@ class KerjaSamaController extends Controller
         DB::beginTransaction();
 
         try {
-            $mitra = Auth::user()->mitra;
             $user = Auth::user();
+            $mitra = $user->Mitra;
 
             if (!$mitra) {
                 return back()->with('error', 'Anda bukan mitra terdaftar.');
@@ -77,15 +77,10 @@ class KerjaSamaController extends Controller
                 ]);
                 $kategoriId = $kategori->id_kategori_kerja_sama;
             } else {
-                $kategoriId = (int)$request->id_kategori_kerja_sama;
-
+                $kategoriId = (int) $request->id_kategori_kerja_sama;
                 if (!KategoriKerjaSama::where('id_kategori_kerja_sama', $kategoriId)->exists()) {
                     return back()->withErrors(['id_kategori_kerja_sama' => 'Kategori tidak valid']);
                 }
-            }
-
-            if ($request->hasFile('file_penunjang') && count($request->file('file_penunjang')) > 4) {
-                return back()->withErrors(['file_penunjang' => 'Maksimal 4 file yang boleh diunggah.']);
             }
 
             $kerjaSama = KerjaSama::create([
@@ -99,23 +94,37 @@ class KerjaSamaController extends Controller
                 'created_by' => $user->id,
             ]);
 
-            if ($request->hasFile('file_penunjang')) {
-                foreach ($request->file('file_penunjang') as $file) {
-                    $originalName = $file->getClientOriginalName();
-                    $extension = $file->getClientOriginalExtension();
-                    $filename = Str::uuid() . '.' . $extension;
-                    $path = $file->storeAs('file_penunjang', $filename, 'public');
+            if ($request->has('file_penunjang')) {
+                $fileFields = [
+                    'profil_lembaga' => 'profil_lembaga',
+                    'proposal_kemitraan' => 'proposal_kemitraan',
+                    'surat_permohonan' => 'surat_permohonan',
+                    'dokumen_legalitas' => 'dokumen_legalitas'
+                ];
 
-                    FilePenunjang::create([
-                        'id_kerja_sama' => $kerjaSama->id_kerja_sama,
-                        'file_path' => $path,
-                        'nama_file' => $originalName,
-                        'file_size' => $file->getSize(),
-                        'file_type' => $extension,
-                    ]);
+                $namaMitra = Str::slug($user->nama, '_');
+                $tanggal = now()->format('dmY');
+
+                foreach ($fileFields as $fieldName => $jenisFile) {
+                    if ($request->hasFile("file_penunjang.{$fieldName}")) {
+                        $file = $request->file("file_penunjang.{$fieldName}");
+
+                        $extension = $file->getClientOriginalExtension();
+                        $filename = "{$jenisFile}_{$namaMitra}_{$tanggal}.{$extension}";
+                        $path = $file->storeAs('file_kerja_sama', $filename, 'public');
+
+                        FilePenunjang::create([
+                            'id_kerja_sama' => $kerjaSama->id_kerja_sama,
+                            'file_path' => $path,
+                            'nama_file' => $filename,
+                            'file_size' => $file->getSize(),
+                            'file_type' => $extension,
+                        ]);
+                    }
                 }
             }
 
+            // Kirim notifikasi ke admin
             $pengajuanNotif = [
                 'nama' => $user->nama,
                 'keterangan' => $kerjaSama->keterangan,
@@ -139,6 +148,7 @@ class KerjaSamaController extends Controller
     }
 
 
+
     /**
      * Admin
      */
@@ -157,7 +167,9 @@ class KerjaSamaController extends Controller
         }
 
         $users = KerjaSama::with('Mitra.User', 'KategoriKerjaSama', 'Program')
-            ->select(['id_kerja_sama', 'keterangan', 'id_mitra', 'id_kategori_kerja_sama', 'id_program', 'status']);
+            ->select(['id_kerja_sama', 'keterangan', 'id_mitra', 'id_kategori_kerja_sama', 'id_program', 'status'])
+            ->orderByRaw("CASE WHEN status = 'pending' THEN 0 ELSE 1 END")
+            ->orderBy('created_at', 'desc'); // Optional: tambahkan pengurutan berdasarkan created_at
 
         return DataTables::of($users)
             ->addColumn('nama', function ($row) {
@@ -166,8 +178,11 @@ class KerjaSamaController extends Controller
             ->addColumn('kategori', function ($row) {
                 return $row->KategoriKerjaSama->nama ?? '-';
             })
-
-            ->rawColumns(['aksi'])
+            ->addColumn('aksi', function ($row) {
+                // Tambahkan tombol aksi sesuai kebutuhan
+                return '<button class="btn-action">Detail</button>';
+            })
+            ->rawColumns(['status', 'aksi'])
             ->make(true);
     }
 

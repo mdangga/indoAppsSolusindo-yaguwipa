@@ -23,11 +23,11 @@ class UserController extends Controller
         $recentActivities = collect();
 
         if ($user->role === 'mitra') {
-            $mitra = $user->UserToMitra;
+            $mitra = $user->Mitra;
 
             if ($mitra) {
                 $recentActivities = KerjaSama::with('kategoriKerjaSama')
-                    ->where('id_mitra', $mitra->id_mitra) // ambil dari relasi, bukan user langsung
+                    ->where('id_mitra', $mitra->id_mitra)
                     ->orderBy('updated_at', 'desc')
                     ->take(5)
                     ->get();
