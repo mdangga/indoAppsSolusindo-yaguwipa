@@ -37,6 +37,7 @@ class ReviewController extends Controller
     // fungsi untuk memperbarui ulasan
     public function update(Request $request, $id)
     {
+        // dd($request->all());
         $review = Review::find($id);
 
         if (!$review) {
