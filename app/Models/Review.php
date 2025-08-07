@@ -10,7 +10,7 @@ class Review extends Model
     protected $primaryKey = 'id_review';
 
     protected $fillable = [
-        'bintang',
+        'rating',
         'review',
         'id_user'
     ];
