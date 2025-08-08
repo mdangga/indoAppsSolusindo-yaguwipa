@@ -35,9 +35,6 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <style>
-
-    </style>
 </head>
 
 <body class="bg-gray-50 min-h-screen flex items-center justify-center">
@@ -169,7 +166,10 @@
                             </div>
                         </div>
 
-                        <form id="donationForm">
+                        <form action="{{ route('donasi.store') }}" id="donationForm" method="POST">
+                            @csrf
+                            <input type="hidden" name="id_campaign" value="{{ $campaign->id_campaign ?? 1 }}">
+                            <input type="hidden" name="id_jenis_donasi" id="id_jenis_donasi" value="1">
                             <!-- Step 1: Data Donatur -->
                             <div id="step1">
                                 <h2 class="text-2xl font-bold text-gray-900 mb-2">Jenis Donasi</h2>
@@ -266,45 +266,121 @@
                                         </div>
                                     </div>
 
-
                                     <!-- Detail Donasi Barang -->
-                                    <div id="donasi-barang" class="hidden mt-6">
-                                        <div class="grid md:grid-cols-2 gap-4">
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                                    <i class="fas fa-tag mr-2 text-teal-500"></i>Jenis Barang *
-                                                </label>
-                                                <select name="jenis_barang"
-                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 outline-0">
-                                                    <option value="">Pilih jenis barang</option>
-                                                    <option value="pakaian">Pakaian</option>
-                                                    <option value="makanan">Makanan</option>
-                                                    <option value="elektronik">Elektronik</option>
-                                                    <option value="buku">Buku</option>
-                                                    <option value="mainan">Mainan</option>
-                                                    <option value="lainnya">Lainnya</option>
-                                                </select>
+                                    <div id="donasi-barang" x-data="donasiBarangForm()" class="hidden mt-6">
+                                        <!-- Form input barang -->
+                                        <div class="bg-gray-50 border border-gray-200 rounded-lg p-6">
+                                            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                                <i class="fas fa-plus-circle mr-2 text-teal-600"></i>
+                                                Tambah Barang Baru
+                                            </h3>
+
+                                            <div class="grid md:grid-cols-3 gap-4 mb-4">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                                        <i class="fas fa-tag mr-2 text-teal-500"></i>Nama Barang *
+                                                    </label>
+                                                    <input type="text" x-model="form.nama_barang"
+                                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 outline-0"
+                                                        placeholder="Nama barang" name="nama_barang">
+                                                </div>
+
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                                        <i class="fas fa-check-circle mr-2 text-teal-500"></i>Kondisi *
+                                                    </label>
+                                                    <select x-model="form.kondisi_barang"
+                                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 outline-0"
+                                                        name="kondisi_barang">
+                                                        <option value="">-- Pilih Kondisi --</option>
+                                                        <option value="baru">Baru</option>
+                                                        <option value="bekas">Bekas</option>
+                                                    </select>
+                                                </div>
+
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                                        <i class="fas fa-hashtag mr-2 text-teal-500"></i>Jumlah Barang
+                                                    </label>
+                                                    <input type="number" name="jumlah_barang"
+                                                        x-model="form.jumlah_barang" min="1"
+                                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 outline-0"
+                                                        placeholder="Jumlah barang">
+                                                </div>
                                             </div>
-                                            <div>
+
+                                            <div class="mb-4">
                                                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                                                    <i class="fas fa-weight mr-2 text-teal-500"></i>Estimasi Nilai (Rp)
+                                                    <i class="fas fa-clipboard-list mr-2 text-teal-500"></i>Deskripsi
+                                                    Barang *
                                                 </label>
-                                                <input type="number" name="nilai_barang"
+                                                <textarea name="deskripsi" rows="2" x-model="form.deskripsi_barang"
                                                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 outline-0"
-                                                    placeholder="Estimasi nilai barang">
+                                                    placeholder="Jelaskan kondisi dan detail barang yang akan didonasikan"></textarea>
+                                            </div>
+
+                                            <!-- Tombol tambah -->
+                                            <div class="flex justify-end">
+                                                <button type="button" @click="tambahBarang()"
+                                                    class="px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 focus:ring-2 focus:ring-teal-500 transition duration-200 flex items-center">
+                                                    <i class="fas fa-plus mr-2"></i>
+                                                    Tambah Barang
+                                                </button>
                                             </div>
                                         </div>
-                                        <div class="mt-4">
-                                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                                <i class="fas fa-clipboard-list mr-2 text-teal-500"></i>Deskripsi
-                                                Barang *
-                                            </label>
-                                            <textarea name="deskripsi_barang" rows="4"
-                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 outline-0"
-                                                placeholder="Jelaskan kondisi dan detail barang yang akan didonasikan"></textarea>
+
+                                        <!-- Daftar Barang yang Sudah Ditambahkan -->
+                                        <div x-show="items.length > 0" class="mt-2">
+
+                                            <!-- List items -->
+                                            <div class="space-y-2">
+                                                <template x-for="(item, index) in items" :key="index">
+                                                    <div
+                                                        class="bg-white border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                                                        <div class="flex items-center justify-between">
+                                                            <div class="flex items-center space-x-4 flex-1">
+                                                                <!-- No -->
+                                                                <span class="inline-fle" x-text="index + 1"></span>
+
+                                                                <!-- Nama Barang -->
+                                                                <p class="font-medium text-gray-900 flex-1"
+                                                                    x-text="item.nama_barang"></p>
+
+                                                                <!-- Jumlah -->
+                                                                <p class="text-sm text-gray-600 min-w-[80px]">
+                                                                    <span class="font-medium">Jumlah:</span>
+                                                                    <span x-text="item.jumlah_barang || '-'"></span>
+                                                                </p>
+
+                                                                <!-- Kondisi -->
+                                                                <span
+                                                                    class="px-3 py-1 text-sm font-medium rounded-full min-w-[70px] text-center"
+                                                                    :class="item.kondisi_barang === 'baru' ?
+                                                                        'bg-green-100 text-green-800' :
+                                                                        'bg-blue-100 text-blue-800'"
+                                                                    x-text="item.kondisi_barang.charAt(0).toUpperCase() + item.kondisi_barang.slice(1)">
+                                                                </span>
+                                                            </div>
+
+                                                            <!-- Hapus Barang -->
+                                                            <button type="button" @click="hapusBarang(index)"
+                                                                class="ml-4 text-red-600 ">
+                                                                <i class="fas fa-trash text-sm"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </div>
+
+                                            <div class="mt-4 p-3 bg-teal-50 border border-teal-200 rounded-lg">
+                                                <p class="text-sm text-teal-700">
+                                                    <i class="fas fa-info-circle mr-2"></i>
+                                                    Total <span class="font-semibold" x-text="items.length"></span>
+                                                    item barang siap untuk didonasikan
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
-
                                     <!-- Detail Donasi Jasa -->
                                     <div id="donasi-jasa" class="hidden mt-6">
                                         <div class="grid md:grid-cols-2 gap-4">
@@ -526,18 +602,18 @@
                                         <input type="text" name="nama" required
                                             value="{{ old('nama') ?? ($user->nama ?? '') }}"
                                             @if ($isLoggedIn) readonly @endif
-                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 outline-0 {{ $isLoggedIn ? 'bg-gray-100 cursor-none' : '' }}"
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 outline-0 {{ $isLoggedIn ? 'bg-gray-100 cursor-not-allowed' : '' }}"
                                             placeholder="Masukkan nama lengkap">
                                     </div>
 
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">
-                                            Email atau No Telepon *
+                                            Email *
                                         </label>
                                         <input type="text" name="email_tlp" required
                                             value="{{ old('email_tlp') ?? ($user->email ?? ($user->no_tlp ?? '')) }}"
                                             @if ($isLoggedIn) readonly @endif
-                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 outline-0 {{ $isLoggedIn ? 'bg-gray-100 cursor-none' : '' }}"
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 outline-0 {{ $isLoggedIn ? 'bg-gray-100 cursor-not-allowed' : '' }}"
                                             placeholder="Email atau No Telepon">
                                     </div>
                                 </div>
@@ -545,8 +621,10 @@
 
                                 <!-- Anonymous Option -->
                                 <div class="mb-6">
+                                    <!-- Hidden input agar selalu terkirim 0 jika tidak dicentang -->
+                                    <input type="hidden" name="anonim" value="0">
                                     <label class="flex items-center cursor-pointer">
-                                        <input type="checkbox" name="anonim" class="sr-only peer">
+                                        <input type="checkbox" name="anonim" value="1" class="sr-only peer">
                                         <div
                                             class="relative w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-teal-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-teal-600">
                                         </div>
@@ -628,6 +706,7 @@
             </button>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
     <script>
         // Add this JavaScript code to replace the existing script section in your HTML
@@ -816,7 +895,6 @@
 
 
 
-
         // Update Step 3 display based on donation type
         function updateStep3Display() {
             const uangSummary = document.getElementById('uang-summary');
@@ -852,12 +930,113 @@
                         currentPaymentMethodLogo.classList.add('hidden');
                     }
                 }
+
+                // Hide barang summary
+                hideBarangSummaryInStep3();
+            } else if (selectedDonationType === 'barang') {
+                // Hide money donation specific elements
+                uangSummary.classList.add('hidden');
+                totalDonationSection.classList.add('hidden');
+                confirmButtonSection.classList.add('md:ml-4');
+
+                // Show barang summary
+                showBarangSummaryInStep3();
             } else {
                 // Hide money donation specific elements
                 uangSummary.classList.add('hidden');
                 totalDonationSection.classList.add('hidden');
                 confirmButtonSection.classList.add('md:ml-4');
+
+                // Hide barang summary
+                hideBarangSummaryInStep3();
             }
+        }
+
+        // Function to show barang summary in step 3
+        function showBarangSummaryInStep3() {
+            const barangForm = window.donasiBarangFormInstance;
+
+            if (!barangForm || barangForm.items.length === 0) {
+                hideBarangSummaryInStep3();
+                return;
+            }
+
+            // Check if summary already exists
+            let barangSummary = document.getElementById('barang-summary-step3');
+
+            if (!barangSummary) {
+                // Create barang summary container
+                barangSummary = document.createElement('div');
+                barangSummary.id = 'barang-summary-step3';
+                barangSummary.className = 'mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200';
+
+                // Insert before the name/email fields
+                const step3Content = document.getElementById('step3');
+                const formFields = step3Content.querySelector('.grid.md\\:grid-cols-2');
+                formFields.parentNode.insertBefore(barangSummary, formFields);
+            }
+
+            // Build HTML content
+            let summaryHTML = `
+        <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+            <i class="fas fa-box mr-2 text-teal-600"></i>
+            Ringkasan Barang Donasi (${barangForm.items.length} item)
+        </h3>
+        <div class="space-y-2 max-h-40 overflow-y-auto">
+    `;
+
+            barangForm.items.forEach((item, index) => {
+                const kondisiBadgeClass = item.kondisi_barang === 'baru' ?
+                    'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800';
+
+                summaryHTML += `
+            <div class="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
+                <div class="flex items-center space-x-3 flex-1">
+                    <span class="inline-flex items-center justify-center w-6 h-6 bg-teal-100 text-teal-800 text-xs font-semibold rounded-full">
+                        ${index + 1}
+                    </span>
+                    <div class="flex-1">
+                        <p class="font-medium text-gray-900 text-sm">${item.nama_barang}</p>
+                        <div class="flex items-center space-x-3 text-xs text-gray-600 mt-1">
+                            <span>Jumlah: ${item.jumlah_barang || 1}</span>
+                            <span class="px-2 py-1 text-xs font-medium rounded-full ${kondisiBadgeClass}">
+                                ${item.kondisi_barang.charAt(0).toUpperCase() + item.kondisi_barang.slice(1)}
+                            </span>
+                        </div>
+                        ${item.deskripsi_barang ? `<p class="text-xs text-gray-500 mt-1">${item.deskripsi_barang.substring(0, 50)}${item.deskripsi_barang.length > 50 ? '...' : ''}</p>` : ''}
+                    </div>
+                </div>
+                <button type="button" onclick="editBarangFromStep3()" class="text-teal-600 hover:text-teal-700 text-sm">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </div>
+        `;
+            });
+
+            summaryHTML += `
+        </div>
+        <div class="mt-3 text-center">
+            <button type="button" onclick="goToStep(1)" class="text-teal-600 hover:text-teal-700 text-sm font-medium">
+                <i class="fas fa-edit mr-1"></i> Edit Daftar Barang
+            </button>
+        </div>
+    `;
+
+            barangSummary.innerHTML = summaryHTML;
+            barangSummary.classList.remove('hidden');
+        }
+
+        // Function to hide barang summary in step 3
+        function hideBarangSummaryInStep3() {
+            const barangSummary = document.getElementById('barang-summary-step3');
+            if (barangSummary) {
+                barangSummary.classList.add('hidden');
+            }
+        }
+
+        // Helper function for edit button
+        function editBarangFromStep3() {
+            goToStep(1);
         }
 
         // Donation type handling
@@ -874,7 +1053,8 @@
         donationTypes.forEach(radio => {
             radio.addEventListener('change', function() {
                 selectedDonationType = this.value;
-
+                document.getElementById('id_jenis_donasi').value =
+                    this.value === 'uang' ? 1 : (this.value === 'barang' ? 2 : 3);
                 updateStep3Display();
 
                 // Hide all donation sections
@@ -942,9 +1122,64 @@
             });
         });
 
+        // Function untuk update list barang di step 2
+        function updateBarangListInStep2() {
+            if (selectedDonationType === 'barang') {
+                const barangForm = window.donasiBarangFormInstance;
+                if (barangForm && barangForm.items.length > 0) {
+                    // Cari atau buat container untuk list barang
+                    let barangListContainer = document.getElementById('barang-list-step2');
+                    if (!barangListContainer) {
+                        // Buat container baru jika belum ada
+                        barangListContainer = document.createElement('div');
+                        barangListContainer.id = 'barang-list-step2';
+                        barangListContainer.className = 'mt-4 bg-white border border-gray-200 rounded-lg p-4';
 
+                        // Tambahkan setelah info penyerahan
+                        const nonPaymentInfo = document.getElementById('non-payment-info');
+                        nonPaymentInfo.appendChild(barangListContainer);
+                    }
 
-        // Handle payment methods visibility in step 2
+                    // Update konten list
+                    let listHTML = `
+                <h4 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                    <i class="fas fa-list mr-2 text-teal-600"></i>
+                    Daftar Barang yang Akan Didonasikan (${barangForm.items.length} item)
+                </h4>
+                <ul class="space-y-2">
+            `;
+
+                    barangForm.items.forEach((item, index) => {
+                        const kondisiBadgeClass = item.kondisi_barang === 'baru' ?
+                            'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800';
+
+                        listHTML += `
+                    <li class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <span class="inline-flex items-center justify-center w-6 h-6 bg-teal-100 text-teal-800 text-xs font-semibold rounded-full">
+                                ${index + 1}
+                            </span>
+                            <div>
+                                <p class="font-medium text-gray-900">${item.nama_barang}</p>
+                                <div class="flex items-center space-x-3 text-sm text-gray-600 mt-1">
+                                    <span>Jumlah: ${item.jumlah_barang || '-'}</span>
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full ${kondisiBadgeClass}">
+                                        ${item.kondisi_barang.charAt(0).toUpperCase() + item.kondisi_barang.slice(1)}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                `;
+                    });
+
+                    listHTML += '</ul>';
+                    barangListContainer.innerHTML = listHTML;
+                }
+            }
+        }
+
+        // Update handlePaymentMethodsVisibility function
         function handlePaymentMethodsVisibility() {
             if (selectedDonationType === 'uang') {
                 paymentMethodsSection.classList.remove('hidden');
@@ -954,9 +1189,12 @@
                 nonPaymentInfoSection.classList.remove('hidden');
 
                 const title2 = document.getElementById('title-step2');
-                const desc2 = document.getElementById('desc-step2')
+                const desc2 = document.getElementById('desc-step2');
                 title2.textContent = 'Informasi Penyerahan Barang atau Jasa';
-                desc2.textContent = 'Silakan isi data diri di halaman selanjutnya dengan benar'
+                desc2.textContent = 'Silakan isi data diri di halaman selanjutnya dengan benar';
+
+                // Update tampilan barang yang sudah ditambahkan
+                updateBarangListInStep2();
             }
         }
 
@@ -976,11 +1214,11 @@
                     nominal.focus();
                 }
             } else if (donationType.value === 'barang') {
-                const jenisBarang = document.querySelector('[name="jenis_barang"]');
-                const deskripsiBarang = document.querySelector('[name="deskripsi_barang"]');
-                if (!jenisBarang.value || !deskripsiBarang.value.trim()) {
+                // Untuk donasi barang, validasi berdasarkan items yang sudah ditambahkan
+                const barangForm = window.donasiBarangFormInstance;
+                if (!barangForm || barangForm.items.length === 0) {
                     isValid = false;
-                    showAlert('Mohon lengkapi data donasi barang');
+                    showAlert('Mohon tambahkan minimal satu barang untuk donasi');
                 }
             } else if (donationType.value === 'jasa') {
                 const jenisJasa = document.querySelector('[name="jenis_jasa"]');
@@ -1021,7 +1259,7 @@
                 return false;
             }
 
-            // Validate donation amount for money donations
+            // Validate based on donation type
             if (selectedDonationType === 'uang') {
                 if (!donationAmount || donationAmount < 10000) {
                     showAlert('Mohon masukkan nominal donasi minimal Rp 10.000');
@@ -1031,11 +1269,48 @@
                     }
                     return false;
                 }
+
+                if (!selectedPaymentMethod) {
+                    showAlert('Mohon pilih metode pembayaran');
+                    goToStep(2);
+                    return false;
+                }
+            } else if (selectedDonationType === 'barang') {
+                const barangForm = window.donasiBarangFormInstance;
+                if (!barangForm || barangForm.items.length === 0) {
+                    showAlert('Mohon tambahkan minimal satu barang untuk donasi');
+                    goToStep(1);
+                    return false;
+                }
+
+                // Validate each barang item
+                for (let i = 0; i < barangForm.items.length; i++) {
+                    const item = barangForm.items[i];
+                    if (!item.nama_barang || !item.kondisi_barang || !item.deskripsi_barang) {
+                        showAlert(`Data barang ke-${i + 1} tidak lengkap. Mohon periksa kembali.`);
+                        goToStep(1);
+                        return false;
+                    }
+                }
+            } else if (selectedDonationType === 'jasa') {
+                const jenisJasa = document.querySelector('[name="jenis_jasa"]');
+                const deskripsiJasa = document.querySelector('[name="deskripsi_jasa"]');
+
+                if (!jenisJasa || !jenisJasa.value) {
+                    showAlert('Mohon pilih jenis jasa');
+                    goToStep(1);
+                    return false;
+                }
+
+                if (!deskripsiJasa || !deskripsiJasa.value.trim()) {
+                    showAlert('Mohon isi deskripsi jasa');
+                    goToStep(1);
+                    return false;
+                }
             }
 
             return true;
         }
-
         // Step navigation handlers
         document.getElementById('nextStep1').addEventListener('click', function() {
             if (validateStep1()) {
@@ -1050,12 +1325,60 @@
             }
         });
 
-        document.getElementById('donationForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // Add this function to prepare form data before submission
+        function prepareFormData() {
+            const form = document.getElementById('donationForm');
 
+            // Remove existing hidden inputs for barang to avoid duplicates
+            const existingBarangInputs = form.querySelectorAll('input[name^="barang["]');
+            existingBarangInputs.forEach(input => input.remove());
+
+            // If donation type is barang, add items to form data
+            if (selectedDonationType === 'barang') {
+                const barangForm = window.donasiBarangFormInstance;
+
+                if (barangForm && barangForm.items.length > 0) {
+                    barangForm.items.forEach((item, index) => {
+                        // Create hidden inputs for each item
+                        const inputs = [{
+                                name: `barang[${index}][nama_barang]`,
+                                value: item.nama_barang
+                            },
+                            {
+                                name: `barang[${index}][jumlah_barang]`,
+                                value: item.jumlah_barang || 1
+                            },
+                            {
+                                name: `barang[${index}][kondisi]`,
+                                value: item.kondisi_barang
+                            },
+                            {
+                                name: `barang[${index}][deskripsi]`,
+                                value: item.deskripsi_barang || ''
+                            }
+                        ];
+
+                        inputs.forEach(inputData => {
+                            const hiddenInput = document.createElement('input');
+                            hiddenInput.type = 'hidden';
+                            hiddenInput.name = inputData.name;
+                            hiddenInput.value = inputData.value;
+                            form.appendChild(hiddenInput);
+                        });
+                    });
+                }
+            }
+        }
+
+        // Update the form submission handler
+        document.getElementById('donationForm').addEventListener('submit', function(e) {
             if (!validateStep3()) {
+                e.preventDefault();
                 return;
             }
+
+            // Prepare form data before submission
+            prepareFormData();
 
             // Update the original nominal input with the final amount
             if (selectedDonationType === 'uang') {
@@ -1065,7 +1388,8 @@
                 }
             }
 
-            // Show success modal
+            // Show success modal (comment this out for actual submission)
+            /*
             const modal = document.getElementById('successModal');
             const panel = document.getElementById('successPanel');
 
@@ -1090,10 +1414,63 @@
                 panel.classList.add('scale-100', 'opacity-100');
             }, 50);
 
+            // Prevent actual form submission for demo
+            e.preventDefault();
+            */
+
             // Log form data for development
-            console.log('Form submitted:', new FormData(this));
+            console.log('Form submitted with data:', new FormData(this));
             console.log('Final donation amount:', donationAmount);
+
+            if (selectedDonationType === 'barang') {
+                console.log('Barang items:', window.donasiBarangFormInstance?.items || []);
+            }
         });
+
+        // Update validateStep1 for better barang validation
+        function validateStep1() {
+            let isValid = true;
+
+            // Check donation type
+            const donationType = document.querySelector('input[name="jenis_donasi"]:checked');
+
+            // Validate donation specific fields
+            if (donationType.value === 'uang') {
+                const nominal = document.querySelector('[name="nominal"]');
+                if (!nominal.value || nominal.value < 10000) {
+                    isValid = false;
+                    showAlert('Mohon masukkan nominal donasi minimal Rp 10.000');
+                    nominal.focus();
+                }
+            } else if (donationType.value === 'barang') {
+                // Untuk donasi barang, validasi berdasarkan items yang sudah ditambahkan
+                const barangForm = window.donasiBarangFormInstance;
+                if (!barangForm || barangForm.items.length === 0) {
+                    isValid = false;
+                    showAlert('Mohon tambahkan minimal satu barang untuk donasi');
+                    return false;
+                }
+
+                // Validate each item
+                for (let i = 0; i < barangForm.items.length; i++) {
+                    const item = barangForm.items[i];
+                    if (!item.nama_barang || !item.kondisi_barang || !item.deskripsi_barang) {
+                        isValid = false;
+                        showAlert(`Barang ke-${i + 1} belum lengkap. Mohon periksa kembali.`);
+                        break;
+                    }
+                }
+            } else if (donationType.value === 'jasa') {
+                const jenisJasa = document.querySelector('[name="jenis_jasa"]');
+                const deskripsiJasa = document.querySelector('[name="deskripsi_jasa"]');
+                if (!jenisJasa.value || !deskripsiJasa.value.trim()) {
+                    isValid = false;
+                    showAlert('Mohon lengkapi data donasi jasa');
+                }
+            }
+
+            return isValid;
+        }
 
         // Back button handler
         document.getElementById('prevStep').addEventListener('click', function() {
@@ -1138,6 +1515,100 @@
         if (defaultDonationType && donationSections[defaultDonationType.value]) {
             donationSections[defaultDonationType.value].classList.remove('hidden');
             selectedDonationType = defaultDonationType.value;
+        }
+
+
+        // Enhanced donasiBarangForm function
+        function donasiBarangForm() {
+            const instance = {
+                items: [],
+                form: {
+                    nama_barang: '',
+                    kondisi_barang: '',
+                    jumlah_barang: '',
+                    deskripsi_barang: ''
+                },
+
+                tambahBarang() {
+                    // Validasi sederhana
+                    if (!this.form.nama_barang || !this.form.kondisi_barang || !this.form.deskripsi_barang) {
+                        alert('Harap isi semua kolom yang wajib (Nama Barang, Kondisi, dan Deskripsi).');
+                        return;
+                    }
+
+                    // Validasi jumlah barang
+                    if (this.form.jumlah_barang && this.form.jumlah_barang < 1) {
+                        alert('Jumlah barang minimal 1.');
+                        return;
+                    }
+
+                    // Salin data form ke list
+                    this.items.push({
+                        ...this.form,
+                        jumlah_barang: this.form.jumlah_barang || '1' // Default 1 jika kosong
+                    });
+
+                    // Reset form
+                    this.resetForm();
+
+                    // Update list barang di step 2 jika sedang di step tersebut
+                    if (currentStep === 2) {
+                        updateBarangListInStep2();
+                    }
+
+                    // Scroll ke atas untuk melihat item yang ditambahkan
+                    document.querySelector('#donasi-barang').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                },
+
+                hapusBarang(index) {
+                    if (confirm('Apakah Anda yakin ingin menghapus item ini?')) {
+                        this.items.splice(index, 1);
+                        // Update list barang di step 2 jika sedang di step tersebut
+                        if (currentStep === 2) {
+                            updateBarangListInStep2();
+                        }
+                    }
+                },
+
+                hapusSemuaBarang() {
+                    if (confirm('Apakah Anda yakin ingin menghapus semua item barang?')) {
+                        this.items = [];
+                        // Update list barang di step 2 jika sedang di step tersebut
+                        if (currentStep === 2) {
+                            updateBarangListInStep2();
+                        }
+                    }
+                },
+
+                resetForm() {
+                    this.form = {
+                        nama_barang: '',
+                        kondisi_barang: '',
+                        jumlah_barang: '',
+                        deskripsi_barang: ''
+                    };
+                },
+
+                // Helper method untuk mendapatkan total item
+                get totalItems() {
+                    return this.items.length;
+                },
+
+                // Helper method untuk validasi form
+                get isFormValid() {
+                    return this.form.nama_barang &&
+                        this.form.kondisi_barang &&
+                        this.form.deskripsi_barang;
+                }
+            };
+
+            // Simpan instance globally untuk akses dari fungsi lain
+            window.donasiBarangFormInstance = instance;
+
+            return instance;
         }
     </script>
 </body>
