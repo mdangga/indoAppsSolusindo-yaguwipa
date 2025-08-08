@@ -104,77 +104,6 @@
             </div>
         </div>
         {{-- hero end --}}
-        <section class="px-4 sm:px-6 lg:px-12 py-16">
-            {{-- <div class="max-w-7xl mx-auto">
-                <h1 class="text-3xl text-center font-semibold text-gray-900 pb-10">
-                    PROGRAM UNGGULAN
-                </h1>
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
-                    <!-- Sosial -->
-                    <div class="relative group overflow-hidden rounded-2xl shadow-lg" data-aos="fade-up">
-                        <img src="{{ asset('img/program/p2.jpg') }}" alt="Program Sosial"
-                            class="w-full h-72 object-cover transition duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition duration-300"></div>
-                        <div class="absolute bottom-0 p-6 text-white">
-                            <h3 class="text-2xl font-semibold mb-2">Bidang Sosial</h3>
-                            <ul class="text-sm space-y-1 text-gray-100">
-                                <li>Bantuan Sosial & Kemanusiaan</li>
-                                <li>Pengentasan Kemiskinan</li>
-                                <li>Layanan Kesehatan Masyarakat</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Pendidikan -->
-                    <div class="relative group overflow-hidden rounded-2xl shadow-lg" data-aos="fade-up">
-                        <img src="{{ asset('img/program/p3.jpg') }}" alt="Program Pendidikan"
-                            class="w-full h-72 object-cover transition duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition duration-300"></div>
-                        <div class="absolute bottom-0 p-6 text-white">
-                            <h3 class="text-2xl font-semibold mb-2">Bidang Pendidikan</h3>
-                            <ul class="text-sm space-y-1 text-gray-100">
-                                <li>Beasiswa & Bimbingan</li>
-                                <li>Lembaga Pendidikan:</li>
-                                <li class="ml-4 text-gray-300">– Denpasar Institute</li>
-                                <li class="ml-4 text-gray-300">– Hotel School, IT Academy</li>
-                                <li class="ml-4 text-gray-300">– AI Vision Academy</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Riset & Inovasi -->
-                    <div class="relative group overflow-hidden rounded-2xl shadow-lg" data-aos="fade-up">
-                        <img src="{{ asset('img/program/p1.jpg') }}" alt="Program Riset"
-                            class="w-full h-72 object-cover transition duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition duration-300"></div>
-                        <div class="absolute bottom-0 p-6 text-white">
-                            <h3 class="text-2xl font-semibold mb-2">Riset & Inovasi</h3>
-                            <ul class="text-sm space-y-1 text-gray-100">
-                                <li>Riset Sosial & Budaya</li>
-                                <li>Kolaborasi Akademik</li>
-                                <li>Publikasi Ilmiah</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Keagamaan -->
-                    <div class="relative group overflow-hidden rounded-2xl shadow-lg" data-aos="fade-up">
-                        <img src="{{ asset('img/program/p4.jpg') }}" alt="Program Keagamaan"
-                            class="w-full h-72 object-cover transition duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition duration-300"></div>
-                        <div class="absolute bottom-0 p-6 text-white">
-                            <h3 class="text-2xl font-semibold mb-2">Bidang Keagamaan</h3>
-                            <ul class="text-sm space-y-1 text-gray-100">
-                                <li>Kegiatan Dharma & Umat</li>
-                                <li>Pembinaan Rohani</li>
-                                <li>Pendidikan Agama</li>
-                                <li>Hari Raya Keagamaan</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
-        </section>
 
         {{-- berita berita --}}
         <section class="px-4 sm:px-6 lg:px-12 py-16 ">
@@ -199,105 +128,6 @@
                     </div>
                 </div>
             </div>
-            {{-- <!-- Kolom Kegiatan (1 kolom) -->
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 h-fit">
-                <h2 class="text-xl font-semibold text-gray-900 mb-6">Kegiatan</h2>
-
-                <div class="space-y-4 relative">
-                    <!-- Event 1 - Upcoming -->
-                    <div class="flex items-start space-x-4">
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center justify-between">
-                                <h3 class="text-sm font-medium text-gray-900">Tech Conference 2025</h3>
-                                <span class="text-sm text-gray-500">Jan 15</span>
-                            </div>
-                            <p class="text-sm text-gray-600 mt-1">Annual technology conference featuring the latest
-                                innovations in AI and web development</p>
-                        </div>
-                    </div>
-
-                    <!-- Event 2 - In Progress -->
-                    <div class="flex items-start space-x-4">
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
-                                <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center justify-between">
-                                <h3 class="text-sm font-medium text-gray-900">Product Launch Workshop</h3>
-                                <span class="text-sm text-gray-500">Jan 8</span>
-                            </div>
-                            <p class="text-sm text-gray-600 mt-1">Lorem, ipsum dolor sit amet consectetur adipisicing
-                                elit.
-                                Laudantium, atque.</p>
-                        </div>
-                    </div>
-
-                    <!-- Event 3 - Completed -->
-                    <div class="flex items-start space-x-4">
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5 13l4 4L19 7" />
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center justify-between">
-                                <h3 class="text-sm font-medium text-gray-900">Design Thinking Seminar</h3>
-                                <span class="text-sm text-gray-500">Dec 28</span>
-                            </div>
-                            <p class="text-sm text-gray-600 mt-1">Completed seminar on user-centered design principles
-                                and
-                                methodologies</p>
-                        </div>
-                    </div>
-
-                    <!-- Event 4 - Completed with Overlay -->
-                    <div class="flex items-start space-x-4 relative">
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5 13l4 4L19 7" />
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center justify-between">
-                                <h3 class="text-sm font-medium text-gray-900">Design Thinking Seminar</h3>
-                                <span class="text-sm text-gray-500">Dec 28</span>
-                            </div>
-                            <p class="text-sm text-gray-600 mt-1">Lorem ipsum dolor, sit amet consectetur adipisicing
-                                elit.
-                                Unde, accusantium.</p>
-                        </div>
-
-                        <!-- Gradient Overlay -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-b from-transparent via-white/80 to-white rounded-lg pointer-events-none">
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
-            {{-- end kegiatan --}}
         </section>
         {{-- end berita --}}
 
@@ -311,7 +141,6 @@
                     <!-- Carousel wrapper -->
                     <div class="relative h-[500px] overflow-hidden rounded-xl md:h-[32vw]">
                         @forelse ($gallery->take(5) as $index => $item)
-                            <!-- Item {{ $index + 1 }} -->
                             <div class="hidden duration-700 ease-in-out"
                                 data-carousel-item="{{ $index === 0 ? 'active' : '' }}">
                                 <img src="{{ asset('storage/' . $item->link) }}" alt="{{ $item->judul }}"
@@ -319,7 +148,6 @@
                                     class="absolute block w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                             </div>
                         @empty
-                            <!-- Default item when no gallery items -->
                             <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
                                 <div
                                     class="absolute inset-0 flex items-center justify-center w-full h-full bg-gray-100/50">
@@ -328,7 +156,6 @@
                             </div>
                         @endforelse
                     </div>
-                    <!-- Indicators (optional) -->
                     @if ($gallery->count() > 1)
                         <div
                             class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
@@ -353,7 +180,6 @@
                 </h1>
                 <div class="mx-auto mt-10 overflow-hidden logo-container">
                     <div class="logo-scroll">
-                        <!-- First set of logos -->
                         <div class="logo-set">
                             @foreach ($site['lembaga'] as $logo)
                                 <div class="logo-item">
@@ -367,7 +193,6 @@
                             @endforeach
                         </div>
 
-                        <!-- Duplicate set for infinite scroll -->
                         <div class="logo-set">
                             @foreach ($site['lembaga'] as $logo)
                                 <div class="logo-item">
@@ -383,127 +208,10 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="mx-auto mt-10 max-w-6xl overflow-hidden logo-container">
-                <div class="logo-scroll">
-                    @foreach ([['src' => 'pt-indo-apps-solusindo.png', 'alt' => 'PT Indo Apps Solusindo', 'link' => 'https://indoapps.id'], ['src' => 'denpasar-institute.png', 'alt' => 'Denpasar Institute', 'link' => 'https://denpasarinstitute.ac.id'], ['src' => 'gcom.png', 'alt' => 'GCOM', 'link' => '#'], ['src' => 'indo-berkah-konstruksi.png', 'alt' => 'Indo Berkah Konstruksi', 'link' => '#'], ['src' => 'indo-consulting.png', 'alt' => 'Indo Consulting', 'link' => '#'], ['src' => 'latifaba.png', 'alt' => 'Latifaba', 'link' => 'https://www.latifaba.com/'], ['src' => 'nyaman-care.png', 'alt' => 'Nyaman Care', 'link' => '#'], ['src' => 'penerbit-yaguwipa.png', 'alt' => 'Penerbit Yaguwipa', 'link' => 'https://www.penerbityaguwipa.id/'], ['src' => 'robotic.png', 'alt' => 'Robotic', 'link' => '#'], ['src' => 'teknika-solusinda.png', 'alt' => 'Teknika Solusinda', 'link' => '#']] as $logo)
-                        <div class="logo-item flex-shrink-0">
-                            <a href="{{ $logo['link'] }}" target="_blank" rel="noopener noreferrer"
-                                class="hover:opacity-75 transition-opacity duration-200 block">
-                                <img class="max-h-32 w-auto object-contain mx-8"
-                                    src="{{ asset('img/lembaga-logo/' . $logo['src']) }}" alt="{{ $logo['alt'] }}"
-                                    width="158" height="48" />
-                            </a>
-                        </div>
-                    @endforeach
-                </div>
-            </div> --}}
         </div>
     </main>
     {{-- end lembaga --}}
     <x-footer />
-{{-- 
-    <script>
-        let selectedType = null;
-
-        // Fungsi untuk membuka modal
-        function openModalDonasi() {
-            const modal = document.getElementById('modal-overlay');
-            const content = document.getElementById('modal-content');
-
-            modal.classList.remove('hidden');
-            modal.classList.add('modal-show');
-
-            // Animasi masuk
-            setTimeout(() => {
-                content.classList.remove('scale-95');
-                content.classList.add('scale-100');
-            }, 10);
-
-            // Prevent body scroll
-            document.body.style.overflow = 'hidden';
-        }
-
-        // Fungsi untuk menutup modal
-        function closeModalDonasi() {
-            const modal = document.getElementById('modal-overlay');
-            const content = document.getElementById('modal-content');
-
-            // Animasi keluar
-            content.classList.remove('scale-100');
-            content.classList.add('scale-95');
-            modal.classList.add('modal-hide');
-
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modal.classList.remove('modal-show', 'modal-hide');
-                document.body.style.overflow = 'auto';
-
-                // Reset selection
-                resetSelection();
-            }, 300);
-        }
-
-        // Fungsi untuk memilih card
-        function selectCard(type) {
-            selectedType = type;
-
-            // Reset semua card
-            document.querySelectorAll('.card-selector').forEach(card => {
-                card.classList.remove('card-selected', 'anonim-selected', 'donatur-selected');
-            });
-
-            // Highlight card yang dipilih dengan warna yang sesuai
-            const selectedCard = document.getElementById(type + '-card');
-            selectedCard.classList.add('card-selected');
-
-            if (type === 'anonim') {
-                selectedCard.classList.add('anonim-selected');
-            } else if (type === 'donatur') {
-                selectedCard.classList.add('donatur-selected');
-            }
-
-            // Enable tombol continue
-            const continueBtn = document.getElementById('continue-btn');
-            continueBtn.disabled = false;
-        }
-
-        // Fungsi untuk melanjutkan setelah memilih
-        function continueSelection() {
-            if (!selectedType) return;
-
-            // Simulasi redirect berdasarkan pilihan
-            if (selectedType === 'anonim') {
-                window.location.href = '/testing';
-            } else if (selectedType === 'donatur') {
-                window.location.href = '/login';
-            }
-
-            closeModalDonasi();
-        }
-
-        // Fungsi untuk reset selection
-        function resetSelection() {
-            selectedType = null;
-            document.querySelectorAll('.card-selector').forEach(card => {
-                card.classList.remove('card-selected', 'anonim-selected', 'donatur-selected');
-            });
-            document.getElementById('continue-btn').disabled = true;
-        }
-
-        // Close modal ketika klik di luar modal content
-        document.getElementById('modal-overlay').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModalDonasi();
-            }
-        });
-
-        // Close modal dengan tombol ESC
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModalDonasi();
-            }
-        });
-    </script> --}}
 </body>
 
 </html>
