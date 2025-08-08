@@ -41,7 +41,7 @@
 </head>
 
 <body>
-    <x-user.navbar :user="$user" :randomBg="$randomBg" :profilePath="$profilePath" />
+    <x-user.navbar-user :user="$user" :randomBg="$randomBg" :profilePath="$profilePath" />
     @if (session('success'))
         <x-toast type="success" message="{{ session('success') }}" position="top-right" duration="3000" />
     @endif
@@ -452,7 +452,7 @@
                                 <span class="text-sm font-medium text-gray-900">Kolaborasi</span>
                             </a>
 
-                            <a href="{{ route('form.donasi') }}"
+                            <a href="{{ route('beranda.program') }}"
                                 class="flex items-center p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
                                 <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-green-600"

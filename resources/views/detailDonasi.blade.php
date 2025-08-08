@@ -156,7 +156,7 @@
                 </div>
 
 
-                
+
                 <!-- Title & Description -->
                 <div class="grid lg:grid-cols-2 gap-12 items-start">
                     <div>
@@ -168,7 +168,7 @@
                                 {{ $campaign->deskripsi }}
                             </p>
                         </div>
-                        
+
                         <!-- Badges Row -->
                         <div class="flex flex-wrap items-center gap-3 mb-6">
                             <span
@@ -189,19 +189,19 @@
                             $terkumpul = $campaign->donasi
                                 ->filter(fn($d) => $d->donasiDana && $d->donasiDana->status_verifikasi === 'approved')
                                 ->sum(fn($d) => $d->donasiDana->nominal);
-                                
-                                // Hitung persentase progres
-                                $persentase =
+
+                            // Hitung persentase progres
+                            $persentase =
                                 $campaign->target_dana && $campaign->target_dana > 0
-                                ? min(100, round(($terkumpul / $campaign->target_dana) * 100))
-                                : 0;
-                                @endphp
+                                    ? min(100, round(($terkumpul / $campaign->target_dana) * 100))
+                                    : 0;
+                        @endphp
                         <div class="mb-8">
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="text-lg font-semibold text-gray-900">Progress Campaign</h3>
                                 <span class="text-2xl font-bold text-green-600">{{ $persentase }}%</span>
                             </div>
-                            
+
                             <div class="bg-gray-200 rounded-full h-4 mb-4 overflow-hidden">
                                 <div class="progress-bar h-full rounded-full" style="width: {{ $persentase }}%"></div>
                             </div>
@@ -243,14 +243,15 @@
                         </div>
 
                         <!-- CTA Button -->
-                        <button type="button" aria-label="Donasi Sekarang"
+                        <a type="button" aria-label="Donasi Sekarang"
+                            href="{{ route('form.donasi', $campaign->id_campaign) }}"
                             class="flex items-center justify-center gap-2 w-full bg-amber-600 hover:bg-amber-700 text-white py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                 <path fill="currentColor"
                                     d="M20 17q.86 0 1.45.6t.58 1.4L14 22l-7-2v-9h1.95l7.27 2.69q.78.31.78 1.12q0 .47-.34.82t-.86.37H13l-1.75-.67l-.33.94L13 17zM16 3.23Q17.06 2 18.7 2q1.36 0 2.3 1t1 2.3q0 1.03-1 2.46t-1.97 2.39T16 13q-2.08-1.89-3.06-2.85t-1.97-2.39T10 5.3q0-1.36.97-2.3t2.34-1q1.6 0 2.69 1.23M.984 11H5v11H.984z" />
                             </svg>
                             Donasi Sekarang
-                        </button>
+                        </a>
 
                     </div>
                 </div>
@@ -290,7 +291,7 @@
                                         </div>
                                     </div>
                                     <div class="text-right">
-                                        @if ($donation->id_jenis_donasi == 1)
+                                        @if (strtolower($donation->JenisDonasi->nama) == 'dana')
                                             <p class="font-bold text-amber-600">
                                                 Rp
                                                 {{ number_format(optional($donation->DonasiDana)->nominal, 0, ',', '.') }}
@@ -298,7 +299,7 @@
                                             <p class="text-xs text-gray-500">
                                                 {{ $donation->pesan ?? 'Tanpa pesan' }}
                                             </p>
-                                        @elseif ($donation->id_jenis_donasi == 2)
+                                        @elseif (strtolower($donation->JenisDonasi->nama) == 'barang')
                                             @php
                                                 $barang = $donation->DonasiBarang;
                                                 $totalBarang = $barang->count();
@@ -318,8 +319,18 @@
                                                     dan {{ $totalBarang - 2 }} barang lainnya
                                                 </div>
                                             @endif
-                                        @else
-                                            <p class="text-sm text-gray-500">Donasi lain</p>
+                                            <p class="text-xs text-gray-500">
+                                                {{ $donation->pesan ?? 'Tanpa pesan' }}
+                                            </p>
+                                        @elseif (strtolower($donation->JenisDonasi->nama) == 'jasa')
+                                            <!-- Jasa -->
+                                            <div class="font-bold text-amber-600">
+                                                {{ $donation->DonasiJasa->jenis_jasa }}
+                                                ({{ $donation->DonasiJasa->durasi_jasa }})
+                                            </div>
+                                            <p class="text-xs text-gray-500">
+                                                {{ $donation->pesan ?? 'Tanpa pesan' }}
+                                            </p>
                                         @endif
                                     </div>
                                 </div>

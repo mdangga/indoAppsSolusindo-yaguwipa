@@ -16,8 +16,9 @@ class CampaignController extends Controller
     {
         $campaign = Campaign::with('Program.KategoriProgram', 'Donasi')
             ->where('slug', $slug)->firstOrFail();
-        $donations = Donasi::with(['DonasiDana', 'DonasiBarang', 'DonasiJasa'])
+        $donations = Donasi::with(['DonasiDana', 'DonasiBarang', 'DonasiJasa', 'JenisDonasi'])
             ->orderBy('updated_at', 'desc')
+            ->where('id_campaign', $campaign->id_campaign)
             ->limit(10)
             ->get();
         return view('detailDonasi', compact('campaign', 'donations'));

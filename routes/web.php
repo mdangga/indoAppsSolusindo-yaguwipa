@@ -64,7 +64,7 @@ Route::get('/notifications', [NotificationController::class, 'index'])->name('no
 Route::post('/notifications/read-all', [NotificationController::class, 'bacaSemuaNotif'])->name('notifications.readAll');
 
 // donasi
-Route::get('/donasi/create', [DonasiController::class, 'show'])->name('form.donasi');
+Route::get('/donasi/create/{id_campaign}', [DonasiController::class, 'show'])->name('form.donasi');
 Route::post('/donasi', [DonasiController::class, 'store'])->name('donasi.store');
 
 // admin

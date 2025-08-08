@@ -40,7 +40,7 @@
 <body class="bg-gray-100 min-h-screen font-sans antialiased">
 
     {{-- Navbar & Sidebar --}}
-    <x-admin.navbar />
+    <x-admin.navbar-admin />
     <x-admin.sidebar />
 
     <main class="p-4 md:ml-64 pt-20">
