@@ -46,6 +46,105 @@
             border-color: #059669 !important;
             background-color: #ecfdf5 !important;
         }
+
+        .logo-container {
+            width: 100%;
+            max-width: 1200px;
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .logo-track {
+            display: flex;
+            width: fit-content;
+        }
+
+        .logo-set {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            flex-shrink: 0;
+        }
+
+        .logo-item {
+            flex-shrink: 0;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 180px;
+        }
+
+        .logo-track.animated {
+            animation: seamlessScroll linear infinite;
+        }
+
+        .logo-track {
+            transition: animation-duration 0.5s ease;
+        }
+
+        .logo-track.pausing {
+            animation-duration: calc(var(--scroll-duration) * 2);
+        }
+
+        .logo-track.resuming {
+            animation-duration: calc(var(--scroll-duration) * 2);
+        }
+
+        .logo-track.paused {
+            animation-play-state: paused !important;
+        }
+
+        @keyframes seamlessScroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(var(--total-scroll));
+            }
+        }
+
+        .logo-container:hover .logo-track.animated {
+            /* animation-play-state: paused; */
+        }
+
+        .logo-track.paused {
+            animation-play-state: paused !important;
+        }
+
+        .logo-item img {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 96px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .logo-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .logo-container::before,
+        .logo-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 120px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .logo-container::before {
+            left: 0;
+            background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 30%, rgba(255, 255, 255, 0) 100%);
+        }
+
+        .logo-container::after {
+            right: 0;
+            background: linear-gradient(to left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 30%, rgba(255, 255, 255, 0) 100%);
+        }
     </style>
 </head>
 
@@ -159,7 +258,7 @@
                     @if ($gallery->count() > 1)
                         <div
                             class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
-                            @forelse ($gallery->take(5) as $inex => $item)
+                            @foreach ($gallery->take(5) as $index => $item)
                                 <button type="button" class="w-[6px] h-[6px] rounded-full"
                                     aria-current="{{ $index === 0 ? 'true' : 'false' }}"
                                     aria-label="Slide {{ $index + 1 }}"
@@ -178,40 +277,158 @@
                 <h1 class="text-center pb-5 text-4xl font-semibold text-gray-900">
                     LEMBAGA TERKAIT
                 </h1>
-                <div class="mx-auto mt-10 overflow-hidden logo-container">
-                    <div class="logo-scroll">
-                        <div class="logo-set">
-                            @foreach ($site['lembaga'] as $logo)
-                                <div class="logo-item">
-                                    <a href="{{ $logo['website'] }}" target="_blank" rel="noopener noreferrer"
-                                        class="hover:opacity-75 transition-opacity duration-200">
-                                        <img class="max-h-24 w-auto object-contain"
-                                            src="{{ asset('storage/' . $logo['image_path']) }}"
-                                            alt="{{ $logo['nama'] }}" width="158" height="48" />
-                                    </a>
-                                </div>
-                            @endforeach
-                        </div>
-
-                        <div class="logo-set">
-                            @foreach ($site['lembaga'] as $logo)
-                                <div class="logo-item">
-                                    <a href="{{ $logo['website'] }}" target="_blank" rel="noopener noreferrer"
-                                        class="hover:opacity-75 transition-opacity duration-200">
-                                        <img class="max-h-24 w-auto object-contain"
-                                            src="{{ asset('storage/' . $logo['image_path']) }}"
-                                            alt="{{ $logo['nama'] }}" width="158" height="48" />
-                                    </a>
-                                </div>
-                            @endforeach
-                        </div>
+                <div class="mx-auto mt-10 logo-container">
+                    <div class="logo-track" id="logoTrack">
                     </div>
                 </div>
             </div>
         </div>
+        {{-- end lembaga --}}
     </main>
-    {{-- end lembaga --}}
     <x-footer />
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoTrack = document.getElementById('logoTrack');
+            const logoContainer = logoTrack.closest('.logo-container');
+
+            const logos = [
+                @foreach ($site['lembaga'] as $logo)
+                    {
+                        name: '{{ $logo['nama'] }}',
+                        url: '{{ $logo['website'] }}',
+                        image: '{{ asset('storage/' . $logo['image_path']) }}'
+                    },
+                @endforeach
+            ];
+
+            if (logos[logos.length - 1] && logos[logos.length - 1].name === undefined) {
+                logos.pop();
+            }
+
+            const containerWidth = 1200;
+            const logoItemWidth = 180 + 64;
+            const singleSetWidth = logos.length * logoItemWidth;
+            const minSets = Math.max(3, Math.ceil((containerWidth * 2.5) / singleSetWidth));
+
+            console.log(`Creating ${minSets} sets for ${logos.length} logos`);
+
+            // Generate multiple identical sets
+            for (let setIndex = 0; setIndex < minSets; setIndex++) {
+                const logoSet = document.createElement('div');
+                logoSet.className = 'logo-set';
+                logoSet.id = `logoSet${setIndex + 1}`;
+
+                logos.forEach((logo) => {
+                    const logoItem = document.createElement('div');
+                    logoItem.className = 'logo-item';
+
+                    logoItem.innerHTML = `
+                <a href="${logo.url}" target="_blank" rel="noopener noreferrer"
+                   class="hover:opacity-90 transition-opacity duration-200">
+                    <img class="max-h-24 w-auto object-contain"
+                         src="${logo.image}"
+                         alt="${logo.name}" 
+                         width="158" height="48" />
+                </a>
+            `;
+
+                    logoSet.appendChild(logoItem);
+                });
+
+                logoTrack.appendChild(logoSet);
+            }
+
+            // Wait for images to load
+            const images = logoTrack.querySelectorAll('img');
+            let loadedImages = 0;
+
+            function startAnimation() {
+                setTimeout(() => {
+                    const firstSet = document.getElementById('logoSet1');
+                    if (!firstSet) return;
+
+                    const actualSetWidth = firstSet.offsetWidth;
+
+                    logoTrack.style.setProperty('--total-scroll', `-${actualSetWidth}px`);
+
+                    const duration = Math.max(15, actualSetWidth * 0.04);
+
+                    logoTrack.style.animation = `seamlessScroll ${duration}s linear infinite`;
+                    logoTrack.classList.add('animated');
+
+                    console.log(`Set width: ${actualSetWidth}px, Duration: ${duration}s`);
+
+                    let pauseTimeout, resumeTimeout;
+
+                    logoContainer.addEventListener('mouseenter', () => {
+                        clearTimeout(resumeTimeout);
+                        pauseTimeout = setTimeout(() => {
+                            logoTrack.classList.add('pausing');
+                            setTimeout(() => {
+                                logoTrack.classList.add('paused');
+                                console.log('Animation paused smoothly');
+                            }, 400);
+                        }, 400);
+                    });
+
+                    logoContainer.addEventListener('mouseleave', () => {
+                        clearTimeout(pauseTimeout);
+                        logoTrack.classList.remove('paused');
+                        logoTrack.classList.add('resuming');
+
+                        resumeTimeout = setTimeout(() => {
+                            logoTrack.classList.remove('resuming');
+                            logoTrack.classList.remove('pausing');
+                            console.log('Animation resumed smoothly');
+                        }, 800);
+                    });
+                }, 200);
+            }
+
+            if (images.length > 0) {
+                images.forEach(img => {
+                    if (img.complete) {
+                        loadedImages++;
+                    } else {
+                        img.addEventListener('load', () => {
+                            loadedImages++;
+                            if (loadedImages === images.length) {
+                                startAnimation();
+                            }
+                        });
+                        img.addEventListener('error', () => {
+                            loadedImages++;
+                            if (loadedImages === images.length) {
+                                startAnimation();
+                            }
+                        });
+                    }
+                });
+
+                if (loadedImages === images.length) {
+                    startAnimation();
+                }
+            } else {
+                startAnimation();
+            }
+        });
+
+        window.addEventListener('resize', function() {
+            const logoTrack = document.getElementById('logoTrack');
+            const firstSet = document.getElementById('logoSet1');
+
+            if (logoTrack && firstSet) {
+                setTimeout(() => {
+                    const actualSetWidth = firstSet.offsetWidth;
+                    logoTrack.style.setProperty('--total-scroll', `-${actualSetWidth}px`);
+
+                    const duration = Math.max(15, actualSetWidth * 0.04);
+                    logoTrack.style.animation = `seamlessScroll ${duration}s linear infinite`;
+                }, 100);
+            }
+        });
+    </script>
 </body>
 
 </html>
