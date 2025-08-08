@@ -56,16 +56,32 @@
         <div class="w-full max-w-4xl">
             <!-- Card Container -->
             <div class="bg-white rounded-2xl shadow-xl overflow-hidden sm:s">
+                <a href="{{ route('beranda') }}"
+                    class="fixed m-4 flex items-center justify-center w-14 h-14 rounded-full 
+          bg-gradient-to-br from-gray-200 to-gray-300 
+          shadow-[inset_0_4px_8px_rgba(0,0,0,0.2),inset_0_-2px_4px_rgba(255,255,255,0.6),inset_0_0_0_1px_rgba(0,0,0,0.05)] 
+          transform translate-y-0 
+          transition-all duration-200 ease-out
+          hover:bg-gradient-to-br hover:from-gray-150 hover:to-gray-250
+          hover:shadow-[inset_0_3px_6px_rgba(0,0,0,0.15),inset_0_-1px_3px_rgba(255,255,255,0.7),inset_0_0_0_1px_rgba(0,0,0,0.03)] 
+          active:shadow-[inset_0_6px_12px_rgba(0,0,0,0.25),inset_0_2px_4px_rgba(0,0,0,0.15),inset_0_0_0_1px_rgba(0,0,0,0.08)]
+          active:translate-y-[1px]
+          active:bg-gradient-to-br active:from-gray-250 active:to-gray-350
+          text-gray-700
+          backdrop-blur-md
+          z-50">
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
+                        <path
+                            d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
+                    </svg>
+                </a>
+
+
                 <div class="flex flex-col lg:flex-row">
                     <!-- Left Side - Video Background -->
                     <div class="hidden lg:flex lg:w-1/2 img-container p-8 items-center justify-center relative">
-
-                        {{-- <!-- Video Background -->
-                        <video class="video-background" autoplay muted loop playsinline height="100%">
-                            <source src="{{ asset('vidbg2.mp4') }}" type="video/mp4">
-                            <!-- Fallback for browsers that don't support video -->
-                            Your browser does not support the video tag.
-                        </video> --}}
                         <!-- Video Background -->
                         <img class="img-background grayscale-25 blur-[1px]"
                             src="{{ asset('storage/' . $site['yayasanProfile']->background) }}">
@@ -112,13 +128,7 @@
                             <!-- Logo -->
                             <div class="text-center mb-8">
                                 <img class="mx-auto h-24 w-auto" src="{{ asset('img/logo.png') }}" alt="logo yayasan" />
-                                {{-- <h2 class="mt-6 text-2xl font-bold tracking-tight text-gray-900">Masuk ke Yaguwipa
-                                </h2>
-                                <p class="mt-2 text-sm text-gray-600">Isi form dengan benar
-                                </p> --}}
                             </div>
-
-
 
                             <!-- Form -->
                             <form class="space-y-6" action="/login" method="POST">
