@@ -50,8 +50,9 @@
 
             <div>
                 <label for="tanggal_publish" class="block mb-1 text-sm font-medium">Tanggal Publish</label>
-                <input type="datetime-local" name="tanggal_publish" id="tanggal_publish"
-                    class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                <input
+                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+                    type="datetime-local" name="tanggal_publish" id="tanggal_publish"
                     value="{{ old('tanggal_publish', $berita->tanggal_publish ?? '') }}" />
                 @error('tanggal_publish')
                     <small class="text-red-600">{{ $message }}</small>
@@ -61,8 +62,9 @@
 
         <div class="mt-4">
             <label for="judul" class="block mb-1 text-sm font-medium">Judul</label>
-            <input type="text" name="judul" id="judul" placeholder="Judul berita..."
-                class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+            <input
+                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+                type="text" name="judul" id="judul" placeholder="Judul berita..."
                 value="{{ old('judul', $berita->judul ?? '') }}" required />
             @error('judul')
                 <small class="text-red-600">{{ $message }}</small>
