@@ -272,58 +272,61 @@
         {{-- galleri end --}}
 
         {{-- lembaga --}}
-        <div class="px-4 sm:px-6 lg:px-12 py-16">
-            <div class="max-w-7xl mx-auto">
-                <h1 class="text-center pb-5 text-4xl font-semibold text-gray-900">
-                    LEMBAGA TERKAIT
-                </h1>
-                <div class="mx-auto mt-10 logo-container">
-                    <div class="logo-track" id="logoTrack">
+        @if (!empty($site['lembaga']) && count($site['lembaga']) > 0)
+            <div class="px-4 sm:px-6 lg:px-12 py-16">
+                <div class="max-w-7xl mx-auto">
+                    <h1 class="text-center pb-5 text-4xl font-semibold text-gray-900">
+                        LEMBAGA TERKAIT
+                    </h1>
+                    <div class="mx-auto mt-10 logo-container">
+                        <div class="logo-track" id="logoTrack">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endif
         {{-- end lembaga --}}
     </main>
     <x-footer />
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const logoTrack = document.getElementById('logoTrack');
-            const logoContainer = logoTrack.closest('.logo-container');
+    @if (!empty($site['lembaga']) && count($site['lembaga']) > 0)
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const logoTrack = document.getElementById('logoTrack');
+                const logoContainer = logoTrack.closest('.logo-container');
 
-            const logos = [
-                @foreach ($site['lembaga'] as $logo)
-                    {
-                        name: '{{ $logo['nama'] }}',
-                        url: '{{ $logo['website'] }}',
-                        image: '{{ asset('storage/' . $logo['image_path']) }}'
-                    },
-                @endforeach
-            ];
+                const logos = [
+                    @foreach ($site['lembaga'] as $logo)
+                        {
+                            name: '{{ $logo['nama'] }}',
+                            url: '{{ $logo['website'] }}',
+                            image: '{{ asset('storage/' . $logo['image_path']) }}'
+                        },
+                    @endforeach
+                ];
 
-            if (logos[logos.length - 1] && logos[logos.length - 1].name === undefined) {
-                logos.pop();
-            }
+                if (logos[logos.length - 1] && logos[logos.length - 1].name === undefined) {
+                    logos.pop();
+                }
 
-            const containerWidth = 1200;
-            const logoItemWidth = 180 + 64;
-            const singleSetWidth = logos.length * logoItemWidth;
-            const minSets = Math.max(3, Math.ceil((containerWidth * 2.5) / singleSetWidth));
+                const containerWidth = 1200;
+                const logoItemWidth = 180 + 64;
+                const singleSetWidth = logos.length * logoItemWidth;
+                const minSets = Math.max(3, Math.ceil((containerWidth * 2.5) / singleSetWidth));
 
-            console.log(`Creating ${minSets} sets for ${logos.length} logos`);
+                console.log(`Creating ${minSets} sets for ${logos.length} logos`);
 
-            // Generate multiple identical sets
-            for (let setIndex = 0; setIndex < minSets; setIndex++) {
-                const logoSet = document.createElement('div');
-                logoSet.className = 'logo-set';
-                logoSet.id = `logoSet${setIndex + 1}`;
+                // Generate multiple identical sets
+                for (let setIndex = 0; setIndex < minSets; setIndex++) {
+                    const logoSet = document.createElement('div');
+                    logoSet.className = 'logo-set';
+                    logoSet.id = `logoSet${setIndex + 1}`;
 
-                logos.forEach((logo) => {
-                    const logoItem = document.createElement('div');
-                    logoItem.className = 'logo-item';
+                    logos.forEach((logo) => {
+                        const logoItem = document.createElement('div');
+                        logoItem.className = 'logo-item';
 
-                    logoItem.innerHTML = `
+                        logoItem.innerHTML = `
                 <a href="${logo.url}" target="_blank" rel="noopener noreferrer"
                    class="hover:opacity-90 transition-opacity duration-200">
                     <img class="max-h-24 w-auto object-contain"
@@ -333,102 +336,103 @@
                 </a>
             `;
 
-                    logoSet.appendChild(logoItem);
-                });
-
-                logoTrack.appendChild(logoSet);
-            }
-
-            // Wait for images to load
-            const images = logoTrack.querySelectorAll('img');
-            let loadedImages = 0;
-
-            function startAnimation() {
-                setTimeout(() => {
-                    const firstSet = document.getElementById('logoSet1');
-                    if (!firstSet) return;
-
-                    const actualSetWidth = firstSet.offsetWidth;
-
-                    logoTrack.style.setProperty('--total-scroll', `-${actualSetWidth}px`);
-
-                    const duration = Math.max(15, actualSetWidth * 0.04);
-
-                    logoTrack.style.animation = `seamlessScroll ${duration}s linear infinite`;
-                    logoTrack.classList.add('animated');
-
-                    console.log(`Set width: ${actualSetWidth}px, Duration: ${duration}s`);
-
-                    let pauseTimeout, resumeTimeout;
-
-                    logoContainer.addEventListener('mouseenter', () => {
-                        clearTimeout(resumeTimeout);
-                        pauseTimeout = setTimeout(() => {
-                            logoTrack.classList.add('pausing');
-                            setTimeout(() => {
-                                logoTrack.classList.add('paused');
-                                console.log('Animation paused smoothly');
-                            }, 400);
-                        }, 400);
+                        logoSet.appendChild(logoItem);
                     });
 
-                    logoContainer.addEventListener('mouseleave', () => {
-                        clearTimeout(pauseTimeout);
-                        logoTrack.classList.remove('paused');
-                        logoTrack.classList.add('resuming');
+                    logoTrack.appendChild(logoSet);
+                }
 
-                        resumeTimeout = setTimeout(() => {
-                            logoTrack.classList.remove('resuming');
-                            logoTrack.classList.remove('pausing');
-                            console.log('Animation resumed smoothly');
-                        }, 800);
+                // Wait for images to load
+                const images = logoTrack.querySelectorAll('img');
+                let loadedImages = 0;
+
+                function startAnimation() {
+                    setTimeout(() => {
+                        const firstSet = document.getElementById('logoSet1');
+                        if (!firstSet) return;
+
+                        const actualSetWidth = firstSet.offsetWidth;
+
+                        logoTrack.style.setProperty('--total-scroll', `-${actualSetWidth}px`);
+
+                        const duration = Math.max(15, actualSetWidth * 0.04);
+
+                        logoTrack.style.animation = `seamlessScroll ${duration}s linear infinite`;
+                        logoTrack.classList.add('animated');
+
+                        console.log(`Set width: ${actualSetWidth}px, Duration: ${duration}s`);
+
+                        let pauseTimeout, resumeTimeout;
+
+                        logoContainer.addEventListener('mouseenter', () => {
+                            clearTimeout(resumeTimeout);
+                            pauseTimeout = setTimeout(() => {
+                                logoTrack.classList.add('pausing');
+                                setTimeout(() => {
+                                    logoTrack.classList.add('paused');
+                                    console.log('Animation paused smoothly');
+                                }, 200);
+                            }, 200);
+                        });
+
+                        logoContainer.addEventListener('mouseleave', () => {
+                            clearTimeout(pauseTimeout);
+                            logoTrack.classList.remove('paused');
+                            logoTrack.classList.add('resuming');
+
+                            resumeTimeout = setTimeout(() => {
+                                logoTrack.classList.remove('resuming');
+                                logoTrack.classList.remove('pausing');
+                                console.log('Animation resumed smoothly');
+                            }, 800);
+                        });
+                    }, 200);
+                }
+
+                if (images.length > 0) {
+                    images.forEach(img => {
+                        if (img.complete) {
+                            loadedImages++;
+                        } else {
+                            img.addEventListener('load', () => {
+                                loadedImages++;
+                                if (loadedImages === images.length) {
+                                    startAnimation();
+                                }
+                            });
+                            img.addEventListener('error', () => {
+                                loadedImages++;
+                                if (loadedImages === images.length) {
+                                    startAnimation();
+                                }
+                            });
+                        }
                     });
-                }, 200);
-            }
 
-            if (images.length > 0) {
-                images.forEach(img => {
-                    if (img.complete) {
-                        loadedImages++;
-                    } else {
-                        img.addEventListener('load', () => {
-                            loadedImages++;
-                            if (loadedImages === images.length) {
-                                startAnimation();
-                            }
-                        });
-                        img.addEventListener('error', () => {
-                            loadedImages++;
-                            if (loadedImages === images.length) {
-                                startAnimation();
-                            }
-                        });
+                    if (loadedImages === images.length) {
+                        startAnimation();
                     }
-                });
-
-                if (loadedImages === images.length) {
+                } else {
                     startAnimation();
                 }
-            } else {
-                startAnimation();
-            }
-        });
+            });
 
-        window.addEventListener('resize', function() {
-            const logoTrack = document.getElementById('logoTrack');
-            const firstSet = document.getElementById('logoSet1');
+            window.addEventListener('resize', function() {
+                const logoTrack = document.getElementById('logoTrack');
+                const firstSet = document.getElementById('logoSet1');
 
-            if (logoTrack && firstSet) {
-                setTimeout(() => {
-                    const actualSetWidth = firstSet.offsetWidth;
-                    logoTrack.style.setProperty('--total-scroll', `-${actualSetWidth}px`);
+                if (logoTrack && firstSet) {
+                    setTimeout(() => {
+                        const actualSetWidth = firstSet.offsetWidth;
+                        logoTrack.style.setProperty('--total-scroll', `-${actualSetWidth}px`);
 
-                    const duration = Math.max(15, actualSetWidth * 0.04);
-                    logoTrack.style.animation = `seamlessScroll ${duration}s linear infinite`;
-                }, 100);
-            }
-        });
-    </script>
+                        const duration = Math.max(15, actualSetWidth * 0.04);
+                        logoTrack.style.animation = `seamlessScroll ${duration}s linear infinite`;
+                    }, 100);
+                }
+            });
+        </script>
+    @endif
 </body>
 
 </html>
