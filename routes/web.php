@@ -64,7 +64,9 @@ Route::get('/notifications', [NotificationController::class, 'index'])->name('no
 Route::post('/notifications/read-all', [NotificationController::class, 'bacaSemuaNotif'])->name('notifications.readAll');
 
 // donasi
-Route::get('/donasi', [DonasiController::class, 'show'])->name('form.donasi');
+Route::get('/donasi/create', [DonasiController::class, 'show'])->name('form.donasi');
+Route::post('/donasi', [DonasiController::class, 'store'])->name('donasi.store');
+
 // admin
 Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
     // general-setting
@@ -179,13 +181,13 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
     Route::prefix('menus')->group(function () {
         Route::get('/', [MenusController::class, 'index'])->name('admin.menus');
         Route::get('/datatable', [MenusController::class, 'getDataTables'])->name('menus.table');
-    
+
         Route::get('/create', [MenusController::class, 'showFormStore'])->name('menus.formStore');
         Route::post('/', [MenusController::class, 'store'])->name('menus.store');
-    
+
         Route::get('/edit/{id}', [MenusController::class, 'showFormEdit'])->name('menus.formEdit');
         Route::put('/{id}', [MenusController::class, 'update'])->name('menus.update');
-    
+
         Route::delete('/destroy/{id}', [MenusController::class, 'destroy'])->name('menus.delete');
     });
 
@@ -194,13 +196,13 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
     Route::prefix('jenis-publikasi')->group(function () {
         Route::get('/', [JenisPublikasiController::class, 'index'])->name('admin.jenisPublikasi');
         Route::get('/datatable', [JenisPublikasiController::class, 'getDataTables'])->name('jenisPublikasi.table');
-    
+
         Route::get('/create', [JenisPublikasiController::class, 'showFormStore'])->name('jenisPublikasi.formStore');
         Route::post('/', [JenisPublikasiController::class, 'store'])->name('jenisPublikasi.store');
-    
+
         Route::get('/edit/{id}', [JenisPublikasiController::class, 'showFormEdit'])->name('jenisPublikasi.formEdit');
         Route::put('/{id}', [JenisPublikasiController::class, 'update'])->name('jenisPublikasi.update');
-    
+
         Route::delete('/destroy/{id}', [JenisPublikasiController::class, 'destroy'])->name('jenisPublikasi.delete');
     });
 
@@ -209,13 +211,13 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
     Route::prefix('publikasi')->group(function () {
         Route::get('/', [PublikasiController::class, 'index'])->name('admin.publikasi');
         Route::get('/datatable', [PublikasiController::class, 'getDataTables'])->name('publikasi.table');
-    
+
         Route::get('/create', [PublikasiController::class, 'showFormStore'])->name('publikasi.formStore');
         Route::post('/', [PublikasiController::class, 'store'])->name('publikasi.store');
-    
+
         Route::get('/edit/{id}', [PublikasiController::class, 'showFormEdit'])->name('publikasi.formEdit');
         Route::put('/{id{', [PublikasiController::class, 'update'])->name('publikasi.update');
-    
+
         Route::delete('/destroy/{id}', [PublikasiController::class, 'destroy'])->name('publikasi.delete');
     });
 
@@ -226,7 +228,7 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
         Route::get('/datatable', [KerjaSamaController::class, 'getDataTables'])->name('kerjaSama.table');
         Route::get('/detail-kerja-sama/{id}', [KerjaSamaController::class, 'detailKerjaSama'])->name('kerjaSama.detail');
         Route::post('/approved/{id}', [KerjaSamaController::class, 'approved'])->name('kerjaSama.approved');
-        Route::post('/rejected{id}', [KerjaSamaController::class, 'rejected'])->name('kerjaSama.rejected');  
+        Route::post('/rejected{id}', [KerjaSamaController::class, 'rejected'])->name('kerjaSama.rejected');
         Route::delete('/destroy/{id}', [KerjaSamaController::class, 'destroy'])->name('kerjaSama.delete');
     });
 });
