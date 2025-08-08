@@ -169,7 +169,7 @@
                         <form action="{{ route('donasi.store') }}" id="donationForm" method="POST">
                             @csrf
                             <input type="hidden" name="id_campaign" value="{{ $campaign->id_campaign ?? 1 }}">
-                            <input type="hidden" name="id_jenis_donasi" id="id_jenis_donasi" value="1">
+                            <input type="hidden" name="jenis_donasi" id="jenis_donasi" value="dana">
                             <!-- Step 1: Data Donatur -->
                             <div id="step1">
                                 <h2 class="text-2xl font-bold text-gray-900 mb-2">Jenis Donasi</h2>
@@ -386,37 +386,20 @@
                                         <div class="grid md:grid-cols-2 gap-4">
                                             <div>
                                                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                                                    <i class="fas fa-tools mr-2 text-teal-500"></i>Jenis Jasa *
+                                                    <i class="fas fa-clock mr-2 text-teal-500"></i>Jenis Jasa *
                                                 </label>
-                                                <select name="jenis_jasa"
-                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 outline-0">
-                                                    <option value="">Pilih jenis jasa</option>
-                                                    <option value="mengajar">Mengajar/Pelatihan</option>
-                                                    <option value="kesehatan">Layanan Kesehatan</option>
-                                                    <option value="teknologi">IT/Teknologi</option>
-                                                    <option value="konstruksi">Konstruksi/Renovasi</option>
-                                                    <option value="transportasi">Transportasi</option>
-                                                    <option value="konsultasi">Konsultasi</option>
-                                                    <option value="lainnya">Lainnya</option>
-                                                </select>
+                                                <input type="text" name="jenis_jasa"
+                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 outline-0"
+                                                    placeholder="Contoh: Pendidikan, Kesehatan, dll">
                                             </div>
                                             <div>
                                                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                                                    <i class="fas fa-clock mr-2 text-teal-500"></i>Estimasi Waktu
+                                                    <i class="fas fa-clock mr-2 text-teal-500"></i>Durasi
                                                 </label>
-                                                <input type="text" name="waktu_jasa"
+                                                <input type="text" name="durasi_jasa"
                                                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 outline-0"
                                                     placeholder="Contoh: 2 jam, 1 hari, dll">
                                             </div>
-                                        </div>
-                                        <div class="mt-4">
-                                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                                <i class="fas fa-clipboard-list mr-2 text-teal-500"></i>Deskripsi Jasa
-                                                *
-                                            </label>
-                                            <textarea name="deskripsi_jasa" rows="4"
-                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 outline-0"
-                                                placeholder="Jelaskan jasa/keahlian yang bisa Anda berikan"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -1042,7 +1025,7 @@
         // Donation type handling
         const donationTypes = document.querySelectorAll('input[name="jenis_donasi"]');
         const donationSections = {
-            'uang': document.getElementById('donasi-uang'),
+            'dana': document.getElementById('donasi-uang'),
             'barang': document.getElementById('donasi-barang'),
             'jasa': document.getElementById('donasi-jasa')
         };
@@ -1053,8 +1036,7 @@
         donationTypes.forEach(radio => {
             radio.addEventListener('change', function() {
                 selectedDonationType = this.value;
-                document.getElementById('id_jenis_donasi').value =
-                    this.value === 'uang' ? 1 : (this.value === 'barang' ? 2 : 3);
+                document.getElementById('jenis_donasi').value = this.value;
                 updateStep3Display();
 
                 // Hide all donation sections
@@ -1294,7 +1276,7 @@
                 }
             } else if (selectedDonationType === 'jasa') {
                 const jenisJasa = document.querySelector('[name="jenis_jasa"]');
-                const deskripsiJasa = document.querySelector('[name="deskripsi_jasa"]');
+                const durasiJasa = document.querySelector('[name="durasi_jasa"]');
 
                 if (!jenisJasa || !jenisJasa.value) {
                     showAlert('Mohon pilih jenis jasa');
@@ -1302,8 +1284,8 @@
                     return false;
                 }
 
-                if (!deskripsiJasa || !deskripsiJasa.value.trim()) {
-                    showAlert('Mohon isi deskripsi jasa');
+                if (!durasiJasa || !durasiJasa.value.trim()) {
+                    showAlert('Mohon isi durasi jasa');
                     goToStep(1);
                     return false;
                 }
@@ -1330,7 +1312,7 @@
             const form = document.getElementById('donationForm');
 
             // Remove existing hidden inputs for barang to avoid duplicates
-            const existingBarangInputs = form.querySelectorAll('input[name^="barang["]');
+            const existingBarangInputs = form.querySelectorAll('input[name^="DonasiBarang["]');
             existingBarangInputs.forEach(input => input.remove());
 
             // If donation type is barang, add items to form data
@@ -1341,19 +1323,19 @@
                     barangForm.items.forEach((item, index) => {
                         // Create hidden inputs for each item
                         const inputs = [{
-                                name: `barang[${index}][nama_barang]`,
+                                name: `DonasiBarang[${index}][nama_barang]`,
                                 value: item.nama_barang
                             },
                             {
-                                name: `barang[${index}][jumlah_barang]`,
+                                name: `DonasiBarang[${index}][jumlah_barang]`,
                                 value: item.jumlah_barang || 1
                             },
                             {
-                                name: `barang[${index}][kondisi]`,
+                                name: `DonasiBarang[${index}][kondisi]`,
                                 value: item.kondisi_barang
                             },
                             {
-                                name: `barang[${index}][deskripsi]`,
+                                name: `DonasiBarang[${index}][deskripsi]`,
                                 value: item.deskripsi_barang || ''
                             }
                         ];
@@ -1462,8 +1444,8 @@
                 }
             } else if (donationType.value === 'jasa') {
                 const jenisJasa = document.querySelector('[name="jenis_jasa"]');
-                const deskripsiJasa = document.querySelector('[name="deskripsi_jasa"]');
-                if (!jenisJasa.value || !deskripsiJasa.value.trim()) {
+                const durasiJasa = document.querySelector('[name="durasi_jasa"]');
+                if (!jenisJasa.value || !durasiJasa.value.trim()) {
                     isValid = false;
                     showAlert('Mohon lengkapi data donasi jasa');
                 }

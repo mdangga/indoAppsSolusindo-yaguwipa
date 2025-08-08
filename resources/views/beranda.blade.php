@@ -182,7 +182,7 @@
                         {!! str_replace(['<p>', '</p>'], '', $site['yayasanProfile']->intro) !!}
                     </p>
                     <div class="mt-10 flex items-center justify-center gap-x-6">
-                        <a href="{{ route('form.donasi') }}"
+                        <a href="{{ route('form.donasi', 1) }}"
                             class="rounded-full px-6 py-3 text-md font-semibold text-white bg-gray-700 hover:bg-gray-500 shadow-sm focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-gray-600 cursor-pointer">
                             Donasi
                         </a>

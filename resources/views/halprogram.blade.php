@@ -57,7 +57,7 @@
 
             {{-- Pihak yang Terlibat --}}
             <div>
-                <h2 class="text-lg font-semibold text-gray-800 mb-2">Pihak yang Ikut:</h2>
+                <h2 class="text-lg font-semibold text-gray-800 mb-2">Pihak yang Terlibat:</h2>
                 <ul class="list-disc pl-5 space-y-1 text-sm text-gray-700">
                     @forelse($program->institusiTerlibat as $institusi)
                         <li>
