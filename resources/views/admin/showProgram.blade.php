@@ -207,7 +207,7 @@
 </head>
 
 <body class="bg-gray-50">
-    <x-admin.navbar />
+    <x-admin.navbar-admin />
     <x-admin.sidebar />
 
     <main class="p-6 md:ml-64 pt-20">

@@ -37,7 +37,7 @@
         <x-user.header-user :user="$user" :randomBg="$randomBg" :profilePath="$profilePath" :title="'Notifikasi'" :description="'Kelola notifikasi Anda'" />
     @endif
     <!-- Full Notifications Page -->
-    <div class="container mx-auto px-4 py-8 max-w-4xl">
+    <div class="container {{ $user->role === 'admin' ? 'mx-auto md:mx-72' : 'mx-auto' }} px-4 py-8 max-w-4xl">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold text-gray-800">Notifikasi</h1>
             <div class="flex space-x-2">
