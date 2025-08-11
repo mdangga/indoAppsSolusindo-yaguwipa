@@ -63,6 +63,18 @@
                             <span class="text-sm font-medium text-gray-900">Beranda</span>
                         </a>
 
+                        <a href="{{ route('user.activity') }}"
+                            class="flex flex-col items-center p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-600"
+                                    viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        d="M15.25 5q-.525 0-.888-.363T14 3.75t.363-.888t.887-.362t.888.363t.362.887t-.363.888T15.25 5m0 16.5q-.525 0-.888-.363T14 20.25t.363-.888t.887-.362t.888.363t.362.887t-.363.888t-.887.362m4-13q-.525 0-.888-.363T18 7.25t.363-.888T19.25 6t.888.363t.362.887t-.363.888t-.887.362m0 9.5q-.525 0-.888-.363T18 16.75t.363-.888t.887-.362t.888.363t.362.887t-.363.888t-.887.362m1.5-4.75q-.525 0-.888-.363T19.5 12t.363-.888t.887-.362t.888.363T22 12t-.363.888t-.887.362M12 22q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2v2Q8.65 4 6.325 6.325T4 12t2.325 5.675T12 20zm3.3-5.3L11 12.4V7h2v4.6l3.7 3.7z" />
+                                </svg>
+                            </div>
+                            <span class="text-xs font-medium text-gray-900">Recent Activity</span>
+                        </a>
+
                         <a href="{{ $user->role === 'mitra' ? route('mitra.kerja-sama') : route('mitra.join') }}"
                             class="flex flex-col items-center p-2 hover:bg-gray-50 rounded-lg transition-colors">
                             <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-2">
@@ -75,7 +87,7 @@
                             <span class="text-xs font-medium text-gray-900">Kolaborasi</span>
                         </a>
 
-                        <a href="#"
+                        <a href="{{ route('daftar.donasi') }}"
                             class="flex flex-col items-center p-2 hover:bg-gray-50 rounded-lg transition-colors">
                             <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-600"
@@ -98,196 +110,170 @@
                         <div class="px-6 py-4 border-b border-gray-200">
                             <div class="flex items-center justify-between">
                                 <h3 class="text-lg font-semibold text-gray-900">Aktivitas Terbaru</h3>
-                                <a href="#" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                <a href="{{ route('user.activity') }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
                                     Lihat Semua
                                 </a>
                             </div>
                         </div>
                         <div class="divide-y divide-gray-200">
-                            @forelse ($recentActivities as $activity)
-                                <div class="px-6 py-4">
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center">
-                                            <div
-                                                class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-600"
-                                                    viewBox="0 0 640 512">
-                                                    <path fill="currentColor"
-                                                        d="m323.4 85.2l-96.8 78.4c-16.1 13-19.2 36.4-7 53.1c12.9 17.8 38 21.3 55.3 7.8l99.3-77.2c7-5.4 17-4.2 22.5 2.8s4.2 17-2.8 22.5L373 188.8l139 128V128h-.7l-3.9-2.5L434.8 79c-15.3-9.8-33.2-15-51.4-15c-21.8 0-43 7.5-60 21.2m22.8 124.4l-51.7 40.2c-31.5 24.6-77.2 18.2-100.8-14.2c-22.2-30.5-16.6-73.1 12.7-96.8l83.2-67.3c-11.6-4.9-24.1-7.4-36.8-7.4C234 64 215.7 69.6 200 80l-72 48v224h28.2l91.4 83.4c19.6 17.9 49.9 16.5 67.8-3.1c5.5-6.1 9.2-13.2 11.1-20.6l17 15.6c19.5 17.9 49.9 16.6 67.8-2.9c4.5-4.9 7.8-10.6 9.9-16.5c19.4 13 45.8 10.3 62.1-7.5c17.9-19.5 16.6-49.9-2.9-67.8zM16 128c-8.8 0-16 7.2-16 16v208c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V128zm32 192a16 16 0 1 1 0 32a16 16 0 1 1 0-32m496-192v224c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V144c0-8.8-7.2-16-16-16zm32 208a16 16 0 1 1 32 0a16 16 0 1 1-32 0" />
-                                                </svg>
+                            @if ($user->role === 'mitra')
+                                @forelse ($recentActivities as $activity)
+                                    <div class="px-6 py-4">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                                                    @if ($activity instanceof \App\Models\KerjaSama)
+                                                        <i class="fas fa-handshake text-blue-600 text-xl"></i>
+                                                    @elseif ($activity instanceof \App\Models\Donasi)
+                                                        <i class="fas fa-gift text-green-600 text-xl"></i>
+                                                    @endif
+                                                </div>
+                                                <div class="ml-4">
+                                                    @if ($activity instanceof \App\Models\KerjaSama)
+                                                        <p class="text-sm font-medium text-gray-900">
+                                                            {{ $activity->kategoriKerjaSama->nama ?? 'Tanpa Kategori' }}
+                                                        </p>
+                                                        <p class="text-sm text-gray-500">
+                                                            {{ $activity->keterangan }}
+                                                        </p>
+                                                    @elseif ($activity instanceof \App\Models\Donasi)
+                                                        <p class="text-sm font-medium text-gray-900">
+                                                            {{ $activity->Campaign->nama ?? 'Donasi' }}
+                                                        </p>
+                                                        <p class="text-sm text-gray-500">
+                                                            {{-- Tampilkan detail donasi --}}
+                                                            @if (!empty($activity->DonasiDana) && $activity->DonasiDana->count())
+                                                                Dana:
+                                                                Rp{{ number_format(optional($activity->DonasiDana->first())->nominal ?? 0, 0, ',', '.') }}
+                                                            @elseif(!empty($activity->DonasiBarang) && $activity->DonasiBarang->count())
+                                                                Barang:
+                                                                @foreach ($activity->DonasiBarang as $barang)
+                                                                    {{ $barang->nama_barang ?? '-' }}
+                                                                    ({{ $barang->jumlah_barang ?? '0' }})
+                                                                    ,
+                                                                @endforeach
+                                                            @elseif(!empty($activity->DonasiJasa) && $activity->DonasiJasa->count())
+                                                                Jasa: {{ $activity->DonasiJasa->jenis_jasa ?? '-' }}
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        </p>
+                                                    @endif
+                                                </div>
                                             </div>
-                                            <div class="ml-4">
-                                                <p class="text-sm font-medium text-gray-900">
-                                                    {{ $activity->kategoriKerjaSama->nama ?? 'Tanpa Kategori' }}
-                                                </p>
-                                                <p class="text-sm text-gray-500">
-                                                    {{ $activity->keterangan }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="text-right">
-                                            <p class="text-sm font-medium text-gray-900 mb-2">
-                                                {{ $activity->updated_at->format('d M Y') }}</p>
-                                            <span
-                                                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium 
-                                                        @switch($activity->status)
+                                            <div class="text-right">
+                                                <p class="text-sm font-medium text-gray-900 mb-2">
+                                                    {{ $activity->updated_at->format('d M Y') }}</p>
+                                                <span
+                                                    class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
+                                                    @if ($activity instanceof \App\Models\KerjaSama) @switch($activity->status)
                                                             @case('approved')
-                                                              bg-green-100 text-green-800
+                                                                bg-green-100 text-green-800
                                                                 @break
                                                             @case('rejected')
-                                                              bg-red-100 text-red-800
+                                                                bg-red-100 text-red-800
                                                                 @break
                                                             @case('pending')
-                                                              bg-yellow-100 text-yellow-800
+                                                                bg-yellow-100 text-yellow-800
                                                                 @break
                                                             @default
-                                                              bg-gray-100 text-gray-800
-                                                            @endswitch
-                                                ">
-                                                {{ str_replace('_', ' ', ucfirst($activity->status ?? '-')) }}
-                                            </span>
+                                                                bg-gray-100 text-gray-800
+                                                        @endswitch
+                                                    @elseif ($activity instanceof \App\Models\Donasi)
+                                                        @switch($activity->status_verifikasi ?? $activity->status)
+                                                            @case('approved')
+                                                                bg-green-100 text-green-800
+                                                                @break
+                                                            @case('rejected')
+                                                                bg-red-100 text-red-800
+                                                                @break
+                                                            @case('pending')
+                                                                bg-yellow-100 text-yellow-800
+                                                                @break
+                                                            @default
+                                                                bg-gray-100 text-gray-800
+                                                        @endswitch @endif">
+                                                    @if ($activity instanceof \App\Models\KerjaSama)
+                                                        {{ str_replace('_', ' ', ucfirst($activity->status ?? '-')) }}
+                                                    @elseif ($activity instanceof \App\Models\Donasi)
+                                                        {{ str_replace('_', ' ', ucfirst($activity->status_verifikasi ?? ($activity->status ?? '-'))) }}
+                                                    @endif
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            @empty
-                                <div class="text-center py-8"><i class="fas fa-inbox text-4xl text-gray-300 mb-4"></i>
-                                    <p class="text-gray-500">Belum ada data</p>
-                                </div>
-                            @endforelse
+                                @empty
+                                    <div class="text-center py-8">
+                                        <i class="fas fa-inbox text-4xl text-gray-300 mb-4"></i>
+                                        <p class="text-gray-500">Belum ada data</p>
+                                    </div>
+                                @endforelse
+                            @elseif ($user->role === 'donatur')
+                                @forelse ($recentActivities as $activity)
+                                    <div class="px-6 py-4">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                                                    <i class="fas fa-gift text-green-600 text-xl"></i>
+                                                </div>
+                                                <div class="ml-4">
+                                                    <p class="text-sm font-medium text-gray-900">
+                                                        {{ $activity->Campaign->nama ?? 'Donasi' }}
+                                                    </p>
+                                                    <p class="text-sm text-gray-500">
+                                                        {{-- Tampilkan detail donasi --}}
+                                                        @if (!empty($activity->DonasiDana) && $activity->DonasiDana->count())
+                                                            Dana:
+                                                            Rp{{ number_format(optional($activity->DonasiDana->first())->nominal ?? 0, 0, ',', '.') }}
+                                                        @elseif(!empty($activity->DonasiBarang) && $activity->DonasiBarang->count())
+                                                            Barang:
+                                                            @foreach ($activity->DonasiBarang as $barang)
+                                                                {{ $barang->nama_barang ?? '-' }}
+                                                                ({{ $barang->jumlah_barang ?? '0' }})
+                                                                ,
+                                                            @endforeach
+                                                        @elseif(!empty($activity->DonasiJasa) && $activity->DonasiJasa->count())
+                                                            Jasa: {{ $activity->DonasiJasa->jenis_jasa ?? '-' }}
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="text-right">
+                                                <p class="text-sm font-medium text-gray-900 mb-2">
+                                                    {{ $activity->updated_at->format('d M Y') }}</p>
+                                                <span
+                                                    class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
+                                                    @switch($activity->status_verifikasi ?? $activity->status)
+                                                        @case('approved')
+                                                            bg-green-100 text-green-800
+                                                            @break
+                                                        @case('rejected')
+                                                            bg-red-100 text-red-800
+                                                            @break
+                                                        @case('pending')
+                                                            bg-yellow-100 text-yellow-800
+                                                            @break
+                                                        @default
+                                                            bg-gray-100 text-gray-800
+                                                    @endswitch">
+                                                    {{ str_replace('_', ' ', ucfirst($activity->status_verifikasi ?? ($activity->status ?? '-'))) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @empty
+                                    <div class="text-center py-8">
+                                        <i class="fas fa-inbox text-4xl text-gray-300 mb-4"></i>
+                                        <p class="text-gray-500">Belum ada data</p>
+                                    </div>
+                                @endforelse
+                            @endif
                         </div>
                     </div>
-                    {{-- <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-                        <div class="px-6 py-4 border-b border-gray-200">
-                            <div class="flex items-center justify-between">
-                                <h3 class="text-lg font-semibold text-gray-900">Pesanan Terbaru</h3>
-                                <a href="#" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                                    Lihat Semua
-                                </a>
-                            </div>
-                        </div>
-                        <div class="divide-y divide-gray-200">
-                            <div class="px-6 py-4">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="ml-4">
-                                            <p class="text-sm font-medium text-gray-900">#ORD-001</p>
-                                            <p class="text-sm text-gray-500">23 Jul 2025</p>
-                                        </div>
-                                    </div>
-                                    <div class="text-right">
-                                        <p class="text-sm font-medium text-gray-900">Rp 125.000</p>
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                            Completed
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="px-6 py-4">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="ml-4">
-                                            <p class="text-sm font-medium text-gray-900">#ORD-002</p>
-                                            <p class="text-sm text-gray-500">22 Jul 2025</p>
-                                        </div>
-                                    </div>
-                                    <div class="text-right">
-                                        <p class="text-sm font-medium text-gray-900">Rp 89.000</p>
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                            Processing
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="px-6 py-4">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="ml-4">
-                                            <p class="text-sm font-medium text-gray-900">#ORD-003</p>
-                                            <p class="text-sm text-gray-500">21 Jul 2025</p>
-                                        </div>
-                                    </div>
-                                    <div class="text-right">
-                                        <p class="text-sm font-medium text-gray-900">Rp 275.000</p>
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                            Pending
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="px-6 py-4">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="ml-4">
-                                            <p class="text-sm font-medium text-gray-900">#ORD-004</p>
-                                            <p class="text-sm text-gray-500">20 Jul 2025</p>
-                                        </div>
-                                    </div>
-                                    <div class="text-right">
-                                        <p class="text-sm font-medium text-gray-900">Rp 195.000</p>
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                            Completed
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="px-6 py-4">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="ml-4">
-                                            <p class="text-sm font-medium text-gray-900">#ORD-005</p>
-                                            <p class="text-sm text-gray-500">19 Jul 2025</p>
-                                        </div>
-                                    </div>
-                                    <div class="text-right">
-                                        <p class="text-sm font-medium text-gray-900">Rp 350.000</p>
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                            Processing
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
 
                     <!-- Individual Review -->
                     @if ($emptyReview || $isEditReview)
@@ -440,6 +426,18 @@
                                 <span class="text-sm font-medium text-gray-900">Beranda</span>
                             </a>
 
+                            <a href="{{ route('user.activity') }}"
+                                class="flex items-center p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                                <div class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center mr-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-yellow-600"
+                                        viewBox="0 0 24 24">
+                                        <path fill="currentColor"
+                                            d="M15.25 5q-.525 0-.888-.363T14 3.75t.363-.888t.887-.362t.888.363t.362.887t-.363.888T15.25 5m0 16.5q-.525 0-.888-.363T14 20.25t.363-.888t.887-.362t.888.363t.362.887t-.363.888t-.887.362m4-13q-.525 0-.888-.363T18 7.25t.363-.888T19.25 6t.888.363t.362.887t-.363.888t-.887.362m0 9.5q-.525 0-.888-.363T18 16.75t.363-.888t.887-.362t.888.363t.362.887t-.363.888t-.887.362m1.5-4.75q-.525 0-.888-.363T19.5 12t.363-.888t.887-.362t.888.363T22 12t-.363.888t-.887.362M12 22q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2v2Q8.65 4 6.325 6.325T4 12t2.325 5.675T12 20zm3.3-5.3L11 12.4V7h2v4.6l3.7 3.7z" />
+                                    </svg>
+                                </div>
+                                <span class="text-sm font-medium text-gray-900">Recent Activity</span>
+                            </a>
+
                             <a href="{{ $user->role === 'mitra' ? route('mitra.kerja-sama') : route('mitra.join') }}"
                                 class="flex items-center p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
                                 <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
@@ -452,7 +450,7 @@
                                 <span class="text-sm font-medium text-gray-900">Kolaborasi</span>
                             </a>
 
-                            <a href="{{ route('beranda.program') }}"
+                            <a href="{{ route('daftar.donasi') }}"
                                 class="flex items-center p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
                                 <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-green-600"

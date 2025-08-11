@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Campaign;
 use App\Models\Donasi;
+use App\Models\KategoriProgram;
 use App\Models\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -22,6 +23,21 @@ class CampaignController extends Controller
             ->limit(10)
             ->get();
         return view('detailDonasi', compact('campaign', 'donations'));
+    }
+
+    public function showUserCampaign(Request $request)
+    {
+        $kategoris = KategoriProgram::all();
+        $kategori_id = $request->get('kategori_id');
+
+        $campaigns = Campaign::with('Program.KategoriProgram', 'Donasi')
+            ->when($kategori_id, function ($query) use ($kategori_id) {
+                $query->whereHas('Program', function ($q) use ($kategori_id) {
+                    $q->where('id_kategori_program', $kategori_id);
+                });
+            })
+            ->get();
+        return view('user.daftarDonasi', compact('campaigns', 'kategoris', 'kategori_id'));
     }
 
     public function index()
