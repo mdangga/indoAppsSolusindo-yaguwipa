@@ -24,10 +24,42 @@ class CampaignController extends Controller
         return view('detailDonasi', compact('campaign', 'donations'));
     }
 
+    public function index()
+    {
+        return view('admin.showCampaign');
+    }
+
     public function create()
     {
         $programs = Program::all();
         return view('admin.formCampaign', compact('programs'));
+    }
+
+    // fungsi untuk membuatkan datatable sosial media
+    public function getDataTables(Request $request)
+    {
+        if (!$request->ajax()) {
+            return abort(403, 'Akses tidak diizinkan');
+        }
+
+        $campaign = Campaign::select(['id_campaign', 'nama', 'status']);
+
+        return DataTables::of($campaign)
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($row) {
+                return '
+            <div class="flex items-center">
+            <button class="cursor-pointer editBtn bg-blue-500 text-white px-2 py-1 rounded text-sm" data-id="' . e($row->id_institusi) . '">Edit</button>
+            <button class="cursor-pointer deleteBtn bg-red-500 text-white px-2 py-1 rounded text-sm ml-2" data-id="' . e($row->id_institusi) . '">Hapus</button>
+            </div>
+        ';
+            })
+            ->editColumn('status', function ($row) {
+                return $row->status;
+            })
+
+            ->rawColumns(['aksi'])
+            ->make(true);
     }
 
     public function store(Request $request)
@@ -55,7 +87,7 @@ class CampaignController extends Controller
         // Buat campaign
         Campaign::create($validated);
 
-        return redirect()->route('campaigns.index')
+        return redirect()->route('admin.campaigns')
             ->with('success', 'Campaign berhasil dibuat');
     }
 
@@ -95,21 +127,22 @@ class CampaignController extends Controller
 
         $campaign->update($validated);
 
-        return redirect()->route('campaigns.index')
+        return redirect()->route('admin.campaigns')
             ->with('success', 'Campaign berhasil diperbarui');
     }
 
 
-    public function destroy(Campaign $campaign)
+    // fungsi untuk menghapus data
+    public function destroy($id)
     {
-        // Hapus gambar jika ada
-        if ($campaign->image_path) {
-            Storage::disk('public')->delete($campaign->image_path);
+        $campaign = Campaign::find($id);
+
+        if (!$campaign) {
+            return redirect()->back()->with('gagal', 'Gallery tidak ditemukan');
         }
 
         $campaign->delete();
 
-        return redirect()->route('campaigns.index')
-            ->with('success', 'Campaign berhasil dihapus');
+        return redirect()->back()->with('sukses', 'Gallery berhasil dihapus');
     }
 }

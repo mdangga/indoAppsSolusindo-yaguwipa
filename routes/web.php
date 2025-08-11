@@ -77,13 +77,14 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
 
     // campaigns
     Route::prefix('campaigns')->group(function () {
-        Route::get('/', [CampaignController::class, 'index'])->name('campaigns.index');
+        Route::get('/', [CampaignController::class, 'index'])->name('admin.campaigns');
+        Route::get('/datatable', [CampaignController::class, 'getDataTables'])->name('campaigns.table');
         Route::get('/create', [CampaignController::class, 'create'])->name('campaigns.create');
         Route::post('/', [CampaignController::class, 'store'])->name('campaigns.store');
         Route::get('/{campaign}', [CampaignController::class, 'show'])->name('campaigns.show');
         Route::get('/edit/{slug}', [CampaignController::class, 'edit'])->name('campaigns.edit');
         Route::put('/{campaign}', [CampaignController::class, 'update'])->name('campaigns.update');
-        Route::delete('/{campaign}', [CampaignController::class, 'destroy'])->name('campaigns.destroy');
+        Route::delete('/destroy/{id}', [CampaignController::class, 'destroy'])->name('campaigns.destroy');
     });
 
     // user
