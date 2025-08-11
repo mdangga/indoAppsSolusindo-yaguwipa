@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Berita;
+use App\Models\Donasi;
 use App\Models\Gallery;
+
 use App\Models\Program;
 use App\Models\KategoriProgram;
 use Illuminate\Http\Request;
@@ -41,8 +43,8 @@ class GeneralController extends Controller
 
     public function testing()
     {
+        //...
     }
-
     public function mitra()
     {
         return view('partners');

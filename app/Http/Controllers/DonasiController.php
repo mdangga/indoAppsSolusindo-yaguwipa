@@ -12,6 +12,7 @@ use App\Models\JenisDonasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\Facades\DataTables;
 
 class DonasiController extends Controller
 {
@@ -130,6 +131,43 @@ class DonasiController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal menyetujui barang donasi: ' . $e->getMessage());
         }
+    }
+
+
+    //admin
+
+    // fungsi menampilkan kerja sama di halaman admin
+    public function index()
+    {
+        return view('admin.showDonasi');
+    }
+
+
+    // fungsi membuatkan datatable kerja sama di halaman admin
+    public function getDataTables(Request $request)
+    {
+        if (!$request->ajax()) {
+            return abort(403, 'Akses tidak diizinkan');
+        }
+
+        $users = Donasi::with('JenisDonasi', 'DonasiBarang', 'DonasiDana', 'DonasiJasa')
+            ->select(['id_donasi', 'nama', 'id_jenis_donasi', 'status'])
+            ->orderByRaw("CASE WHEN status = 'pending' THEN 0 ELSE 1 END")
+            ->orderBy('created_at', 'desc'); // Optional: tambahkan pengurutan berdasarkan created_at
+
+        return DataTables::of($users)
+            ->addColumn('nama', function ($row) {
+                return $row->nama ?? '-';
+            })
+            ->addColumn('jenis_donasi', function ($row) {
+                return $row->JenisDonasi->nama ?? '-';
+            })
+            ->addColumn('aksi', function ($row) {
+                // Tambahkan tombol aksi sesuai kebutuhan
+                return '<button class="btn-action">Detail</button>';
+            })
+            ->rawColumns(['status', 'aksi'])
+            ->make(true);
     }
 
     // fungsi untuk menolak barang

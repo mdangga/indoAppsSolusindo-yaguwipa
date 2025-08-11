@@ -22,9 +22,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // testing-area
-Route::get('/testing/{id}', [GeneralController::class, 'testing'])->name('testing');
-Route::post('/testing/approved/{id}', [DonasiController::class, 'approveBarang'])->name('barang.approved');
-Route::post('/testing/rejected/{id}', [DonasiController::class, 'rejectBarang'])->name('barang.rejected');
+Route::get('/testing', [GeneralController::class, 'testing'])->name('testing');
 
 // route-default beranda
 Route::get('/', [GeneralController::class, 'beranda'])->name('beranda');
@@ -237,7 +235,9 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
 
     // donasi
     Route::prefix('donasi')->group(function () {
-        Route::get('/detail-donasi/{id}', [DonasiController::class, 'detailDonasi'])->name('kerjasama.detail');
+        Route::get('/', [DonasiController::class, 'index'])->name('admin.donasi');
+        Route::get('/datatable', [DonasiController::class, 'getDataTables'])->name('donasi.table');
+        Route::get('/detail-donasi/{id}', [DonasiController::class, 'detailDonasi'])->name('donasi.detail');
 
         // barang
         Route::post('/barang/approved/{id}', [DonasiController::class, 'approveBarang'])->name('barang.approved');

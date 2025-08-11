@@ -208,7 +208,7 @@
                 </ul>
             </li>
 
-            {{-- kerja-sama --}}
+            {{-- campaign --}}
             <li>
                 <a type="button" href="{{ route('admin.campaigns') }}"
                     class="flex items-center w-full p-2 text-base text-gray-200 transition duration-75 rounded-lg group hover:bg-[#535c66]">
@@ -220,6 +220,21 @@
                     <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap font-normal">Campaign</span>
                 </a>
             </li>
+
+            {{-- donasi --}}
+            <li>
+                <a type="button" href="{{ route('admin.donasi') }}"
+                    class="flex items-center w-full p-2 text-base text-gray-200 transition duration-75 rounded-lg group hover:bg-[#535c66]">
+
+                    <svg class="shrink-0 w-5 h-5 text-gray-200 transition duration-75 group-hover:text-gray-200"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                            d="M16 12c2.76 0 5-2.24 5-5s-2.24-5-5-5s-5 2.24-5 5s2.24 5 5 5m5.45 5.6c-.39-.4-.88-.6-1.45-.6h-7l-2.08-.73l.33-.94L13 16h2.8c.35 0 .63-.14.86-.37s.34-.51.34-.82c0-.54-.26-.91-.78-1.12L8.95 11H7v9l7 2l8.03-3c.01-.53-.19-1-.58-1.4M5 11H.984v11H5z" />
+                    </svg>
+                    <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap font-normal">Donasi</span>
+                </a>
+            </li>
+
             <!-- Publications Dropdown -->
             <li>
                 <button type="button"
