@@ -923,7 +923,7 @@
                 confirmButtonSection.classList.add('md:ml-4');
 
                 // Show barang summary
-                showBarangSummaryInStep3();
+                // showBarangSummaryInStep3();
             } else {
                 // Hide money donation specific elements
                 uangSummary.classList.add('hidden');
@@ -1025,7 +1025,7 @@
         // Donation type handling
         const donationTypes = document.querySelectorAll('input[name="jenis_donasi"]');
         const donationSections = {
-            'dana': document.getElementById('donasi-uang'),
+            'uang': document.getElementById('donasi-uang'),
             'barang': document.getElementById('donasi-barang'),
             'jasa': document.getElementById('donasi-jasa')
         };

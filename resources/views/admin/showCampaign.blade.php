@@ -1,24 +1,23 @@
 @extends('layouts.showAdmin')
 
-@section('title', 'Admin - Program')
+@section('title', 'Admin - Campaigns')
 
-@section('header', 'Program')
+@section('header', 'Campaigns')
 
 @section('button')
-    <a href="{{ route('program.formStore') }}"
+    <a href="{{ route('campaigns.create') }}"
         class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
         <i class="fas fa-plus w-4 h-4 mr-2"></i>
-        Tambah Program
+        Tambah Campaign
     </a>
 @endsection
 
 @section('content')
-    <table id="programTable" class="w-full border border-gray-300 ">
+    <table id="campaignTable" class="w-full border border-gray-300 ">
         <thead>
             <tr class="text-left">
                 <th>No</th>
                 <th>Nama</th>
-                <th>Kategori</th>
                 <th>Status</th>
                 <th>Aksi</th>
             </tr>
@@ -28,17 +27,13 @@
 @endsection
 
 @push('scripts')
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-
     <script>
         $(document).ready(function() {
-            let table = $('#programTable').DataTable({
+            let table = $('#campaignTable').DataTable({
                 processing: false,
                 serverSide: true,
                 autoWidth: false,
-                ajax: '{{ route('program.table') }}',
+                ajax: '{{ route('campaigns.table') }}',
                 dom: '<"flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6"<"flex items-center gap-2"l><"flex items-center gap-2"f>>rt<"flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-6"ip>',
                 language: {
 
@@ -87,26 +82,14 @@
                         }
                     },
                     {
-                        data: 'kategori',
-                        name: 'kategori',
-                        render: function(data, type, row) {
-                            return `
-                                <div class="">
-                                    <h3 class="font-semibold text-gray-900 leading-tight">${data}</h3>
-                                </div>
-                            `;
-                        }
-                    },
-                    {
                         data: 'status',
                         name: 'status',
                         render: function(data, type, row) {
-                            // Handle different status formats
                             let isPublished = false;
 
                             if (typeof data === 'string') {
                                 isPublished = data.toLowerCase().includes('published') ||
-                                    data.toLowerCase() === 'aktif' ||
+                                    data.toLowerCase().includes('aktif') ||
                                     data.toLowerCase().includes('show');
                             } else if (typeof data === 'number') {
                                 isPublished = data == 1;
@@ -130,6 +113,20 @@
                             }
 
                             return `
+                            <div class="flex items-center justify-center space-x-2 whitespace-nowrap">
+                                <button 
+                                    class="editBtn inline-flex items-center gap-1 px-1 py-1 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold rounded" 
+                                    data-id="${row.id}" 
+                                    title="Edit">
+                                    Edit
+                                </button>
+                                <button 
+                                    class="deleteBtn inline-flex items-center gap-1 px-1 py-1 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded" 
+                                    data-id="${row.id}" 
+                                    title="Hapus">
+                                    Hapus
+                                </button>
+                            </div>
                         `;
                         },
                         orderable: false,
@@ -141,13 +138,9 @@
                 responsive: false,
                 scrollX: true,
                 initComplete: function() {
-                    // Style the search input
                     $('.dataTables_filter input').attr('placeholder', 'Cari...')
                         .addClass('pl-10 pr-4')
                         .wrap('<div class="relative"></div>')
-                    // .before(
-                    //     '<i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>'
-                    // );
 
                     // Style the length select
                     $('.dataTables_length label').addClass(
@@ -157,7 +150,7 @@
             });
 
             // Delete handler
-            $('#programTable').on('click', '.deleteBtn', function() {
+            $('#campaignTable').on('click', '.deleteBtn', function() {
                 const id = $(this).data('id');
                 const button = $(this);
 
@@ -168,7 +161,7 @@
                         .addClass('bg-gray-400 cursor-not-allowed')
                         .html('<i class="fas fa-spinner fa-spin w-3 h-3 mr-1"></i>');
 
-                    fetch(`/admin/program/destroy/${id}`, {
+                    fetch(`/admin/campaigns/destroy/${id}`, {
                             method: 'delete',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -180,9 +173,9 @@
                         .then(response => {
                             if (response.redirected || response.ok) {
                                 table.ajax.reload();
-                                showNotification('Menu berhasil dihapus!', 'success');
+                                showNotification('Gallery berhasil dihapus!', 'success');
                             } else {
-                                throw new Error('Gagal menghapus menu');
+                                throw new Error('Gagal menghapus gallery');
                             }
                         })
                         .catch(error => {
@@ -199,9 +192,9 @@
 
 
             // Edit handler
-            $('#programTable').on('click', '.editBtn', function() {
+            $('#campaignTable').on('click', '.editBtn', function() {
                 const id = $(this).data('id');
-                window.location.href = `/admin/program/edit/${id}`;
+                window.location.href = `/admin/campaigns/edit/${id}`;
             });
 
             // Notification system
