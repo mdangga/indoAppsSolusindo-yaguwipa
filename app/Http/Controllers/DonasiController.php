@@ -109,4 +109,143 @@ class DonasiController extends Controller
             ], 500);
         }
     }
+
+    // fungsi untuk menyetujui barang
+    public function approveBarang($id)
+    {
+        try {
+            $barang = DonasiBarang::findOrFail($id);
+
+            DB::transaction(function () use ($barang) {
+                $barang->update(['status_verifikasi' => 'approved']);
+
+                // Kalau mau kirim notifikasi ke user
+                // $user = $barang->Donasi->User ?? null;
+                // if ($user) {
+                //     $user->notify(new BarangDonasiDisetujui($barang));
+                // }
+            });
+
+            return back()->with('success', 'Barang donasi berhasil disetujui.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal menyetujui barang donasi: ' . $e->getMessage());
+        }
+    }
+
+    // fungsi untuk menolak barang
+    public function rejectBarang($id)
+    {
+        try {
+            $barang = DonasiBarang::findOrFail($id);
+
+            DB::transaction(function () use ($barang) {
+                $barang->update(['status_verifikasi' => 'rejected']);
+
+                // $user = $barang->Donasi->User ?? null;
+                // if ($user) {
+                //     $user->notify(new BarangDonasiDitolak($barang));
+                // }
+            });
+
+            return back()->with('success', 'Barang donasi berhasil ditolak.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal menolak barang donasi: ' . $e->getMessage());
+        }
+    }
+
+    // fungsi untuk menyetujui jasa
+    public function approveJasa($id)
+    {
+        try {
+            $jasa = DonasiJasa::findOrFail($id);
+
+            DB::transaction(function () use ($jasa) {
+                $jasa->update(['status_verifikasi' => 'approved']);
+
+                // Kalau mau kirim notifikasi ke user
+                // $user = $jasa->Donasi->User ?? null;
+                // if ($user) {
+                //     $user->notify(new JasaDonasiDisetujui($jasa));
+                // }
+            });
+
+            return back()->with('success', 'Barang donasi berhasil disetujui.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal menyetujui barang donasi: ' . $e->getMessage());
+        }
+    }
+
+    // fungsi untuk menolak jasa
+    public function rejectJasa($id)
+    {
+        try {
+            $jasa = DonasiJasa::findOrFail($id);
+
+            DB::transaction(function () use ($jasa) {
+                $jasa->update(['status_verifikasi' => 'rejected']);
+
+                // $user = $jasa->Donasi->User ?? null;
+                // if ($user) {
+                //     $user->notify(new JasaDonasiDitolak($jasa));
+                // }
+            });
+
+            return back()->with('success', 'Jasa donasi berhasil ditolak.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal menolak jasa donasi ' . $e->getMessage());
+        }
+    }
+
+
+    // fungsi untuk menyetujui Donasi
+    public function approveDonasi($id)
+    {
+        try {
+            $donasi = Donasi::findOrFail($id);
+
+            DB::transaction(function () use ($donasi) {
+                $donasi->update(['status' => 'verified']);
+
+                // Kalau mau kirim notifikasi ke user
+                // $user = $donasi->Donasi->User ?? null;
+                // if ($user) {
+                //     $user->notify(new DonasiDisetujui($donasi));
+                // }
+            });
+
+            return back()->with('success', 'Donasi berhasil disetujui.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal menyetujui donasi: ' . $e->getMessage());
+        }
+    }
+
+    // fungsi untuk menolak Donasi
+    public function rejectDonasi($id)
+    {
+        try {
+            $donasi = Donasi::findOrFail($id);
+
+            DB::transaction(function () use ($donasi) {
+                $donasi->update(['status' => 'expired']);
+
+                // $user = $donasi->Donasi->User ?? null;
+                // if ($user) {
+                //     $user->notify(new DonasiDitolak($donasi));
+                // }
+            });
+
+            return back()->with('success', 'Donasi berhasil ditolak.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal menolak donasi ' . $e->getMessage());
+        }
+    }
+
+    // fungsi untuk melihat detail donasi
+    public function detailDonasi($id)
+    {
+        $donasi = Donasi::with('Campaign', 'JenisDonasi', 'DonasiBarang', 'DonasiJasa')
+            ->findOrFail($id);
+
+        return view('admin.showDetailDonasi', compact('donasi'));
+    }
 }

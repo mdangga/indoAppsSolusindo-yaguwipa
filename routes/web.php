@@ -22,8 +22,9 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // testing-area
-// Route::get('/testing/{id}', [GeneralController::class, 'testing'])->name('testing');
-
+Route::get('/testing/{id}', [GeneralController::class, 'testing'])->name('testing');
+Route::post('/testing/approved/{id}', [DonasiController::class, 'approveBarang'])->name('barang.approved');
+Route::post('/testing/rejected/{id}', [DonasiController::class, 'rejectBarang'])->name('barang.rejected');
 
 // route-default beranda
 Route::get('/', [GeneralController::class, 'beranda'])->name('beranda');
@@ -231,6 +232,24 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
         Route::post('/approved/{id}', [KerjaSamaController::class, 'approved'])->name('kerjaSama.approved');
         Route::post('/rejected{id}', [KerjaSamaController::class, 'rejected'])->name('kerjaSama.rejected');
         Route::delete('/destroy/{id}', [KerjaSamaController::class, 'destroy'])->name('kerjaSama.delete');
+    });
+
+
+    // donasi
+    Route::prefix('donasi')->group(function () {
+        Route::get('/detail-donasi/{id}', [DonasiController::class, 'detailDonasi'])->name('kerjasama.detail');
+
+        // barang
+        Route::post('/barang/approved/{id}', [DonasiController::class, 'approveBarang'])->name('barang.approved');
+        Route::post('/barang/rejected/{id}', [DonasiController::class, 'rejectBarang'])->name('barang.rejected');
+
+        // jasa
+        Route::post('/jasa/approved/{id}', [DonasiController::class, 'approveJasa'])->name('jasa.approved');
+        Route::post('/jasa/rejected/{id}', [DonasiController::class, 'rejectJasa'])->name('jasa.rejected');
+
+        // donasi
+        Route::post('/donasi/approved/{id}', [DonasiController::class, 'approveDonasi'])->name('donasi.approved');
+        Route::post('/donasi/rejected/{id}', [DonasiController::class, 'rejectDonasi'])->name('donasi.rejected');
     });
 });
 
