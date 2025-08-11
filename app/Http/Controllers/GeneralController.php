@@ -36,9 +36,8 @@ class GeneralController extends Controller
 
     public function testing($id)
     {
-        
-    }
 
+    }
     public function mitra()
     {
         return view('partners');
