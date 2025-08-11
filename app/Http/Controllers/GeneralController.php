@@ -3,17 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Berita;
+use App\Models\Donasi;
 use App\Models\Gallery;
-use App\Models\Program;
-use App\Models\KategoriProgram;
 use Illuminate\Http\Request;
-use App\Models\Menu;
-use App\Models\Profiles;
 use Illuminate\Support\Facades\Auth;
-
-use App\Models\KategoriNewsEvent;
-use Illuminate\Support\Facades\Cache;
-use Carbon\Carbon;
+use App\Models\KerjaSama;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class GeneralController extends Controller
 {
@@ -39,8 +34,9 @@ class GeneralController extends Controller
         return view('profiles');
     }
 
-    public function testing()
+    public function testing($id)
     {
+        
     }
 
     public function mitra()

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Donasi;
 use App\Models\KerjaSama;
 use App\Models\Mitra;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -22,16 +24,35 @@ class UserController extends Controller
         $user = Auth::user();
         $recentActivities = collect();
 
+        $donasi = Donasi::with(['DonasiDana', 'DonasiBarang', 'DonasiJasa', 'Campaign'])
+            ->where('id_user', $user->id_user)
+            ->orderBy('updated_at', 'desc')
+            ->take(5)
+            ->get();
+
         if ($user->role === 'mitra') {
             $mitra = $user->Mitra;
 
             if ($mitra) {
-                $recentActivities = KerjaSama::with('kategoriKerjaSama')
+                // Ambil kerja sama
+                $kerjaSama = KerjaSama::with('kategoriKerjaSama')
                     ->where('id_mitra', $mitra->id_mitra)
                     ->orderBy('updated_at', 'desc')
                     ->take(5)
                     ->get();
+
+                // Gabungkan dan urutkan berdasarkan updated_at
+                $recentActivities = $kerjaSama->concat($donasi)
+                    ->sortByDesc('updated_at')
+                    ->take(5)
+                    ->values();
             }
+        }
+        if ($user->role === 'donatur') {
+            $recentActivities = $donasi
+                ->sortByDesc('updated_at')
+                ->take(5)
+                ->values();
         }
 
         return view('user.user', [
@@ -40,6 +61,72 @@ class UserController extends Controller
         ]);
     }
 
+    public function showActivityAll(Request $request)
+    {
+        $status = $request->get('status');
+        $user = Auth::user();
+        $recentActivities = collect();
+
+        if ($status) {
+            $donasi = Donasi::with(['DonasiDana', 'DonasiBarang', 'DonasiJasa', 'Campaign'])
+                ->where('id_user', $user->id_user)
+                ->where('status', $status)
+                ->orderBy('updated_at', 'desc')
+                ->get();
+        } else {
+            $donasi = Donasi::with(['DonasiDana', 'DonasiBarang', 'DonasiJasa', 'Campaign'])
+                ->where('id_user', $user->id_user)
+                ->orderBy('updated_at', 'desc')
+                ->get();
+        }
+
+        if ($user->role === 'mitra') {
+            $mitra = $user->Mitra;
+
+            if ($mitra) {
+                $kerjaSama = KerjaSama::with('kategoriKerjaSama')
+                    ->where('id_mitra', $mitra->id_mitra)
+                    ->where(function ($query) use ($status) {
+                        if ($status) {
+                            $query->where('status', $status);
+                        }
+                    })
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+
+                $allActivities = $kerjaSama->concat($donasi)->sortByDesc('updated_at')->values();
+
+                // Manual pagination
+                $page = LengthAwarePaginator::resolveCurrentPage();
+                $perPage = 10;
+                $currentItems = $allActivities->slice(($page - 1) * $perPage, $perPage)->values();
+                $recentActivities = new LengthAwarePaginator(
+                    $currentItems,
+                    $allActivities->count(),
+                    $perPage,
+                    $page,
+                    ['path' => request()->url(), 'query' => request()->query()]
+                );
+            }
+        } elseif ($user->role === 'donatur') {
+            $allActivities = $donasi->sortByDesc('updated_at')->values();
+            $page = LengthAwarePaginator::resolveCurrentPage();
+            $perPage = 10;
+            $currentItems = $allActivities->slice(($page - 1) * $perPage, $perPage)->values();
+            $recentActivities = new LengthAwarePaginator(
+                $currentItems,
+                $allActivities->count(),
+                $perPage,
+                $page,
+                ['path' => request()->url(), 'query' => request()->query()]
+            );
+        }
+
+        return view('user.activity', [
+            'user' => $user,
+            'recentActivities' => $recentActivities,
+        ]);
+    }
 
 
     // menampilkan form untuk mengisi data user

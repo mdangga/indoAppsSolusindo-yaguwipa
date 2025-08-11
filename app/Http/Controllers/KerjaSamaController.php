@@ -28,6 +28,19 @@ class KerjaSamaController extends Controller
         return view('user.mitra.formKerjaSama', compact('kategoriKerjaSama', 'programs'));
     }
 
+    public function ShowDetailKerjaSama($id)
+    {
+        $user = Auth::user();
+
+
+        $kerjasama = KerjaSama::with('Mitra.User', 'FilePenunjang', 'KategoriKerjaSama', 'Program')
+            ->whereHas('Mitra.User', function ($query) use ($user) {
+                $query->where('id_mitra', $user->Mitra->id_mitra);
+            })
+            ->findOrFail($id);
+
+        return view('user.mitra.detailKerjaSama', compact('kerjasama'));
+    }
 
     // fungsi untuk menambahkan data kerja sama
     public function store(Request $request)
@@ -237,5 +250,34 @@ class KerjaSamaController extends Controller
         $kerjasama = KerjaSama::with('Mitra.User', 'FilePenunjang', 'KategoriKerjaSama', 'Program')
             ->findOrFail($id);
         return view('admin.showDetailKerjaSama', compact('kerjasama'));
+    }
+
+    // user
+    public function batalkanKerjaSama($id)
+    {
+        // Cari kerja sama berdasarkan ID
+        $kerjasama = KerjaSama::findOrFail($id);
+
+        // Validasi kepemilikan
+        if ($kerjasama->id_user !== Auth::id()) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk membatalkan kerja sama ini.');
+        }
+
+        if ($kerjasama->status !== 'pending') {
+            return redirect()->back()->with('error', 'Kerja sama tidak dapat dibatalkan karena status sudah ' . $kerjasama->status);
+        }
+
+        try {
+            $kerjasama->update([
+                'status' => 'cancelled',
+                'alasan_penolakan' => 'Dibatalkan oleh pengaju'
+            ]);
+
+            return redirect()->route('kerjasama.index')
+                ->with('success', 'Pengajuan kerja sama berhasil dibatalkan');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Gagal membatalkan pengajuan: ' . $e->getMessage());
+        }
     }
 }

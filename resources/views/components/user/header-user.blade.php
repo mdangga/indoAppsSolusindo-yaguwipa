@@ -3,13 +3,14 @@
     'profilePath' => null,
     'title' => 'Edit Profile',
     'randomBg' => 'bg-blue-500',
+    'route' => route("dashboard"),
     'description' => 'Kelola informasi akun Anda'
 ])
 <div class="bg-white shadow-sm border-b border-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center py-6">
             <div class="flex items-center space-x-4">
-                <a href="{{ route('dashboard') }}" class="text-gray-500 hover:text-blue-500 transition-colors">
+                <a href="{{ $route }}" class="text-gray-500 hover:text-blue-500 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hover:scale-110 transition-all duration-100"
                         viewBox="0 0 1024 1024">
                         <path fill="currentColor"
