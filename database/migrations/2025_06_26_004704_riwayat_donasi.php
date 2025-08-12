@@ -41,7 +41,7 @@ return new class extends Migration
             $table->string('email');
             $table->text('pesan')->nullable();
 
-            $table->enum('status', ['pending', 'paid', 'verified', 'expired', 'failed'])->default('pending');
+            $table->enum('status', ['approved', 'pending', 'rejected'])->default('pending');
             $table->boolean('anonim');
             $table->unsignedBigInteger('id_user')->nullable();
             $table->unsignedBigInteger('id_campaign');

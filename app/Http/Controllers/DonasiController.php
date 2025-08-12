@@ -250,7 +250,17 @@ class DonasiController extends Controller
             $donasi = Donasi::findOrFail($id);
 
             DB::transaction(function () use ($donasi) {
-                $donasi->update(['status' => 'verified']);
+                if (strcasecmp($donasi->JenisDonasi->nama, 'dana') === 0) {
+                    $donasi->DonasiDana->update(['status_verifikasi' => 'approved']);
+                } elseif (strcasecmp($donasi->JenisDonasi->nama, 'barang') === 0) {
+                    $donasi->DonasiBarang
+                        ->where('status_verifikasi', 'pending')
+                        ->each
+                        ->update(['status_verifikasi' => 'approved']);
+                } elseif (strcasecmp($donasi->JenisDonasi->nama, 'jasa') === 0) {
+                    $donasi->DonasiJasa->update(['status_verifikasi' => 'approved']);
+                }
+                $donasi->update(['status' => 'approved']);
 
                 // Kalau mau kirim notifikasi ke user
                 // $user = $donasi->Donasi->User ?? null;
@@ -272,7 +282,17 @@ class DonasiController extends Controller
             $donasi = Donasi::findOrFail($id);
 
             DB::transaction(function () use ($donasi) {
-                $donasi->update(['status' => 'expired']);
+                if (strcasecmp($donasi->JenisDonasi->nama, 'dana') === 0) {
+                    $donasi->DonasiDana->update(['status_verifikasi' => 'rejected']);
+                } elseif (strcasecmp($donasi->JenisDonasi->nama, 'barang') === 0) {
+                    $donasi->DonasiBarang
+                        ->where('status_verifikasi', 'pending')
+                        ->each
+                        ->update(['status_verifikasi' => 'rejected']);
+                } elseif (strcasecmp($donasi->JenisDonasi->nama, 'jasa') === 0) {
+                    $donasi->DonasiJasa->update(['status_verifikasi' => 'rejected']);
+                }
+                $donasi->update(['status' => 'rejected']);
 
                 // $user = $donasi->Donasi->User ?? null;
                 // if ($user) {
