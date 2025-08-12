@@ -201,13 +201,17 @@ class KerjaSamaController extends Controller
 
 
     // fungsi untuk menerima kerja sama
-    public function approved($id)
+    public function approved(Request $request, $id)
     {
+        $request->validate([
+            'alasan' => 'required|string|max:255',
+        ]);
+
         try {
             $kerjaSama = KerjaSama::with('Mitra.User')->findOrFail($id);
 
-            DB::transaction(function () use ($kerjaSama) {
-                $kerjaSama->update(['status' => 'approved']);
+            DB::transaction(function () use ($kerjaSama, $request) {
+                $kerjaSama->update(['status' => 'approved', 'alasan' => $request->alasan]);
 
                 $user = $kerjaSama->Mitra->User;
                 if ($user) {
@@ -223,13 +227,17 @@ class KerjaSamaController extends Controller
 
 
     // fungsi untuk menolak kerja sama
-    public function rejected($id)
+    public function rejected(Request $request, $id)
     {
+        $request->validate([
+            'alasan' => 'required|string|max:255',
+        ]);
+
         try {
             $kerjaSama = KerjaSama::with('Mitra.User')->findOrFail($id);
 
-            DB::transaction(function () use ($kerjaSama) {
-                $kerjaSama->update(['status' => 'rejected']);
+            DB::transaction(function () use ($kerjaSama, $request) {
+                $kerjaSama->update(['status' => 'rejected', 'alasan' => $request->alasan]);
 
                 $user = $kerjaSama->Mitra->User;
                 if ($user) {

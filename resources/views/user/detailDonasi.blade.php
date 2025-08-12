@@ -20,21 +20,21 @@
 
     $profilePath = optional($user)->profile_path;
 
-    $status = $kerjasama->status ?? 'pending';
+    $status = $donasi->status ?? 'pending';
 
     $steps = [
         [
             'title' => 'Pengajuan Dikirim',
-            'date' => $kerjasama->created_at ? $kerjasama->created_at->format('d M Y H:i') : 'Belum ada tanggal',
+            'date' => $donasi->created_at ? 'Diajukan pada ' . $donasi->created_at->format('d M Y H:i') : 'Belum ada tanggal',
         ],
         [
-            'title' => 'Review',
-            'date' => $kerjasama->status === 'pending' ? 'Sedang diproses' : 'Review selesai',
+            'title' => 'Pengecekan',
+            'date' => $donasi->status === 'pending' ? 'Sedang diproses' : 'Review selesai',
         ],
         [
-            'title' => 'Menunggu Keputusan',
+            'title' => 'Hasil Pengecekan',
             'date' =>
-                $kerjasama->status === 'pending' ? 'Belum ada tanggal' : $kerjasama->updated_at->format('d M Y H:i'),
+                $donasi->status === 'pending' ? 'Menunggu Keputusan' : 'Disetujui pada ' . $donasi->updated_at->format('d M Y H:i'),
         ],
     ];
 
@@ -99,7 +99,8 @@
 <body>
     <div class="min-h-screen bg-gray-50">
         <!-- Header -->
-        <x-user.header-user :user="$user" :randomBg="$randomBg" :profilePath="$profilePath" :route="url()->previous()" :title="'Detail Kerja Sama'" :description="'Detail lengkap pengajuan kerja sama Anda dengan lembaga'" />
+        <x-user.header-user :user="$user" :randomBg="$randomBg" :profilePath="$profilePath" :route="url()->previous()" :title="'Detail Donasi'"
+            :description="'Detail lengkap pengajuan Donasi Anda dengan lembaga'" />
 
         <!-- Main Content -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -107,7 +108,7 @@
                 <div class="p-6 space-y-8">
                     <!-- Status Timeline - Pending State -->
                     <div class="border-b border-gray-200 pb-8">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-6">Progres Pengajuan Kerja Sama</h3>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-6">Progres Pengajuan Donasi</h3>
                         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
                             @foreach ($steps as $i => $step)
                                 @php
@@ -125,20 +126,20 @@
                         </div>
                     </div>
 
-                    <!-- Informasi Kerja Sama -->
+                    <!-- Informasi Donasi -->
                     <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
                         <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                             <i class="fas fa-info-circle text-gray-600 mr-2"></i>
-                            Detail Kerja Sama
+                            Detail Donasi
                         </h3>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-4">
                                 <div>
-                                    <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Jenis Kerja
-                                        Sama</span>
+                                    <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Jenis
+                                        Donasi</span>
                                     <p class="text-sm font-medium text-gray-900 mt-1">
-                                        {{ $kerjasama->KategoriKerjaSama->nama }}
+                                        {{ $donasi->JenisDonasi->nama }}
                                     </p>
                                 </div>
 
@@ -146,16 +147,24 @@
                                     <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Tanggal
                                         Pengajuan</span>
                                     <p class="text-sm text-gray-700 mt-1">
-                                        {{ $kerjasama->created_at->format('d M Y H:i') }}
+                                        {{ $donasi->created_at->format('d M Y H:i') }}
                                     </p>
                                 </div>
 
                                 <div>
-                                    <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Durasi Kerja
-                                        Sama</span>
-                                    <p class="text-sm text-gray-700 mt-1">
-                                        {{ $kerjasama->durasi }} bulan
-                                    </p>
+                                    <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">No
+                                        Telepon</span>
+                                    <span class="text-sm font-semibold text-gray-900 mt-1">
+                                        {{ optional($donasi->User)->no_tlp ?? '-' }}
+                                    </span>
+
+                                </div>
+
+                                <div>
+                                    <span
+                                        class="text-xs font-medium text-gray-500 uppercase tracking-wide">Alamat</span>
+                                    <span
+                                        class="text-sm text-gray-700 mt-1">{{ optional($donasi->User)->alamat ?? '-' }}</span>
                                 </div>
                             </div>
 
@@ -164,36 +173,30 @@
                                     <span
                                         class="text-xs font-medium text-gray-500 uppercase tracking-wide">Status</span>
                                     <div class="mt-1">
-                                        @if ($kerjasama->status === 'pending')
+                                        @if ($donasi->status === 'pending')
                                             <span
                                                 class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
                                                 <i class="fas fa-clock mr-2"></i> Menunggu Persetujuan
                                             </span>
-                                        @elseif ($kerjasama->status === 'approved')
+                                        @elseif ($donasi->status === 'approved')
                                             <span
                                                 class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
                                                 <i class="fas fa-check-circle mr-2"></i> Disetujui
                                             </span>
-                                        @elseif ($kerjasama->status === 'rejected')
+                                        @elseif ($donasi->status === 'rejected')
                                             <span
                                                 class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
                                                 <i class="fas fa-times-circle mr-2"></i> Ditolak
-                                            </span>
-                                        @elseif ($kerjasama->status === 'expired')
-                                            <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
-                                                <i class="fas fa-calendar-times mr-2"></i> Selesai
                                             </span>
                                         @endif
                                     </div>
                                 </div>
 
-                                @if ($kerjasama->status === 'rejected')
+                                @if ($donasi->alasan)
                                     <div>
-                                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Alasan
-                                            Penolakan</span>
+                                        <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Alasan</span>
                                         <p class="text-sm text-gray-700 mt-1">
-                                            {{ $kerjasama->alasan_penolakan ?? 'Tidak ada alasan spesifik' }}
+                                            {{ $donasi->alasan }}
                                         </p>
                                     </div>
                                 @endif
@@ -202,60 +205,124 @@
 
                         <!-- Keterangan -->
                         <div class="mt-6 pt-4 border-t border-gray-200">
-                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Deskripsi Kerja
-                                Sama</span>
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Pesan</span>
                             <p class="text-sm text-gray-700 mt-2 leading-relaxed whitespace-pre-line">
-                                {{ $kerjasama->keterangan ?? 'Tidak ada deskripsi tambahan.' }}
+                                {{ $donasi->pesan ?? 'Tidak ada deskripsi tambahan.' }}
                             </p>
                         </div>
                     </div>
 
                     <!-- Lampiran Dokumen -->
-                    <div class="bg-blue-50 rounded-lg p-6 border border-blue-200">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                            <i class="fas fa-paperclip text-blue-600 mr-2"></i>
-                            Dokumen Pendukung
-                        </h3>
+                    @if ($donasi->jenisDonasi->nama === 'Barang')
+                        <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-6 flex items-center">
+                                <svg class="w-5 h-5 mr-2 text-gray-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                </svg>
+                                Daftar Barang Donasi
+                            </h3>
 
-                        <div class="space-y-3">
-                            @forelse ($kerjasama->FilePenunjang as $lampiran)
-                                <div
-                                    class="flex items-center justify-between p-3 bg-white rounded-lg border border-blue-200 hover:border-blue-300 transition-colors duration-200">
-                                    <div class="flex items-center">
-                                        <i class="fas fa-file-alt text-blue-500 mr-3"></i>
-                                        <span class="text-sm font-medium text-gray-700">
-                                            {{ $lampiran->nama_file }}
-                                        </span>
+                            <div class="space-y-4">
+                                @foreach ($donasi->donasiBarang as $barang)
+                                    <div
+                                        class="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-sm transition-shadow">
+                                        <div class="flex items-center justify-between">
+                                            <!-- Left Side - Info -->
+                                            <div class="flex-1">
+                                                <h4 class="font-semibold text-gray-900 mb-1">{{ $barang->nama_barang }}
+                                                </h4>
+                                                @if ($barang->deskripsi)
+                                                    <p class="text-sm text-gray-600 mb-2">{{ $barang->deskripsi }}</p>
+                                                @endif
+
+                                                <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                                    <span><strong>Jumlah:</strong> {{ $barang->jumlah_barang }}</span>
+                                                    <span><strong>Kondisi:</strong>
+                                                        {{ ucfirst($barang->kondisi) }}</span>
+                                                    @if ($barang->status_verifikasi === 'approved')
+                                                        <span
+                                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
+                                                            <svg class="w-3 h-3 mr-1" fill="currentColor"
+                                                                viewBox="0 0 20 20">
+                                                                <path fill-rule="evenodd"
+                                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                                    clip-rule="evenodd"></path>
+                                                            </svg>
+                                                            Diterima
+                                                        </span>
+                                                    @elseif ($barang->status_verifikasi === 'rejected')
+                                                        <span
+                                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 border border-red-200">
+                                                            <svg class="w-3 h-3 mr-1" fill="currentColor"
+                                                                viewBox="0 0 20 20">
+                                                                <path fill-rule="evenodd"
+                                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                                                    clip-rule="evenodd"></path>
+                                                            </svg>
+                                                            Ditolak
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <a href="{{ asset('storage/' . $lampiran->file_path) }}" target="_blank"
-                                        class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center">
-                                        Lihat Dokumen
-                                        <i class="fas fa-external-link-alt ml-2"></i>
-                                    </a>
-                                </div>
-                            @empty
-                                <div class="text-center py-8 text-gray-500">
-                                    <i class="fas fa-folder-open text-3xl mb-3"></i>
-                                    <p>Tidak ada dokumen pendukung</p>
-                                </div>
-                            @endforelse
-                        </div>
-                    </div>
+                                @endforeach
+                            </div>
 
-                    <!-- Action Buttons -->
-                    <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200">
-                        @if ($kerjasama->status === 'pending')
-                            <form action="{{ route('kerja-sama.destroy', $kerjasama->id_kerja_sama) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit"
-                                    class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
-                                    onclick="return confirm('Apakah Anda yakin ingin membatalkan pengajuan kerja sama ini?')">
-                                    <i class="fas fa-times mr-2"></i> Batalkan Pengajuan
-                                </button>
-                            </form>
-                        @endif
-                    </div>
+                            <!-- Summary -->
+                            <div class="mt-6 text-sm text-gray-600">
+                                <span>Total: {{ count($donasi->donasiBarang) }} item</span>
+                            </div>
+                        </div>
+                    @elseif ($donasi->JenisDonasi->nama === 'Jasa')
+                        <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-6 flex items-center">
+                                <svg class="w-5 h-5 mr-2 text-gray-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                </svg>
+                                Donasi Jasa
+                            </h3>
+                            <div
+                                class="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-sm transition-shadow">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex-1">
+                                        <h4 class="font-semibold text-gray-900 mb-1 uppercase">
+                                            {{ $donasi->DonasiJasa->jenis_jasa }}</h4>
+
+                                        <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                            <span><strong>Durasi:</strong>
+                                                {{ ucfirst($donasi->DonasiJasa->durasi_jasa) }}</span>
+                                            @if ($donasi->DonasiJasa->status_verifikasi === 'approved')
+                                                <span
+                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
+                                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fill-rule="evenodd"
+                                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                            clip-rule="evenodd"></path>
+                                                    </svg>
+                                                    Diterima
+                                                </span>
+                                            @elseif ($donasi->DonasiJasa->status_verifikasi === 'rejected')
+                                                <span
+                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 border border-red-200">
+                                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fill-rule="evenodd"
+                                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                                            clip-rule="evenodd"></path>
+                                                    </svg>
+                                                    Ditolak
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

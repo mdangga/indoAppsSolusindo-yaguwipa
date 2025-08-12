@@ -1,15 +1,3 @@
-@php
-    // Cek apakah ada barang atau jasa yang disetujui
-    $adaYangDisetujui = false;
-
-    if ($donasi->JenisDonasi->nama === 'Barang') {
-        $adaYangDisetujui = $donasi->donasiBarang->contains('status_verifikasi', 'approved');
-    } elseif ($donasi->JenisDonasi->nama === 'Jasa') {
-        $adaYangDisetujui = $donasi->DonasiJasa && $donasi->DonasiJasa->status_verifikasi === 'approved';
-    }
-@endphp
-
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -138,7 +126,15 @@
                                 </div>
                             </div>
                         </div>
-
+                        @if ($donasi->alasan)
+                            <div>
+                                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Alasan
+                                    Penolakan</span>
+                                <p class="text-sm text-gray-700 mt-1">
+                                    {{ $donasi->alasan }}
+                                </p>
+                            </div>
+                        @endif
                     </div>
 
                     <!-- Keterangan -->
@@ -302,53 +298,41 @@
                                         @endif
                                     </div>
                                 </div>
-
-                                <!-- Right Side - Buttons -->
-                                {{-- @if ($donasi->DonasiJasa->status_verifikasi === 'pending')
-                                    <div class="flex items-center space-x-2 ml-4">
-                                        <form method="POST"
-                                            action="{{ route('jasa.approved', $donasi->DonasiJasa->id_donasi_jasa) }}">
-                                            @csrf
-                                            <input type="hidden" name="status_verifikasi" value="disetujui">
-                                            <button type="submit"
-                                                class="px-3 py-1.5 bg-green-500 text-white text-sm rounded hover:bg-green-600 transition-colors">
-                                                Setujui
-                                            </button>
-                                        </form>
-
-                                        <form method="POST"
-                                            action="{{ route('jasa.rejected', $donasi->DonasiJasa->id_donasi_jasa) }}">
-                                            @csrf
-                                            <input type="hidden" name="status_verifikasi" value="ditolak">
-                                            <button type="submit"
-                                                class="px-3 py-1.5 bg-red-500 text-white text-sm rounded hover:bg-red-600 transition-colors"
-                                                onclick="return confirm('Yakin ingin menolak?')">
-                                                Tolak
-                                            </button>
-                                        </form>
-                                    </div>
-                                @endif --}}
                             </div>
                         </div>
+                    </div>
+                @endif
+
+                <!-- Form Penolakan (Tampil hanya jika status pending dan tombol tolak diklik) -->
+                @if ($donasi->status === 'pending')
+                    <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Alasan / Catatan Donasi</h3>
+                        <textarea id="alasan-text" rows="4" class="w-full px-3 py-2 mb-3 text-gray-700 border rounded-lg focus:outline-none"
+                            placeholder="Masukkan alasan..."></textarea>
+                        <p class="text-xs text-gray-500">jika tidak ada alasan bisa ketik 'Tidak Ada'</p>
                     </div>
                 @endif
 
                 <!-- Action Buttons -->
                 <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200">
                     <a href="{{ route('admin.donasi') }}"
-                        class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                        class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
                         Kembali
                     </a>
+
                     @if ($donasi->status === 'pending')
                         <div class="flex flex-col sm:flex-row gap-3 sm:ml-auto">
-                            <form action="{{ route('donasi.approved', $donasi->id_donasi) }}" method="POST">
+                            <!-- Terima -->
+                            <form action="{{ route('donasi.approved', $donasi->id_donasi) }}" method="POST"
+                                class="alasan-form">
                                 @csrf
-                                <button type="submit"
-                                    class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-green-600 hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-green-600">
+                                <input type="hidden" name="alasan" class="hidden-alasan">
+                                <button type="button" onclick="submitWithAlasan(this)"
+                                    class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-green-600 hover:bg-green-700">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -358,10 +342,13 @@
                                 </button>
                             </form>
 
-                            <form action="{{ route('donasi.rejected', $donasi->id_donasi) }}" method="POST">
+                            <!-- Tolak -->
+                            <form action="{{ route('donasi.rejected', $donasi->id_donasi) }}" method="POST"
+                                class="alasan-form">
                                 @csrf
-                                <button type="submit"
-                                    class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-red-600  disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-red-600 hover:bg-red-700">
+                                <input type="hidden" name="alasan" class="hidden-alasan">
+                                <button type="button" onclick="submitWithAlasan(this)"
+                                    class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-red-600 hover:bg-red-700">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -372,11 +359,22 @@
                             </form>
                         </div>
                     @endif
-
                 </div>
             </div>
         </div>
     </main>
+    <script>
+        function submitWithAlasan(button) {
+            const alasan = document.getElementById('alasan-text').value.trim();
+            if (!alasan) {
+                alert('Alasan wajib diisi sebelum memproses donasi.');
+                return;
+            }
+            const form = button.closest('form');
+            form.querySelector('.hidden-alasan').value = alasan;
+            form.submit();
+        }
+    </script>
 </body>
 
 </html>

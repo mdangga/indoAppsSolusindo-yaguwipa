@@ -108,56 +108,60 @@
                         </a>
                     @elseif ($activity instanceof \App\Models\Donasi)
                         <!-- Donasi Item -->
-                        <div class="px-6 py-4 hover:bg-gray-50 transition-colors duration-150">
-                            <div class="flex flex-col md:flex-row md:items-center justify-between">
-                                <div class="flex items-start space-x-4 mb-4 md:mb-0">
-                                    <div class="flex-shrink-0">
-                                        <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
-                                            <i class="fas fa-gift text-green-600 text-xl"></i>
+                        <a href="{{ route('user-donasi.detail', $activity->id_donasi) }}"
+                            class="block hover:bg-gray-50 transition-colors duration-150">
+                            <div class="px-6 py-4">
+                                <div class="flex flex-col md:flex-row md:items-center justify-between">
+                                    <div class="flex items-start space-x-4 mb-4 md:mb-0">
+                                        <div class="flex-shrink-0">
+                                            <div
+                                                class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
+                                                <i class="fas fa-gift text-green-600 text-xl"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-sm font-medium text-gray-900">
+                                                {{ $activity->Campaign->nama ?? 'Donasi' }}
+                                            </h4>
+                                            <p class="text-sm text-gray-500 mt-1">
+                                                @if (!empty($activity->DonasiDana) && $activity->DonasiDana->count())
+                                                    Dana:
+                                                    Rp{{ number_format(optional($activity->DonasiDana->first())->nominal ?? 0, 0, ',', '.') }}
+                                                @elseif(!empty($activity->DonasiBarang) && $activity->DonasiBarang->count())
+                                                    Barang:
+                                                    @foreach ($activity->DonasiBarang as $barang)
+                                                        {{ $barang->nama_barang ?? '-' }}
+                                                        ({{ $barang->jumlah_barang ?? '0' }})
+                                                        @if (!$loop->last)
+                                                            ,
+                                                        @endif
+                                                    @endforeach
+                                                @elseif(!empty($activity->DonasiJasa) && $activity->DonasiJasa->count())
+                                                    Jasa: {{ $activity->DonasiJasa->jenis_jasa ?? '-' }}
+                                                @else
+                                                    -
+                                                @endif
+                                            </p>
                                         </div>
                                     </div>
-                                    <div>
-                                        <h4 class="text-sm font-medium text-gray-900">
-                                            {{ $activity->Campaign->nama ?? 'Donasi' }}
-                                        </h4>
-                                        <p class="text-sm text-gray-500 mt-1">
-                                            @if (!empty($activity->DonasiDana) && $activity->DonasiDana->count())
-                                                Dana:
-                                                Rp{{ number_format(optional($activity->DonasiDana->first())->nominal ?? 0, 0, ',', '.') }}
-                                            @elseif(!empty($activity->DonasiBarang) && $activity->DonasiBarang->count())
-                                                Barang:
-                                                @foreach ($activity->DonasiBarang as $barang)
-                                                    {{ $barang->nama_barang ?? '-' }}
-                                                    ({{ $barang->jumlah_barang ?? '0' }})
-                                                    @if (!$loop->last)
-                                                        ,
-                                                    @endif
-                                                @endforeach
-                                            @elseif(!empty($activity->DonasiJasa) && $activity->DonasiJasa->count())
-                                                Jasa: {{ $activity->DonasiJasa->jenis_jasa ?? '-' }}
-                                            @else
-                                                -
-                                            @endif
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="flex flex-col items-end">
-                                    <span class="text-xs text-gray-500 mb-2">
-                                        {{ $activity->updated_at->format('d M Y H:i') }}
-                                    </span>
-                                    <span
-                                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
+                                    <div class="flex flex-col items-end">
+                                        <span class="text-xs text-gray-500 mb-2">
+                                            {{ $activity->updated_at->format('d M Y H:i') }}
+                                        </span>
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
                                         @switch($activity->status_verifikasi ?? $activity->status)
                                             @case('approved') bg-green-100 text-green-800 @break
                                             @case('rejected') bg-red-100 text-red-800 @break
                                             @case('pending') bg-yellow-100 text-yellow-800 @break
                                             @default bg-gray-100 text-gray-800
                                         @endswitch">
-                                        {{ str_replace('_', ' ', ucfirst($activity->status_verifikasi ?? ($activity->status ?? '-'))) }}
-                                    </span>
+                                            {{ str_replace('_', ' ', ucfirst($activity->status_verifikasi ?? ($activity->status ?? '-'))) }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     @endif
                 @empty
                     <div class="text-center py-12">

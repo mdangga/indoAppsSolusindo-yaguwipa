@@ -59,15 +59,16 @@
                             </div>
 
                             <div class="flex flex-col">
-                                <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Penanggung Jawab</span>
+                                <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Penanggung
+                                    Jawab</span>
                                 <span
-                                class="text-sm font-medium text-gray-700 mt-1">{{ $kerjasama->Mitra->penanggung_jawab }}</span>
+                                    class="text-sm font-medium text-gray-700 mt-1">{{ $kerjasama->Mitra->penanggung_jawab }}</span>
                             </div>
-                            
+
                             <div class="flex flex-col">
                                 <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Jenis Kerja
                                     Sama</span>
-                                    <span
+                                <span
                                     class="text-sm font-medium text-amber-700 mt-1">{{ $kerjasama->KategoriKerjaSama->nama }}</span>
                             </div>
                         </div>
@@ -77,14 +78,15 @@
                                 <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Alamat</span>
                                 <span class="text-sm text-gray-700 mt-1">{{ $kerjasama->Mitra->User->alamat }}</span>
                             </div>
-                            
+
                             <div class="flex flex-col">
                                 <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">No. Telp</span>
                                 <span class="text-sm text-gray-700 mt-1">{{ $kerjasama->Mitra->User->no_tlp }}</span>
                             </div>
 
                             <div class="flex flex-col">
-                                <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Jabatan Penanggung Jawab</span>
+                                <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Jabatan
+                                    Penanggung Jawab</span>
                                 <span
                                     class="text-sm font-medium text-gray-700 mt-1">{{ $kerjasama->Mitra->jabatan_penanggung_jawab }}</span>
                             </div>
@@ -140,8 +142,13 @@
 
                     <!-- Keterangan -->
                     <div class="mt-6 pt-4 border-t border-gray-200">
+                        @if ($kerjasama->alasan)
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Alasan</span>
+                            <p class="text-sm text-gray-700 my-2 leading-relaxed">
+                                {{ $kerjasama->alasan }}</p>
+                        @endif
                         <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Keterangan</span>
-                        <p class="text-sm text-gray-700 mt-2 leading-relaxed">
+                        <p class="text-sm text-gray-700 my-2 leading-relaxed">
                             {{ $kerjasama->keterangan ?? 'Tidak ada keterangan tambahan.' }}</p>
                     </div>
                 </div>
@@ -193,6 +200,15 @@
                     </div>
                 </div>
 
+                @if ($kerjasama->status === 'pending')
+                    <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Alasan / Catatan Donasi</h3>
+                        <textarea id="alasan-text" rows="4"
+                            class="w-full px-3 py-2 mb-3 text-gray-700 border rounded-lg focus:outline-none" placeholder="Masukkan alasan..."></textarea>
+                        <p class="text-xs text-gray-500">jika tidak ada alasan bisa ketik 'Tidak Ada'</p>
+                    </div>
+                @endif
+
                 <!-- Action Buttons -->
                 <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200">
                     <a href="{{ route('admin.kerjaSama') }}"
@@ -207,9 +223,10 @@
                     @if ($kerjasama->status === 'pending')
                         <div class="flex flex-col sm:flex-row gap-3 sm:ml-auto">
                             <form action="{{ route('kerjaSama.approved', $kerjasama->id_kerja_sama) }}"
-                                method="POST">
+                                method="POST" class="alasan-form">
                                 @csrf
-                                <button type="submit"
+                                <input type="hidden" name="alasan" class="hidden-alasan">
+                                <button type="submit" onclick="submitWithAlasan(this)"
                                     class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -221,9 +238,10 @@
                             </form>
 
                             <form action="{{ route('kerjaSama.rejected', $kerjasama->id_kerja_sama) }}"
-                                method="POST">
+                                method="POST" class="alasan-form">
                                 @csrf
-                                <button type="submit"
+                                <input type="hidden" name="alasan" class="hidden-alasan">
+                                <button type="submit" onclick="submitWithAlasan(this)"
                                     class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -239,10 +257,19 @@
             </div>
         </div>
     </main>
-
     <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script>
+        function submitWithAlasan(button) {
+            const alasan = document.getElementById('alasan-text').value.trim();
+            if (!alasan) {
+                alert('Alasan wajib diisi sebelum memproses donasi.');
+                return;
+            }
+            const form = button.closest('form');
+            form.querySelector('.hidden-alasan').value = alasan;
+            form.submit();
+        }
+    </script>
 
 </body>
 

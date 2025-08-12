@@ -44,7 +44,7 @@ class KerjaSamaDisetujui extends Notification
     {
         return [
             'title' => 'Kerja Sama Disetujui',
-            'message' => 'Pengajuan kerja sama Anda telah disetujui.',
+            'message' => 'Pengajuan kerja sama Anda telah disetujui. klik untuk melihat detail.',
             'type' => 'success',
             'time' => now()->toDateTimeString(),
             'url' => route('kerja-sama.detail', $this->kerjaSama->id_kerja_sama),

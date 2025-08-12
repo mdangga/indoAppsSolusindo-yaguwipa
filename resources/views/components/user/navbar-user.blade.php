@@ -48,6 +48,7 @@
 
                         @forelse($user->notifications->take(10) as $notification)
                             <a href="{{ $notification->data['url'] ?? '#' }}" class="block hover:bg-gray-50">
+                                <a href="{{ route('notifications.read', $notification->id) }} "class="block hover:bg-gray-50">
                                 <div
                                     class="relative flex items-start px-4 py-3 transition-colors duration-150 {{ $notification->read_at ? '' : 'bg-blue-50' }}">
                                     <!-- Icon Status -->
