@@ -250,7 +250,16 @@ class DonasiController extends Controller
             $donasi = Donasi::findOrFail($id);
 
             DB::transaction(function () use ($donasi) {
-                $donasi->update(['status' => 'verified']);
+                if (strtolower($donasi->JenisDonasi->nama) == "dana") {
+                    $donasi->DonasiDana->update(['status_verifikasi' => 'approved']);
+                } elseif (strtolower($donasi->JenisDonasi->nama) == "barang") {
+                    $donasi->DonasiBarang->each(function ($barang) {
+                        $barang->update(['status_verifikasi' => 'approved']);
+                    });
+                } elseif (strtolower($donasi->JenisDonasi->nama) == "jasa") {
+                    $donasi->DonasiJasa->update(['status_verifikasi' => 'approved']);
+                }
+                $donasi->update(['status' => 'approved']);
 
                 // Kalau mau kirim notifikasi ke user
                 // $user = $donasi->Donasi->User ?? null;
@@ -272,7 +281,16 @@ class DonasiController extends Controller
             $donasi = Donasi::findOrFail($id);
 
             DB::transaction(function () use ($donasi) {
-                $donasi->update(['status' => 'expired']);
+                if (strtolower($donasi->JenisDonasi->nama) == "dana") {
+                    $donasi->DonasiDana->update(['status_verifikasi' => 'rejected']);
+                } elseif (strtolower($donasi->JenisDonasi->nama) == "barang") {
+                    $donasi->DonasiBarang->each(function ($barang) {
+                        $barang->update(['status_verifikasi' => 'rejected']);
+                    });
+                } elseif (strtolower($donasi->JenisDonasi->nama) == "jasa") {
+                    $donasi->DonasiJasa->update(['status_verifikasi' => 'rejected']);
+                }
+                $donasi->update(['status' => 'rejected']);
 
                 // $user = $donasi->Donasi->User ?? null;
                 // if ($user) {

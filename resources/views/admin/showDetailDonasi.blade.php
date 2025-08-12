@@ -114,7 +114,7 @@
                                             </svg>
                                             Menunggu
                                         </span>
-                                    @elseif ($donasi->status === 'verified')
+                                    @elseif ($donasi->status === 'approved')
                                         <span
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
                                             <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -124,7 +124,7 @@
                                             </svg>
                                             Diterima
                                         </span>
-                                    @elseif ($donasi->status === 'failed')
+                                    @elseif ($donasi->status === 'rejected')
                                         <span
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 border border-red-200">
                                             <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -133,16 +133,6 @@
                                                     clip-rule="evenodd"></path>
                                             </svg>
                                             Gagal
-                                        </span>
-                                    @elseif ($donasi->status === 'expired')
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">
-                                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd"
-                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                                                    clip-rule="evenodd"></path>
-                                            </svg>
-                                            Selesai
                                         </span>
                                     @endif
                                 </div>
@@ -238,7 +228,7 @@
                                                 </form>
 
                                                 <form method="POST"
-                                                    action="{{ route('barang.approved', $barang->id_donasi_barang) }}">
+                                                    action="{{ route('barang.rejected', $barang->id_donasi_barang) }}">
                                                     @csrf
                                                     <input type="hidden" name="status_verifikasi" value="ditolak">
                                                     <button type="submit"
@@ -314,7 +304,7 @@
                                 </div>
 
                                 <!-- Right Side - Buttons -->
-                                @if ($donasi->DonasiJasa->status_verifikasi === 'pending')
+                                {{-- @if ($donasi->DonasiJasa->status_verifikasi === 'pending')
                                     <div class="flex items-center space-x-2 ml-4">
                                         <form method="POST"
                                             action="{{ route('jasa.approved', $donasi->DonasiJasa->id_donasi_jasa) }}">
@@ -337,7 +327,7 @@
                                             </button>
                                         </form>
                                     </div>
-                                @endif
+                                @endif --}}
                             </div>
                         </div>
                     </div>
@@ -345,7 +335,7 @@
 
                 <!-- Action Buttons -->
                 <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200">
-                    <a href="{{ route('admin.kerjaSama') }}"
+                    <a href="{{ route('admin.donasi') }}"
                         class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -358,8 +348,7 @@
                             <form action="{{ route('donasi.approved', $donasi->id_donasi) }}" method="POST">
                                 @csrf
                                 <button type="submit"
-                                    class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-green-600 hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-green-600"
-                                    {{ !$adaYangDisetujui ? 'disabled' : '' }}>
+                                    class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-green-600 hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-green-600">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -372,8 +361,7 @@
                             <form action="{{ route('donasi.rejected', $donasi->id_donasi) }}" method="POST">
                                 @csrf
                                 <button type="submit"
-                                    class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-red-600  disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-red-600"
-                                    {{ !$adaYangDisetujui ? 'disabled ' : 'hover:bg-red-700' }}>
+                                    class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-red-600  disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-red-600 hover:bg-red-700">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
