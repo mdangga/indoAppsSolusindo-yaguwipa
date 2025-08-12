@@ -146,7 +146,7 @@
                     </div>
                 </div>
                 <!-- Detail Berdasarkan Jenis Donasi -->
-                @if ($donasi->jenisDonasi->nama === 'Barang')
+                @if (strtolower($donasi->JenisDonasi->nama) === 'barang')
                     <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
                         <h3 class="text-lg font-semibold text-gray-800 mb-6 flex items-center">
                             <svg class="w-5 h-5 mr-2 text-gray-600" fill="none" stroke="currentColor"
@@ -245,7 +245,7 @@
                             <span>Total: {{ count($donasi->donasiBarang) }} item</span>
                         </div>
                     </div>
-                @elseif ($donasi->JenisDonasi->nama === 'Jasa')
+                @elseif (strtolower($donasi->JenisDonasi->nama) === 'jasa')
                     <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
                         <h3 class="text-lg font-semibold text-gray-800 mb-6 flex items-center">
                             <svg class="w-5 h-5 mr-2 text-gray-600" fill="none" stroke="currentColor"
@@ -307,7 +307,8 @@
                 @if ($donasi->status === 'pending')
                     <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
                         <h3 class="text-lg font-semibold text-gray-800 mb-4">Alasan / Catatan Donasi</h3>
-                        <textarea id="alasan-text" rows="4" class="w-full px-3 py-2 mb-3 text-gray-700 border rounded-lg focus:outline-none"
+                        <textarea id="alasan-text" rows="4"
+                            class="w-full px-3 py-2 mb-3 text-gray-700 border rounded-lg focus:outline-none border-gray-300"
                             placeholder="Masukkan alasan..."></textarea>
                         <p class="text-xs text-gray-500">jika tidak ada alasan bisa ketik 'Tidak Ada'</p>
                     </div>

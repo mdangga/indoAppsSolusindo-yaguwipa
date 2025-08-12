@@ -65,8 +65,8 @@ class CampaignController extends Controller
             ->addColumn('aksi', function ($row) {
                 return '
             <div class="flex items-center">
-            <button class="cursor-pointer editBtn bg-blue-500 text-white px-2 py-1 rounded text-sm" data-id="' . e($row->id_institusi) . '">Edit</button>
-            <button class="cursor-pointer deleteBtn bg-red-500 text-white px-2 py-1 rounded text-sm ml-2" data-id="' . e($row->id_institusi) . '">Hapus</button>
+            <button class="cursor-pointer editBtn bg-blue-500 text-white px-2 py-1 rounded text-sm" data-id="' . e($row->id_campaign) . '">Edit</button>
+            <button class="cursor-pointer deleteBtn bg-red-500 text-white px-2 py-1 rounded text-sm ml-2" data-id="' . e($row->id_campaign) . '">Hapus</button>
             </div>
         ';
             })
@@ -107,15 +107,11 @@ class CampaignController extends Controller
             ->with('success', 'Campaign berhasil dibuat');
     }
 
-
-    public function edit($slug)
+    public function update(Request $request, $id)
     {
-        $programs = Program::all();
-        return view('admin.formCampaign', compact('programs'));
-    }
+        // Cari campaign berdasarkan id
+        $campaign = Campaign::findOrFail($id);
 
-    public function update(Request $request, Campaign $campaign)
-    {
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'deskripsi' => 'required|string',
@@ -135,16 +131,31 @@ class CampaignController extends Controller
 
         // Handle gambar
         if ($request->hasFile('image_path')) {
+            // Hapus gambar lama jika ada
             if ($campaign->image_path) {
                 Storage::disk('public')->delete($campaign->image_path);
             }
+            // Upload gambar baru
             $validated['image_path'] = $request->file('image_path')->store('campaigns', 'public');
+        } else {
+            // Jangan update image_path jika tidak ada file baru
+            unset($validated['image_path']);
         }
 
+        // Update campaign
         $campaign->update($validated);
 
         return redirect()->route('admin.campaigns')
             ->with('success', 'Campaign berhasil diperbarui');
+    }
+
+    // Juga perbaiki method showFormEdit untuk konsistensi
+    public function showFormEdit($id)
+    {
+        $campaign = Campaign::where('id_campaign', $id)->firstOrFail();
+        $programs = Program::all();
+
+        return view('admin.formCampaign', compact('programs', 'campaign'));
     }
 
 

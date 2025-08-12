@@ -25,7 +25,9 @@
     $steps = [
         [
             'title' => 'Pengajuan Dikirim',
-            'date' => $donasi->created_at ? 'Diajukan pada ' . $donasi->created_at->format('d M Y H:i') : 'Belum ada tanggal',
+            'date' => $donasi->created_at
+                ? 'Diajukan pada ' . $donasi->created_at->format('d M Y H:i')
+                : 'Belum ada tanggal',
         ],
         [
             'title' => 'Pengecekan',
@@ -34,7 +36,9 @@
         [
             'title' => 'Hasil Pengecekan',
             'date' =>
-                $donasi->status === 'pending' ? 'Menunggu Keputusan' : 'Disetujui pada ' . $donasi->updated_at->format('d M Y H:i'),
+                $donasi->status === 'pending'
+                    ? 'Menunggu Keputusan'
+                    : 'Disetujui pada ' . $donasi->updated_at->format('d M Y H:i'),
         ],
     ];
 
@@ -154,17 +158,17 @@
                                 <div>
                                     <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">No
                                         Telepon</span>
-                                    <span class="text-sm font-semibold text-gray-900 mt-1">
+                                    <p class="text-sm font-medium text-gray-900 mt-1">
                                         {{ optional($donasi->User)->no_tlp ?? '-' }}
-                                    </span>
+                                    </p>
 
                                 </div>
 
                                 <div>
                                     <span
                                         class="text-xs font-medium text-gray-500 uppercase tracking-wide">Alamat</span>
-                                    <span
-                                        class="text-sm text-gray-700 mt-1">{{ optional($donasi->User)->alamat ?? '-' }}</span>
+                                    <p class="text-sm font-medium text-gray-900 mt-1">
+                                        {{ optional($donasi->User)->alamat ?? '-' }}</p>
                                 </div>
                             </div>
 
@@ -194,7 +198,8 @@
 
                                 @if ($donasi->alasan)
                                     <div>
-                                        <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Alasan</span>
+                                        <span
+                                            class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Alasan</span>
                                         <p class="text-sm text-gray-700 mt-1">
                                             {{ $donasi->alasan }}
                                         </p>
