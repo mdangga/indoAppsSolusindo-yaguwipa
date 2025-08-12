@@ -192,11 +192,11 @@
                                     </div>
                                 </div>
 
-                                @if ($donasi->status === 'rejected')
+                                @if ($donasi->alasan)
                                     <div>
                                         <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Alasan</span>
                                         <p class="text-sm text-gray-700 mt-1">
-                                            {{ $donasi->alasan ?? 'Tidak ada alasan spesifik' }}
+                                            {{ $donasi->alasan }}
                                         </p>
                                     </div>
                                 @endif
