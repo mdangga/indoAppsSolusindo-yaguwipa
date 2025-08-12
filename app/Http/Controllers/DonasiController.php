@@ -254,7 +254,9 @@ class DonasiController extends Controller
                     $donasi->DonasiDana->update(['status_verifikasi' => 'approved']);
                 } elseif (strtolower($donasi->JenisDonasi->nama) == "barang") {
                     $donasi->DonasiBarang->each(function ($barang) {
-                        $barang->update(['status_verifikasi' => 'approved']);
+                        if($barang->status_verifikasi == 'pending') {
+                            $barang->update(['status_verifikasi' => 'approved']);
+                        }
                     });
                 } elseif (strtolower($donasi->JenisDonasi->nama) == "jasa") {
                     $donasi->DonasiJasa->update(['status_verifikasi' => 'approved']);
@@ -285,7 +287,9 @@ class DonasiController extends Controller
                     $donasi->DonasiDana->update(['status_verifikasi' => 'rejected']);
                 } elseif (strtolower($donasi->JenisDonasi->nama) == "barang") {
                     $donasi->DonasiBarang->each(function ($barang) {
-                        $barang->update(['status_verifikasi' => 'rejected']);
+                        if($barang->status_verifikasi == 'pending') {
+                            $barang->update(['status_verifikasi' => 'rejected']);
+                        }
                     });
                 } elseif (strtolower($donasi->JenisDonasi->nama) == "jasa") {
                     $donasi->DonasiJasa->update(['status_verifikasi' => 'rejected']);
