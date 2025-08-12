@@ -199,7 +199,7 @@
                         .addClass('bg-gray-400 cursor-not-allowed')
                         .html('<i class="fas fa-spinner fa-spin w-3 h-3 mr-1"></i>');
 
-                    fetch(`/admin/berita/destroy/${id}`, {
+                    fetch(`/admin/news-event/destroy/${id}`, {
                             method: 'delete', // ubah ke POST
                             headers: {
                                 'Content-Type': 'application/json',
@@ -231,7 +231,7 @@
             // Edit handler
             $('#beritaTable').on('click', '.editBtn', function() {
                 const id = $(this).data('id');
-                window.location.href = `/admin/berita/edit/${id}`;
+                window.location.href = `/admin/news-event/edit/${id}`;
             });
 
             // Notification system

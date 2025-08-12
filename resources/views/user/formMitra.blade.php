@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Register</title>
     {{-- Favicon --}}
-    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('storage/' . $site['yayasanProfile']->logo) }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net" />
@@ -29,7 +29,7 @@
             <div class="bg-white rounded-2xl shadow-xl p-8">
                 <!-- Logo and Header -->
                 <div class="text-center mb-8">
-                    <img class="mx-auto h-24 w-auto" src="{{ asset('img/logo.png') }}" alt="yaguwipa logo" />
+                    <img class="mx-auto h-24 w-auto" src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" alt="yaguwipa logo" />
                     <h2 class="mt-6 text-3xl font-bold tracking-tight text-gray-900">Daftar Mitra</h2>
                     <p class="mt-2 text-sm text-gray-600">Bersama kita bisa membuat perubahan yang lebih baik</p>
                 </div>

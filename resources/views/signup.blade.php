@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Register</title>
     {{-- Favicon --}}
-    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('storage/' . $site['yayasanProfile']->logo) }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net" />
@@ -161,7 +161,7 @@
                 <!-- Logo and Header -->
                 <div class="text-center mb-6">
                     <div class="relative inline-block">
-                        <img class="mx-auto h-16 w-auto drop-shadow-lg" src="{{ asset('img/logo.png') }}"
+                        <img class="mx-auto h-16 w-auto drop-shadow-lg" src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}"
                             alt="yaguwipa logo" />
                         <div
                             class="absolute -inset-3 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full opacity-20 blur-lg">
