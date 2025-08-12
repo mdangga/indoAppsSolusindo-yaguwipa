@@ -149,7 +149,7 @@
                 data-aos="fade-up">
 
                 <div class="flex items-center space-x-4 mb-6">
-                    <a href="#" class="text-gray-600 hover:text-gray-900 transition-colors">
+                    <a href="{{ auth()->user() ? route('dashboard') : route('beranda.program') }}" class="text-gray-600 hover:text-gray-900 transition-colors">
                         <i class="fas fa-arrow-left text-lg"></i>
                     </a>
                     <h1 class="text-lg font-semibold text-gray-900">Detail Campaign</h1>

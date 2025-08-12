@@ -52,7 +52,7 @@ class KerjaSamaDitolak extends Notification
             'message' => 'Pengajuan kerja sama Anda telah ditolak.',
             'type' => 'rejected',
             'time' => now()->toDateTimeString(),
-            'kerja_sama_id' => $this->kerjaSama->id_kerja_sama,
+            'url' => route('kerja-sama.detail', $this->kerjaSama->id_kerja_sama),
         ];
     }
 }

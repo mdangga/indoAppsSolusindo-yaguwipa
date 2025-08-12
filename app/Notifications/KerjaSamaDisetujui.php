@@ -47,7 +47,7 @@ class KerjaSamaDisetujui extends Notification
             'message' => 'Pengajuan kerja sama Anda telah disetujui.',
             'type' => 'success',
             'time' => now()->toDateTimeString(),
-            'kerja_sama_id' => $this->kerjaSama->id_kerja_sama,
+            'url' => route('kerja-sama.detail', $this->kerjaSama->id_kerja_sama),
         ];
     }
 }

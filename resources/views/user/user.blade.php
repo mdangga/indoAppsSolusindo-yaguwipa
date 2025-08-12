@@ -110,120 +110,70 @@
                         <div class="px-6 py-4 border-b border-gray-200">
                             <div class="flex items-center justify-between">
                                 <h3 class="text-lg font-semibold text-gray-900">Aktivitas Terbaru</h3>
-                                <a href="{{ route('user.activity') }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                <a href="{{ route('user.activity') }}"
+                                    class="text-blue-600 hover:text-blue-800 text-sm font-medium">
                                     Lihat Semua
                                 </a>
                             </div>
                         </div>
                         <div class="divide-y divide-gray-200">
-                            @if ($user->role === 'mitra')
-                                @forelse ($recentActivities as $activity)
-                                    <div class="px-6 py-4">
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center">
-                                                <div
-                                                    class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                                                    @if ($activity instanceof \App\Models\KerjaSama)
-                                                        <i class="fas fa-handshake text-blue-600 text-xl"></i>
-                                                    @elseif ($activity instanceof \App\Models\Donasi)
-                                                        <i class="fas fa-gift text-green-600 text-xl"></i>
-                                                    @endif
+                            @forelse ($recentActivities as $activity)
+                                @if ($activity instanceof \App\Models\KerjaSama)
+                                    <!-- Kerja Sama Item -->
+                                    <a href="{{ route('kerja-sama.detail', $activity->id_kerja_sama) }}"
+                                        class="block hover:bg-gray-50 transition-colors duration-150">
+                                        <div class="px-6 py-4">
+                                            <div class="flex flex-col md:flex-row md:items-center justify-between">
+                                                <div class="flex items-start space-x-4 mb-4 md:mb-0">
+                                                    <div class="flex-shrink-0">
+                                                        <div
+                                                            class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
+                                                            <i class="fas fa-handshake text-blue-600 text-xl"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <h4 class="text-sm font-medium text-gray-900">
+                                                            {{ $activity->kategoriKerjaSama->nama ?? 'Kerja Sama' }}
+                                                        </h4>
+                                                        <p class="text-sm text-gray-500 mt-1">
+                                                            {{ Str::limit($activity->keterangan, 100) }}
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                                <div class="ml-4">
-                                                    @if ($activity instanceof \App\Models\KerjaSama)
-                                                        <p class="text-sm font-medium text-gray-900">
-                                                            {{ $activity->kategoriKerjaSama->nama ?? 'Tanpa Kategori' }}
-                                                        </p>
-                                                        <p class="text-sm text-gray-500">
-                                                            {{ $activity->keterangan }}
-                                                        </p>
-                                                    @elseif ($activity instanceof \App\Models\Donasi)
-                                                        <p class="text-sm font-medium text-gray-900">
-                                                            {{ $activity->Campaign->nama ?? 'Donasi' }}
-                                                        </p>
-                                                        <p class="text-sm text-gray-500">
-                                                            {{-- Tampilkan detail donasi --}}
-                                                            @if (!empty($activity->DonasiDana) && $activity->DonasiDana->count())
-                                                                Dana:
-                                                                Rp{{ number_format(optional($activity->DonasiDana->first())->nominal ?? 0, 0, ',', '.') }}
-                                                            @elseif(!empty($activity->DonasiBarang) && $activity->DonasiBarang->count())
-                                                                Barang:
-                                                                @foreach ($activity->DonasiBarang as $barang)
-                                                                    {{ $barang->nama_barang ?? '-' }}
-                                                                    ({{ $barang->jumlah_barang ?? '0' }})
-                                                                    ,
-                                                                @endforeach
-                                                            @elseif(!empty($activity->DonasiJasa) && $activity->DonasiJasa->count())
-                                                                Jasa: {{ $activity->DonasiJasa->jenis_jasa ?? '-' }}
-                                                            @else
-                                                                -
-                                                            @endif
-                                                        </p>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            <div class="text-right">
-                                                <p class="text-sm font-medium text-gray-900 mb-2">
-                                                    {{ $activity->updated_at->format('d M Y') }}</p>
-                                                <span
-                                                    class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
-                                                    @if ($activity instanceof \App\Models\KerjaSama) @switch($activity->status)
-                                                            @case('approved')
-                                                                bg-green-100 text-green-800
-                                                                @break
-                                                            @case('rejected')
-                                                                bg-red-100 text-red-800
-                                                                @break
-                                                            @case('pending')
-                                                                bg-yellow-100 text-yellow-800
-                                                                @break
-                                                            @default
-                                                                bg-gray-100 text-gray-800
-                                                        @endswitch
-                                                    @elseif ($activity instanceof \App\Models\Donasi)
-                                                        @switch($activity->status_verifikasi ?? $activity->status)
-                                                            @case('approved')
-                                                                bg-green-100 text-green-800
-                                                                @break
-                                                            @case('rejected')
-                                                                bg-red-100 text-red-800
-                                                                @break
-                                                            @case('pending')
-                                                                bg-yellow-100 text-yellow-800
-                                                                @break
-                                                            @default
-                                                                bg-gray-100 text-gray-800
-                                                        @endswitch @endif">
-                                                    @if ($activity instanceof \App\Models\KerjaSama)
+                                                <div class="flex flex-col items-end">
+                                                    <span class="text-xs text-gray-500 mb-2">
+                                                        {{ $activity->updated_at->format('d M Y H:i') }}
+                                                    </span>
+                                                    <span
+                                                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
+                                            @switch($activity->status)
+                                                @case('approved') bg-green-100 text-green-800 @break
+                                                @case('rejected') bg-red-100 text-red-800 @break
+                                                @case('pending') bg-yellow-100 text-yellow-800 @break
+                                                @default bg-gray-100 text-gray-800
+                                            @endswitch">
                                                         {{ str_replace('_', ' ', ucfirst($activity->status ?? '-')) }}
-                                                    @elseif ($activity instanceof \App\Models\Donasi)
-                                                        {{ str_replace('_', ' ', ucfirst($activity->status_verifikasi ?? ($activity->status ?? '-'))) }}
-                                                    @endif
-                                                </span>
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                @empty
-                                    <div class="text-center py-8">
-                                        <i class="fas fa-inbox text-4xl text-gray-300 mb-4"></i>
-                                        <p class="text-gray-500">Belum ada data</p>
-                                    </div>
-                                @endforelse
-                            @elseif ($user->role === 'donatur')
-                                @forelse ($recentActivities as $activity)
-                                    <div class="px-6 py-4">
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center">
-                                                <div
-                                                    class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                                                    <i class="fas fa-gift text-green-600 text-xl"></i>
+                                    </a>
+                                @elseif ($activity instanceof \App\Models\Donasi)
+                                    <!-- Donasi Item -->
+                                    <div class="px-6 py-4 hover:bg-gray-50 transition-colors duration-150">
+                                        <div class="flex flex-col md:flex-row md:items-center justify-between">
+                                            <div class="flex items-start space-x-4 mb-4 md:mb-0">
+                                                <div class="flex-shrink-0">
+                                                    <div
+                                                        class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
+                                                        <i class="fas fa-gift text-green-600 text-xl"></i>
+                                                    </div>
                                                 </div>
-                                                <div class="ml-4">
-                                                    <p class="text-sm font-medium text-gray-900">
+                                                <div>
+                                                    <h4 class="text-sm font-medium text-gray-900">
                                                         {{ $activity->Campaign->nama ?? 'Donasi' }}
-                                                    </p>
-                                                    <p class="text-sm text-gray-500">
-                                                        {{-- Tampilkan detail donasi --}}
+                                                    </h4>
+                                                    <p class="text-sm text-gray-500 mt-1">
                                                         @if (!empty($activity->DonasiDana) && $activity->DonasiDana->count())
                                                             Dana:
                                                             Rp{{ number_format(optional($activity->DonasiDana->first())->nominal ?? 0, 0, ',', '.') }}
@@ -232,7 +182,9 @@
                                                             @foreach ($activity->DonasiBarang as $barang)
                                                                 {{ $barang->nama_barang ?? '-' }}
                                                                 ({{ $barang->jumlah_barang ?? '0' }})
-                                                                ,
+                                                                @if (!$loop->last)
+                                                                    ,
+                                                                @endif
                                                             @endforeach
                                                         @elseif(!empty($activity->DonasiJasa) && $activity->DonasiJasa->count())
                                                             Jasa: {{ $activity->DonasiJasa->jenis_jasa ?? '-' }}
@@ -242,36 +194,30 @@
                                                     </p>
                                                 </div>
                                             </div>
-                                            <div class="text-right">
-                                                <p class="text-sm font-medium text-gray-900 mb-2">
-                                                    {{ $activity->updated_at->format('d M Y') }}</p>
+                                            <div class="flex flex-col items-end">
+                                                <span class="text-xs text-gray-500 mb-2">
+                                                    {{ $activity->updated_at->format('d M Y H:i') }}
+                                                </span>
                                                 <span
                                                     class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
-                                                    @switch($activity->status_verifikasi ?? $activity->status)
-                                                        @case('approved')
-                                                            bg-green-100 text-green-800
-                                                            @break
-                                                        @case('rejected')
-                                                            bg-red-100 text-red-800
-                                                            @break
-                                                        @case('pending')
-                                                            bg-yellow-100 text-yellow-800
-                                                            @break
-                                                        @default
-                                                            bg-gray-100 text-gray-800
-                                                    @endswitch">
+                                        @switch($activity->status_verifikasi ?? $activity->status)
+                                            @case('approved') bg-green-100 text-green-800 @break
+                                            @case('rejected') bg-red-100 text-red-800 @break
+                                            @case('pending') bg-yellow-100 text-yellow-800 @break
+                                            @default bg-gray-100 text-gray-800
+                                        @endswitch">
                                                     {{ str_replace('_', ' ', ucfirst($activity->status_verifikasi ?? ($activity->status ?? '-'))) }}
                                                 </span>
                                             </div>
                                         </div>
                                     </div>
-                                @empty
-                                    <div class="text-center py-8">
-                                        <i class="fas fa-inbox text-4xl text-gray-300 mb-4"></i>
-                                        <p class="text-gray-500">Belum ada data</p>
-                                    </div>
-                                @endforelse
-                            @endif
+                                @endif
+                            @empty
+                                <div class="text-center py-12">
+                                    <i class="fas fa-inbox text-4xl text-gray-300 mb-4"></i>
+                                    <p class="text-gray-500">Belum ada aktivitas</p>
+                                </div>
+                            @endforelse
                         </div>
                     </div>
 

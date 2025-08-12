@@ -9,8 +9,10 @@ use App\Models\DonasiDana;
 use App\Models\DonasiJasa;
 use App\Models\Donatur;
 use App\Models\JenisDonasi;
+use App\Notifications\notifikasiPengajuanDonasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 
 class DonasiController extends Controller
@@ -53,7 +55,7 @@ class DonasiController extends Controller
 
             $donasi = Donasi::create([
                 'nama'            => $request->nama,
-                'email'           => $request->email_tlp, // Changed to match input field
+                'email'           => $request->email_tlp,
                 'pesan'           => $request->pesan,
                 'anonim'          => $request->anonim,
                 'id_user'         => auth()->user()->id_user ?? null,
@@ -95,18 +97,24 @@ class DonasiController extends Controller
                 ]);
             }
 
-            DB::commit();
+            $pengajuanNotif = [
+                'nama' => $request->nama,
+                'jenis_donasi' => $jenis_donasi->nama,
+                'id' => $donasi->id_donasi,
+            ];
+            // Kirim notifikasi ke admin
+            $adminUsers = \App\Models\User::where('role', 'admin')->get();
+            Notification::send($adminUsers, new notifikasiPengajuanDonasi($pengajuanNotif));
 
-            return response()->json([
-                'message' => 'Donasi berhasil dibuat',
-                'data'    => $donasi->load(['DonasiBarang', 'DonasiJasa', 'DonasiDana'])
-            ], 201);
+            DB::commit();
+            // Redirect ke halaman detail campaign
+            return redirect()->route('campaign.slug', $donasi->Campaign->slug)
+                ->with('success', 'Pengajuan donasi berhasil dibuat. Silakan tunggu verifikasi dari admin.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json([
-                'message' => 'Gagal membuat donasi',
-                'error'   => $e->getMessage()
-            ], 500);
+            return redirect()->back()->withInput()->withErrors([
+                'error' => 'Gagal membuat donasi: ' . $e->getMessage()
+            ]);
         }
     }
 
