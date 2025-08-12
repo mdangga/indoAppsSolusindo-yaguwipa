@@ -250,15 +250,14 @@ class DonasiController extends Controller
             $donasi = Donasi::findOrFail($id);
 
             DB::transaction(function () use ($donasi) {
-                if (strtolower($donasi->JenisDonasi->nama) == "dana") {
+                if (strcasecmp($donasi->JenisDonasi->nama, 'dana') === 0) {
                     $donasi->DonasiDana->update(['status_verifikasi' => 'approved']);
-                } elseif (strtolower($donasi->JenisDonasi->nama) == "barang") {
-                    $donasi->DonasiBarang->each(function ($barang) {
-                        if($barang->status_verifikasi == 'pending') {
-                            $barang->update(['status_verifikasi' => 'approved']);
-                        }
-                    });
-                } elseif (strtolower($donasi->JenisDonasi->nama) == "jasa") {
+                } elseif (strcasecmp($donasi->JenisDonasi->nama, 'barang') === 0) {
+                    $donasi->DonasiBarang
+                        ->where('status_verifikasi', 'pending')
+                        ->each
+                        ->update(['status_verifikasi' => 'approved']);
+                } elseif (strcasecmp($donasi->JenisDonasi->nama, 'jasa') === 0) {
                     $donasi->DonasiJasa->update(['status_verifikasi' => 'approved']);
                 }
                 $donasi->update(['status' => 'approved']);
@@ -283,15 +282,14 @@ class DonasiController extends Controller
             $donasi = Donasi::findOrFail($id);
 
             DB::transaction(function () use ($donasi) {
-                if (strtolower($donasi->JenisDonasi->nama) == "dana") {
+                if (strcasecmp($donasi->JenisDonasi->nama, 'dana') === 0) {
                     $donasi->DonasiDana->update(['status_verifikasi' => 'rejected']);
-                } elseif (strtolower($donasi->JenisDonasi->nama) == "barang") {
-                    $donasi->DonasiBarang->each(function ($barang) {
-                        if($barang->status_verifikasi == 'pending') {
-                            $barang->update(['status_verifikasi' => 'rejected']);
-                        }
-                    });
-                } elseif (strtolower($donasi->JenisDonasi->nama) == "jasa") {
+                } elseif (strcasecmp($donasi->JenisDonasi->nama, 'barang') === 0) {
+                    $donasi->DonasiBarang
+                        ->where('status_verifikasi', 'pending')
+                        ->each
+                        ->update(['status_verifikasi' => 'rejected']);
+                } elseif (strcasecmp($donasi->JenisDonasi->nama, 'jasa') === 0) {
                     $donasi->DonasiJasa->update(['status_verifikasi' => 'rejected']);
                 }
                 $donasi->update(['status' => 'rejected']);
