@@ -22,7 +22,7 @@ class CampaignController extends Controller
             ->where('id_campaign', $campaign->id_campaign)
             ->limit(10)
             ->get();
-        return view('detailDonasi', compact('campaign', 'donations'));
+        return view('detailCampaign', compact('campaign', 'donations'));
     }
 
     public function showUserCampaign(Request $request)
