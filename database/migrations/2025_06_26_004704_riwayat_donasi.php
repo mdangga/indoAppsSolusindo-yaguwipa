@@ -39,6 +39,7 @@ return new class extends Migration
             $table->id('id_donasi');
             $table->string('nama');
             $table->string('email');
+            $table->string('alasan')->nullable();
             $table->text('pesan')->nullable();
 
             $table->enum('status', ['approved', 'pending', 'rejected'])->default('pending');

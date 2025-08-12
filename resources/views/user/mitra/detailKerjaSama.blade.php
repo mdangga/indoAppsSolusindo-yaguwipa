@@ -25,16 +25,16 @@
     $steps = [
         [
             'title' => 'Pengajuan Dikirim',
-            'date' => $kerjasama->created_at ? $kerjasama->created_at->format('d M Y H:i') : 'Belum ada tanggal',
+            'date' => $kerjasama->created_at ? 'Diajukan pada ' . $kerjasama->created_at->format('d M Y H:i') : 'Belum ada tanggal',
         ],
         [
             'title' => 'Review',
             'date' => $kerjasama->status === 'pending' ? 'Sedang diproses' : 'Review selesai',
         ],
         [
-            'title' => 'Menunggu Keputusan',
+            'title' => 'Hasil Review',
             'date' =>
-                $kerjasama->status === 'pending' ? 'Belum ada tanggal' : $kerjasama->updated_at->format('d M Y H:i'),
+                $kerjasama->status === 'pending' ? 'Menunggu Keputusan' : 'Disetujui pada ' . $kerjasama->updated_at->format('d M Y H:i'),
         ],
     ];
 
@@ -188,12 +188,11 @@
                                     </div>
                                 </div>
 
-                                @if ($kerjasama->status === 'rejected')
+                                @if ($kerjasama->alasan)
                                     <div>
-                                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Alasan
-                                            Penolakan</span>
+                                        <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Alasan</span>
                                         <p class="text-sm text-gray-700 mt-1">
-                                            {{ $kerjasama->alasan_penolakan ?? 'Tidak ada alasan spesifik' }}
+                                            {{ $kerjasama->alasan }}
                                         </p>
                                     </div>
                                 @endif

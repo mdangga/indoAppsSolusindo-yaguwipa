@@ -9,8 +9,11 @@ use App\Models\DonasiDana;
 use App\Models\DonasiJasa;
 use App\Models\Donatur;
 use App\Models\JenisDonasi;
+use App\Notifications\donasiDiterima;
+use App\Notifications\donasiDitolak;
 use App\Notifications\notifikasiPengajuanDonasi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
@@ -27,6 +30,16 @@ class DonasiController extends Controller
         return view('formDonasi', compact('campaign'));
     }
 
+    public function showDetailDOnasi($id)
+    {
+        $user = Auth::user();
+
+        $donasi = Donasi::with('Campaign', 'JenisDonasi', 'DonasiBarang', 'DonasiJasa')
+            ->where('id_user', $user->id_user)
+            ->findOrFail($id);
+
+        return view('user.detailDonasi', compact('donasi'));
+    }
     /**
      * Store a newly created resource in storage.
      */
@@ -186,11 +199,6 @@ class DonasiController extends Controller
 
             DB::transaction(function () use ($barang) {
                 $barang->update(['status_verifikasi' => 'rejected']);
-
-                // $user = $barang->Donasi->User ?? null;
-                // if ($user) {
-                //     $user->notify(new BarangDonasiDitolak($barang));
-                // }
             });
 
             return back()->with('success', 'Barang donasi berhasil ditolak.');
@@ -199,74 +207,38 @@ class DonasiController extends Controller
         }
     }
 
-    // fungsi untuk menyetujui jasa
-    public function approveJasa($id)
-    {
-        try {
-            $jasa = DonasiJasa::findOrFail($id);
-
-            DB::transaction(function () use ($jasa) {
-                $jasa->update(['status_verifikasi' => 'approved']);
-
-                // Kalau mau kirim notifikasi ke user
-                // $user = $jasa->Donasi->User ?? null;
-                // if ($user) {
-                //     $user->notify(new JasaDonasiDisetujui($jasa));
-                // }
-            });
-
-            return back()->with('success', 'Barang donasi berhasil disetujui.');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Gagal menyetujui barang donasi: ' . $e->getMessage());
-        }
-    }
-
-    // fungsi untuk menolak jasa
-    public function rejectJasa($id)
-    {
-        try {
-            $jasa = DonasiJasa::findOrFail($id);
-
-            DB::transaction(function () use ($jasa) {
-                $jasa->update(['status_verifikasi' => 'rejected']);
-
-                // $user = $jasa->Donasi->User ?? null;
-                // if ($user) {
-                //     $user->notify(new JasaDonasiDitolak($jasa));
-                // }
-            });
-
-            return back()->with('success', 'Jasa donasi berhasil ditolak.');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Gagal menolak jasa donasi ' . $e->getMessage());
-        }
-    }
-
 
     // fungsi untuk menyetujui Donasi
-    public function approveDonasi($id)
+    public function approveDonasi(Request $request, $id)
     {
+        $request->validate([
+            'alasan' => 'required|string|max:255',
+        ]);
+
         try {
             $donasi = Donasi::findOrFail($id);
 
-            DB::transaction(function () use ($donasi) {
-                if (strcasecmp($donasi->JenisDonasi->nama, 'dana') === 0) {
-                    $donasi->DonasiDana->update(['status_verifikasi' => 'approved']);
-                } elseif (strcasecmp($donasi->JenisDonasi->nama, 'barang') === 0) {
-                    $donasi->DonasiBarang
+            DB::transaction(function () use ($donasi, $request) {
+                $namaJenis = strtolower($donasi->JenisDonasi->nama);
+                match ($namaJenis) {
+                    'dana' => $donasi->DonasiDana()->update(['status_verifikasi' => 'approved']),
+                    'barang' => $donasi->DonasiBarang()
                         ->where('status_verifikasi', 'pending')
-                        ->each
-                        ->update(['status_verifikasi' => 'approved']);
-                } elseif (strcasecmp($donasi->JenisDonasi->nama, 'jasa') === 0) {
-                    $donasi->DonasiJasa->update(['status_verifikasi' => 'approved']);
-                }
-                $donasi->update(['status' => 'approved']);
+                        ->update(['status_verifikasi' => 'approved']),
+                    'jasa' => $donasi->DonasiJasa()->update(['status_verifikasi' => 'approved']),
+                    default => null
+                };
+
+                $donasi->update([
+                    'status' => 'approved',
+                    'alasan' => $request->alasan ?? null
+                ]);
 
                 // Kalau mau kirim notifikasi ke user
-                // $user = $donasi->Donasi->User ?? null;
-                // if ($user) {
-                //     $user->notify(new DonasiDisetujui($donasi));
-                // }
+                $user = $donasi->User ?? null;
+                if ($user) {
+                    $user->notify(new donasiDiterima($donasi));
+                }
             });
 
             return back()->with('success', 'Donasi berhasil disetujui.');
@@ -276,35 +248,44 @@ class DonasiController extends Controller
     }
 
     // fungsi untuk menolak Donasi
-    public function rejectDonasi($id)
+    public function rejectDonasi(Request $request, $id)
     {
+        $request->validate([
+            'alasan' => 'required|string|max:255',
+        ]);
+
         try {
             $donasi = Donasi::findOrFail($id);
 
-            DB::transaction(function () use ($donasi) {
-                if (strcasecmp($donasi->JenisDonasi->nama, 'dana') === 0) {
-                    $donasi->DonasiDana->update(['status_verifikasi' => 'rejected']);
-                } elseif (strcasecmp($donasi->JenisDonasi->nama, 'barang') === 0) {
-                    $donasi->DonasiBarang
-                        ->where('status_verifikasi', 'pending')
-                        ->each
-                        ->update(['status_verifikasi' => 'rejected']);
-                } elseif (strcasecmp($donasi->JenisDonasi->nama, 'jasa') === 0) {
-                    $donasi->DonasiJasa->update(['status_verifikasi' => 'rejected']);
-                }
-                $donasi->update(['status' => 'rejected']);
+            DB::transaction(function () use ($donasi, $request) {
+                $namaJenis = strtolower($donasi->JenisDonasi->nama);
 
-                // $user = $donasi->Donasi->User ?? null;
-                // if ($user) {
-                //     $user->notify(new DonasiDitolak($donasi));
-                // }
+                match ($namaJenis) {
+                    'dana' => $donasi->DonasiDana()->update(['status_verifikasi' => 'rejected']),
+                    'barang' => $donasi->DonasiBarang()
+                        ->update(['status_verifikasi' => 'rejected']),
+                    'jasa' => $donasi->DonasiJasa()->update(['status_verifikasi' => 'rejected']),
+                    default => null
+                };
+
+                $donasi->update([
+                    'status' => 'rejected',
+                    'alasan' => $request->alasan
+                ]);
+
+                // Kalau mau notifikasi
+                $user = $donasi->User ?? null;
+                if ($user) {
+                    $user->notify(new donasiDitolak($donasi));
+                }
             });
 
             return back()->with('success', 'Donasi berhasil ditolak.');
         } catch (\Exception $e) {
-            return back()->with('error', 'Gagal menolak donasi ' . $e->getMessage());
+            return back()->with('error', 'Gagal menolak donasi: ' . $e->getMessage());
         }
     }
+
 
     // fungsi untuk melihat detail donasi
     public function detailDonasi($id)

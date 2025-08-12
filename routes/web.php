@@ -285,17 +285,19 @@ Route::middleware(['auth', 'auth.user:mitra,donatur'])->prefix('user')->group(fu
         Route::delete('/delete-account', [UserController::class, 'forceDelete'])->name('profile.delete');
     });
 
+    // detail-donasi
+    Route::get('/detail-donasi/{id}', [DonasiController::class, 'showDetailDonasi'])->name('user-donasi.detail');
 
-    // donasi
+    // daftar-donasi
     Route::get('/daftarDonasi', [CampaignController::class, 'showUserCampaign'])->name('daftar.donasi');
-
+    
     // activity
     Route::get('/activity', [UserController::class, 'showActivityAll'])->name('user.activity');
 });
 
 
 Route::middleware(['auth', 'auth.user:mitra'])->prefix('mitra')->group(function () {
-    // kerja sama
+    // kerja-sama
     Route::prefix('kerja-sama')->group(function () {
         Route::get('/', [KerjaSamaController::class, 'show'])->name('mitra.kerja-sama');
         Route::post('/create', [KerjaSamaController::class, 'store'])->name('kerja-sama.store');

@@ -7,14 +7,14 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class KerjaSamaDitolak extends Notification
+class donasiDiterima extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(public $kerjaSama)
+    public function __construct(public $donasi)
     {
         //
     }
@@ -24,7 +24,7 @@ class KerjaSamaDitolak extends Notification
      *
      * @return array<int, string>
      */
-    public function via($notifiable)
+    public function via(object $notifiable): array
     {
         return ['database'];
     }
@@ -32,13 +32,13 @@ class KerjaSamaDitolak extends Notification
     /**
      * Get the mail representation of the notification.
      */
-    // public function toMail(object $notifiable): MailMessage
-    // {
-    //     return (new MailMessage)
-    //         ->line('The introduction to the notification.')
-    //         ->action('Notification Action', url('/'))
-    //         ->line('Thank you for using our application!');
-    // }
+    public function toMail(object $notifiable): MailMessage
+    {
+        return (new MailMessage)
+            ->line('The introduction to the notification.')
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
+    }
 
     /**
      * Get the array representation of the notification.
@@ -48,11 +48,11 @@ class KerjaSamaDitolak extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'title' => 'Kerja Sama Ditolak',
-            'message' => 'Pengajuan kerja sama Anda telah ditolak. klik untuk melihat detail.',
-            'type' => 'rejected',
+            'title' => 'Donasi Diterima',
+            'message' => 'Pengajuan donasi Anda telah diterima. klik untuk melihat detail.',
+            'type' => 'success',
             'time' => now()->toDateTimeString(),
-            'url' => route('kerja-sama.detail', $this->kerjaSama->id_kerja_sama),
+            'url' => route('user-donasi.detail', $this->donasi->id_donasi),
         ];
     }
 }

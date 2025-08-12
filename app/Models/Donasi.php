@@ -15,6 +15,7 @@ class Donasi extends Model
         'status',
         'pesan',
         'anonim',
+        'alasan',
         'id_user',
         'id_campaign',
         'id_jenis_donasi'

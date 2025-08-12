@@ -14,6 +14,7 @@ class KerjaSama extends Model
         'tanggal_mulai',
         'tanggal_selesai',
         'status',
+        'alasan',
         'id_mitra',
         'id_kategori_kerja_sama',
         'id_program'
