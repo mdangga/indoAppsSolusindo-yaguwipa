@@ -84,22 +84,19 @@
                     {
                         data: 'status',
                         name: 'status',
-                        render: function(data, type, row) {
-                            let isPublished = false;
+                        render: function(data) {
+                            const statusClasses = {
+                                'aktif': 'bg-green-100 text-green-800 border-green-200',
+                                'pending': 'bg-orange-100 text-orange-800 border-orange-200',
+                                'selesai': 'bg-gray-100 text-gray-800 border-gray-200'
+                            };
 
-                            if (typeof data === 'string') {
-                                isPublished = data.toLowerCase().includes('published') ||
-                                    data.toLowerCase().includes('aktif') ||
-                                    data.toLowerCase().includes('show');
-                            } else if (typeof data === 'number') {
-                                isPublished = data == 1;
-                            } else if (typeof data === 'boolean') {
-                                isPublished = data;
-                            }
 
-                            return isPublished ?
-                                '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200"><i class="fas fa-eye w-3 h-3 mr-1.5"></i>Show</span>' :
-                                '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200"><i class="fas fa-eye-slash w-3 h-3 mr-1.5"></i>Hidden</span>';
+                            const key = (data || '').toString().trim().toLowerCase();
+
+                            return `<span class="px-2 py-1 border rounded-full text-xs ${statusClasses[key] || 'bg-gray-100'}">
+                                ${data || 'Tidak Diketahui'}
+                            </span>`;
                         },
                         width: '100px'
                     },
