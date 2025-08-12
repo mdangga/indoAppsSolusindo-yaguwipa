@@ -4,100 +4,80 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Laravel</title>
-    <!-- Fonts -->
-    {{-- Favicon --}}
-    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
-
+    <title>Pulihkan Akun</title>
+    <link rel="icon" type="image/png" href="{{ asset('storage/' . $site['yayasanProfile']->logo) }}">
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <!-- AOS Library -->
+
     <style>
-        body {
-            font-family: 'Instrument Sans', sans-serif;
-        }
-
-        .img-container {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .img-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .glass-card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            padding: 2rem;
+            animation: fadeInUp 0.8s ease;
             z-index: 1;
         }
 
-        .img-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(6, 8, 220, 0.8) 0%, rgba(147, 51, 234, 0.2) 50%, rgba(252, 253, 175, 0.4) 100%);
-            z-index: 2;
-            opacity: 0.5;
-            background-color: rgba(0, 0, 0, 0.805);
-            -webkit-backdrop-filter: blur(50px);
-            backdrop-filter: blur(50px);
-        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
 
-        .content-overlay {
-            position: relative;
-            z-index: 3;
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 
-<body class="h-full bg-gray-50">
-    <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-md w-full space-y-8">
-            <div>
-                <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                    Pulihkan Akun Anda
-                </h2>
-            </div>
-            @if ($errors->any())
-                <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                    @foreach ($errors->all() as $error)
-                        <p>{{ $error }}</p>
-                    @endforeach
-                </div>
-            @endif
-
-            @if (session('error'))
-                <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                    {{ session('error') }}
-                </div>
-            @endif
-            <form class="mt-8 space-y-6" action="{{ route('profile.restore') }}" method="POST">
-                @csrf
-                <div class="rounded-md shadow-sm space-y-4">
-                    <div>
-                        <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-                        <input id="username" name="username" type="text" required
-                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                    </div>
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                        <input id="password" name="password" type="password" required
-                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                    </div>
-                </div>
-
-                <div>
-                    <button type="submit"
-                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        Pulihkan Akun
-                    </button>
-                </div>
-            </form>
+<body class="h-full flex items-center justify-center p-6">
+    <div class="max-w-md w-full glass-card">
+        <div class="text-center mb-8">
+            <img class="mx-auto h-24 w-auto" src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" alt="logo yayasan" />
         </div>
+        <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-6">
+            Pulihkan Akun Anda
+        </h2>
+
+        @if ($errors->any())
+            <div class="mb-4 bg-red-500/20 border border-red-400 text-red-200 px-4 py-3 rounded">
+                @foreach ($errors->all() as $error)
+                    <p>{{ $error }}</p>
+                @endforeach
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="mb-4 bg-red-500/20 border border-red-400 text-red-200 px-4 py-3 rounded">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <form class="space-y-4" action="{{ route('profile.restore') }}" method="POST">
+            @csrf
+            <div>
+                <label for="username" class="block text-sm font-medium text-gray-900">Username</label>
+                <input id="username" name="username" type="text" required
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300/30 rounded-md shadow-sm bg-white/10 text-gray-900 placeholder-gray-300 focus:ring-purple-400 focus:border-purple-400">
+            </div>
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-900">Password</label>
+                <input id="password" name="password" type="password" required
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300/30 rounded-md shadow-sm bg-white/10 text-gray-900 placeholder-gray-300 focus:ring-purple-400 focus:border-purple-400">
+            </div>
+
+            <button type="submit"
+                class="w-full py-2 px-4 rounded-md text-gray-900 font-medium bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 hover:opacity-90 shadow-lg transition-all duration-300">
+                Pulihkan Akun
+            </button>
+        </form>
     </div>
-
-
 </body>
 
 </html>

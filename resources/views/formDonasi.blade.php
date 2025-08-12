@@ -47,7 +47,7 @@
                     <div class="hidden md:block w-80 bg-gray-100/60 p-8 rounded-xl border-gray-200">
                         <!-- Stepper -->
                         <div class="flex items-center space-x-3 mb-10">
-                            <img src="{{ asset('img/logo.png') }}" alt="Icon Donasi" class="w-12 h-12 rounded-lg" />
+                            <img src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" alt="Icon Donasi" class="w-12 h-12 rounded-lg" />
                             <div>
                                 <h1 class="text-md font-semibold text-gray-800">Form Donasi</h1>
                                 <p class="text-xs text-gray-500 leading-snug">Bersama Anda, Kami Membawa<br>Manfaat

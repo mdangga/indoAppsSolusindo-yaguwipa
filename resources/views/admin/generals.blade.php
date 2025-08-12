@@ -7,7 +7,7 @@
     <title>General - Setting</title>
 
     {{-- Favicon --}}
-    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('storage/' . $site['yayasanProfile']->logo) }}">
 
     {{-- Fonts --}}
     <link rel="preconnect" href="https://fonts.bunny.net" />

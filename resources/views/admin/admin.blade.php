@@ -8,7 +8,7 @@
 
     <title>Admin - Berita dan Kegiatan</title>
     {{-- icon --}}
-    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('storage/' . $site['yayasanProfile']->logo) }}">
 
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
@@ -559,7 +559,7 @@
                         .addClass('bg-gray-400 cursor-not-allowed')
                         .html('<i class="fas fa-spinner fa-spin w-3 h-3 mr-1"></i>');
 
-                    fetch(`/admin/berita/destroy/${id}`, {
+                    fetch(`/admin/news-event/destroy/${id}`, {
                             method: 'delete', // ubah ke POST
                             headers: {
                                 'Content-Type': 'application/json',
@@ -591,7 +591,7 @@
             // Edit handler
             $('#beritaTable').on('click', '.editBtn', function() {
                 const id = $(this).data('id');
-                window.location.href = `/admin/berita/edit/${id}`;
+                window.location.href = `/admin/news-event/edit/${id}`;
             });
 
             // Notification system

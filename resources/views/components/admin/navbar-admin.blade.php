@@ -14,7 +14,7 @@
                     </svg>
                 </button>
                 {{-- <a href="https://flowbite.com" class="flex ms-2 md:me-24">
-                        <img src="{{ asset('img/logo.png') }}" class="h-8 me-3" alt="FlowBite Logo" />
+                        <img src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" class="h-8 me-3" alt="FlowBite Logo" />
                         <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap  ">Yaguwipa</span>
                     </a> --}}
             </div>

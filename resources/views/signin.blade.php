@@ -7,7 +7,7 @@
     <title>Laravel</title>
     <!-- Fonts -->
     {{-- Favicon --}}
-    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('storage/' . $site['yayasanProfile']->logo) }}">
 
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
@@ -127,7 +127,7 @@
                         <div class="max-w-md mx-auto">
                             <!-- Logo -->
                             <div class="text-center mb-8">
-                                <img class="mx-auto h-24 w-auto" src="{{ asset('img/logo.png') }}" alt="logo yayasan" />
+                                <img class="mx-auto h-24 w-auto" src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" alt="logo yayasan" />
                             </div>
 
                             <!-- Form -->
