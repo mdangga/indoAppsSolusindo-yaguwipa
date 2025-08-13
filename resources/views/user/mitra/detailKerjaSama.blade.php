@@ -25,7 +25,9 @@
     $steps = [
         [
             'title' => 'Pengajuan Dikirim',
-            'date' => $kerjasama->created_at ? 'Diajukan pada ' . $kerjasama->created_at->format('d M Y H:i') : 'Belum ada tanggal',
+            'date' => $kerjasama->created_at
+                ? 'Diajukan pada ' . $kerjasama->created_at->format('d M Y H:i')
+                : 'Belum ada tanggal',
         ],
         [
             'title' => 'Review',
@@ -34,7 +36,9 @@
         [
             'title' => 'Hasil Review',
             'date' =>
-                $kerjasama->status === 'pending' ? 'Menunggu Keputusan' : 'Disetujui pada ' . $kerjasama->updated_at->format('d M Y H:i'),
+                $kerjasama->status === 'pending'
+                    ? 'Menunggu Keputusan'
+                    : 'Disetujui pada ' . $kerjasama->updated_at->format('d M Y H:i'),
         ],
     ];
 
@@ -99,7 +103,8 @@
 <body>
     <div class="min-h-screen bg-gray-50">
         <!-- Header -->
-        <x-user.header-user :user="$user" :randomBg="$randomBg" :profilePath="$profilePath" :route="url()->previous()" :title="'Detail Kerja Sama'" :description="'Detail lengkap pengajuan kerja sama Anda dengan lembaga'" />
+        <x-user.header-user :user="$user" :randomBg="$randomBg" :profilePath="$profilePath" :route="url()->previous()" :title="'Detail Kerja Sama'"
+            :description="'Detail lengkap pengajuan kerja sama Anda dengan lembaga'" />
 
         <!-- Main Content -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -190,7 +195,8 @@
 
                                 @if ($kerjasama->alasan)
                                     <div>
-                                        <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Alasan</span>
+                                        <span
+                                            class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Alasan</span>
                                         <p class="text-sm text-gray-700 mt-1">
                                             {{ $kerjasama->alasan }}
                                         </p>
@@ -251,6 +257,21 @@
                                     class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
                                     onclick="return confirm('Apakah Anda yakin ingin membatalkan pengajuan kerja sama ini?')">
                                     <i class="fas fa-times mr-2"></i> Batalkan Pengajuan
+                                </button>
+                            </form>
+                        @endif
+                        @if ($kerjasama->status === 'approved')
+                            <form action="{{ route('download.zip', $kerjasama->id_kerja_sama) }}" method="GET">
+                                @csrf
+                                <button type="submit"
+                                    class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2"
+                                        viewBox="0 0 24 24">
+                                        <path fill="currentColor"
+                                            d="M18.08 15.106q.222 0 .356-.115a.4.4 0 0 0 .139-.314a.4.4 0 0 0-.14-.32a.5.5 0 0 0-.356-.122h-.508q-.03 0-.03.03v.81q0 .03.03.03z" />
+                                        <path fill="currentColor"
+                                            d="M17.25 22a2.25 2.25 0 0 0 2.25-2.25v-.744h1a1.5 1.5 0 0 0 1.5-1.5V13.25a1.5 1.5 0 0 0-1.5-1.5h-10a1.5 1.5 0 0 0-1.5 1.5v4.256a1.5 1.5 0 0 0 1.5 1.5H18v.744a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75v-10h4a2.25 2.25 0 0 0 2.25-2.252L12.249 3.5h5.002a.75.75 0 0 1 .75.75v7.488h1.5V4.25A2.25 2.25 0 0 0 17.25 2h-5.132a2.25 2.25 0 0 0-1.592.66L5.16 8.03a2.25 2.25 0 0 0-.66 1.592V19.75A2.25 2.25 0 0 0 6.75 22zM10.749 4.559l.002 2.94a.75.75 0 0 1-.75.751H7.06zm7.518 8.703q.43 0 .755.175q.327.17.502.49q.182.315.182.725q0 .405-.188.714a1.26 1.26 0 0 1-.526.478q-.339.168-.78.169h-.64q-.03 0-.031.03v1.36a.1.1 0 0 1-.024.067a.1.1 0 0 1-.067.024h-.955a.1.1 0 0 1-.067-.024a.1.1 0 0 1-.024-.066v-4.052a.1.1 0 0 1 .024-.066a.1.1 0 0 1 .067-.024zM14.84 17.47a.1.1 0 0 1-.025-.066v-4.052a.1.1 0 0 1 .024-.066a.1.1 0 0 1 .067-.024h.955a.1.1 0 0 1 .067.024a.1.1 0 0 1 .024.066v4.052a.1.1 0 0 1-.024.066a.1.1 0 0 1-.067.024h-.955a.1.1 0 0 1-.066-.024m-3.42.024a.1.1 0 0 1-.067-.024a.1.1 0 0 1-.024-.066v-.877a.16.16 0 0 1 .042-.109l1.76-2.146q.012-.013.006-.025t-.024-.012H11.42a.1.1 0 0 1-.067-.024a.1.1 0 0 1-.024-.066v-.793a.1.1 0 0 1 .024-.066a.1.1 0 0 1 .067-.024h2.908a.1.1 0 0 1 .067.024a.1.1 0 0 1 .024.066v.871a.16.16 0 0 1-.043.115l-1.771 2.147q-.012.012-.006.024t.024.012h1.705a.1.1 0 0 1 .067.024a.1.1 0 0 1 .024.066v.793a.1.1 0 0 1-.024.066a.1.1 0 0 1-.067.024z" />
+                                    </svg></i> Download Zip
                                 </button>
                             </form>
                         @endif

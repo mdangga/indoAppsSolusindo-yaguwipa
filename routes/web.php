@@ -23,7 +23,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // testing-area
-Route::get('/testing', [PdfController::class, 'generatePdf'])->name('testing');
+// Route::get('/testing/{id}', [GeneralController::class, 'testing'])->name('testing');
 
 // route-default beranda
 Route::get('/', [GeneralController::class, 'beranda'])->name('beranda');
@@ -74,7 +74,7 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('admin.profiles');
         Route::put('/update/{id}', [ProfileController::class, 'update'])->name('profiles.update');
     });
-
+    
 
     // campaigns
     Route::prefix('campaigns')->group(function () {
@@ -86,7 +86,7 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
         Route::put('/{id}', [CampaignController::class, 'update'])->name('campaigns.update');
         Route::delete('/destroy/{id}', [CampaignController::class, 'destroy'])->name('campaigns.destroy');
     });
-
+    
     // user
     Route::prefix('user')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('admin.user');
@@ -94,7 +94,7 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
         Route::delete('/deactivate/{id}', [UserController::class, 'deactivateUser'])->name('user.deactivate');
         Route::post('/restore/{id}', [UserController::class, 'restoreUser'])->name('user.restore');
     });
-
+    
     // sosial-media
     Route::prefix('sosial-media')->group(function () {
         Route::get('/', [SosiaMediaController::class, 'index'])->name('admin.sosmed');
@@ -105,7 +105,7 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
         Route::put('/{id}', [SosiaMediaController::class, 'update'])->name('sosmed.update');
         Route::delete('/destroy/{id}', [SosiaMediaController::class, 'destroy'])->name('sosmed.delete');
     });
-
+    
     // institusi-terlibat
     Route::prefix('institusi-terlibat')->group(function () {
         Route::get('/', [InstitusiController::class, 'index'])->name('admin.institusi');
@@ -116,7 +116,7 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
         Route::put('/{id}', [InstitusiController::class, 'update'])->name('institusi.update');
         Route::delete('/destroy/{id}', [InstitusiController::class, 'destroy'])->name('institusi.delete');
     });
-
+    
     // kategori-program
     Route::prefix('kategori-program')->group(function () {
         Route::get('/', [KategoriProgramController::class, 'index'])->name('admin.kategoriProgram');
@@ -139,7 +139,7 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
         Route::delete('/destroy/{id}', [ProgramController::class, 'destroy'])->name('program.delete');
     });
 
-
+    
     // gallery
     Route::prefix('gallery')->group(function () {
         Route::get('/photo', [GalleryController::class, 'indexPhoto'])->name('admin.galleryPhoto');
@@ -152,7 +152,7 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
         Route::put('/{id}', [GalleryController::class, 'update'])->name('gallery.update');
         Route::delete('/destroy/{id}', [GalleryController::class, 'destroy'])->name('gallery.delete');
     });
-
+    
 
     // Kategori-news-event
     Route::prefix('kategori-news-event')->group(function () {
@@ -164,8 +164,8 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
         Route::put('/{id}', [kategoriNewsEventController::class, 'update'])->name('kategoriBerita.update');
         Route::delete('/destroy/{id}', [kategoriNewsEventController::class, 'destroy'])->name('kategoriBerita.delete');
     });
-
-
+    
+    
     // news-dan-event 
     Route::prefix('news-event')->group(function () {
         Route::get('/', [BeritaController::class, 'index'])->name('admin.berita');
@@ -176,8 +176,8 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
         Route::put('/{id}', [BeritaController::class, 'update'])->name('berita.update');
         Route::delete('/destroy/{id}', [BeritaController::class, 'destroy'])->name('berita.delete');
     });
-
-
+    
+    
     // menus
     Route::prefix('menus')->group(function () {
         Route::get('/', [MenusController::class, 'index'])->name('admin.menus');
@@ -185,44 +185,44 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
 
         Route::get('/create', [MenusController::class, 'showFormStore'])->name('menus.formStore');
         Route::post('/', [MenusController::class, 'store'])->name('menus.store');
-
+        
         Route::get('/edit/{id}', [MenusController::class, 'showFormEdit'])->name('menus.formEdit');
         Route::put('/{id}', [MenusController::class, 'update'])->name('menus.update');
-
+        
         Route::delete('/destroy/{id}', [MenusController::class, 'destroy'])->name('menus.delete');
     });
-
-
+    
+    
     // jenis-publikasi 
     Route::prefix('jenis-publikasi')->group(function () {
         Route::get('/', [JenisPublikasiController::class, 'index'])->name('admin.jenisPublikasi');
         Route::get('/datatable', [JenisPublikasiController::class, 'getDataTables'])->name('jenisPublikasi.table');
-
+        
         Route::get('/create', [JenisPublikasiController::class, 'showFormStore'])->name('jenisPublikasi.formStore');
         Route::post('/', [JenisPublikasiController::class, 'store'])->name('jenisPublikasi.store');
 
         Route::get('/edit/{id}', [JenisPublikasiController::class, 'showFormEdit'])->name('jenisPublikasi.formEdit');
         Route::put('/{id}', [JenisPublikasiController::class, 'update'])->name('jenisPublikasi.update');
-
+        
         Route::delete('/destroy/{id}', [JenisPublikasiController::class, 'destroy'])->name('jenisPublikasi.delete');
     });
-
-
+    
+    
     // publikasi 
     Route::prefix('publikasi')->group(function () {
         Route::get('/', [PublikasiController::class, 'index'])->name('admin.publikasi');
         Route::get('/datatable', [PublikasiController::class, 'getDataTables'])->name('publikasi.table');
-
+        
         Route::get('/create', [PublikasiController::class, 'showFormStore'])->name('publikasi.formStore');
         Route::post('/', [PublikasiController::class, 'store'])->name('publikasi.store');
-
+        
         Route::get('/edit/{id}', [PublikasiController::class, 'showFormEdit'])->name('publikasi.formEdit');
         Route::put('/{id{', [PublikasiController::class, 'update'])->name('publikasi.update');
-
+        
         Route::delete('/destroy/{id}', [PublikasiController::class, 'destroy'])->name('publikasi.delete');
     });
-
-
+    
+    
     // kerja-sama
     Route::prefix('kerja-sama')->group(function () {
         Route::get('/', [KerjaSamaController::class, 'index'])->name('admin.kerjaSama');
@@ -232,22 +232,22 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
         Route::post('/rejected{id}', [KerjaSamaController::class, 'rejected'])->name('kerjaSama.rejected');
         Route::delete('/destroy/{id}', [KerjaSamaController::class, 'destroy'])->name('kerjaSama.delete');
     });
-
-
+    
+    
     // donasi
     Route::prefix('donasi')->group(function () {
         Route::get('/', [DonasiController::class, 'index'])->name('admin.donasi');
         Route::get('/datatable', [DonasiController::class, 'getDataTables'])->name('donasi.table');
         Route::get('/detail-donasi/{id}', [DonasiController::class, 'detailDonasi'])->name('donasi.detail');
-
+        
         // barang
         Route::post('/barang/approved/{id}', [DonasiController::class, 'approveBarang'])->name('barang.approved');
         Route::post('/barang/rejected/{id}', [DonasiController::class, 'rejectBarang'])->name('barang.rejected');
-
+        
         // jasa
         Route::post('/jasa/approved/{id}', [DonasiController::class, 'approveJasa'])->name('jasa.approved');
         Route::post('/jasa/rejected/{id}', [DonasiController::class, 'rejectJasa'])->name('jasa.rejected');
-
+        
         // donasi
         Route::post('/donasi/approved/{id}', [DonasiController::class, 'approveDonasi'])->name('donasi.approved');
         Route::post('/donasi/rejected/{id}', [DonasiController::class, 'rejectDonasi'])->name('donasi.rejected');
@@ -266,15 +266,15 @@ Route::middleware(['auth', 'auth.user:mitra,donatur'])->prefix('user')->group(fu
     // Dashboard
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
 
-
+    
     // review
     Route::prefix('ulasan')->group(function () {
         Route::post('/create', [ReviewController::class, 'store'])->name('review.store');
         Route::put('/edit/{id}', [ReviewController::class, 'update'])->name('review.update');
         Route::delete('/destroy/{id}', [ReviewController::class, 'destroy'])->name('review.delete');
     });
-
-
+    
+    
     // edit profile
     Route::prefix('edit-profile')->group(function () {
         Route::get('/', [UserController::class, 'showEditProfile'])->name('user.edit-profile');
@@ -285,10 +285,10 @@ Route::middleware(['auth', 'auth.user:mitra,donatur'])->prefix('user')->group(fu
         Route::delete('/deactivate-account', [UserController::class, 'deactivate'])->name('profile.deactivate');
         Route::delete('/delete-account', [UserController::class, 'forceDelete'])->name('profile.delete');
     });
-
+    
     // detail-donasi
     Route::get('/detail-donasi/{id}', [DonasiController::class, 'showDetailDonasi'])->name('user-donasi.detail');
-
+    
     // daftar-donasi
     Route::get('/daftarDonasi', [CampaignController::class, 'showUserCampaign'])->name('daftar.donasi');
     
@@ -303,8 +303,9 @@ Route::middleware(['auth', 'auth.user:mitra'])->prefix('mitra')->group(function 
         Route::get('/', [KerjaSamaController::class, 'show'])->name('mitra.kerja-sama');
         Route::post('/create', [KerjaSamaController::class, 'store'])->name('kerja-sama.store');
         Route::delete('/destroy/{id}', [KerjaSamaController::class, 'batalkanKerjaSama'])->name('kerja-sama.destroy');
-
+        
         Route::get('/detail-kerja-sama/{id}', [KerjaSamaController::class, 'showDetailKerjaSama'])->name('kerja-sama.detail');
+        Route::get('/zip/download-file/{id}', [PdfController::class, 'downloadZipStream'])->name('download.zip');
     });
 });
 

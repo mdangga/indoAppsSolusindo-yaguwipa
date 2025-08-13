@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use App\Services\PdfService;
 use Yajra\DataTables\Facades\DataTables;
 
 class KerjaSamaController extends Controller
@@ -53,7 +54,7 @@ class KerjaSamaController extends Controller
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
             'file_penunjang' => 'nullable|array|max:4',
-            'file_penunjang.*' => 'file|mimes:pdf,jpg,jpeg,png,doc,docx|max:2048',
+            'file_penunjang.*' => 'file|mimes:pdf,doc,docx|max:2048',
         ], [
             'kategori_baru.required_if' => 'Kategori baru harus diisi ketika memilih "Lainnya"',
             'id_program.required' => 'Program harus dipilih',
@@ -131,7 +132,6 @@ class KerjaSamaController extends Controller
                             'file_path' => $path,
                             'nama_file' => $filename,
                             'file_size' => $file->getSize(),
-                            'file_type' => $extension,
                         ]);
                     }
                 }
@@ -201,7 +201,8 @@ class KerjaSamaController extends Controller
 
 
     // fungsi untuk menerima kerja sama
-    public function approved(Request $request, $id)
+    // Controller
+    public function approved(Request $request, $id, PdfService $pdfService)
     {
         $request->validate([
             'alasan' => 'required|string|max:255',
@@ -211,15 +212,18 @@ class KerjaSamaController extends Controller
             $kerjaSama = KerjaSama::with('Mitra.User')->findOrFail($id);
 
             DB::transaction(function () use ($kerjaSama, $request) {
-                $kerjaSama->update(['status' => 'approved', 'alasan' => $request->alasan]);
+                $kerjaSama->update([
+                    'status' => 'approved',
+                    'alasan' => $request->alasan
+                ]);
 
-                $user = $kerjaSama->Mitra->User;
-                if ($user) {
+                if ($user = $kerjaSama->Mitra->User) {
                     $user->notify(new KerjaSamaDisetujui($kerjaSama));
                 }
             });
 
-            return back()->with('success', 'Kerja Sama Diterima');
+            // Generate dan download PDF
+            return $pdfService->generateKerjaSama($kerjaSama->id_kerja_sama);
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal menyetujui kerja sama: ' . $e->getMessage());
         }

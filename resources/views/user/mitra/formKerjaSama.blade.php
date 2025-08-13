@@ -308,7 +308,7 @@
 
                         <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-2xl mx-auto">
                             <p class="text-sm text-blue-700 text-center">
-                                <strong>Catatan:</strong> Format file yang diterima: PDF, DOCX, JPG, PNG. Maksimal
+                                <strong>Catatan:</strong> Format file yang diterima: PDF, DOCX. Maksimal
                                 ukuran per file adalah 2MB.
                             </p>
                         </div>
