@@ -287,6 +287,81 @@
         @endif
         {{-- end lembaga --}}
     </main>
+
+    <!-- Testimonial Section -->
+    <section class="bg-gradient-to-br from-white to-gray-100 py-16 px-4 sm:px-6 lg:px-12">
+        <div class="max-w-7xl mx-auto">
+            <!-- Judul -->
+            <div class="text-center mb-10">
+                <h2 class="text-4xl font-bold mb-2 text-gray-900">
+                    Apa Kata <span class="text-gray-700">Klien Kami</span>
+                </h2>
+                <p class="text-gray-500">Dengarkan langsung testimoni dari mitra yang puas bekerja sama dengan kami</p>
+            </div>
+
+            <!-- Grid Testimonial -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                @foreach ($reviews as $review)
+                    <div
+                        class="bg-white border border-gray-200 rounded-2xl shadow-md p-6 flex flex-col justify-between">
+                        <div>
+                            {{-- Bintang Dinamis --}}
+                            <div class="text-yellow-400 mb-2">
+                                {!! str_repeat('★', $review->rating) !!}
+                                {!! str_repeat('☆', 5 - $review->rating) !!}
+                                <span class="text-gray-500 text-sm">({{ $review->rating }}/5)</span>
+                            </div>
+
+                            {{-- Pesan Review --}}
+                            <p class="text-gray-600 mb-4">
+                                "{{ $review->review }}"
+                            </p>
+                        </div>
+
+                        {{-- Info User --}}
+
+                        <div class="flex items-center mt-auto pt-4 border-t border-gray-100">
+                            @php
+                                $profilePath = $review->User->profile_path ?? null;
+                                $src = null;
+                                $initial = strtoupper(Str::substr($user->username ?? ($user->name ?? 'U'), 0, 1));
+                                if ($profilePath) {
+                                    // Jika URL eksternal
+                                    if (preg_match('/^https?:\/\//i', $profilePath)) {
+                                        $src = $profilePath;
+                                    } else {
+                                        // Normalisasi kalau ada prefix "storage/"
+                                        $normalized = ltrim(preg_replace('#^storage/#', '', $profilePath), '/');
+                                        $src = asset('storage/' . $normalized);
+                                    }
+                                }
+                            @endphp
+
+                            @if ($src)
+                                <img src="{{ $src }}"
+                                    alt="Foto Profil {{ $review->User->nama ?? 'Pengguna' }}"
+                                    class="w-12 h-12 rounded-full object-cover border-2 border-gray-300" />
+                            @else
+                                <div
+                                    class="w-12 h-12 bg-gray-400 rounded-full text-white flex items-center justify-center font-semibold uppercase select-none transition-colors duration-200 text-lg">
+                                    {{ $initial }}
+                                </div>
+                            @endif
+
+
+                            <div class="ml-3">
+                                <h4 class="font-semibold text-gray-900 capitalize">
+                                    {{ $review->User->nama ?? 'Anonim' }}</h4>
+                                <p class="text-sm text-gray-500 capitalize">{{ $review->User->role ?? 'Pengguna' }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
     <x-footer />
 
     @if (!empty($site['lembaga']) && count($site['lembaga']) > 0)

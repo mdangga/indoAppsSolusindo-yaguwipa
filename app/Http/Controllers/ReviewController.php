@@ -6,9 +6,16 @@ use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class ReviewController extends Controller
 {
+    public function index()
+    {
+        $reviews = Review::with('User')->latest()->get();
+        return view('beranda', compact('reviews'));
+    }
+
     // fungsi untuk menyimpan ulasan baru
     public function store(Request $request)
     {
