@@ -13,6 +13,7 @@ use App\Http\Controllers\KategoriProgramController;
 use App\Http\Controllers\KerjaSamaController;
 use App\Http\Controllers\MenusController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PdfController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\PublikasiController;
@@ -22,7 +23,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // testing-area
-Route::get('/testing', [GeneralController::class, 'testing'])->name('testing');
+Route::get('/testing', [PdfController::class, 'generatePdf'])->name('testing');
 
 // route-default beranda
 Route::get('/', [GeneralController::class, 'beranda'])->name('beranda');
