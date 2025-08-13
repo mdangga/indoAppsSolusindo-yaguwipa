@@ -25,8 +25,12 @@ class Institusi extends Model
             'nama' => $data['nama'],
             'alamat' => $data['alamat'],
             'website' => $data['website'],
-            'status' => $data['status'],
+
         ];
+
+        if (!empty($data['status'])) {
+            $institusiData['status'] = $data['status'];
+        }
 
         if (!empty($data['logo']) && $data['logo'] instanceof \Illuminate\Http\UploadedFile) {
             $logo = $data['logo'];

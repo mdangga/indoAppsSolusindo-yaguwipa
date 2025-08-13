@@ -87,38 +87,46 @@
 
                     <!-- Kolom kanan: daftar berita populer mingguan lainnya -->
                     <aside class="lg:col-span-4 overflow-y-auto space-y-3.5">
-                        @foreach ($beritaPopulerMingguan->skip(1) as $pop)
-                            <a href="{{ route('berita.slug', $pop->slug) }}"
-                                class="flex items-start gap-3 group hover:bg-gray-100 p-2 transition">
-                                <img src="{{ $pop->thumbnail ? asset('storage/' . $pop->thumbnail) : asset('images/no-image.png') }}"
-                                    alt="{{ $pop->judul }}" class="h-17 w-auto object-cover" />
-                                <div>
-                                    <!-- Tanggal dan durasi baca -->
-                                    <div class="text-xs text-gray-400 flex items-center gap-3">
-                                        <span>{{ \Carbon\Carbon::parse($pop->created_at)->format('M d, Y') }}</span>
+                        @if ($beritaPopulerMingguan->skip(1)->count())
+                            @foreach ($beritaPopulerMingguan->skip(1) as $pop)
+                                <a href="{{ route('berita.slug', $pop->slug) }}"
+                                    class="flex items-start gap-3 group hover:bg-gray-100 p-2 transition">
+                                    <img src="{{ $pop->thumbnail ? asset('storage/' . $pop->thumbnail) : asset('images/no-image.png') }}"
+                                        alt="{{ $pop->judul }}" class="h-17 w-auto object-cover" />
+                                    <div>
+                                        <!-- Tanggal dan durasi baca -->
+                                        <div class="text-xs text-gray-400 flex items-center gap-3">
+                                            <span>{{ \Carbon\Carbon::parse($pop->created_at)->format('M d, Y') }}</span>
+                                        </div>
+                                        <h3 class="text-sm font-medium text-gray-700 group-hover:text-black">
+                                            {{ Str::limit($pop->judul, 60) }}
+                                        </h3>
+                                        <p class="text-xs text-gray-500">
+                                            {{ $pop->KategoriNewsEvent->nama ?? 'Tanpa Kategori' }}
+                                        </p>
                                     </div>
-                                    <h3 class="text-sm font-medium text-gray-700 group-hover:text-black">
-                                        {{ Str::limit($pop->judul, 60) }}
-                                    </h3>
-                                    <p class="text-xs text-gray-500">
-                                        {{ $pop->KategoriNewsEvent->nama ?? 'Tanpa Kategori' }}
-                                    </p>
-                                </div>
-                            </a>
-                        @endforeach
+                                </a>
+                            @endforeach
+                        @else
+                            <div class="bg-gray-100 h-full flex items-center justify-center rounded-xl">
+                                <p class="text-gray-500 text-center text-sm">Belum ada berita populer mingguan lainnya.
+                                </p>
+                            </div>
+                        @endif
                     </aside>
+
                 </section>
             @endif
 
             {{-- populer all --}}
-            @if (isset($beritaPopuler))
+            @if (isset($beritaPopuler) && $beritaPopuler->count())
                 <section class="mt-13">
                     <h1 class="text-3xl font-extrabold text-gray-800 mb-6">Berita Populer</h1>
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
                         @foreach ($beritaPopuler as $item)
                             <a href="{{ route('berita.slug', $item->slug) }}" class="group">
                                 <!-- Gambar -->
-                                <div class="relative w-full h-[150px] overflow-hidden  shadow-sm">
+                                <div class="relative w-full h-[150px] overflow-hidden shadow-sm">
                                     <img src="{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : asset('images/no-image.png') }}"
                                         alt="{{ $item->judul }}"
                                         class="w-full h-full object-cover hover:opacity-90 transition duration-300" />
@@ -139,7 +147,15 @@
                         @endforeach
                     </div>
                 </section>
+            @else
+                <section class="mt-13">
+                    <h1 class="text-3xl font-extrabold text-gray-800 mb-6">Berita Populer</h1>
+                    <div class="bg-gray-100 h-[200px] flex items-center justify-center rounded-xl">
+                        <p class="text-gray-500 text-center text-sm">Belum ada berita populer.</p>
+                    </div>
+                </section>
             @endif
+
 
             <section class="py-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Kolom Kiri: Daftar Berita -->
@@ -151,34 +167,41 @@
                         @endphp
                     @endif
                     <h1 class="text-3xl font-extrabold text-gray-800 mb-6">{{ $title ?? 'Berita Terbaru' }}</h1>
-                    @foreach ($berita as $index => $item)
-                        <div
-                            class="flex flex-row gap-5 items-center 
-                    {{ $index !== count($berita) - 1 ? 'border-b border-gray-200 pb-6' : '' }}">
-                            <!-- Gambar Thumbnail -->
-                            <a href="{{ route('berita.slug', $item->slug) }}"
-                                class="block w-[120px] md:w-[300px] shrink-0">
-                                <img src="{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : asset('images/no-image.png') }}"
-                                    class="w-full h-[100px] md:h-[180px] object-cover shadow hover:opacity-90 transition duration-300">
-                            </a>
-
-                            <!-- Konten Berita -->
-                            <div class="flex-1 flex flex-col justify-center">
-                                <p class="inline-block text-sm text-gray-500 uppercase font-semibold mb-1">
-                                    {{ $item->KategoriNewsEvent->nama ?? 'Tanpa Kategori' }}
-                                </p>
-                                <h3 class="text-base md:text-xl font-bold text-gray-900 leading-snug mb-2">
-                                    <a href="{{ route('berita.slug', $item->slug) }}"
-                                        class="hover:text-amber-400 transition">
-                                        {{ $item->judul }}
-                                    </a>
-                                </h3>
-                                <p class="text-sm text-gray-500">
-                                    {{ $item->created_at->diffForHumans() }}
-                                </p>
-                            </div>
+                    @if ($berita->isEmpty())
+                        <div class="bg-gray-100 h-[500px] flex items-center justify-center rounded-xl">
+                            <p class="text-gray-500 text-center text-sm">Belum ada berita populer.</p>
                         </div>
-                    @endforeach
+                    @else
+                        @foreach ($berita as $index => $item)
+                            <div
+                                class="flex flex-row gap-5 items-center 
+                {{ $index !== count($berita) - 1 ? 'border-b border-gray-200 pb-6' : '' }}">
+                                <!-- Gambar Thumbnail -->
+                                <a href="{{ route('berita.slug', $item->slug) }}"
+                                    class="block w-[120px] md:w-[300px] shrink-0">
+                                    <img src="{{ $item->thumbnail ? asset('storage/' . $item->thumbnail) : asset('images/no-image.png') }}"
+                                        class="w-full h-[100px] md:h-[180px] object-cover shadow hover:opacity-90 transition duration-300">
+                                </a>
+
+                                <!-- Konten Berita -->
+                                <div class="flex-1 flex flex-col justify-center">
+                                    <p class="inline-block text-sm text-gray-500 uppercase font-semibold mb-1">
+                                        {{ $item->KategoriNewsEvent->nama ?? 'Tanpa Kategori' }}
+                                    </p>
+                                    <h3 class="text-base md:text-xl font-bold text-gray-900 leading-snug mb-2">
+                                        <a href="{{ route('berita.slug', $item->slug) }}"
+                                            class="hover:text-amber-400 transition">
+                                            {{ $item->judul }}
+                                        </a>
+                                    </h3>
+                                    <p class="text-sm text-gray-500">
+                                        {{ $item->created_at->diffForHumans() }}
+                                    </p>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
+
                     @if (isset($berita) && $berita instanceof \Illuminate\Pagination\LengthAwarePaginator && $berita->hasPages())
                         <div class="flex justify-center items-center space-x-4">
                             <!-- Previous Button -->
