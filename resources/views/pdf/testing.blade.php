@@ -3,6 +3,7 @@
 @php
     \Carbon\Carbon::setLocale('id');
 @endphp
+
 <head>
     <meta charset="utf-8">
     <title>Kop Surat Resmi</title>
@@ -18,10 +19,11 @@
 
         /* KOP SURAT */
         .kop-container {
-            width: 100%;
+            /* width: 100%; */
             border-bottom: 2px solid #000;
             padding-bottom: 10px;
-            margin-bottom: 20px;
+            margin-left: 25px;
+            margin-right: 25px;
         }
 
         .kop-table {
@@ -99,8 +101,8 @@
         <table class="kop-table">
             <tr>
                 <td width="90" style="text-align: center;">
-                    <img src="file://{{ public_path('storage/' . $site['yayasanProfile']->logo) }}"
-                         alt="Logo Yayasan" class="kop-logo">
+                    <img src="file://{{ public_path('storage/' . $site['yayasanProfile']->logo) }}" alt="Logo Yayasan"
+                        class="kop-logo">
                 </td>
                 <td>
                     <p class="kop-title">{{ strtoupper($site['yayasanProfile']->nama_yayasan) }}</p>
@@ -108,7 +110,8 @@
                     <p class="kop-address">
                         {{ $site['yayasanProfile']->address }}<br>
                         Telp: {{ $site['yayasanProfile']->telephone }} | Email: {{ $site['yayasanProfile']->email }}<br>
-                        Website: <a href="{{ $site['yayasanProfile']->website }}" target="_blank">{{ $site['yayasanProfile']->website }}</a>
+                        Website: <a href="{{ $site['yayasanProfile']->website }}"
+                            target="_blank">{{ $site['yayasanProfile']->website }}</a>
                     </p>
                 </td>
                 <td width="90"></td>
@@ -118,13 +121,36 @@
 
     <!-- ISI SURAT -->
     <div class="document-content">
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <!-- Label Nomor -->
+                <td style="width: 15%;">Nomor</td>
+                <td style="width: 2%;">:</td>
+                <td style="width: 53%;">
+                    {{ sprintf('%03d', $kerjaSama->id_kerja_sama) }}/LAPORAN-KERJA-SAMA/{{ ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'][
+                        date('n', strtotime($kerjaSama->created_at))
+                    ] }}/{{ date('Y', strtotime($kerjaSama->created_at)) }}
+                </td>
+
+                <!-- Tanggal di kanan -->
+                <td style="width: 30%; text-align: right; white-space: nowrap;">
+                    {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}
+                </td>
+            </tr>
+            <tr>
+                <!-- Label Lampiran -->
+                <td>Lampiran</td>
+                <td>:</td>
+                <td>-</td>
+                <td></td>
+            </tr>
+        </table>
+
+
         <p class="document-title">LAPORAN KERJA SAMA</p>
 
-        <table class="document-meta" style="width: 100%; margin-bottom: 15px;">
+        <table class="document-meta" style="width: 80%; margin-bottom: 15px; text-indent: 30px">
             <tr>
-                <td width="20%">Nomor</td>
-                <td width="1%">:</td>
-                <td>{{ sprintf('%03d', $kerjaSama->id_kerja_sama) }}/LAPORAN-KERJA-SAMA/{{ date('Y', strtotime($kerjaSama->created_at)) }}</td>
             </tr>
             <tr>
                 <td>Pengaju</td>
@@ -139,7 +165,8 @@
             <tr>
                 <td>Tanggal</td>
                 <td>:</td>
-                <td>{{ \Carbon\Carbon::parse($kerjaSama->tanggal_mulai)->translatedFormat('j F Y') }} s.d. {{ \Carbon\Carbon::parse($kerjaSama->tanggal_selesai)->translatedFormat('j F Y') }}</td>
+                <td>{{ \Carbon\Carbon::parse($kerjaSama->tanggal_mulai)->translatedFormat('j F Y') }} s.d.
+                    {{ \Carbon\Carbon::parse($kerjaSama->tanggal_selesai)->translatedFormat('j F Y') }}</td>
             </tr>
             <tr>
                 <td>Status</td>
@@ -147,21 +174,24 @@
                 <td>{{ ucfirst($kerjaSama->status) }}</td>
             </tr>
             @if ($kerjaSama->alasan)
-            <tr>
-                <td>Alasan</td>
-                <td>:</td>
-                <td>{{ $kerjaSama->alasan }}</td>
-            </tr>
+                <tr>
+                    <td>Alasan</td>
+                    <td>:</td>
+                    <td>{{ $kerjaSama->alasan }}</td>
+                </tr>
             @endif
         </table>
 
         <div class="document-body">
             <p style="text-indent: 30px;">
-                Dengan hormat, bersama surat ini kami sampaikan laporan mengenai kerja sama yang telah dilaksanakan antara {{ $site['yayasanProfile']->nama_yayasan }} dengan berbagai pihak terkait.
+                Dengan hormat, bersama surat ini kami sampaikan laporan mengenai kerja sama yang telah dilaksanakan
+                antara {{ $site['yayasanProfile']->nama_yayasan }} dengan berbagai pihak terkait.
             </p>
 
             <p style="text-indent: 30px;">
-                Kerja sama ini dilaksanakan pada periode {{ \Carbon\Carbon::parse($kerjaSama->tanggal_mulai)->translatedFormat('j F Y') }} sampai dengan {{ \Carbon\Carbon::parse($kerjaSama->tanggal_selesai)->translatedFormat('j F Y') }}.
+                Kerja sama ini dilaksanakan pada periode
+                {{ \Carbon\Carbon::parse($kerjaSama->tanggal_mulai)->translatedFormat('j F Y') }} sampai dengan
+                {{ \Carbon\Carbon::parse($kerjaSama->tanggal_selesai)->translatedFormat('j F Y') }}.
             </p>
 
             <p style="text-indent: 30px;">
@@ -189,4 +219,5 @@
         </table>
     </div>
 </body>
+
 </html>
