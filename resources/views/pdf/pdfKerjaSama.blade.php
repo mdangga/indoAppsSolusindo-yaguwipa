@@ -17,9 +17,23 @@
             color: #000;
         }
 
+        .watermark-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            opacity: 0.03;
+            pointer-events: none;
+        }
+
+        .watermark-logo {
+            max-width: 100%;
+            height: auto;
+        }
+
         /* KOP SURAT */
         .kop-container {
-            /* width: 100%; */
             border-bottom: 2px solid #000;
             padding-bottom: 10px;
             margin-left: 25px;
@@ -96,13 +110,25 @@
 </head>
 
 <body>
+    <div class="watermark-container">
+        @if ($site['logoData'])
+            <img src="data:{{ $site['logoMime'] }};base64,{{ $site['logoData'] }}" alt="Watermark" class="watermark-logo">
+        @endif
+    </div>
     <!-- KOP SURAT -->
     <div class="kop-container">
         <table class="kop-table">
             <tr>
                 <td width="90" style="text-align: center;">
-                    <img src="file://{{ public_path('storage/' . $site['yayasanProfile']->logo) }}" alt="Logo Yayasan"
-                        class="kop-logo">
+                    {{-- logo yayasan --}}
+                    @if ($site['logoData'])
+                        <img src="data:{{ $site['logoMime'] }};base64,{{ $site['logoData'] }}" alt="Logo Yayasan"
+                            class="kop-logo" width="80">
+                    @else
+                        <div style="width:80px;height:80px;background:#eee;text-align:center;">
+                            No Logo
+                        </div>
+                    @endif
                 </td>
                 <td>
                     <p class="kop-title">{{ strtoupper($site['yayasanProfile']->nama_yayasan) }}</p>

@@ -23,7 +23,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // testing-area
-Route::get('/testing', [PdfController::class, 'generatePdf'])->name('testing');
+// Route::get('/testing/{id}', [PdfController::class, 'testing'])->name('testing');
 
 // route-default beranda
 Route::get('/', [GeneralController::class, 'beranda'])->name('beranda');
@@ -68,7 +68,7 @@ Route::get('/donasi/create/{id_campaign}', [DonasiController::class, 'show'])->n
 Route::post('/donasi', [DonasiController::class, 'store'])->name('donasi.store');
 
 // admin
-Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'auth.role:admin'])->prefix('admin')->group(function () {
     // general-setting
     Route::prefix('general-setting')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('admin.profiles');
@@ -256,7 +256,7 @@ Route::middleware(['auth.admin'])->prefix('admin')->group(function () {
 
 
 // mitra-dan-donatur 
-Route::middleware(['auth', 'auth.user:mitra,donatur'])->prefix('user')->group(function () {
+Route::middleware(['auth', 'auth.role:mitra,donatur'])->prefix('user')->group(function () {
     // register mitra
     Route::prefix('mitra/register')->group(function () {
         Route::get('/create', [UserController::class, 'showJoinMitra'])->name('mitra.join');
@@ -291,13 +291,13 @@ Route::middleware(['auth', 'auth.user:mitra,donatur'])->prefix('user')->group(fu
 
     // daftar-donasi
     Route::get('/daftarDonasi', [CampaignController::class, 'showUserCampaign'])->name('daftar.donasi');
-    
+
     // activity
     Route::get('/activity', [UserController::class, 'showActivityAll'])->name('user.activity');
 });
 
 
-Route::middleware(['auth', 'auth.user:mitra'])->prefix('mitra')->group(function () {
+Route::middleware(['auth', 'auth.role:mitra'])->prefix('mitra')->group(function () {
     // kerja-sama
     Route::prefix('kerja-sama')->group(function () {
         Route::get('/', [KerjaSamaController::class, 'show'])->name('mitra.kerja-sama');
@@ -307,6 +307,14 @@ Route::middleware(['auth', 'auth.user:mitra'])->prefix('mitra')->group(function 
         Route::get('/detail-kerja-sama/{id}', [KerjaSamaController::class, 'showDetailKerjaSama'])->name('kerja-sama.detail');
     });
 });
+
+Route::middleware(['auth', 'auth.role:mitra,admin'])->group(function () {
+    // kerja-sama
+    Route::prefix('kerja-sama')->group(function () {
+        Route::get('/zip/download-file/{id}/{nama}', [PdfController::class, 'downloadZipStream'])->name('download.zip');
+    });
+});
+
 
 
 // register
