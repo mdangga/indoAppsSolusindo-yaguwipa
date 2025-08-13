@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\KerjaSama;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Models\Review;
 
 class GeneralController extends Controller
 {
@@ -26,7 +27,9 @@ class GeneralController extends Controller
             ->take(5)
             ->get();
 
-        return view('beranda', compact('berita', 'gallery'));
+        $reviews = Review::with('User')->latest()->get();
+
+        return view('beranda', compact('berita', 'gallery', 'reviews'));
     }
 
     public function tentangKami()
