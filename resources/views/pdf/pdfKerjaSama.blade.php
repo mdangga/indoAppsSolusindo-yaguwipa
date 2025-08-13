@@ -17,9 +17,23 @@
             color: #000;
         }
 
+        .watermark-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            opacity: 0.03;
+            pointer-events: none;
+        }
+
+        .watermark-logo {
+            max-width: 100%;
+            height: auto;
+        }
+
         /* KOP SURAT */
         .kop-container {
-            /* width: 100%; */
             border-bottom: 2px solid #000;
             padding-bottom: 10px;
             margin-left: 25px;
@@ -96,6 +110,11 @@
 </head>
 
 <body>
+    <div class="watermark-container">
+        @if ($site['logoData'])
+            <img src="data:{{ $site['logoMime'] }};base64,{{ $site['logoData'] }}" alt="Watermark" class="watermark-logo">
+        @endif
+    </div>
     <!-- KOP SURAT -->
     <div class="kop-container">
         <table class="kop-table">
