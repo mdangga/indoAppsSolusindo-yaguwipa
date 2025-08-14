@@ -1,0 +1,137 @@
+body {
+    font-family: "Instrument Sans", sans-serif;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-input {
+    transition: all 0.3s ease;
+    border: 2px solid #e2e8f0;
+}
+
+.form-input:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    transform: translateY(-1px);
+}
+
+.form-input:hover {
+    border-color: #cbd5e1;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.card-container {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+}
+
+.btn-secondary {
+    background: white;
+    border: 2px solid #e5e7eb;
+    color: #6b7280;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    border-color: #6366f1;
+    color: #6366f1;
+    transform: translateY(-1px);
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.step {
+    display: none;
+}
+
+.step.active {
+    display: block;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.stepper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.stepper-line {
+    height: 3px;
+    background: #e5e7eb;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.stepper-progress {
+    height: 100%;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+}
+
+.stepper-text {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+@media (max-width: 640px) {
+    .grid-2 {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.4s ease-out;
+}

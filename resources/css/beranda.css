@@ -1,0 +1,136 @@
+.hover\:scale-102:hover {
+    transform: scale(1.02);
+}
+
+.modal-show {
+    display: flex !important;
+    opacity: 1;
+}
+
+.modal-hide {
+    opacity: 0;
+}
+
+.card-selected {
+    border-color: #4f46e5 !important;
+    background-color: #eef2ff !important;
+}
+
+.card-selected.anonim-selected {
+    border-color: #4f46e5 !important;
+    background-color: #eef2ff !important;
+}
+
+.card-selected.donatur-selected {
+    border-color: #059669 !important;
+    background-color: #ecfdf5 !important;
+}
+
+.logo-container {
+    width: 100%;
+    max-width: 1200px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.logo-track {
+    display: flex;
+    width: fit-content;
+}
+
+.logo-set {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    flex-shrink: 0;
+}
+
+.logo-item {
+    flex-shrink: 0;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+}
+
+.logo-track.animated {
+    animation: seamlessScroll linear infinite;
+}
+
+.logo-track {
+    transition: animation-duration 0.5s ease;
+}
+
+.logo-track.pausing {
+    animation-duration: calc(var(--scroll-duration) * 2);
+}
+
+.logo-track.resuming {
+    animation-duration: calc(var(--scroll-duration) * 2);
+}
+
+.logo-track.paused {
+    animation-play-state: paused !important;
+}
+
+@keyframes seamlessScroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(var(--total-scroll));
+    }
+}
+
+.logo-container:hover .logo-track.animated {
+    /* animation-play-state: paused; */
+}
+
+.logo-track.paused {
+    animation-play-state: paused !important;
+}
+
+.logo-item img {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 96px;
+    width: auto;
+    object-fit: contain;
+}
+
+.logo-item:hover img {
+    transform: scale(1.1);
+}
+
+.logo-container::before,
+.logo-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 120px;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.logo-container::before {
+    left: 0;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 0.9) 30%,
+        rgba(255, 255, 255, 0) 100%
+    );
+}
+
+.logo-container::after {
+    right: 0;
+    background: linear-gradient(
+        to left,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 0.9) 30%,
+        rgba(255, 255, 255, 0) 100%
+    );
+}

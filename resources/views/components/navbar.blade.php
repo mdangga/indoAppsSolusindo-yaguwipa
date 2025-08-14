@@ -1,4 +1,3 @@
-<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 <style>
     select.goog-te-combo {
         background-color: transparent !important;
@@ -165,15 +164,6 @@
     }
 </style>
 
-<script>
-    function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-            pageLanguage: 'id',
-            layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL
-        }, 'google_translate_element');
-    };
-</script>
-
 <header x-data="{ sidebarOpen: false }" class="absolute w-full z-50">
     <!-- Logo dan Login Button -->
     <div class="w-full bg-transparent p-6 lg:px-8">
@@ -248,11 +238,10 @@
                                     class="block px-4 py-2 hover:bg-gray-100">Dashboard</a>
                             </li>
                             @if (!$user->role === 'admin')
-                                
-                            <li>
-                                <a href="{{ route('user.edit-profile') }}"
-                                class="block px-4 py-2 hover:bg-gray-100">Edit Profile</a>
-                            </li>
+                                <li>
+                                    <a href="{{ route('user.edit-profile') }}"
+                                        class="block px-4 py-2 hover:bg-gray-100">Edit Profile</a>
+                                </li>
                             @endif
                             <li>
                                 <form action="{{ route('logout') }}" method="POST" class="py-2">
@@ -400,5 +389,3 @@
         </div>
     </div>
 </header>
-
-<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>

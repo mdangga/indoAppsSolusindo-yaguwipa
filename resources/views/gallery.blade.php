@@ -1,23 +1,17 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@extends('layouts.main')
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+@section('title', 'Gallery')
 
-    <title>Gallery</title>
-    <link rel="icon" type="image/png" href="{{ asset('storage/' . $site['yayasanProfile']->logo) }}">
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net" />
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="stylesheet" href="{{ asset('css/gallery.css') }}">
-    <!-- AOS Library -->
+@push('styles')
+    {{-- custom style --}}
+    @vite('resources/css/gallery.css')
+
+    {{-- AOS css --}}
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
-    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
+    {{-- masonry css --}}
     <link rel="stylesheet" href="https://unpkg.com/flexmasonry/dist/flexmasonry.css">
-</head>
+@endpush
 
 @php
     function extractYoutubeId($url)
@@ -27,14 +21,7 @@
     }
 @endphp
 
-<body>
-    {{-- loader --}}
-    <x-loader-component />
-    {{-- navbar --}}
-    <x-navbar :menus="$menus" />
-    {{-- contact-btt --}}
-    <x-contact-btt-floating email="support@mycompany.com" phone="+62 21-1234-5678" whatsapp="6281234567890"
-        size="default" :auto-hide="true" :auto-hide-delay="3000" :show-back-to-top="true" :scroll-threshold="200" />
+@section('content')
     <main>
         <div class="px-4 sm:px-6 lg:px-12 py-16">
             <div class="max-w-7xl mx-auto">
@@ -150,8 +137,7 @@
                     </div>
 
                     <!-- Image -->
-                    <img id="modal-image"
-                        class="hidden max-w-full max-h-[90vh] rounded-md object-contain bg-transparent"
+                    <img id="modal-image" class="hidden max-w-full max-h-[90vh] rounded-md object-contain bg-transparent"
                         loading="lazy" />
                 </div>
 
@@ -162,7 +148,13 @@
             </div>
         </div>
     </main>
-    <x-footer />
+@endsection
+
+@push('scripts')
+    {{-- AOS js --}}
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    @vite('resources/js/AOS.js')
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const loadMoreBtn = document.getElementById('load-more-btn');
@@ -288,8 +280,4 @@
             }
         });
     </script>
-</body>
-
-
-
-</html>
+@endpush
