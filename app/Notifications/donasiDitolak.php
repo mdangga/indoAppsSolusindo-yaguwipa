@@ -26,7 +26,7 @@ class donasiDitolak extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -35,10 +35,14 @@ class donasiDitolak extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->subject('Status Donasi Anda: Ditolak')
+            ->greeting('Halo ' . $notifiable->nama . '!')
+            ->line('Kami ingin memberitahukan bahwa pengajuan donasi Anda dengan ID #' . $this->donasi->id_donasi . ' berjenis ' . $this->donasi->JenisDonasi->nama . ' telah ditolak.')
+            ->line('Penolakan ini mungkin disebabkan oleh ketidaksesuaian data, dokumen tidak lengkap, atau alasan lain yang telah kami sampaikan di sistem.')
+            ->action('Lihat Detail Donasi', route('user-donasi.detail', $this->donasi->id_donasi))
+            ->line('Terima kasih atas niat baik Anda. Anda dapat mengajukan donasi kembali setelah memperbaiki data yang diperlukan.');
     }
+
 
     /**
      * Get the array representation of the notification.

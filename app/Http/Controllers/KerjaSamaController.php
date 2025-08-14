@@ -241,15 +241,17 @@ class KerjaSamaController extends Controller
             $kerjaSama = KerjaSama::with('Mitra.User')->findOrFail($id);
 
             DB::transaction(function () use ($kerjaSama, $request) {
-                $kerjaSama->update(['status' => 'rejected', 'alasan' => $request->alasan]);
+                $kerjaSama->update([
+                    'status' => 'rejected', 
+                    'alasan' => $request->alasan
+                ]);
 
-                $user = $kerjaSama->Mitra->User;
-                if ($user) {
+                if ($user = $kerjaSama->Mitra->User) {
                     $user->notify(new KerjaSamaDitolak($kerjaSama));
                 }
             });
 
-            return back()->with('success', 'Kerja Sama Diterima');
+            return back()->with('success', 'Kerja Sama berhasil ditolak dan notifikasi telah dikirim ke pengaju.');
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal menyetujui kerja sama: ' . $e->getMessage());
         }
