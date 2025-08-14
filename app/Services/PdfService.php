@@ -30,7 +30,7 @@ class PdfService
         }
 
         // Generate PDF
-        $pdf = Pdf::loadView('pdf.testing', [
+        $pdf = Pdf::loadView('pdf.pdfKerjaSama', [
             'kerjaSama' => $kerjaSama,
             'tanggal' => $tanggal,
             'site' => [
