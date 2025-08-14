@@ -1,165 +1,21 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@extends('layouts.main')
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Beranda</title>
-    {{-- icon --}}
-    <link rel="icon" type="image/png" href="{{ asset('storage/' . $site['yayasanProfile']->favicon) }}">
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net" />
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-    @vite(['resources/css/app.css', 'resources/js/beranda.js', 'resources/js/AOS.js'])
-    {{-- custom styling --}}
-    <link rel="stylesheet" href="{{ asset('css/beranda.css') }}">
-    <!-- AOS Library -->
+@section('title', 'Beranda')
+
+@push('styles')
+    {{-- custom style --}}
+    @vite('resources/css/beranda.css')
+
+    {{-- AOS css --}}
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
-    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+@endpush
 
-    <style>
-        .hover\:scale-102:hover {
-            transform: scale(1.02);
-        }
-
-        .modal-show {
-            display: flex !important;
-            opacity: 1;
-        }
-
-        .modal-hide {
-            opacity: 0;
-        }
-
-        .card-selected {
-            border-color: #4f46e5 !important;
-            background-color: #eef2ff !important;
-        }
-
-        .card-selected.anonim-selected {
-            border-color: #4f46e5 !important;
-            background-color: #eef2ff !important;
-        }
-
-        .card-selected.donatur-selected {
-            border-color: #059669 !important;
-            background-color: #ecfdf5 !important;
-        }
-
-        .logo-container {
-            width: 100%;
-            max-width: 1200px;
-            position: relative;
-            overflow: hidden;
-            margin: 0 auto;
-        }
-
-        .logo-track {
-            display: flex;
-            width: fit-content;
-        }
-
-        .logo-set {
-            display: flex;
-            align-items: center;
-            gap: 4rem;
-            flex-shrink: 0;
-        }
-
-        .logo-item {
-            flex-shrink: 0;
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 180px;
-        }
-
-        .logo-track.animated {
-            animation: seamlessScroll linear infinite;
-        }
-
-        .logo-track {
-            transition: animation-duration 0.5s ease;
-        }
-
-        .logo-track.pausing {
-            animation-duration: calc(var(--scroll-duration) * 2);
-        }
-
-        .logo-track.resuming {
-            animation-duration: calc(var(--scroll-duration) * 2);
-        }
-
-        .logo-track.paused {
-            animation-play-state: paused !important;
-        }
-
-        @keyframes seamlessScroll {
-            0% {
-                transform: translateX(0);
-            }
-
-            100% {
-                transform: translateX(var(--total-scroll));
-            }
-        }
-
-        .logo-container:hover .logo-track.animated {
-            /* animation-play-state: paused; */
-        }
-
-        .logo-track.paused {
-            animation-play-state: paused !important;
-        }
-
-        .logo-item img {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            max-height: 96px;
-            width: auto;
-            object-fit: contain;
-        }
-
-        .logo-item:hover img {
-            transform: scale(1.1);
-        }
-
-        .logo-container::before,
-        .logo-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 120px;
-            z-index: 10;
-            pointer-events: none;
-        }
-
-        .logo-container::before {
-            left: 0;
-            background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 30%, rgba(255, 255, 255, 0) 100%);
-        }
-
-        .logo-container::after {
-            right: 0;
-            background: linear-gradient(to left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 30%, rgba(255, 255, 255, 0) 100%);
-        }
-    </style>
-</head>
-
-<body>
-    {{-- loader --}}
-    <x-loader-component />
-    {{-- pop-up --}}
+@section('content')
+    {{-- popup --}}
     @if ($site['yayasanProfile']->popup)
         <x-pop-up image-src="{{ $site['yayasanProfile']->popup }}" image-alt="Welcome Image" />
     @endif
 
-    {{-- navbar --}}
-    <x-navbar :menus="$menus" />
-    {{-- floating button --}}
-    <x-contact-btt-floating size="default" :auto-hide="true" :auto-hide-delay="3000" :show-back-to-top="true" :scroll-threshold="200" />
     <main>
         {{-- hero --}}
         <div class="relative flex items-center justify-center h-screen">
@@ -242,22 +98,19 @@
                         @forelse ($gallery->take(5) as $index => $item)
                             <div class="hidden duration-700 ease-in-out"
                                 data-carousel-item="{{ $index === 0 ? 'active' : '' }}">
-                                <img src="{{ asset('storage/' . $item->link) }}" alt="{{ $item->judul }}"
-                                    loading="lazy"
+                                <img src="{{ asset('storage/' . $item->link) }}" alt="{{ $item->judul }}" loading="lazy"
                                     class="absolute block w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                             </div>
                         @empty
                             <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
-                                <div
-                                    class="absolute inset-0 flex items-center justify-center w-full h-full bg-gray-100/50">
+                                <div class="absolute inset-0 flex items-center justify-center w-full h-full bg-gray-100/50">
                                     <p class="text-gray-500 text-center">Belum ada gambar di galeri.</p>
                                 </div>
                             </div>
                         @endforelse
                     </div>
                     @if ($gallery->count() > 1)
-                        <div
-                            class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
+                        <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
                             @foreach ($gallery->take(5) as $index => $item)
                                 <button type="button" class="w-[6px] h-[6px] rounded-full"
                                     aria-current="{{ $index === 0 ? 'true' : 'false' }}"
@@ -285,84 +138,87 @@
                 </div>
             </div>
         @endif
-        {{-- end lembaga --}}
-    </main>
 
-    <!-- Testimonial Section -->
-    <section class="bg-gradient-to-br from-white to-gray-100 py-16 px-4 sm:px-6 lg:px-12">
-        <div class="max-w-7xl mx-auto">
-            <!-- Judul -->
-            <div class="text-center mb-10">
-                <h2 class="text-4xl font-bold mb-2 text-gray-900">
-                    Apa Kata <span class="text-gray-700">Klien Kami</span>
-                </h2>
-                <p class="text-gray-500">Dengarkan langsung testimoni dari mitra yang puas bekerja sama dengan kami</p>
-            </div>
+        <!-- Testimonial Section -->
+        <section class=" py-16 px-4 sm:px-6 lg:px-12">
+            <div class="max-w-7xl mx-auto">
+                <!-- Judul -->
+                <div class="text-center mb-10">
+                    <h2 class="text-4xl font-bold mb-2 text-gray-900">
+                        Apa Kata Mereka Tentang Yayasan Kami
+                    </h2>
+                    <p class="text-gray-500">Suara hati mitra dan donatur yang bersama mewujudkan perubahan positif.</p>
+                </div>
 
-            <!-- Grid Testimonial -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                @foreach ($reviews as $review)
-                    <div
-                        class="bg-white border border-gray-200 rounded-2xl shadow-md p-6 flex flex-col justify-between">
-                        <div>
-                            {{-- Bintang Dinamis --}}
-                            <div class="text-yellow-400 mb-2">
-                                {!! str_repeat('★', $review->rating) !!}
-                                {!! str_repeat('☆', 5 - $review->rating) !!}
-                                <span class="text-gray-500 text-sm">({{ $review->rating }}/5)</span>
-                            </div>
-
-                            {{-- Pesan Review --}}
-                            <p class="text-gray-600 mb-4">
-                                "{{ $review->review }}"
-                            </p>
-                        </div>
-
-                        {{-- Info User --}}
-
-                        <div class="flex items-center mt-auto pt-4 border-t border-gray-100">
-                            @php
-                                $profilePath = $review->User->profile_path ?? null;
-                                $src = null;
-                                $initial = strtoupper(Str::substr($user->username ?? ($user->name ?? 'U'), 0, 1));
-                                if ($profilePath) {
-                                    // Jika URL eksternal
-                                    if (preg_match('/^https?:\/\//i', $profilePath)) {
-                                        $src = $profilePath;
-                                    } else {
-                                        // Normalisasi kalau ada prefix "storage/"
-                                        $normalized = ltrim(preg_replace('#^storage/#', '', $profilePath), '/');
-                                        $src = asset('storage/' . $normalized);
-                                    }
-                                }
-                            @endphp
-
-                            @if ($src)
-                                <img src="{{ $src }}"
-                                    alt="Foto Profil {{ $review->User->nama ?? 'Pengguna' }}"
-                                    class="w-12 h-12 rounded-full object-cover border-2 border-gray-300" />
-                            @else
-                                <div
-                                    class="w-12 h-12 bg-gray-400 rounded-full text-white flex items-center justify-center font-semibold uppercase select-none transition-colors duration-200 text-lg">
-                                    {{ $initial }}
+                <!-- Grid Testimonial -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    @foreach ($reviews as $review)
+                        <div
+                            class="bg-white border border-gray-200 rounded-2xl shadow-md p-6 flex flex-col justify-between">
+                            <div>
+                                {{-- Bintang Dinamis --}}
+                                <div class="text-yellow-400 mb-2">
+                                    {!! str_repeat('★', $review->rating) !!}
+                                    {!! str_repeat('☆', 5 - $review->rating) !!}
+                                    <span class="text-gray-500 text-sm">({{ $review->rating }}/5)</span>
                                 </div>
-                            @endif
 
-
-                            <div class="ml-3">
-                                <h4 class="font-semibold text-gray-900 capitalize">
-                                    {{ $review->User->nama ?? 'Anonim' }}</h4>
-                                <p class="text-sm text-gray-500 capitalize">{{ $review->User->role ?? 'Pengguna' }}
+                                {{-- Pesan Review --}}
+                                <p class="text-gray-600 mb-4">
+                                    "{{ $review->review }}"
                                 </p>
                             </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
 
-    <x-footer />
+                            {{-- Info User --}}
+
+                            <div class="flex items-center mt-auto pt-4 border-t border-gray-100">
+                                @php
+                                    $profilePath = $review->User->profile_path ?? null;
+                                    $src = null;
+                                    $initial = strtoupper(Str::substr($user->username ?? ($user->name ?? 'U'), 0, 1));
+                                    if ($profilePath) {
+                                        // Jika URL eksternal
+                                        if (preg_match('/^https?:\/\//i', $profilePath)) {
+                                            $src = $profilePath;
+                                        } else {
+                                            // Normalisasi kalau ada prefix "storage/"
+                                            $normalized = ltrim(preg_replace('#^storage/#', '', $profilePath), '/');
+                                            $src = asset('storage/' . $normalized);
+                                        }
+                                    }
+                                @endphp
+
+                                @if ($src)
+                                    <img src="{{ $src }}"
+                                        alt="Foto Profil {{ $review->User->nama ?? 'Pengguna' }}"
+                                        class="w-12 h-12 rounded-full object-cover border-2 border-gray-300" />
+                                @else
+                                    <div
+                                        class="w-12 h-12 bg-gray-400 rounded-full text-white flex items-center justify-center font-semibold uppercase select-none transition-colors duration-200 text-lg">
+                                        {{ $initial }}
+                                    </div>
+                                @endif
+
+
+                                <div class="ml-3">
+                                    <h4 class="font-semibold text-gray-900 capitalize">
+                                        {{ $review->User->nama ?? 'Anonim' }}</h4>
+                                    <p class="text-sm text-gray-500 capitalize">{{ $review->User->role ?? 'Pengguna' }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    </main>
+@endsection
+
+@push('scripts')
+    {{-- AOS js --}}
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    @vite('resources/js/AOS.js')
 
     @if (!empty($site['lembaga']) && count($site['lembaga']) > 0)
         <script>
@@ -508,6 +364,4 @@
             });
         </script>
     @endif
-</body>
-
-</html>
+@endpush

@@ -1,29 +1,8 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@extends('layouts.main')
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="Description" content="{{ $berita->meta_description }}">
-    <title>{{ $berita->meta_title }}</title>
-    {{-- icon --}}
+@section('title', $berita->meta_title)
 
-    <link rel="icon" type="image/png" href="{{ asset('storage/' . $site['yayasanProfile']->logo) }}">
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net" />
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-
-<body>
-    {{-- laoder --}}
-    <x-loader-component />
-    {{-- navbar --}}
-    <x-navbar :menus="$menus" />
-    {{-- floating button --}}
-    {{-- 6. KONFIGURASI LENGKAP --}}
-    <x-contact-btt-floating email="support@mycompany.com" phone="+62 21-1234-5678" whatsapp="6281234567890"
-        size="default" :auto-hide="true" :auto-hide-delay="3000" :show-back-to-top="true" :scroll-threshold="200" />
+@section('content')
     <main>
         <!-- Bagian Berita yang sudah diperbaiki -->
         <div class="relative top-0 pt-32 lg:pt-40 pb-10">
@@ -37,8 +16,7 @@
                             {{ $berita->judul }}
                         </h1>
 
-                        <img src="{{ asset('storage/' . $berita->thumbnail) }}" alt="thumbnail"
-                            class="w-full object-cover">
+                        <img src="{{ asset('storage/' . $berita->thumbnail) }}" alt="thumbnail" class="w-full object-cover">
                         <p class="text-gray-500 font-light leading-relaxed mt-2">
                             {{ $berita->caption }}
                         </p>
@@ -168,7 +146,4 @@
             </div>
         </div>
     </main>
-    <x-footer />
-</body>
-
-</html>
+@endsection

@@ -1,217 +1,13 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.main')
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Partners Yaguwipa</title>
+@section('title', 'Partners')
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net" />
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
-
-    <!-- Tailwind CSS -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <!-- AOS Library -->
+@push('styles')
+    {{-- AOS css --}}
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
-    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+@endpush
 
-    <!-- Flowbite -->
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-
-
-    <style>
-        /* * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* html, body {
-            height: 100%;
-            overflow-x: hidden;
-        } */
-        body {
-            font-family: 'Instrument Sans', sans-serif;
-        }
-
-        .partner-card {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(10px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .partner-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s ease;
-        }
-
-        /*
-        .partner-card:hover::before {
-            left: 100%;
-        } */
-
-        .partner-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
-        }
-
-        .partner-logo {
-            transition: all 0.4s ease;
-            filter: grayscale(20%) brightness(0.9);
-        }
-
-        .partner-card:hover .partner-logo {
-            filter: grayscale(0%) brightness(1);
-            transform: scale(1.05);
-        }
-
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .navbar-glass {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .hero-background {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            background-size: 400% 400%;
-            animation: gradient-flow 15s ease infinite;
-        }
-
-        @keyframes gradient-flow {
-
-            0%,
-            100% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-        }
-
-        .floating-shapes {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .floating-shape {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            animation: float 20s infinite linear;
-        }
-
-        @keyframes float {
-            from {
-                transform: translateY(100vh) rotate(0deg);
-            }
-
-            to {
-                transform: translateY(-100vh) rotate(360deg);
-            }
-        }
-
-        .stagger-animation {
-            animation: slideUp 0.8s ease-out forwards;
-            opacity: 0;
-            transform: translateY(40px);
-        }
-
-        @keyframes slideUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .main-container {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .content-wrapper {
-            flex: 1;
-            position: relative;
-            z-index: 2;
-        }
-
-        .title-gradient {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .section-divider {
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #667eea, #764ba2, transparent);
-            margin: 2rem 0;
-        }
-
-        .partner-website-link {
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s ease;
-        }
-
-        .partner-card:hover .partner-website-link {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* .partner-name {
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 0.5rem;
-            line-height: 1.2;
-        } */
-
-        @media (max-width: 640px) {
-            .partner-card {
-                padding: 1.5rem;
-            }
-
-            .partner-logo-container {
-                width: 5rem;
-                height: 5rem;
-            }
-        }
-    </style>
-</head>
-
-<body>
-    {{-- loader --}}
-    <x-loader-component />
-    {{-- navbar --}}
-    <x-navbar :menus="$menus" />
-    {{-- floating button --}}
-    <x-contact-btt-floating email="{{ $site['yayasanProfile']->email }}"
-        phone="{{ $site['yayasanProfile']->telephone }}" size="default" :auto-hide="true" :auto-hide-delay="3000"
-        :show-back-to-top="true" :scroll-threshold="200" />
-
-    <!-- Main Content -->
+@section('content')
     <main class="content-wrapper">
         <div class="px-4 sm:px-6 lg:px-12 py-16">
             <div class="max-w-7xl mx-auto">
@@ -374,9 +170,10 @@
             </div>
         </div>
     </main>
+@endsection
 
-    <!-- Footer -->
-    <x-footer />
-</body>
-
-</html>
+@push('scripts')
+    {{-- AOS js --}}
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    @vite('resources/js/AOS.js')
+@endpush

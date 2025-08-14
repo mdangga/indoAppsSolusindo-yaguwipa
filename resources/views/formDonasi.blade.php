@@ -34,6 +34,9 @@
     <title>Form Donasi - Berbagi Kebaikan</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net" />
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
 </head>
 
@@ -47,7 +50,8 @@
                     <div class="hidden md:block w-80 bg-gray-100/60 p-8 rounded-xl border-gray-200">
                         <!-- Stepper -->
                         <div class="flex items-center space-x-3 mb-10">
-                            <img src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" alt="Icon Donasi" class="w-12 h-12 rounded-lg" />
+                            <img src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" alt="Icon Donasi"
+                                class="w-12 h-12 rounded-lg" />
                             <div>
                                 <h1 class="text-md font-semibold text-gray-800">Form Donasi</h1>
                                 <p class="text-xs text-gray-500 leading-snug">Bersama Anda, Kami Membawa<br>Manfaat
