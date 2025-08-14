@@ -1,6 +1,9 @@
 <x-mail::message>
-<img src="{{ url('storage/' . $site['yayasanProfile']->logo) }}" alt="Logo" width="120" style="margin-bottom:20px;">
-
+@if(file_exists(storage_path('app/public/' . $site['yayasanProfile']->logo)))
+<div style="text-align: center; margin-bottom: 20px;">
+<img src="data:image/png;base64,{{ base64_encode(file_get_contents(storage_path('app/public/' . $site['yayasanProfile']->logo))) }}" alt="Logo" width="120">
+</div>
+@endif
 {{-- Greeting --}}
 @if (! empty($greeting))
 # {{ $greeting }}
@@ -8,7 +11,7 @@
 @if ($level === 'error')
 # @lang('Whoops!')
 @else
-# @lang('Halo, Sahabat!')
+# @lang('Hello!')
 @endif
 @endif
 
@@ -23,7 +26,7 @@
 <?php
     $color = match ($level) {
         'success', 'error' => $level,
-        default => 'green', // warna custom
+        default => 'green',
     };
 ?>
 <x-mail::button :url="$actionUrl" :color="$color">
@@ -41,16 +44,16 @@
 @if (! empty($salutation))
 {{ $salutation }}
 @else
-Salam hangat,<br>
-**{{ config('app.name') }}**
+@lang('Regards,')<br>
+{{ config('app.name') }}
 @endif
 
 {{-- Subcopy --}}
 @isset($actionText)
 <x-slot:subcopy>
 @lang(
-    "Jika tombol \":actionText\" tidak dapat diklik, silakan salin dan tempel URL berikut\n".
-    'ke browser Anda:',
+    "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\n".
+    'into your web browser:',
     [
         'actionText' => $actionText,
     ]
