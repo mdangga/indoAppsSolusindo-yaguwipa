@@ -6,15 +6,6 @@ body {
     background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
 }
 
-.card-hover {
-    transition: all 0.3s ease;
-}
-
-.card-hover:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-}
-
 .progress-bar {
     background: linear-gradient(90deg, #059669, #10b981);
     border-radius: 50px;

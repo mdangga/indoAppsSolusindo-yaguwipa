@@ -17,7 +17,7 @@ class CampaignController extends Controller
     {
         $campaign = Campaign::with('Program.KategoriProgram', 'Donasi')
             ->where('slug', $slug)->firstOrFail();
-        $donations = Donasi::with(['DonasiDana', 'DonasiBarang', 'DonasiJasa', 'JenisDonasi'])
+        $donations = Donasi::with(['DonasiDana', 'DonasiBarang', 'DonasiJasa', 'JenisDonasi', 'User'])
             ->orderBy('updated_at', 'desc')
             ->where('id_campaign', $campaign->id_campaign)
             ->limit(10)

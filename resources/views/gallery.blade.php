@@ -27,51 +27,51 @@
             <div class="max-w-7xl mx-auto">
                 <x-header-page title="GALLERY"
                     description="Galeri ini menyajikan koleksi gambar dari berbagai aktivitas, baik yang diselenggarakan oleh yayasan maupun momen-momen penting lainnya." />
-
-                <!-- Masonry Grid -->
-                <div id="masonry-container" class="columns-1 sm:columns-2 md:columns-3 gap-6">
-                    @forelse ($gallery->take(8) as $item)
-                        @php
-                            $isVideo = $item->kategori === 'video';
-                            $youtubeId = $isVideo ? extractYoutubeId($item->link) : null;
-                            $thumbnail =
-                                $isVideo && $youtubeId
-                                    ? "https://img.youtube.com/vi/$youtubeId/hqdefault.jpg"
-                                    : asset('storage/' . $item->link);
-                        @endphp
-                        <div class="break-inside-avoid mb-6 group cursor-pointer gallery-item"
-                            data-image="{{ $thumbnail }}" data-title="{{ $item->alt_text }}"
-                            data-type="{{ $item->kategori }}" data-link="{{ $item->link }}">
-                            <div
-                                class="relative overflow-hidden rounded-xl bg-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 ease-out">
-                                <img src="{{ $thumbnail }}" alt="{{ $item->alt_text }}"
-                                    class="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                                    loading="lazy" />
+                @if ($gallery->isEmpty())
+                    <div class="flex flex-col items-center justify-center min-h-[200px] mb-20 w-full space-y-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-gray-300" fill="none" width="20"
+                            height="20" viewBox="0 0 20 20">
+                            <path fill="currentColor"
+                                d="M17.125 6.17L15.079.535c-.151-.416-.595-.637-.989-.492L.492 5.006c-.394.144-.593.597-.441 1.013l2.156 5.941V8.777c0-1.438 1.148-2.607 2.56-2.607H8.36l4.285-3.008l2.479 3.008zM19.238 8H4.767a.76.76 0 0 0-.762.777v9.42c.001.444.343.803.762.803h14.471c.42 0 .762-.359.762-.803v-9.42A.76.76 0 0 0 19.238 8M18 17H6v-2l1.984-4.018l2.768 3.436l2.598-2.662l3.338-1.205L18 14z" />
+                        </svg>
+                        <p class="text-gray-500 text-md">Belum ada gambar di galeri</p>
+                    </div>
+                @else
+                    <!-- Masonry Grid -->
+                    <div id="masonry-container" class="columns-1 sm:columns-2 md:columns-3 gap-6">
+                        @foreach ($gallery as $item)
+                            @php
+                                $isVideo = $item->kategori === 'video';
+                                $youtubeId = $isVideo ? extractYoutubeId($item->link) : null;
+                                $thumbnail =
+                                    $isVideo && $youtubeId
+                                        ? "https://img.youtube.com/vi/$youtubeId/hqdefault.jpg"
+                                        : asset('storage/' . $item->link);
+                            @endphp
+                            <div class="break-inside-avoid mb-6 group cursor-pointer gallery-item"
+                                data-image="{{ $thumbnail }}" data-title="{{ $item->alt_text }}"
+                                data-type="{{ $item->kategori }}" data-link="{{ $item->link }}">
                                 <div
-                                    class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                    <div class="absolute bottom-0 left-0 right-0 p-4">
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center space-x-3">
-                                                <p class="text-white text-sm font-medium">{{ $item->alt_text }}</p>
+                                    class="relative overflow-hidden rounded-xl bg-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 ease-out">
+                                    <img src="{{ $thumbnail }}" alt="{{ $item->alt_text }}"
+                                        class="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                                        loading="lazy" />
+                                    <div
+                                        class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <div class="absolute bottom-0 left-0 right-0 p-4">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center space-x-3">
+                                                    <p class="text-white text-sm font-medium">{{ $item->alt_text }}</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @empty
-                        <div class="col-span-full text-center py-12">
-                            <div class="text-gray-400 mb-4">
-                                <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                            </div>
-                            <p class="text-gray-500 text-lg">Belum ada gambar di galeri</p>
-                            <p class="text-gray-400 text-sm mt-1">Upload gambar untuk memulai koleksi Anda</p>
-                        </div>
-                    @endforelse
-                </div>
+                        @endforeach
+                    </div>
+                @endif
+
 
                 @if ($gallery->count() > 8)
                     <div class="text-center mt-12">
