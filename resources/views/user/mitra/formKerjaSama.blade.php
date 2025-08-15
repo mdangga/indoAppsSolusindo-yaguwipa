@@ -103,16 +103,22 @@
                 </div>
 
                 <!-- Form -->
-                <form action="{{ route('kerja-sama.store') }}" method="POST" enctype="multipart/form-data"
-                    class="space-y-8">
+                @php $isEdit = isset($kerjaSama); @endphp
+                <form
+                    action="{{ $isEdit ? route('kerja-sama.update', $kerjaSama->id_kerja_sama) : route('kerja-sama.store') }}"
+                    method="POST" enctype="multipart/form-data" class="space-y-8">
                     @csrf
-
+                    @if ($isEdit)
+                        @method('PUT')
+                    @endif
                     <!-- Main Form Grid - Split into 2 columns -->
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         <!-- Left Column -->
                         <div class="space-y-6">
                             <!-- Kategori Kerja Sama -->
-                            <div x-data="{ kategoriDipilih: '' }" x-cloak class="space-y-2">
+                            <div x-data="{
+                                kategoriDipilih: '{{ old('id_kategori_kerja_sama', $isEdit ? $kerjaSama->id_kategori_kerja_sama : '') }}'
+                            }" x-cloak class="space-y-2">
                                 <label for="id_kategori_kerja_sama"
                                     class="block text-sm font-semibold text-gray-700 mb-2">
                                     Kategori Kerja Sama
@@ -120,12 +126,18 @@
                                 <select name="id_kategori_kerja_sama" id="id_kategori_kerja_sama" required
                                     x-model="kategoriDipilih"
                                     class="w-full rounded-lg border-2 border-gray-200 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 p-3 text-gray-900">
-                                    <option value="" selected disabled>Pilih Kategori</option>
+                                    <option value="" disabled
+                                        {{ old('id_kategori_kerja_sama', $isEdit ? $kerjaSama->id_kategori_kerja_sama : '') == '' ? 'selected' : '' }}>
+                                        Pilih Kategori</option>
                                     @foreach ($kategoriKerjaSama as $kategori)
-                                        <option value="{{ $kategori->id_kategori_kerja_sama }}">{{ $kategori->nama }}
+                                        <option value="{{ $kategori->id_kategori_kerja_sama }}"
+                                            {{ old('id_kategori_kerja_sama', $isEdit ? $kerjaSama->id_kategori_kerja_sama : '') == $kategori->id_kategori_kerja_sama ? 'selected' : '' }}>
+                                            {{ $kategori->nama }}
                                         </option>
                                     @endforeach
-                                    <option value="other">Lainnya</option>
+                                    <option value="other"
+                                        {{ old('id_kategori_kerja_sama', $isEdit ? $kerjaSama->id_kategori_kerja_sama : '') == 'other' ? 'selected' : '' }}>
+                                        Lainnya</option>
                                 </select>
 
                                 <div x-show="kategoriDipilih === 'other'"
@@ -137,6 +149,7 @@
                                     </label>
                                     <input type="text" name="kategori_baru" id="kategori_baru"
                                         placeholder="Masukkan kategori kerja sama baru"
+                                        value="{{ old('kategori_baru', $isEdit ? $kerjaSama->kategori_baru : '') }}"
                                         x-bind:required="kategoriDipilih === 'other'"
                                         class="w-full rounded-lg border-2 border-gray-200 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 p-3">
                                 </div>
@@ -145,21 +158,28 @@
                                 @enderror
                             </div>
 
+
                             <!-- Program -->
                             <div class="space-y-2">
                                 <label for="id_program"
                                     class="block text-sm font-semibold text-gray-700 mb-2">Program</label>
                                 <select name="id_program" id="id_program" required
                                     class="w-full rounded-lg border-2 border-gray-200 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 p-3 text-gray-900">
-                                    <option value="" selected disabled>Pilih Program</option>
+                                    <option value="" disabled
+                                        {{ old('id_program', $isEdit ? $kerjaSama->id_program : '') == '' ? 'selected' : '' }}>
+                                        Pilih Program</option>
                                     @foreach ($programs as $program)
-                                        <option value="{{ $program->id_program }}">{{ $program->nama }}</option>
+                                        <option value="{{ $program->id_program }}"
+                                            {{ old('id_program', $isEdit ? $kerjaSama->id_program : '') == $program->id_program ? 'selected' : '' }}>
+                                            {{ $program->nama }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('id_program')
                                     <p class="text-sm text-red-600 mt-2 font-medium">{{ $message }}</p>
                                 @enderror
                             </div>
+
 
                             <!-- Tanggal -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -168,6 +188,7 @@
                                         Tanggal Mulai
                                     </label>
                                     <input type="date" name="tanggal_mulai" id="tanggal_mulai" required
+                                        value="{{ old('tanggal_mulai', $isEdit ? $kerjaSama->tanggal_mulai : '') }}"
                                         class="w-full rounded-lg border-2 border-gray-200 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 p-3">
                                     @error('tanggal_mulai')
                                         <p class="text-sm text-red-600 mt-2 font-medium">{{ $message }}</p>
@@ -178,12 +199,14 @@
                                         Tanggal Selesai
                                     </label>
                                     <input type="date" name="tanggal_selesai" id="tanggal_selesai" required
+                                        value="{{ old('tanggal_selesai', $isEdit ? $kerjaSama->tanggal_selesai : '') }}"
                                         class="w-full rounded-lg border-2 border-gray-200 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 p-3">
                                     @error('tanggal_selesai')
                                         <p class="text-sm text-red-600 mt-2 font-medium">{{ $message }}</p>
                                     @enderror
                                 </div>
                             </div>
+
                         </div>
 
                         <!-- Right Column -->
@@ -194,11 +217,12 @@
                                     class="block text-sm font-semibold text-gray-700 mb-2">Keterangan</label>
                                 <textarea name="keterangan" id="keterangan" rows="9" required
                                     placeholder="Jelaskan detail kerja sama yang diinginkan..."
-                                    class="w-full rounded-lg border-2 border-gray-200 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 p-3 resize-none"></textarea>
+                                    class="w-full rounded-lg border-2 border-gray-200 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 p-3 resize-none">{{ old('keterangan', $isEdit ? $kerjaSama->keterangan : '') }}</textarea>
                                 @error('keterangan')
                                     <p class="text-sm text-red-600 mt-2 font-medium">{{ $message }}</p>
                                 @enderror
                             </div>
+
                         </div>
                     </div>
 
@@ -210,14 +234,14 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
                             <!-- Profil Lembaga -->
-                            <div class="space-y-2" x-data="{ fileName: '' }">
+                            <div class="space-y-2" x-data="{ fileName: '{{ $isEdit && !empty($filePenunjang['profil_lembaga']) ? $filePenunjang['profil_lembaga'] : '' }}' }">
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                                     Profil Lembaga
                                 </label>
                                 <div class="file-upload-container">
                                     <input type="file" name="file_penunjang[profil_lembaga]" id="profil_lembaga"
-                                        accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-                                        @change="fileName = $event.target.files[0] ? $event.target.files[0].name : ''">
+                                        accept=".pdf,.doc,.docx"
+                                        @change="fileName = $event.target.files[0] ? $event.target.files[0].name : '{{ $isEdit && !empty($filePenunjang['profil_lembaga']) ? $filePenunjang['profil_lembaga'] : '' }}'">
                                     <label for="profil_lembaga" class="file-upload-label"
                                         :class="{ 'has-file': fileName }">
                                         <div class="text-center">
@@ -228,78 +252,117 @@
                                             </svg>
                                             <span class="text-xs font-medium text-center"
                                                 x-text="fileName || 'Pilih File Profil'"></span>
+                                            <!-- Tambahkan link untuk melihat file yang sudah ada -->
+                                            <template x-if="fileName && '{{ $isEdit }}'">
+                                                <div class="mt-2">
+                                                    <a href="{{ $isEdit ? asset('storage/file_kerja_sama/' . $filePenunjang['profil_lembaga']) : '#' }}"
+                                                        target="_blank"
+                                                        class="text-blue-600 hover:text-blue-800 text-xs underline">
+                                                        Lihat file saat ini
+                                                    </a>
+                                                </div>
+                                            </template>
                                         </div>
                                     </label>
                                 </div>
                             </div>
 
                             <!-- Proposal Kemitraan -->
-                            <div class="space-y-2" x-data="{ fileName: '' }">
+                            <div class="space-y-2" x-data="{ fileName: '{{ $isEdit && !empty($filePenunjang['proposal_kemitraan']) ? $filePenunjang['proposal_kemitraan'] : '' }}' }">
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                                     Proposal Kemitraan/Program
                                 </label>
                                 <div class="file-upload-container">
                                     <input type="file" name="file_penunjang[proposal_kemitraan]" id="proposal_kemitraan"
-                                        accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-                                        @change="fileName = $event.target.files[0] ? $event.target.files[0].name : ''">
+                                        accept=".pdf,.doc,.docx"
+                                        @change="fileName = $event.target.files[0] ? $event.target.files[0].name : '{{ $isEdit && !empty($filePenunjang['proposal_kemitraan']) ? $filePenunjang['proposal_kemitraan'] : '' }}'">
                                     <label for="proposal_kemitraan" class="file-upload-label"
                                         :class="{ 'has-file': fileName }">
                                         <div class="text-center">
                                             <svg class="mx-auto h-8 w-8 text-gray-400 mb-2" fill="none"
                                                 stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                             </svg>
                                             <span class="text-xs font-medium text-center"
-                                                x-text="fileName || 'Pilih File Proposal'"></span>
+                                                x-text="fileName || 'Pilih File Profil'"></span>
+                                            <!-- Tambahkan link untuk melihat file yang sudah ada -->
+                                            <template x-if="fileName && '{{ $isEdit }}'">
+                                                <div class="mt-2">
+                                                    <a href="{{ $isEdit ? asset('storage/file_kerja_sama/' . $filePenunjang['proposal_kemitraan']) : '#' }}"
+                                                        target="_blank"
+                                                        class="text-blue-600 hover:text-blue-800 text-xs underline">
+                                                        Lihat file saat ini
+                                                    </a>
+                                                </div>
+                                            </template>
                                         </div>
                                     </label>
                                 </div>
                             </div>
 
                             <!-- Surat Permohonan -->
-                            <div class="space-y-2" x-data="{ fileName: '' }">
+                            <div class="space-y-2" x-data="{ fileName: '{{ $isEdit && !empty($filePenunjang['surat_permohonan']) ? $filePenunjang['surat_permohonan'] : '' }}' }">
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                    Surat Permohonan
+                                    Surat Permohonan Kerja Sama
                                 </label>
                                 <div class="file-upload-container">
                                     <input type="file" name="file_penunjang[surat_permohonan]" id="surat_permohonan"
-                                        accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-                                        @change="fileName = $event.target.files[0] ? $event.target.files[0].name : ''">
+                                        accept=".pdf,.doc,.docx"
+                                        @change="fileName = $event.target.files[0] ? $event.target.files[0].name : '{{ $isEdit && !empty($filePenunjang['surat_permohonan']) ? $filePenunjang['surat_permohonan'] : '' }}'">
                                     <label for="surat_permohonan" class="file-upload-label"
                                         :class="{ 'has-file': fileName }">
                                         <div class="text-center">
                                             <svg class="mx-auto h-8 w-8 text-gray-400 mb-2" fill="none"
                                                 stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                             </svg>
                                             <span class="text-xs font-medium text-center"
-                                                x-text="fileName || 'Pilih File Surat'"></span>
+                                                x-text="fileName || 'Pilih File Profil'"></span>
+                                            <!-- Tambahkan link untuk melihat file yang sudah ada -->
+                                            <template x-if="fileName && '{{ $isEdit }}'">
+                                                <div class="mt-2">
+                                                    <a href="{{ $isEdit ? asset('storage/file_kerja_sama/' . $filePenunjang['surat_permohonan']) : '#' }}"
+                                                        target="_blank"
+                                                        class="text-blue-600 hover:text-blue-800 text-xs underline">
+                                                        Lihat file saat ini
+                                                    </a>
+                                                </div>
+                                            </template>
                                         </div>
                                     </label>
                                 </div>
                             </div>
-
                             <!-- Dokumen Legalitas -->
-                            <div class="space-y-2" x-data="{ fileName: '' }">
+                            <div class="space-y-2" x-data="{ fileName: '{{ $isEdit && !empty($filePenunjang['dokumen_legalitas']) ? $filePenunjang['dokumen_legalitas'] : '' }}' }">
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                                     Dokumen Legalitas <span class="text-gray-500 text-xs">(Opsional)</span>
                                 </label>
                                 <div class="file-upload-container">
                                     <input type="file" name="file_penunjang[dokumen_legalitas]" id="dokumen_legalitas"
-                                        accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-                                        @change="fileName = $event.target.files[0] ? $event.target.files[0].name : ''">
+                                        accept=".pdf,.doc,.docx"
+                                        @change="fileName = $event.target.files[0] ? $event.target.files[0].name : '{{ $isEdit && !empty($filePenunjang['dokumen_legalitas']) ? $filePenunjang['dokumen_legalitas'] : '' }}'">
                                     <label for="dokumen_legalitas" class="file-upload-label"
                                         :class="{ 'has-file': fileName }">
                                         <div class="text-center">
                                             <svg class="mx-auto h-8 w-8 text-gray-400 mb-2" fill="none"
                                                 stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                             </svg>
                                             <span class="text-xs font-medium text-center"
-                                                x-text="fileName || 'Pilih File Legalitas'"></span>
+                                                x-text="fileName || 'Pilih File Profil'"></span>
+                                            <!-- Tambahkan link untuk melihat file yang sudah ada -->
+                                            <template x-if="fileName && '{{ $isEdit }}'">
+                                                <div class="mt-2">
+                                                    <a href="{{ $isEdit && !empty($filePenunjang['dokumen_legalitas'])? asset('storage/file_kerja_sama/' . $filePenunjang['dokumen_legalitas']) : '#' }}"
+                                                        target="_blank"
+                                                        class="text-blue-600 hover:text-blue-800 text-xs underline">
+                                                        Lihat file saat ini
+                                                    </a>
+                                                </div>
+                                            </template>
                                         </div>
                                     </label>
                                 </div>
@@ -331,7 +394,7 @@
                                         d="m21.433 4.861l-6 15.5a1 1 0 0 1-1.624.362l-3.382-3.235l-2.074 2.073a.5.5 0 0 1-.853-.354v-4.519L2.309 9.723a1 1 0 0 1 .442-1.691l17.5-4.5a1 1 0 0 1 1.181 1.329ZM19 6.001L8.032 13.152l1.735 1.66L19 6Z" />
                                 </g>
                             </svg>
-                            Ajukan Kerja Sama
+                            {{ isset($kerjaSama) ? 'Perbaiki Kerja Sama' : 'Ajukan Kerja Sama' }}
                         </button>
                     </div>
                 </form>
