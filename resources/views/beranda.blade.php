@@ -140,75 +140,217 @@
         @endif
 
         <!-- Testimonial Section -->
-        <section class=" py-16 px-4 sm:px-6 lg:px-12">
+        {{-- <section class="py-12 px-4 sm:px-6 lg:px-12">
             <div class="max-w-7xl mx-auto">
-                <!-- Judul -->
-                <div class="text-center mb-10">
-                    <h2 class="text-4xl font-bold mb-2 text-gray-900">
+                <div class="text-center mb-8 sm:mb-10">
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-gray-900">
                         Apa Kata Mereka Tentang Yayasan Kami
                     </h2>
-                    <p class="text-gray-500">Suara hati mitra dan donatur yang bersama mewujudkan perubahan positif.</p>
+                    <p class="text-sm sm:text-base text-gray-500">Suara hati mitra dan donatur yang bersama mewujudkan
+                        perubahan positif.</p>
                 </div>
 
-                <!-- Grid Testimonial -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    @foreach ($reviews as $review)
-                        <div
-                            class="bg-white border border-gray-200 rounded-2xl shadow-md p-6 flex flex-col justify-between">
-                            <div>
-                                {{-- Bintang Dinamis --}}
-                                <div class="text-yellow-400 mb-2">
-                                    {!! str_repeat('★', $review->rating) !!}
-                                    {!! str_repeat('☆', 5 - $review->rating) !!}
-                                    <span class="text-gray-500 text-sm">({{ $review->rating }}/5)</span>
-                                </div>
+                <div class="relative w-full" data-carousel="static" data-carousel-interval="7000">
+       
+                    <div class="relative overflow-hidden rounded-xl min-h-[300px] sm:min-h-[350px]">
+                        @foreach ($reviews as $slideIndex => $review)
+                            <div class="{{ $slideIndex === 0 ? 'block' : 'hidden' }} duration-1000 ease-in-out"
+                                data-carousel-item="{{ $slideIndex === 0 ? 'active' : '' }}">
 
-                                {{-- Pesan Review --}}
-                                <p class="text-gray-600 mb-4">
-                                    "{{ $review->review }}"
-                                </p>
-                            </div>
-
-                            {{-- Info User --}}
-
-                            <div class="flex items-center mt-auto pt-4 border-t border-gray-100">
-                                @php
-                                    $profilePath = $review->User->profile_path ?? null;
-                                    $src = null;
-                                    $initial = strtoupper(Str::substr($user->username ?? ($user->name ?? 'U'), 0, 1));
-                                    if ($profilePath) {
-                                        // Jika URL eksternal
-                                        if (preg_match('/^https?:\/\//i', $profilePath)) {
-                                            $src = $profilePath;
-                                        } else {
-                                            // Normalisasi kalau ada prefix "storage/"
-                                            $normalized = ltrim(preg_replace('#^storage/#', '', $profilePath), '/');
-                                            $src = asset('storage/' . $normalized);
-                                        }
-                                    }
-                                @endphp
-
-                                @if ($src)
-                                    <img src="{{ $src }}"
-                                        alt="Foto Profil {{ $review->User->nama ?? 'Pengguna' }}"
-                                        class="w-12 h-12 rounded-full object-cover border-2 border-gray-300" />
-                                @else
+                                <div class="p-4 sm:p-6">
                                     <div
-                                        class="w-12 h-12 bg-gray-400 rounded-full text-white flex items-center justify-center font-semibold uppercase select-none transition-colors duration-200 text-lg">
-                                        {{ $initial }}
+                                        class="bg-white border border-gray-200 rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-6 flex flex-col justify-between">
+                                
+                                        <div class="text-yellow-400 mb-2 text-sm sm:text-base">
+                                            {!! str_repeat('★', $review->rating) !!}
+                                            {!! str_repeat('☆', 5 - $review->rating) !!}
+                                            <span class="text-gray-500 text-xs sm:text-sm">
+                                                ({{ $review->rating }}/5)
+                                            </span>
+                                        </div>
+
+                                        <p class="text-gray-600 mb-4 text-sm sm:text-base">
+                                            "{{ Str::limit($review->review, 120, '...') }}"
+                                        </p>
+
+                                        <div class="flex items-center mt-auto pt-3 sm:pt-4 border-t border-gray-100">
+                                            @php
+                                                $profilePath = $review->User->profile_path ?? null;
+                                                $src = null;
+                                                $initial = strtoupper(
+                                                    Str::substr(
+                                                        $review->User->username ?? ($review->User->name ?? 'U'),
+                                                        0,
+                                                        1,
+                                                    ),
+                                                );
+                                                if ($profilePath) {
+                                                    if (preg_match('/^https?:\/\//i', $profilePath)) {
+                                                        $src = $profilePath;
+                                                    } else {
+                                                        $normalized = ltrim(
+                                                            preg_replace('#^storage/#', '', $profilePath),
+                                                            '/',
+                                                        );
+                                                        $src = asset('storage/' . $normalized);
+                                                    }
+                                                }
+                                            @endphp
+
+                                            @if ($src)
+                                                <img src="{{ $src }}"
+                                                    alt="Foto Profil {{ $review->User->nama ?? 'Pengguna' }}"
+                                                    class="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-gray-300" />
+                                            @else
+                                                <div
+                                                    class="w-10 h-10 sm:w-12 sm:h-12 bg-gray-400 rounded-full text-white flex items-center justify-center font-semibold uppercase select-none text-lg">
+                                                    {{ $initial }}
+                                                </div>
+                                            @endif
+
+                                            <div class="ml-3">
+                                                <h4 class="font-semibold text-gray-900 text-sm sm:text-base capitalize">
+                                                    {{ $review->User->nama ?? 'Anonim' }}</h4>
+                                                <p class="text-xs sm:text-sm text-gray-500 capitalize">
+                                                    {{ $review->User->role ?? 'Pengguna' }}
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
-                                @endif
-
-
-                                <div class="ml-3">
-                                    <h4 class="font-semibold text-gray-900 capitalize">
-                                        {{ $review->User->nama ?? 'Anonim' }}</h4>
-                                    <p class="text-sm text-gray-500 capitalize">{{ $review->User->role ?? 'Pengguna' }}
-                                    </p>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
+                    <button type="button"
+                        class="absolute top-1/2 sm:top-1/3 -left-2 sm:-left-5 -translate-y-1/2 z-50 flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/80 hover:bg-white hover:scale-110 sm:hover:scale-120 hover:-translate-x-1 sm:hover:-translate-x-4 shadow-md focus:outline-none transition-all duration-300"
+                        data-carousel-prev>
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-800" fill="none" stroke="currentColor"
+                            stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+
+                    <button type="button"
+                        class="absolute top-1/2 sm:top-1/3 -right-2 sm:-right-5 -translate-y-1/2 z-50 flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/80 hover:bg-white hover:scale-110 sm:hover:scale-120 hover:translate-x-1 sm:hover:translate-x-4 shadow-md focus:outline-none transition-all duration-300"
+                        data-carousel-next>
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-800" fill="none" stroke="currentColor"
+                            stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section> --}}
+        <section class="py-12 px-4 sm:px-6 lg:px-12">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-8 sm:mb-10">
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-gray-900">
+                        Apa Kata Mereka Tentang Yayasan Kami
+                    </h2>
+                    <p class="text-sm sm:text-base text-gray-500">Suara hati mitra dan donatur yang bersama mewujudkan
+                        perubahan positif.</p>
+                </div>
+
+                <div class="relative w-full" data-carousel="static" data-carousel-interval="7000">
+                    <!-- Wrapper -->
+                    <div class="relative overflow-hidden rounded-xl min-h-[300px]">
+                        @foreach ($reviews as $reviewIndex => $review)
+                            <div class="{{ $reviewIndex === 0 ? 'block' : 'hidden' }} duration-1000 ease-in-out"
+                                data-carousel-item="{{ $reviewIndex === 0 ? 'active' : '' }}">
+                                <div class="flex justify-center p-4 sm:p-6">
+                                    <div
+                                        class="bg-white border border-gray-200 rounded-xl sm:rounded-2xl shadow-md p-6 sm:p-8 max-w-2xl w-full flex flex-col justify-between">
+                                        <div>
+                                            {{-- Bintang Dinamis --}}
+                                            <div class="text-yellow-400 mb-4 text-center text-lg sm:text-xl">
+                                                {!! str_repeat('★', $review->rating) !!}
+                                                {!! str_repeat('☆', 5 - $review->rating) !!}
+                                                <span
+                                                    class="text-gray-500 text-sm sm:text-base ml-2">({{ $review->rating }}/5)</span>
+                                            </div>
+
+                                            {{-- Pesan Review --}}
+                                            <p class="text-gray-600 mb-6 text-center text-base sm:text-lg leading-relaxed">
+                                                "{{ $review->review }}"
+                                            </p>
+                                        </div>
+
+                                        {{-- Info User --}}
+                                        <div class="flex items-center justify-center mt-auto pt-6 border-t border-gray-100">
+                                            @php
+                                                $profilePath = $review->User->profile_path ?? null;
+                                                $src = null;
+                                                $initial = strtoupper(
+                                                    Str::substr(
+                                                        $review->User->username ?? ($review->User->name ?? 'U'),
+                                                        0,
+                                                        1,
+                                                    ),
+                                                );
+                                                if ($profilePath) {
+                                                    // Jika URL eksternal
+                                                    if (preg_match('/^https?:\/\//i', $profilePath)) {
+                                                        $src = $profilePath;
+                                                    } else {
+                                                        // Normalisasi kalau ada prefix "storage/"
+                                                        $normalized = ltrim(
+                                                            preg_replace('#^storage/#', '', $profilePath),
+                                                            '/',
+                                                        );
+                                                        $src = asset('storage/' . $normalized);
+                                                    }
+                                                }
+                                            @endphp
+
+                                            @if ($src)
+                                                <img src="{{ $src }}"
+                                                    alt="Foto Profil {{ $review->User->nama ?? 'Pengguna' }}"
+                                                    class="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-gray-300" />
+                                            @else
+                                                <div
+                                                    class="w-12 h-12 sm:w-14 sm:h-14 bg-gray-400 rounded-full text-white flex items-center justify-center font-semibold uppercase select-none transition-colors duration-200 text-xl">
+                                                    {{ $initial }}
+                                                </div>
+                                            @endif
+
+                                            <div class="ml-4 text-center sm:text-left">
+                                                <h4 class="font-semibold text-gray-900 text-base sm:text-lg capitalize">
+                                                    {{ $review->User->nama ?? 'Anonim' }}
+                                                </h4>
+                                                <p class="text-sm sm:text-base text-gray-500 capitalize">
+                                                    {{ $review->User->role ?? 'Pengguna' }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <!-- Carousel navigation -->
+                    <!-- Tombol Prev -->
+                    <div class="flex justify-center mt-2 gap-4">
+                        <!-- Tombol Prev -->
+                        <button type="button"
+                            class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 hover:scale-110 shadow-md focus:outline-none transition-all duration-300"
+                            data-carousel-prev>
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" fill="none" stroke="currentColor"
+                                stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+
+                        <!-- Tombol Next -->
+                        <button type="button"
+                            class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 hover:scale-110 shadow-md focus:outline-none transition-all duration-300"
+                            data-carousel-next>
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" fill="none" stroke="currentColor"
+                                stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -225,6 +367,8 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const logoTrack = document.getElementById('logoTrack');
                 const logoContainer = logoTrack.closest('.logo-container');
+                const reviews = @json($reviews);
+                const carouselInner = document.getElementById('carousel-inner');
 
                 const logos = [
                     @foreach ($site['lembaga'] as $logo)

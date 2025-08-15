@@ -27,7 +27,20 @@ class GeneralController extends Controller
             ->take(5)
             ->get();
 
-        $reviews = Review::with('User')->latest()->get();
+        $reviewPositif = Review::with('User')
+            ->where('rating', '>=', '4')
+            ->latest()
+            ->where('status', 'show')
+            ->take(6)
+            ->get();
+        $reviewKritis = Review::with('User')
+            ->where('rating', '<=', '2')
+            ->latest()
+            ->where('status', 'show')
+            ->take(6)
+            ->get();
+
+        $reviews = $reviewPositif->merge($reviewKritis)->sortByDesc('created_at');
 
         return view('beranda', compact('berita', 'gallery', 'reviews'));
     }

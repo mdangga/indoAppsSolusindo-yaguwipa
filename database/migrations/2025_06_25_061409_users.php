@@ -34,6 +34,12 @@ return new class extends Migration
 
             $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
         });
+
+        Schema::create('kata_kotor', function (Blueprint $table) {
+            $table->id('id_kata');
+            $table->string('kata')->unique();
+            $table->timestamps();
+        });
     }
 
     /**

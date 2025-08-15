@@ -75,7 +75,7 @@
                             <span class="text-xs font-medium text-gray-900">Recent Activity</span>
                         </a>
 
-                        <a href="{{ $user->role === 'mitra' ? route('mitra.kerja-sama') : route('mitra.join') }}"
+                        <a href="{{ $user->role === 'mitra' ? route('kerja-sama.formStore') : route('mitra.join') }}"
                             class="flex flex-col items-center p-2 hover:bg-gray-50 rounded-lg transition-colors">
                             <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-2">
                                 <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
@@ -387,7 +387,7 @@
                                 <span class="text-sm font-medium text-gray-900">Recent Activity</span>
                             </a>
 
-                            <a href="{{ $user->role === 'mitra' ? route('mitra.kerja-sama') : route('mitra.join') }}"
+                            <a href="{{ $user->role === 'mitra' ? route('kerja-sama.formStore') : route('mitra.join') }}"
                                 class="flex items-center p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
                                 <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-blue-600"

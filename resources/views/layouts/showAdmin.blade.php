@@ -221,7 +221,7 @@
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <!-- Header -->
                 <h2 class="text-3xl font-semibold text-gray-800">
-                    @yield('header', 'Admin Header')
+                    @yield('header')
                 </h2>
 
                 @hasSection('button')
