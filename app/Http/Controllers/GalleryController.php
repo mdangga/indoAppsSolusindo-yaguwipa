@@ -13,7 +13,19 @@ class GalleryController extends Controller
     // fungsi untuk menampilkan halaman gallery di beranda
     public function show()
     {
-        $gallery = Gallery::latest()->get();
+        $gallery = Gallery::latest()
+            ->get()
+            ->filter(function ($item) {
+                // Jika kategori video, kita lewati pengecekan file lokal
+                if ($item->kategori === 'video') {
+                    return true;
+                }
+
+                // Cek apakah file ada di storage
+                return Storage::disk('public')->exists($item->link);
+            });
+
+        // dd($gallery);
         return view('gallery', compact('gallery'));
     }
 
@@ -23,7 +35,7 @@ class GalleryController extends Controller
     {
         return view('admin.showGalleryPhoto');
     }
-    
+
 
     // fungsi untuk menampilkan halaman video di admin
     public function indexVideo()
@@ -163,9 +175,9 @@ class GalleryController extends Controller
 
         Gallery::create($data);
 
-        if($request->kategori === 'foto'){
+        if ($request->kategori === 'foto') {
             return redirect()->route('admin.galleryPhoto')->with('success', 'Gallery berhasil ditambahkan!');
-        }else{
+        } else {
             return redirect()->route('admin.galleryVideo')->with('success', 'Gallery berhasil ditambahkan!');
         }
     }
@@ -234,9 +246,9 @@ class GalleryController extends Controller
 
         $gallery->update($data);
 
-        if($request->kategori === 'foto'){
+        if ($request->kategori === 'foto') {
             return redirect()->route('admin.galleryPhoto')->with('success', 'Gallery berhasil ditambahkan!');
-        }else{
+        } else {
             return redirect()->route('admin.galleryVideo')->with('success', 'Gallery berhasil ditambahkan!');
         }
     }

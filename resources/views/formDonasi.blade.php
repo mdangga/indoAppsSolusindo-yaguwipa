@@ -49,7 +49,7 @@
                     <!-- Left Side - Stepper -->
                     <div class="hidden md:block w-80 bg-gray-100/60 p-8 rounded-xl border-gray-200">
                         <!-- Stepper -->
-                        <div class="flex items-center space-x-3 mb-10">
+                        <div class="flex items-center space-x-3 mb-2">
                             <img src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" alt="Icon Donasi"
                                 class="w-12 h-12 rounded-lg" />
                             <div>
@@ -58,6 +58,19 @@
                                     untuk Sesama</p>
                             </div>
                         </div>
+
+
+                        <div class="rounded-xl py-4 mb-3">
+                            <p class="text-sm font-medium text-gray-500">
+                                Berdonasi di Campaign
+                            </p>
+                            <p class="mt-1 text-md font-semibold text-gray-900 leading-tight">
+                                {{ $campaign->nama }}
+                            </p>
+                        </div>
+
+
+
                         <div class="space-y-3">
                             <!-- Step 1 -->
                             <div class="flex items-center space-x-4" id="stepper-step1">
