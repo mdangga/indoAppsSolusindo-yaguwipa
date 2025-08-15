@@ -15,14 +15,15 @@ class CampaignController extends Controller
 {
     public function showSlug($slug)
     {
+        $totalDonatur = Donasi::distinct()->count('nama');
         $campaign = Campaign::with('Program.KategoriProgram', 'Donasi')
             ->where('slug', $slug)->firstOrFail();
         $donations = Donasi::with(['DonasiDana', 'DonasiBarang', 'DonasiJasa', 'JenisDonasi', 'User'])
             ->orderBy('updated_at', 'desc')
             ->where('id_campaign', $campaign->id_campaign)
-            ->limit(10)
+            ->limit(5)
             ->get();
-        return view('detailCampaign', compact('campaign', 'donations'));
+        return view('detailCampaign', compact('campaign', 'donations', 'totalDonatur'));
     }
 
     public function showUserCampaign(Request $request)

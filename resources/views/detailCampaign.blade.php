@@ -1,6 +1,4 @@
 @php
-    $totalDonatur = count($donations);
-
     $today = new DateTime();
     $endDate = new DateTime($campaign->tanggal_selesai);
 
@@ -248,12 +246,11 @@
                                 <p class="text-gray-500 text-center">Belum ada donasi.</p>
                             @endforelse
                         </div>
-                        <div class="mt-6 text-center">
+                        {{-- <div class="mt-6 text-center">
                             <button class="text-amber-600 hover:text-amber-800 font-medium transition-colors">
                                 Lihat Semua Donatur <i class="fas fa-arrow-right ml-1"></i>
                             </button>
-                        </div>
-
+                        </div> --}}
                     </div>
 
                 </div>

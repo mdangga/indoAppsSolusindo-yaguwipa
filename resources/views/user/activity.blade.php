@@ -177,8 +177,49 @@
         </div>
 
         @if ($recentActivities->hasPages())
-            <div class="mt-6">
-                {{ $recentActivities->links() }}
+            <div class="flex justify-center items-center space-x-4 mt-6">
+                <!-- Previous Button -->
+                @if ($recentActivities->onFirstPage())
+                    <span
+                        class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
+                        ← Previous
+                    </span>
+                @else
+                    <a href="{{ $recentActivities->previousPageUrl() }}"
+                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        ← Previous
+                    </a>
+                @endif
+
+                <!-- Page Numbers -->
+                <div class="flex space-x-1">
+                    @foreach ($recentActivities->getUrlRange(1, $recentActivities->lastPage()) as $page => $url)
+                        @if ($page == $recentActivities->currentPage())
+                            <span
+                                class="px-3 py-2 text-sm font-medium text-white bg-amber-400 border border-amber-500/50 rounded-lg scale-120 -translate-y-1">
+                                {{ $page }}
+                            </span>
+                        @else
+                            <a href="{{ $url }}"
+                                class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 hover:scale-120 hover:-translate-y-1 transition-all duration-100">
+                                {{ $page }}
+                            </a>
+                        @endif
+                    @endforeach
+                </div>
+
+                <!-- Next Button -->
+                @if ($recentActivities->hasMorePages())
+                    <a href="{{ $recentActivities->nextPageUrl() }}"
+                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        Next →
+                    </a>
+                @else
+                    <span
+                        class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
+                        Next →
+                    </span>
+                @endif
             </div>
         @endif
     </div>

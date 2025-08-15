@@ -71,11 +71,6 @@
                         <!-- Step 1: Informasi Akun -->
                         <div id="step-1" class="step active">
                             <div class="space-y-4">
-                                {{-- <div class="text-center mb-4">
-                                <h3 class="text-lg font-semibold text-gray-800">Informasi Akun</h3>
-                                <p class="text-xs text-gray-500">Buat username dan password untuk akun Anda</p>
-                            </div> --}}
-
                                 {{-- Username --}}
                                 <div class="form-group">
                                     <label for="username" class="form-label text-sm">Username</label>
@@ -169,11 +164,6 @@
                         <!-- Step 2: Informasi Pribadi -->
                         <div id="step-2" class="step">
                             <div class="space-y-4">
-                                {{-- <div class="text-center mb-4">
-                                <h3 class="text-lg font-semibold text-gray-800">Informasi Pribadi</h3>
-                                <p class="text-xs text-gray-500">Lengkapi data diri Anda</p>
-                            </div> --}}
-
                                 {{-- Nama --}}
                                 <div class="form-group">
                                     <label for="nama" class="form-label text-sm">Nama Lengkap</label>
@@ -216,11 +206,16 @@
 
                                 {{-- Nomor Telepon --}}
                                 <div class="form-group">
-                                    <label for="no_tlp" class="form-label text-sm">Nomor Telepon</label>
+                                    <label for="no_tlp" class="text-sm font-medium text-gray-700">
+                                        Nomor Telepon <span class="text-gray-500 text-xs">(08..., +628...,
+                                            628...)</span>
+                                    </label>
+
                                     <input type="text" name="no_tlp" id="no_tlp" value="{{ old('no_tlp') }}"
-                                        required
+                                        required pattern="^(\+62|62|08)[0-9]{7,15}$"
                                         class="form-input block w-full rounded-xl px-4 py-3 text-gray-900 placeholder:text-gray-400"
-                                        placeholder="08xxxxxxxxxx" />
+                                        placeholder="08123456789, 628123456789, +628123456789" />
+
                                     @error('no_tlp')
                                         <p class="text-sm text-red-600 mt-2 flex items-center">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
@@ -232,6 +227,7 @@
                                         </p>
                                     @enderror
                                 </div>
+
 
                                 {{-- Alamat --}}
                                 <div class="form-group">

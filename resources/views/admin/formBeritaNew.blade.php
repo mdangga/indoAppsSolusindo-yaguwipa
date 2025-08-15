@@ -52,7 +52,7 @@
                 <label for="tanggal_publish" class="block mb-1 text-sm font-medium">Tanggal Publish</label>
                 <input
                     class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
-                    type="datetime-local" name="tanggal_publish" id="tanggal_publish"
+                    type="date" name="tanggal_publish" id="tanggal_publish"
                     value="{{ old('tanggal_publish', $berita->tanggal_publish ?? '') }}" />
                 @error('tanggal_publish')
                     <small class="text-red-600">{{ $message }}</small>
@@ -71,8 +71,8 @@
             @enderror
         </div>
 
-        <div class="mb-4">
-            <label class="block font-semibold mb-1">Isi Berita</label>
+        <div class="mt-4">
+            <label class="block mb-1 text-sm font-medium">Isi Berita</label>
 
             {{-- toolbar --}}
             <div id="toolbar-container" class="rounded-t-lg">
