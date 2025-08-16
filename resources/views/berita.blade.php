@@ -65,15 +65,16 @@
                                 {!! $berita->isi_berita !!}
                             </p>
                         </div>
-
-                        <div class="flex flex-wrap gap-2 mt-4">
-                            @foreach (explode(';', $berita->keyword) as $tag)
-                                <a href="{{ route('berita.keyword', $tag) }}"
-                                    class="px-3 py-1 text-sm bg-gray-100 text-black hover:bg-black hover:text-white cursor-default">
-                                    {{ trim($tag) }}
-                                </a>
-                            @endforeach
-                        </div>
+                        @if (!empty($berita->keyword))
+                            <div class="flex flex-wrap gap-2 mt-4">
+                                @foreach (explode(';', $berita->keyword) as $tag)
+                                    <a href="{{ route('berita.keyword', $tag) }}"
+                                        class="px-3 py-1 text-sm bg-gray-100 text-black hover:bg-black hover:text-white cursor-default">
+                                        {{ trim($tag) }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        @endif
                         <!-- Baca Juga -->
                         @if ($berita_terkait->isNotEmpty())
                             <div class="w-full mt-6">

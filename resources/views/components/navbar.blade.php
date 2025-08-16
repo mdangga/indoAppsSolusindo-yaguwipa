@@ -216,7 +216,7 @@
                     @if ($profilePath)
                         <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar">
                             <img src="{{ asset('storage/' . $profilePath) }}" alt="Profile"
-                                class="w-12 h-12 rounded-full object-cover border-2 border-gray-100/10 hover:scale-105 transition" />
+                                class="w-12 h-12 rounded-full object-cover border-2 border-gray-100/10 cursor-pointer hover:brightness-90 transition" />
                         </button>
                     @else
                         <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar"

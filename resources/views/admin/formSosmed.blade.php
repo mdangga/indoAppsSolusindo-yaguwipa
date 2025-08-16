@@ -27,7 +27,8 @@
 
             <div class="mt-4">
                 <label for="nama" class="block mb-1 text-sm font-medium text-gray-900">Nama</label>
-                <input type="text" id="nama" name="nama" value="{{ old('nama', $sosialMedia->nama ?? '') }}"
+                <input type="text" id="nama" name="nama" placeholder="Nama sosial media..."
+                    value="{{ old('nama', $sosialMedia->nama ?? '') }}"
                     class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5" />
                 @error('nama')
                     <small class="text-red-600">{{ $message }}</small>
@@ -35,7 +36,7 @@
             </div>
             <div class="mt-4">
                 <label for="link" class="block mb-1 text-sm font-medium text-gray-900">Link</label>
-                <input type="link" id="link" name="link"
+                <input type="link" id="link" name="link" placeholder="Url sosial media..."
                     value="{{ old('link', $isEdit ? $sosialMedia->link : '') }}"
                     class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5" />
                 @error('link')

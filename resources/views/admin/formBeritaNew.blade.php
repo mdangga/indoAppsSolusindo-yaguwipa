@@ -64,7 +64,7 @@
             <label for="judul" class="block mb-1 text-sm font-medium">Judul</label>
             <input
                 class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
-                type="text" name="judul" id="judul" placeholder="Judul berita..."
+                type="text" name="judul" id="judul" placeholder="Masukkan judul berita..."
                 value="{{ old('judul', $berita->judul ?? '') }}" required />
             @error('judul')
                 <small class="text-red-600">{{ $message }}</small>
@@ -159,6 +159,7 @@
                         <label for="caption" class="block mb-1 text-sm font-medium">Caption Gambar</label>
                         <input type="text" name="caption"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                            placeholder="Masukkan caption gambar..."
                             value="{{ old('caption', $berita->caption ?? '') }}" />
                         @error('caption')
                             <small class="text-red-600">{{ $message }}</small>
@@ -197,21 +198,17 @@
                 {{-- Caption --}}
                 <div>
                     <label for="caption" class="block mb-1 text-sm font-medium">Caption Gambar</label>
-                    <input type="text" name="caption"
+                    <input type="text" name="caption" placeholder="Masukkan caption gambar..."
                         class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
                         value="{{ old('caption') }}" />
                 </div>
             </div>
         @endif
-
-
-
-
         <div class="mt-4">
             <label for="keyword" class="block mb-1 text-sm font-medium">Keyword</label>
             <input type="text" name="keyword" id="keyword"
                 class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                value="{{ old('keyword', $berita->keyword ?? '') }}" />
+                placeholder="Masukkan keywords..." value="{{ old('keyword', $berita->keyword ?? '') }}" />
             <small class="text-gray-500">Contoh: berita;terbaru (tanpa spasi dan tanda baca)</small>
             @error('keyword')
                 <small class="text-red-600">{{ $message }}</small>
@@ -224,7 +221,8 @@
                 <label for="meta_title" class="block mb-1 text-sm font-medium">Meta Title</label>
                 <input name="meta_title" id="meta_title" type="text"
                     class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                    value="{{ old('meta_title', $berita->meta_title ?? '') }}" required />
+                    value="{{ old('meta_title', $berita->meta_title ?? '') }}" placeholder="Masukkan meta title..."
+                    required />
                 @error('meta_title')
                     <small class="text-red-600">{{ $message }}</small>
                 @enderror
@@ -235,7 +233,8 @@
                 <label for="meta_description" class="block mb-1 text-sm font-medium">Meta Description</label>
                 <input type="text" name="meta_description" id="meta_description"
                     class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                    value="{{ old('meta_description', $berita->meta_description ?? '') }}" required />
+                    value="{{ old('meta_description', $berita->meta_description ?? '') }}"
+                    placeholder="Masukkan meta description..." required />
                 @error('meta_description')
                     <small class="text-red-600">{{ $message }}</small>
                 @enderror
@@ -247,7 +246,7 @@
                 <label for="hit" class="block mb-1 text-sm font-medium">Hit</label>
                 <input id="hit" type="number" name="hit"
                     class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                    value="{{ old('hit', $berita->hit ?? '') }}" required>
+                    value="{{ old('hit', $berita->hit ?? '') }}" placeholder="Masukkan jumlah hit..." required>
                 @error('hit')
                     <small class="text-red-600">{{ $message }}</small>
                 @enderror

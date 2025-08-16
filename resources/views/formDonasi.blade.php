@@ -157,7 +157,7 @@
                                     <span id="step-label" class="text-sm font-medium text-gray-700">Step 1/3</span>
                                 </div>
                                 <div class="hidden md:flex items-center space-x-4">
-                                    <a href="#" class=" text-gray-600 text-sm">Butuh Bantuan?</a>
+                                    {{-- <a href="#" class=" text-gray-600 text-sm">Butuh Bantuan?</a> --}}
                                     @auth
                                         @if ($profilePath)
                                             <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar">

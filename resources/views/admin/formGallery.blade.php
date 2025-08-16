@@ -50,7 +50,7 @@
                     <label for="youtube_link" class="block mb-1 text-sm font-medium">YouTube URL</label>
                     <input type="url" name="youtube_link" id="youtube_link"
                         class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                        value="{{ old('youtube_link', $gallery->link ?? '') }}">
+                        placeholder="Masukkan link youtube..." value="{{ old('youtube_link', $gallery->link ?? '') }}">
                     <small class="text-gray-500">Contoh: https://www.youtube.com/watch?v=dQw4w9WgXcQ</small>
                     @error('youtube_link')
                         <small class="text-red-600">{{ $message }}</small>
@@ -61,7 +61,7 @@
                     <label for="alt_text" class="block mb-1 text-sm font-medium">Caption</label>
                     <input type="text" name="alt_text" id="alt_text"
                         class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                        value="{{ old('alt_text', $gallery->alt_text ?? '') }}" required>
+                        placeholder="Masukkan caption..." value="{{ old('alt_text', $gallery->alt_text ?? '') }}" required>
                     @error('alt_text')
                         <small class="text-red-600">{{ $message }}</small>
                     @enderror

@@ -293,10 +293,10 @@
                                 <!-- Avatar -->
                                 @if ($profilePath)
                                     <img src="{{ asset('storage/' . $profilePath) }}" alt="Profile"
-                                        class="w-10 h-10 rounded-full object-cover border-2 border-gray-300 hover:scale-105 transition" />
+                                        class="w-10 h-10 rounded-full object-cover border-2 border-gray-300" />
                                 @else
                                     <span
-                                        class="w-10 h-10 {{ $randomBg }} {{ $hoverBg }} rounded-full text-white flex items-center justify-center font-semibold uppercase select-none transition-colors duration-200 cursor-pointer text-lg">
+                                        class="w-10 h-10 {{ $randomBg }} {{ $hoverBg }} rounded-full text-white flex items-center justify-center font-semibold uppercase select-none transition-colors duration-200 text-lg">
                                         {{ strtoupper(substr($user->username ?? ($user->nama ?? 'U'), 0, 1)) }}
                                     </span>
                                 @endif

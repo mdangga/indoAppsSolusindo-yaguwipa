@@ -140,7 +140,7 @@
         @endif
 
         <!-- Testimonial Section -->
-        <section class="py-12 px-4 sm:px-6 lg:px-12">
+        {{-- <section class="py-12 px-4 sm:px-6 lg:px-12">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center mb-8 sm:mb-10">
                     <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-gray-900">
@@ -151,7 +151,7 @@
                 </div>
 
                 <div class="relative w-full" data-carousel="static" data-carousel-interval="7000">
-       
+
                     <div class="relative overflow-hidden rounded-xl min-h-[300px] sm:min-h-[350px]">
                         @foreach ($reviews as $slideIndex => $review)
                             <div class="{{ $slideIndex === 0 ? 'block' : 'hidden' }} duration-1000 ease-in-out"
@@ -160,7 +160,7 @@
                                 <div class="p-4 sm:p-6">
                                     <div
                                         class="bg-white border border-gray-200 rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-6 flex flex-col justify-between">
-                                
+
                                         <div class="text-yellow-400 mb-2 text-sm sm:text-base">
                                             {!! str_repeat('★', $review->rating) !!}
                                             {!! str_repeat('☆', 5 - $review->rating) !!}
@@ -240,7 +240,9 @@
                     </button>
                 </div>
             </div>
+
         </section>
+
         <section class="py-12 px-4 sm:px-6 lg:px-12">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center mb-8 sm:mb-10">
@@ -273,7 +275,8 @@
                                             </p>
                                         </div>
 
-                                        <div class="flex items-center justify-center mt-auto pt-6 border-t border-gray-100">
+                                        <div
+                                            class="flex items-center justify-center mt-auto pt-6 border-t border-gray-100">
                                             @php
                                                 $profilePath = $review->User->profile_path ?? null;
                                                 $src = null;
@@ -351,6 +354,7 @@
                 </div>
             </div>
         </section>
+        
         <section class="py-12 px-4 sm:px-6 lg:px-12">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center mb-8">
@@ -479,7 +483,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> --}}
 
         <section class="py-12 px-4 sm:px-6 lg:px-12">
             <div class="max-w-7xl mx-auto">

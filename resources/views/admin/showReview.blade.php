@@ -171,15 +171,14 @@
     {{-- Reviews Grid --}}
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
         @forelse ($reviews as $review)
-            <div
-                class="bg-white border border-gray-200 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden">
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm transition-all duration-300 overflow-hidden">
                 {{-- Status Badge --}}
                 <div class="p-6 pb-0">
                     <div class="flex items-center justify-between mb-4">
                         {{-- Star Rating --}}
                         <div class="flex items-center">
                             @for ($i = 1; $i <= 5; $i++)
-                                <svg class="w-5 h-5 {{ $i <= $review->rating ? 'text-yellow-400 fill-current' : 'text-gray-300' }}"
+                                <svg class="w-5 h-5  {{ $i <= $review->rating ? 'text-yellow-400 fill-current' : 'fill-gray-300' }}"
                                     viewBox="0 0 24 24">
                                     <path
                                         d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />

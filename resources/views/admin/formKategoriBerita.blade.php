@@ -27,7 +27,8 @@
 
             <div class="mt-4">
                 <label for="nama" class="block mb-1 text-sm font-medium text-gray-900">Nama</label>
-                <input type="text" id="nama" name="nama" value="{{ old('nama', $kategori->nama ?? '') }}"
+                <input type="text" id="nama" name="nama" placeholder="Masukkan judul kategori..."
+                    value="{{ old('nama', $kategori->nama ?? '') }}"
                     class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5" />
                 @error('nama')
                     <small class="text-red-600">{{ $message }}</small>
