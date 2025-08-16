@@ -15,7 +15,7 @@ class KataKotorController extends Controller
             return $query->where('kata', 'like', "%{$search}%");
         })
             ->latest()
-            ->paginate(20);
+            ->paginate(50);
 
         $kataEdit = session('kataEdit', null);
 

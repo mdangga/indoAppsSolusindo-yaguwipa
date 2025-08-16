@@ -9,14 +9,6 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-end">
             {{-- Search Input --}}
             <div class="lg:col-span-8">
-                <label for="search" class="block text-sm font-medium text-gray-700 mb-1">
-                    <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z">
-                        </path>
-                    </svg>
-                    Cari Review
-                </label>
                 <div class="relative">
                     <input type="text" id="search" name="search" placeholder="Cari berdasarkan konten review..."
                         value="{{ request('search') }}"
@@ -123,7 +115,8 @@
             $pending = request()->has('status') && request('status') == 'pending';
         @endphp
         <a href="{{ request()->fullUrlWithQuery(['status' => $approved ? null : 'approved']) }}"
-            class="bg-white p-4 rounded-lg shadow border border-gray-100 cursor-pointer" title="Approved Reviews">
+            class="bg-white p-4 rounded-lg shadow border border-gray-100 cursor-pointer hover:bg-gray-100 hover:border-green-200 transform active:scale-95 transition-all duration-200"
+            title="Approved Reviews">
             <div class="flex items-center">
                 <div class="bg-green-100 p-2 rounded-lg">
                     <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -139,7 +132,8 @@
             </div>
         </a>
         <a href="{{ request()->fullUrlWithQuery(['status' => $pending ? null : 'pending']) }}"
-            class="bg-white p-4 rounded-lg shadow border border-gray-100 cursor-pointer" title="Pending Reviews">
+            class="bg-white p-4 rounded-lg shadow border border-gray-100 cursor-pointer hover:bg-gray-100 hover:border-amber-200 transform active:scale-95 transition-all duration-200"
+            title="Pending Reviews">
             <div class="flex items-center">
                 <div class="bg-amber-100 p-2 rounded-lg">
                     <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -373,12 +367,50 @@
         @endforelse
     </div>
 
-    {{-- Pagination --}}
     @if ($reviews->hasPages())
-        <div class="mt-8 flex justify-center">
-            <div class="bg-white border border-gray-200 rounded-xl p-2 shadow-lg">
-                {{ $reviews->links('vendor.pagination.tailwind') }}
+        <div class="flex justify-center items-center space-x-4 mt-6">
+            <!-- Previous Button -->
+            @if ($reviews->onFirstPage())
+                <span
+                    class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
+                    ← Previous
+                </span>
+            @else
+                <a href="{{ $reviews->previousPageUrl() }}"
+                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                    ← Previous
+                </a>
+            @endif
+
+            <!-- Page Numbers -->
+            <div class="flex space-x-1">
+                @foreach ($reviews->getUrlRange(1, $reviews->lastPage()) as $page => $url)
+                    @if ($page == $reviews->currentPage())
+                        <span
+                            class="px-3 py-2 text-sm font-medium text-white bg-amber-400 border border-amber-500/50 rounded-lg">
+                            {{ $page }}
+                        </span>
+                    @else
+                        <a href="{{ $url }}"
+                            class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                            {{ $page }}
+                        </a>
+                    @endif
+                @endforeach
             </div>
+
+            <!-- Next Button -->
+            @if ($reviews->hasMorePages())
+                <a href="{{ $reviews->nextPageUrl() }}"
+                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                    Next →
+                </a>
+            @else
+                <span
+                    class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
+                    Next →
+                </span>
+            @endif
         </div>
     @endif
 @endsection
