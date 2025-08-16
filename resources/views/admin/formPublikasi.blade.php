@@ -136,6 +136,8 @@
                 <label for="file" class="block mb-1 text-sm font-medium">Upload File</label>
                 <input type="file" name="file" id="file"
                     class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" />
+                <small class="text-gray-500">PDF, DOC, DOCX (Max. 10MB)</small>
+
                 @error('file')
                     <small class="text-red-600">{{ $message }}</small>
                 @enderror
@@ -144,14 +146,15 @@
                 <label for="halaman" class="block mb-1 text-sm font-medium">Jumlah Halaman</label>
                 <input name="halaman" id="halaman" type="number"
                     class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                    value="{{ old('halaman', $publikasi->halaman ?? '') }}" required />
+                    placeholder="Masukkan jumlah halaman..." value="{{ old('halaman', $publikasi->halaman ?? '') }}"
+                    required />
                 @error('halaman')
                     <small class="text-red-600">{{ $message }}</small>
                 @enderror
             </div>
             <div class="col-span-1">
                 <label for="download" class="block mb-1 text-sm font-medium">Downloads</label>
-                <input name="download" id="download" type="number"
+                <input name="download" id="download" type="number" placeholder="Masukkan unduhan..."
                     class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
                     value="{{ old('download', $publikasi->download ?? '') }}" required />
                 @error('download')
@@ -164,7 +167,7 @@
             {{-- Meta Title --}}
             <div>
                 <label for="meta_title" class="block mb-1 text-sm font-medium">Meta Title</label>
-                <input name="meta_title" id="meta_title" type="text"
+                <input name="meta_title" id="meta_title" type="text" placeholder="Masukkan meta title..."
                     class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
                     value="{{ old('meta_title', $publikasi->meta_title ?? '') }}" required />
                 @error('meta_title')
@@ -188,7 +191,7 @@
         {{-- Meta Description --}}
         <div class="mt-4">
             <label for="meta_description" class="block mb-1 text-sm font-medium">Meta Description</label>
-            <textarea type="text" name="meta_description" id="meta_description"
+            <textarea type="text" name="meta_description" id="meta_description" placeholder="Masukkan meta description..."
                 class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
                 required>{{ old('meta_description', $publikasi->meta_description ?? '') }}</textarea>
             @error('meta_description')

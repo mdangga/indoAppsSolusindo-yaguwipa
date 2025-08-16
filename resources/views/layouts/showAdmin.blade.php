@@ -232,10 +232,10 @@
         <div class="bg-white border rounded-md border-gray-200 overflow-hidden">
             <!-- Table Container -->
             <div class="p-5 rounded-lg">
-                <div class="table-container overflow-x-auto">
-                    {{-- Content dari child --}}
-                    @yield('content')
-                </div>
+
+                {{-- Content dari child --}}
+                @yield('content')
+
             </div>
         </div>
     </main>
