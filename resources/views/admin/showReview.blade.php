@@ -8,7 +8,7 @@
     <form action="{{ route('admin.review') }}" method="GET" class="bg-white mb-6 p-4 rounded-lg border border-gray-200">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-end">
             {{-- Search Input --}}
-            <div class="lg:col-span-6">
+            <div class="lg:col-span-8">
                 <label for="search" class="block text-sm font-medium text-gray-700 mb-1">
                     <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -28,11 +28,20 @@
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z">
                         </path>
                     </svg>
+                    @if (request('search'))
+                        <a href="{{ route('admin.review') }}" class="absolute right-0 top-0 h-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 absolute right-2 top-[23%]"
+                                viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59L7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12L5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4" />
+                            </svg>
+                        </a>
+                    @endif
                 </div>
             </div>
 
             {{-- Action Buttons --}}
-            <div class="lg:col-span-6 flex gap-2">
+            <div class="lg:col-span-4 flex gap-2">
                 <button type="submit"
                     class="flex-1 bg-blue-600 text-white rounded-lg text-sm py-2
                        hover:bg-blue-700 transition-all duration-200 flex items-center justify-center font-medium">
@@ -44,32 +53,24 @@
                     Cari
                 </button>
 
-                <button type="submit" name="cek_kata" value="1"
-                    class="flex-1 px-3 py-2 bg-red-600 text-white rounded-lg text-sm
-                       hover:bg-red-700 transition-all duration-200 flex items-center justify-center font-medium">
+                @php
+                    $filterAktif = request()->has('cek_kata') && request('cek_kata') == 1;
+                @endphp
+
+                <a href="{{ request()->fullUrlWithQuery(['cek_kata' => $filterAktif ? null : 1]) }}"
+                    class="flex-1 px-3 py-2 {{ $filterAktif ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700' }} text-white rounded-lg text-sm transition-all duration-200 flex items-center justify-center font-medium">
                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z">
                         </path>
                     </svg>
-                    Cek Kata Kotor
-                </button>
-
-                <a href="{{ route('admin.review') }}"
-                    class="px-4 py-2 bg-gray-500 text-white rounded-lg text-sm
-                       hover:bg-gray-600 transition-all duration-200 flex items-center justify-center font-medium">
-                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
-                        </path>
-                    </svg>
-                    Reset
+                    {{ $filterAktif ? 'Matikan Filter' : 'Cek Kata Kotor' }}
                 </a>
             </div>
         </div>
 
         {{-- Filter Info --}}
-        @if (request('search') || request('cek_kata'))
+        @if (request('search') || request('cek_kata') || request('status'))
             <div class="mt-3 p-2 bg-blue-100 rounded-lg border border-blue-200 text-sm">
                 <div class="flex items-center text-blue-800">
                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -88,6 +89,12 @@
                             Highlight Kata Kotor
                         </span>
                     @endif
+                    @if (request('status'))
+                        <span
+                            class="ml-2 px-2 py-0.5 {{ request('status') === 'approved' ? 'bg-green-200 text-green-800' : 'bg-amber-200 text-amber-800' }} rounded-full text-xs">
+                            Filter by Status: "{{ request('status') }}"
+                        </span>
+                    @endif
                 </div>
             </div>
         @endif
@@ -95,77 +102,83 @@
 
 
     {{-- Stats Section --}}
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white p-4 rounded-lg shadow border border-gray-100">
             <div class="flex items-center">
-                <div class="bg-blue-100 p-3 rounded-lg">
-                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="bg-blue-100 p-2 rounded-lg">
+                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-1l-4 4z">
                         </path>
                     </svg>
                 </div>
-                <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">Total Review</p>
-                    <p class="text-2xl font-bold text-gray-900">{{ $reviews->total() }}</p>
+                <div class="ml-3">
+                    <p class="text-xs font-medium text-gray-600">Total Review</p>
+                    <p class="text-lg font-bold text-gray-900">{{ $reviews->total() }}</p>
                 </div>
             </div>
         </div>
-
-        <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+        @php
+            $approved = request()->has('status') && request('status') == 'approved';
+            $pending = request()->has('status') && request('status') == 'pending';
+        @endphp
+        <a href="{{ request()->fullUrlWithQuery(['status' => $approved ? null : 'approved']) }}"
+            class="bg-white p-4 rounded-lg shadow border border-gray-100 cursor-pointer" title="Approved Reviews">
             <div class="flex items-center">
-                <div class="bg-green-100 p-3 rounded-lg">
-                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="bg-green-100 p-2 rounded-lg">
+                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z">
+                            d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-1l-4 4z">
                         </path>
                     </svg>
                 </div>
-                <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">Approved</p>
-                    <p class="text-2xl font-bold text-green-600">{{ $reviews->where('status', 'show')->count() }}</p>
+                <div class="ml-3">
+                    <p class="text-xs font-medium text-gray-600">Approved</p>
+                    <p class="text-lg font-bold text-gray-900">{{ $reviews->where('status', 'show')->count() }}</p>
                 </div>
             </div>
-        </div>
-
-        <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+        </a>
+        <a href="{{ request()->fullUrlWithQuery(['status' => $pending ? null : 'pending']) }}"
+            class="bg-white p-4 rounded-lg shadow border border-gray-100 cursor-pointer" title="Pending Reviews">
             <div class="flex items-center">
-                <div class="bg-yellow-100 p-3 rounded-lg">
-                    <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="bg-amber-100 p-2 rounded-lg">
+                    <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z">
+                            d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-1l-4 4z">
                         </path>
                     </svg>
                 </div>
-                <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">Pending</p>
-                    <p class="text-2xl font-bold text-yellow-600">{{ $reviews->where('status', 'hide')->count() }}</p>
+                <div class="ml-3">
+                    <p class="text-xs font-medium text-gray-600">Pending</p>
+                    <p class="text-lg font-bold text-gray-900">{{ $reviews->where('status', 'hide')->count() }}</p>
                 </div>
             </div>
-        </div>
+        </a>
 
-        <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-            <div class="flex items-center">
-                <div class="bg-purple-100 p-3 rounded-lg">
-                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z">
-                        </path>
-                    </svg>
-                </div>
-                <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">Rata-rata Rating</p>
-                    <p class="text-2xl font-bold text-purple-600">{{ number_format($reviews->avg('rating'), 1) }}</p>
+        @if (!(request('search') || request('cek_kata') || request('status')))
+            <div class="bg-white p-4 rounded-lg shadow border border-gray-100">
+                <div class="flex items-center">
+                    <div class="bg-indigo-100 p-2 rounded-lg">
+                        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-1l-4 4z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-xs font-medium text-gray-600">Avg Rating</p>
+                        <p class="text-lg font-bold text-gray-900">{{ number_format($reviews->avg('rating'), 1) }}</p>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
     </div>
 
     {{-- Reviews Grid --}}
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
         @forelse ($reviews as $review)
             <div
-                class="bg-white border border-gray-200 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+                class="bg-white border border-gray-200 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden">
                 {{-- Status Badge --}}
                 <div class="p-6 pb-0">
                     <div class="flex items-center justify-between mb-4">

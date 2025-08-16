@@ -141,7 +141,8 @@
         @endif
 
         <div class="mt-4">
-            <label for="target_dana" class="block mb-1 text-sm font-medium">Target Dana (Rp)</label>
+            <label for="target_dana" class="block mb-1 text-sm font-medium">Target Dana (Rp) <span
+                    class="text-gray-500 text-xs">(minimal 0)</span></label>
             <input type="number"
                 class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
                 id="target_dana" name="target_dana" value="{{ old('target_dana', $campaign->target_dana ?? '') }}"

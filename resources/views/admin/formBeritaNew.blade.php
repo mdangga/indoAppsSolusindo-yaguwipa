@@ -292,7 +292,7 @@
     <script>
         const quill = new Quill('#editor', {
             theme: 'snow',
-            placeholder: 'Compose an epic...',
+            placeholder: 'Ketik disini....',
             modules: {
                 syntax: true, // Syntax highlighting
                 formula: true, // KaTeX formula

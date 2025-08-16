@@ -24,6 +24,11 @@ class ReviewController extends Controller
             $query->where('review', 'like', '%' . $searchTerm . '%');
         }
 
+        if ($request->has('status')) {
+            $status = $request->input('status') === 'approved' ? 'show' : 'hide';
+            $query->where('status', $status);
+        }
+
         // Fitur filter blacklist words
         if ($request->has('cek_kata')) {
             $kataKotor = KataKotor::pluck('kata')->toArray();
