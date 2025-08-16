@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section('title', $berita->meta_title)
+@section('description', $berita->meta_description)
 
 @section('content')
     <main>

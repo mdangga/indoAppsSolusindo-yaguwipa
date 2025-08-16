@@ -6,7 +6,7 @@
 @section('content')
     <div class="bg-white shadow-xl rounded-xl p-8">
         {{-- Form Tambah Kata --}}
-        <div class="mb-8 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-6">
+        <div class="mb-8 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4">
             <div class="flex items-center mb-4">
                 <svg class="w-6 h-6 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
@@ -19,7 +19,7 @@
                 @csrf
                 <div class="flex-1">
                     <input type="text" id="kata" name="kata"
-                        class="border border-gray-300 px-4 py-3 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 @error('kata') border-red-500 ring-2 ring-red-200 @enderror"
+                        class="border border-gray-300 px-4 py-2 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 @error('kata') border-red-500 ring-2 ring-red-200 @enderror"
                         placeholder="Masukkan kata kotor yang akan difilter" required>
                     @error('kata')
                         <p class="text-red-500 text-sm mt-2 flex items-center">
@@ -33,7 +33,7 @@
                     @enderror
                 </div>
                 <button type="submit"
-                    class="bg-green-600 text-white px-8 py-3 rounded-xl hover:bg-green-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center">
+                    class="bg-green-600 text-white px-8 py-2 rounded-xl hover:bg-green-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 6v6m0 0v6m0-6h6m-6 0H6">
@@ -63,17 +63,17 @@
                 <form method="GET" action="{{ route('admin.kataKotor') }}" class="flex">
                     <div class="relative">
                         <input type="text" name="search"
-                            class="border border-gray-300 rounded-l-xl px-4 py-3 pl-12 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-80 transition-all duration-200"
+                            class="border-2 border-gray-300 rounded-l-xl px-4 py-2 pl-12 outline-none ring-0 focus:border-blue-500 w-80 transition-all duration-200"
                             placeholder="Cari kata..." value="{{ request('search') }}">
-                        <svg class="w-5 h-5 text-gray-400 absolute left-4 top-4" fill="none" stroke="currentColor"
+                        <svg class="w-5 h-5 text-gray-400 absolute left-4 top-3" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z">
                             </path>
                         </svg>
                         @if (request('search'))
-                        <a href="{{ route('admin.kataKotor') }}" class="absolute right-0 top-0 h-full">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 absolute right-4 top-4" viewBox="0 0 24 24">
+                        <a href="{{ route('admin.kataKotor') }}" class="absolute text-gray-400 right-0 top-0 h-full hover:text-gray-900 transition-all duration-150">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 absolute right-4 top-3 hover:text-gray-900 transition-all duration-150" viewBox="0 0 24 24">
                                 <path fill="currentColor"
                                     d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59L7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12L5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4" />
                             </svg>
@@ -81,7 +81,7 @@
                         @endif
                     </div>
                     <button
-                        class="bg-blue-600 text-white px-6 py-3 rounded-r-xl hover:bg-blue-700 transition-colors duration-200 shadow-lg"
+                        class="bg-blue-600 text-white px-6 py-2 rounded-r-xl hover:bg-blue-700 transition-colors duration-200 shadow-lg"
                         type="submit">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -97,7 +97,7 @@
         <div id="tagsContainer" class="flex flex-wrap gap-3">
             @forelse($kataKotor as $kata)
                 <div
-                    class="group flex items-center bg-gray-200 text-gray-900 px-4 py-2 rounded-md shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1">
+                    class="group flex items-center bg-gray-200 text-gray-900 px-4 py-2 rounded-md shadow-lg hover:shadow-xl transition-all duration-200">
                     <span class="font-medium">{{ $kata->kata }}</span>
                     <button onclick="openEditModal({{ $kata->id_kata }}, '{{ $kata->kata }}')"
                         class="ml-3 p-1 hover:bg-gray-900 hover:text-white rounded-full transition-colors duration-200"
@@ -145,12 +145,50 @@
             @endforelse
         </div>
 
-        {{-- Pagination --}}
         @if ($kataKotor->hasPages())
-            <div class="mt-8 flex justify-center">
-                <div class="bg-white border border-gray-200 rounded-xl p-2">
-                    {{ $kataKotor->links('vendor.pagination.tailwind') }}
+            <div class="flex justify-center items-center space-x-4 mt-6">
+                <!-- Previous Button -->
+                @if ($kataKotor->onFirstPage())
+                    <span
+                        class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
+                        ← Previous
+                    </span>
+                @else
+                    <a href="{{ $kataKotor->previousPageUrl() }}"
+                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        ← Previous
+                    </a>
+                @endif
+
+                <!-- Page Numbers -->
+                <div class="flex space-x-1">
+                    @foreach ($kataKotor->getUrlRange(1, $kataKotor->lastPage()) as $page => $url)
+                        @if ($page == $kataKotor->currentPage())
+                            <span
+                                class="px-3 py-2 text-sm font-medium text-white bg-amber-400 border border-amber-500/50 rounded-lg">
+                                {{ $page }}
+                            </span>
+                        @else
+                            <a href="{{ $url }}"
+                                class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                                {{ $page }}
+                            </a>
+                        @endif
+                    @endforeach
                 </div>
+
+                <!-- Next Button -->
+                @if ($kataKotor->hasMorePages())
+                    <a href="{{ $kataKotor->nextPageUrl() }}"
+                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        Next →
+                    </a>
+                @else
+                    <span
+                        class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
+                        Next →
+                    </span>
+                @endif
             </div>
         @endif
     </div>

@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@yield('title', $site['yayasanProfile']->nama_yayasan)</title>
+    <meta name="description" content="@yield('description', $site['yayasanProfile']->meta_description)">
 
     {{-- Icon --}}
     <link rel="icon" type="image/png" href="{{ asset('storage/' . $site['yayasanProfile']->favicon) }}">
