@@ -1,6 +1,15 @@
 @extends('layouts.formAdmin')
 
 @section('title', isset($publikasi) ? 'Edit Publikasi' : 'Tambah Publikasi')
+@section('quill')
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+@endsection
+@section('highlight')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+@endsection
+@section('katex')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+@endsection
 
 @section('content')
     <h1 class="text-2xl font-bold mb-4">{{ isset($publikasi) ? 'Edit publikasi' : 'Tambah publikasi' }}</h1>
@@ -14,8 +23,8 @@
     @php $isEdit = isset($publikasi); @endphp
 
     <form id="formPublikasi"
-        action="{{ $isEdit ? route('publikasi.update', $publikasi->id_publikasi) : route('publikasi.store') }}" method="POST"
-        enctype="multipart/form-data">
+        action="{{ $isEdit ? route('publikasi.update', $publikasi->id_publikasi) : route('publikasi.store') }}"
+        method="POST" enctype="multipart/form-data">
         @csrf
         @if ($isEdit)
             @method('PUT')
@@ -208,7 +217,7 @@
     <script>
         const quill = new Quill('#editor', {
             theme: 'snow',
-            placeholder: 'Compose an epic...',
+            placeholder: 'Ketik disini....',
             modules: {
                 syntax: true, // Syntax highlighting
                 formula: true, // KaTeX formula

@@ -1,50 +1,10 @@
 @extends('layouts.showAdmin')
 
 @section('title', 'Admin - Manajemen Kata Kotor')
-{{-- @section('header', 'Manajemen Kata Kotor') --}}
+@section('header', 'Manajemen Kata Kotor')
 
 @section('content')
     <div class="bg-white shadow-xl rounded-xl p-8">
-        {{-- Header + Search --}}
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
-            <div class="flex items-center mb-4 lg:mb-0">
-                <div class="bg-red-100 p-3 rounded-xl mr-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-red-600" viewBox="0 0 48 48">
-                        <path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="4"
-                            d="M4.18 26.834A2 2 0 0 0 6.175 29H10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H7.84a2 2 0 0 0-1.993 1.834zM18 26.626c0 .835.52 1.583 1.275 1.94c1.649.777 4.458 2.34 5.725 4.454c1.633 2.723 1.941 7.644 1.991 8.771c.007.158.003.316.024.472c.271 1.953 4.04-.328 5.485-2.74c.785-1.308.885-3.027.803-4.37c-.089-1.435-.51-2.823-.923-4.201l-.88-2.937h10.857a2 2 0 0 0 1.925-2.543l-5.37-19.016A2 2 0 0 0 36.986 5H20a2 2 0 0 0-2 2z" />
-                    </svg>
-                </div>
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-900">Daftar Kata Kotor</h2>
-                    <p class="text-gray-600 text-sm">Kelola kata-kata yang difilter dalam sistem</p>
-                </div>
-            </div>
-
-            <form method="GET" action="{{ route('admin.kataKotor') }}" class="flex">
-                <div class="relative">
-                    <input type="text" name="search"
-                        class="border border-gray-300 rounded-l-xl px-4 py-3 pl-12 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-80 transition-all duration-200"
-                        placeholder="Cari kata..." value="{{ request('search') }}">
-                    <svg class="w-5 h-5 text-gray-400 absolute left-4 top-4" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z">
-                        </path>
-                    </svg>
-                </div>
-                <button
-                    class="bg-blue-600 text-white px-6 py-3 rounded-r-xl hover:bg-blue-700 transition-colors duration-200 shadow-lg"
-                    type="submit">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z">
-                        </path>
-                    </svg>
-                </button>
-            </form>
-        </div>
-
         {{-- Form Tambah Kata --}}
         <div class="mb-8 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-6">
             <div class="flex items-center mb-4">
@@ -100,6 +60,36 @@
                         Pencarian: "{{ request('search') }}"
                     </div>
                 @endif
+                <form method="GET" action="{{ route('admin.kataKotor') }}" class="flex">
+                    <div class="relative">
+                        <input type="text" name="search"
+                            class="border border-gray-300 rounded-l-xl px-4 py-3 pl-12 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-80 transition-all duration-200"
+                            placeholder="Cari kata..." value="{{ request('search') }}">
+                        <svg class="w-5 h-5 text-gray-400 absolute left-4 top-4" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z">
+                            </path>
+                        </svg>
+                        @if (request('search'))
+                        <a href="{{ route('admin.kataKotor') }}" class="absolute right-0 top-0 h-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400 absolute right-4 top-4" viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59L7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12L5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4" />
+                            </svg>
+                        </a>
+                        @endif
+                    </div>
+                    <button
+                        class="bg-blue-600 text-white px-6 py-3 rounded-r-xl hover:bg-blue-700 transition-colors duration-200 shadow-lg"
+                        type="submit">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z">
+                            </path>
+                        </svg>
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -166,7 +156,8 @@
     </div>
 
     {{-- Modal Edit --}}
-    <div id="editModal" class="fixed inset-0 flex items-center justify-center bg-gray-200/20 backdrop-blur-sm bg-opacity-50 z-50 hidden">
+    <div id="editModal"
+        class="fixed inset-0 flex items-center justify-center bg-gray-200/20 backdrop-blur-sm bg-opacity-50 z-50 hidden">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 transform transition-all duration-300">
             <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6 rounded-t-2xl">
                 <div class="flex items-center justify-between">
