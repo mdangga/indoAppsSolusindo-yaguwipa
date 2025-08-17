@@ -17,7 +17,7 @@
             <div class="flex items-center space-x-4">
                 <!-- Notifikasi -->
                 <div class="relative mr-4">
-                    <button id="notificationButton" type="button"
+                    <button id="notificationButton" type="button" data-dropdown-placement="bottom-left"
                         class="relative p-2 text-gray-600 rounded-full hover:text-black hover:bg-amber-100 focus:outline-none transition-all duration-100">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor">
@@ -33,7 +33,7 @@
 
                     <!-- Dropdown Notifikasi -->
                     <div id="notificationDropdown"
-                        class="hidden absolute right-0 mt-2 w-80 max-h-96 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-xl z-50 divide-y divide-gray-100">
+                        class="hidden absolute mt-2 w-80 max-h-96 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-xl z-50 divide-y divide-gray-100">
                         <div class="p-4 bg-white sticky top-0 z-10 border-b border-gray-200">
                             <div class="flex justify-between items-center">
                                 <h3 class="text-lg font-semibold text-gray-900">Notifikasi</h3>
@@ -140,20 +140,20 @@
                     <!-- Profil User -->
                     <div class="relative">
                         @if ($profilePath)
-                            <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar">
+                            <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar" data-dropdown-placement="bottom-end">
                                 <img src="{{ asset('storage/' . $profilePath) }}" alt="Profile"
                                     class="w-12 h-12 rounded-full object-cover border-2 border-gray-100/10 cursor-pointer hover:brightness-90 transition" />
                             </button>
                         @else
-                            <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar"
-                                class="w-12 h-12 {{ $randomBg }} {{ $hoverBg }} rounded-full text-white flex items-center justify-center font-semibold uppercase select-none transition-colors duration-200 cursor-pointer text-lg">
+                            <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar" data-dropdown-placement="bottom-end"
+                                class="w-12 h-12 {{ $randomBg }} rounded-full text-white flex items-center justify-center font-semibold uppercase select-none transition-colors duration-200 cursor-pointer text-lg">
                                 {{ strtoupper(substr($user->username ?? ($user->nama ?? 'U'), 0, 1)) }}
                             </button>
                         @endif
 
                         <!-- Dropdown Menu -->
                         <div id="dropdownAvatar"
-                            class="hidden absolute right-0 mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 z-50">
+                            class="hidden mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 z-50">
                             <div class="px-4 py-3 text-sm text-gray-900">
                                 <div class="font-bold truncate">{{ '@' . $user->username }}</div>
                                 <div class="text-gray-500 truncate">{{ $user->nama }}</div>
@@ -181,6 +181,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

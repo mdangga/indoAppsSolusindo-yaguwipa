@@ -5,6 +5,7 @@ use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\DonasiController;
+use App\Http\Controllers\fileController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\InstitusiController;
 use App\Http\Controllers\JenisPublikasiController;
@@ -24,7 +25,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // testing-area
-// Route::get('/testing/{id}', [PdfController::class, 'testing'])->name('testing');
+Route::get('/testing/{id}', [PdfController::class, 'testing'])->name('testing');
 
 // route-default beranda
 Route::get('/', [GeneralController::class, 'beranda'])->name('beranda');
@@ -330,6 +331,8 @@ Route::middleware(['auth', 'auth.role:mitra'])->prefix('mitra')->group(function 
 Route::middleware(['auth', 'auth.role:mitra,admin'])->group(function () {
     // kerja-sama
     Route::prefix('kerja-sama')->group(function () {
+        Route::get('/kerja-sama/file/{id}', [fileController::class, 'showFileKerjaSama'])->name('kerja-sama.file.show');
+        // Route::get('/kerja-sama/file/{id}/download', [FileKerjaSamaController::class, 'download'])->name('kerja-sama.file.download');
         Route::get('/zip/download-file/{id}/{nama}', [PdfController::class, 'downloadZipStream'])->name('download.zip');
     });
 });

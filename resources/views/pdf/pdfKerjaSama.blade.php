@@ -90,7 +90,13 @@
 
         .document-meta td {
             padding: 2px 5px;
+            /* border: 2px solid black; */
             vertical-align: top;
+            text-align: left;
+        }
+
+        .document-meta td:nth-child(1) {
+            white-space: nowrap;
         }
 
         .document-body p {
@@ -175,13 +181,23 @@
 
         <p class="document-title">LAPORAN KERJA SAMA</p>
 
-        <table class="document-meta" style="width: 80%; margin-bottom: 15px; text-indent: 30px">
+        <table class="document-meta" style="width: 90%; margin: 0px auto 15px;">
             <tr>
             </tr>
             <tr>
                 <td>Pengaju</td>
                 <td>:</td>
                 <td>{{ $kerjaSama->Mitra->User->nama }}</td>
+            </tr>
+            <tr>
+                <td>Penanggung Jawab</td>
+                <td>:</td>
+                <td>{{ $kerjaSama->Mitra->penanggung_jawab }}</td>
+            </tr>
+            <tr>
+                <td>Jabatan</td>
+                <td>:</td>
+                <td>{{ $kerjaSama->Mitra->jabatan_penanggung_jawab }}</td>
             </tr>
             <tr>
                 <td>Perihal</td>

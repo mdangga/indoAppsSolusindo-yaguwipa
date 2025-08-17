@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\FilePenunjang;
 use App\Models\KerjaSama;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 class PdfService
@@ -14,7 +13,7 @@ class PdfService
     public function generateKerjaSama(int $id)
     {
         $kerjaSama = KerjaSama::with('Mitra.User')->findOrFail($id);
-        $tanggal = Carbon::now()->format('Y-m-d');
+        $tanggal = now()->format('dmY');
 
         // Ambil data profil yayasan dari variabel global view
         $yayasanProfile = view()->shared('site')['yayasanProfile'];
@@ -48,18 +47,32 @@ class PdfService
 
         // Simpan ke storage
         $pdfContent = $pdf->output();
-        $filename = "Laporan_{$kerjaSama->Mitra->User->nama}_{$tanggal}.pdf";
+        $filename = "laporan_{$kerjaSama->Mitra->User->nama}_{$tanggal}.pdf";
+        $oldFile = FilePenunjang::where('id_kerja_sama', $kerjaSama->id_kerja_sama)
+            ->where('nama_file', 'LIKE', "laporan_%")
+            ->first();
+
+        if ($oldFile) {
+            Storage::disk('local')->delete($oldFile->file_path);
+        }
+
         $path = "file_kerja_sama/{$filename}";
+        Storage::disk('local')->put($path, $pdfContent);
 
-        Storage::disk('public')->put($path, $pdfContent);
-
-        // Simpan ke database
-        FilePenunjang::create([
-            'id_kerja_sama' => $kerjaSama->id_kerja_sama,
-            'file_path' => $path,
-            'nama_file' => $filename,
-            'file_size' => strlen($pdfContent),
-        ]);
+        if ($oldFile) {
+            $oldFile->update([
+                'file_path' => $path,
+                'nama_file' => $filename,
+                'file_size' => strlen($pdfContent),
+            ]);
+        } else {
+            FilePenunjang::create([
+                'id_kerja_sama' => $kerjaSama->id_kerja_sama,
+                'file_path' => $path,
+                'nama_file' => $filename,
+                'file_size' => strlen($pdfContent),
+            ]);
+        }
 
         return redirect()->back()->with('success', 'PDF berhasil dibuat dan disimpan.');
     }
