@@ -30,7 +30,7 @@
             <div id="form-input" class="flex flex-col space-y-6 col-span-1 transition-all duration-300">
 
                 <div class="hidden">
-                    <label for="kategori" class="block font-semibold">Kategori</label>
+                    <label for="kategori" class="block mb-1 text-sm font-medium">Kategori</label>
                     <select name="kategori" id="kategori"
                         class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
                         required>
@@ -47,10 +47,10 @@
                 </div>
 
                 <div class="mb-4" id="youtube-link-container" style="display: none;">
-                    <label for="youtube_link" class="block font-semibold">YouTube URL</label>
+                    <label for="youtube_link" class="block mb-1 text-sm font-medium">YouTube URL</label>
                     <input type="url" name="youtube_link" id="youtube_link"
                         class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                        value="{{ old('youtube_link', $gallery->link ?? '') }}">
+                        placeholder="Masukkan link youtube..." value="{{ old('youtube_link', $gallery->link ?? '') }}">
                     <small class="text-gray-500">Contoh: https://www.youtube.com/watch?v=dQw4w9WgXcQ</small>
                     @error('youtube_link')
                         <small class="text-red-600">{{ $message }}</small>
@@ -58,17 +58,17 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="alt_text" class="block font-semibold">Caption</label>
+                    <label for="alt_text" class="block mb-1 text-sm font-medium">Caption</label>
                     <input type="text" name="alt_text" id="alt_text"
                         class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                        value="{{ old('alt_text', $gallery->alt_text ?? '') }}" required>
+                        placeholder="Masukkan caption..." value="{{ old('alt_text', $gallery->alt_text ?? '') }}" required>
                     @error('alt_text')
                         <small class="text-red-600">{{ $message }}</small>
                     @enderror
                 </div>
 
                 <div class="mb-4">
-                    <label for="status" class="block font-semibold">Status</label>
+                    <label for="status" class="block mb-1 text-sm font-medium">Status</label>
                     <select name="status" id="status"
                         class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
                         <option value="show" {{ old('status', $gallery->status ?? '') == 'show' ? 'selected' : '' }}>

@@ -17,7 +17,7 @@
             <div class="flex items-center space-x-4">
                 <!-- Notifikasi -->
                 <div class="relative mr-4">
-                    <button id="notificationButton" type="button"
+                    <button id="notificationButton" type="button" data-dropdown-placement="bottom-left"
                         class="relative p-2 text-gray-600 rounded-full hover:text-black hover:bg-amber-100 focus:outline-none transition-all duration-100">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor">
@@ -33,7 +33,7 @@
 
                     <!-- Dropdown Notifikasi -->
                     <div id="notificationDropdown"
-                        class="hidden absolute right-0 mt-2 w-80 max-h-96 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-xl z-50 divide-y divide-gray-100">
+                        class="hidden absolute mt-2 w-80 max-h-96 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-xl z-50 divide-y divide-gray-100">
                         <div class="p-4 bg-white sticky top-0 z-10 border-b border-gray-200">
                             <div class="flex justify-between items-center">
                                 <h3 class="text-lg font-semibold text-gray-900">Notifikasi</h3>
@@ -48,73 +48,76 @@
 
                         @forelse($user->notifications->take(10) as $notification)
                             <a href="{{ $notification->data['url'] ?? '#' }}" class="block hover:bg-gray-50">
-                                <a href="{{ route('notifications.read', $notification->id) }} "class="block hover:bg-gray-50">
-                                <div
-                                    class="relative flex items-start px-4 py-3 transition-colors duration-150 {{ $notification->read_at ? '' : 'bg-blue-50' }}">
-                                    <!-- Icon Status -->
-                                    <div class="flex-shrink-0 mr-3 pt-1">
-                                        @switch($notification->data['type'] ?? 'info')
-                                            @case('success')
-                                                <div class="flex items-center justify-center w-6 h-6 bg-green-100 rounded-full">
-                                                    <svg class="w-4 h-4 text-green-600" fill="none" viewBox="0 0 24 24"
-                                                        stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                            d="M5 13l4 4L19 7" />
-                                                    </svg>
-                                                </div>
-                                            @break
+                                <a
+                                    href="{{ route('notifications.read', $notification->id) }} "class="block hover:bg-gray-50">
+                                    <div
+                                        class="relative flex items-start px-4 py-3 transition-colors duration-150 {{ $notification->read_at ? '' : 'bg-blue-50' }}">
+                                        <!-- Icon Status -->
+                                        <div class="flex-shrink-0 mr-3 pt-1">
+                                            @switch($notification->data['type'] ?? 'info')
+                                                @case('success')
+                                                    <div
+                                                        class="flex items-center justify-center w-6 h-6 bg-green-100 rounded-full">
+                                                        <svg class="w-4 h-4 text-green-600" fill="none" viewBox="0 0 24 24"
+                                                            stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M5 13l4 4L19 7" />
+                                                        </svg>
+                                                    </div>
+                                                @break
 
-                                            @case('rejected')
-                                                <div class="flex items-center justify-center w-6 h-6 bg-red-100 rounded-full">
-                                                    <svg class="w-4 h-4 text-red-600" fill="none" viewBox="0 0 24 24"
-                                                        stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                            d="M6 18L18 6M6 6l12 12" />
-                                                    </svg>
-                                                </div>
-                                            @break
+                                                @case('rejected')
+                                                    <div
+                                                        class="flex items-center justify-center w-6 h-6 bg-red-100 rounded-full">
+                                                        <svg class="w-4 h-4 text-red-600" fill="none" viewBox="0 0 24 24"
+                                                            stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                        </svg>
+                                                    </div>
+                                                @break
 
-                                            @default
-                                                <div class="mt-1.5 w-2 h-2 bg-blue-500 rounded-full"></div>
-                                        @endswitch
-                                    </div>
-
-                                    <!-- Konten Notifikasi -->
-                                    <div class="flex-1 min-w-0">
-                                        <div class="text-sm font-medium text-gray-900 mb-1">
-                                            {{ $notification->data['title'] ?? 'Notifikasi' }}
+                                                @default
+                                                    <div class="mt-1.5 w-2 h-2 bg-blue-500 rounded-full"></div>
+                                            @endswitch
                                         </div>
-                                        <p class="text-sm text-gray-600 mb-1">
-                                            {{ $notification->data['message'] ?? '-' }}
-                                        </p>
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-xs text-gray-400">
-                                                {{ $notification->created_at->diffForHumans() }}
-                                            </span>
-                                            @if (!$notification->read_at)
-                                                <span
-                                                    class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-blue-100 text-blue-800">
-                                                    Baru
+
+                                        <!-- Konten Notifikasi -->
+                                        <div class="flex-1 min-w-0">
+                                            <div class="text-sm font-medium text-gray-900 mb-1">
+                                                {{ $notification->data['title'] ?? 'Notifikasi' }}
+                                            </div>
+                                            <p class="text-sm text-gray-600 mb-1">
+                                                {{ $notification->data['message'] ?? '-' }}
+                                            </p>
+                                            <div class="flex items-center justify-between">
+                                                <span class="text-xs text-gray-400">
+                                                    {{ $notification->created_at->diffForHumans() }}
                                                 </span>
-                                            @endif
+                                                @if (!$notification->read_at)
+                                                    <span
+                                                        class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-blue-100 text-blue-800">
+                                                        Baru
+                                                    </span>
+                                                @endif
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    @if (!$notification->read_at)
-                                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l"></div>
-                                    @endif
-                                </div>
-                            </a>
-                            @empty
-                                <div class="px-4 py-6 text-center">
-                                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                                    </svg>
-                                    <h4 class="mt-2 text-sm font-medium text-gray-900">Tidak ada notifikasi</h4>
-                                    <p class="mt-1 text-sm text-gray-500">Anda tidak memiliki notifikasi baru.</p>
-                                </div>
+                                        @if (!$notification->read_at)
+                                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 rounded-l"></div>
+                                        @endif
+                                    </div>
+                                </a>
+                                @empty
+                                    <div class="px-4 py-6 text-center">
+                                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                        </svg>
+                                        <h4 class="mt-2 text-sm font-medium text-gray-900">Tidak ada notifikasi</h4>
+                                        <p class="mt-1 text-sm text-gray-500">Anda tidak memiliki notifikasi baru.</p>
+                                    </div>
                             @endforelse
 
                             @if ($user->notifications->count() > 0)
@@ -136,21 +139,21 @@
 
                     <!-- Profil User -->
                     <div class="relative">
-                        <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar">
-                            @if ($profilePath)
+                        @if ($profilePath)
+                            <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar" data-dropdown-placement="bottom-end">
                                 <img src="{{ asset('storage/' . $profilePath) }}" alt="Profile"
-                                    class="w-12 h-12 rounded-full object-cover border-2 border-gray-300 hover:scale-105 transition" />
-                            @else
-                                <div
-                                    class="w-12 h-12 {{ $randomBg }} rounded-full text-white flex items-center justify-center font-semibold uppercase select-none transition-colors duration-200 cursor-pointer text-lg">
-                                    {{ strtoupper(substr($user->username ?? ($user->name ?? 'U'), 0, 1)) }}
-                                </div>
-                            @endif
-                        </button>
+                                    class="w-12 h-12 rounded-full object-cover border-2 border-gray-100/10 cursor-pointer hover:brightness-90 transition" />
+                            </button>
+                        @else
+                            <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar" data-dropdown-placement="bottom-end"
+                                class="w-12 h-12 {{ $randomBg }} rounded-full text-white flex items-center justify-center font-semibold uppercase select-none transition-colors duration-200 cursor-pointer text-lg">
+                                {{ strtoupper(substr($user->username ?? ($user->nama ?? 'U'), 0, 1)) }}
+                            </button>
+                        @endif
 
                         <!-- Dropdown Menu -->
                         <div id="dropdownAvatar"
-                            class="hidden absolute right-0 mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 z-50">
+                            class="hidden mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 z-50">
                             <div class="px-4 py-3 text-sm text-gray-900">
                                 <div class="font-bold truncate">{{ '@' . $user->username }}</div>
                                 <div class="text-gray-500 truncate">{{ $user->nama }}</div>
@@ -178,6 +181,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

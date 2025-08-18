@@ -1,6 +1,15 @@
 @extends('layouts.formAdmin')
 
 @section('title', isset($publikasi) ? 'Edit Publikasi' : 'Tambah Publikasi')
+@section('quill')
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+@endsection
+@section('highlight')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+@endsection
+@section('katex')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+@endsection
 
 @section('content')
     <h1 class="text-2xl font-bold mb-4">{{ isset($publikasi) ? 'Edit publikasi' : 'Tambah publikasi' }}</h1>
@@ -14,8 +23,8 @@
     @php $isEdit = isset($publikasi); @endphp
 
     <form id="formPublikasi"
-        action="{{ $isEdit ? route('publikasi.update', $publikasi->id_publikasi) : route('publikasi.store') }}" method="POST"
-        enctype="multipart/form-data">
+        action="{{ $isEdit ? route('publikasi.update', $publikasi->id_publikasi) : route('publikasi.store') }}"
+        method="POST" enctype="multipart/form-data">
         @csrf
         @if ($isEdit)
             @method('PUT')
@@ -127,6 +136,8 @@
                 <label for="file" class="block mb-1 text-sm font-medium">Upload File</label>
                 <input type="file" name="file" id="file"
                     class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" />
+                <small class="text-gray-500">PDF, DOC, DOCX (Max. 10MB)</small>
+
                 @error('file')
                     <small class="text-red-600">{{ $message }}</small>
                 @enderror
@@ -135,14 +146,15 @@
                 <label for="halaman" class="block mb-1 text-sm font-medium">Jumlah Halaman</label>
                 <input name="halaman" id="halaman" type="number"
                     class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                    value="{{ old('halaman', $publikasi->halaman ?? '') }}" required />
+                    placeholder="Masukkan jumlah halaman..." value="{{ old('halaman', $publikasi->halaman ?? '') }}"
+                    required />
                 @error('halaman')
                     <small class="text-red-600">{{ $message }}</small>
                 @enderror
             </div>
             <div class="col-span-1">
                 <label for="download" class="block mb-1 text-sm font-medium">Downloads</label>
-                <input name="download" id="download" type="number"
+                <input name="download" id="download" type="number" placeholder="Masukkan unduhan..."
                     class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
                     value="{{ old('download', $publikasi->download ?? '') }}" required />
                 @error('download')
@@ -155,7 +167,7 @@
             {{-- Meta Title --}}
             <div>
                 <label for="meta_title" class="block mb-1 text-sm font-medium">Meta Title</label>
-                <input name="meta_title" id="meta_title" type="text"
+                <input name="meta_title" id="meta_title" type="text" placeholder="Masukkan meta title..."
                     class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
                     value="{{ old('meta_title', $publikasi->meta_title ?? '') }}" required />
                 @error('meta_title')
@@ -179,7 +191,7 @@
         {{-- Meta Description --}}
         <div class="mt-4">
             <label for="meta_description" class="block mb-1 text-sm font-medium">Meta Description</label>
-            <textarea type="text" name="meta_description" id="meta_description"
+            <textarea type="text" name="meta_description" id="meta_description" placeholder="Masukkan meta description..."
                 class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
                 required>{{ old('meta_description', $publikasi->meta_description ?? '') }}</textarea>
             @error('meta_description')
@@ -208,7 +220,7 @@
     <script>
         const quill = new Quill('#editor', {
             theme: 'snow',
-            placeholder: 'Compose an epic...',
+            placeholder: 'Ketik disini....',
             modules: {
                 syntax: true, // Syntax highlighting
                 formula: true, // KaTeX formula

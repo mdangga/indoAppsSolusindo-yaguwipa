@@ -221,7 +221,7 @@
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <!-- Header -->
                 <h2 class="text-3xl font-semibold text-gray-800">
-                    @yield('header', 'Admin Header')
+                    @yield('header')
                 </h2>
 
                 @hasSection('button')
@@ -232,10 +232,10 @@
         <div class="bg-white border rounded-md border-gray-200 overflow-hidden">
             <!-- Table Container -->
             <div class="p-5 rounded-lg">
-                <div class="table-container overflow-x-auto">
-                    {{-- Content dari child --}}
-                    @yield('content')
-                </div>
+
+                {{-- Content dari child --}}
+                @yield('content')
+
             </div>
         </div>
     </main>

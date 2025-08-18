@@ -27,7 +27,8 @@
                 <label for="nama" class="block mb-1 text-sm font-medium">Nama Campaign</label>
                 <input type="text"
                     class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                    id="nama" name="nama" value="{{ old('nama', $campaign->nama ?? '') }}" required>
+                    placeholder="Masukkan judul campaign..." id="nama" name="nama"
+                    value="{{ old('nama', $campaign->nama ?? '') }}" required>
                 @error('nama')
                     <small class="text-red-600">{{ $message }}</small>
                 @enderror
@@ -56,7 +57,7 @@
             <label for="deskripsi" class="block mb-1 text-sm font-medium">Deskripsi</label>
             <textarea
                 class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                id="deskripsi" name="deskripsi" rows="5" required>{{ old('deskripsi', $campaign->deskripsi ?? '') }}</textarea>
+                id="deskripsi" placeholder="Masukkan deskripsi campaign..." name="deskripsi" rows="5" required>{{ old('deskripsi', $campaign->deskripsi ?? '') }}</textarea>
             @error('deskripsi')
                 <small class="text-red-600">{{ $message }}</small>
             @enderror
@@ -73,7 +74,7 @@
         @if (!empty($campaign))
             {{-- Mode Edit: Tampilkan form + thumbnail jika ada --}}
             <div class="grid grid-cols-3 gap-4 mt-4">
-                {{-- Kolom 1 dan 2: Upload + Caption --}}
+                {{-- Kolom 1 dan 2: Upload + lokasi --}}
                 <div class="col-span-2 grid grid-rows-2 gap-4">
                     {{-- Upload Gambar --}}
                     <div>
@@ -86,7 +87,7 @@
                         @enderror
                     </div>
 
-                    {{-- Caption --}}
+                    {{-- Lokasi --}}
                     <div>
                         <label for="lokasi" class="block mb-1 text-sm font-medium">Lokasi</label>
                         <input type="text"
@@ -114,7 +115,7 @@
                 </div>
             </div>
         @else
-            {{-- Mode Tambah: Upload + Caption --}}
+            {{-- Mode Tambah: Upload + lokasi --}}
             <div class="grid grid-cols-2 gap-4 mt-4">
                 {{-- Upload Gambar --}}
                 <div>
@@ -127,7 +128,7 @@
                     @enderror
                 </div>
 
-                {{-- Caption --}}
+                {{-- lokasi --}}
                 <div>
                     <label for="lokasi" class="block mb-1 text-sm font-medium">Lokasi</label>
                     <input type="text"
@@ -141,11 +142,12 @@
         @endif
 
         <div class="mt-4">
-            <label for="target_dana" class="block mb-1 text-sm font-medium">Target Dana (Rp)</label>
+            <label for="target_dana" class="block mb-1 text-sm font-medium">Target Dana (Rp) <span
+                    class="text-gray-500 text-xs">(minimal 0)</span></label>
             <input type="number"
                 class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
-                id="target_dana" name="target_dana" value="{{ old('target_dana', $campaign->target_dana ?? '') }}"
-                required>
+                placeholder="Nominal target dana..." id="target_dana" name="target_dana"
+                value="{{ old('target_dana', $campaign->target_dana ?? '') }}" required>
             @error('target_dana')
                 <small class="text-red-600">{{ $message }}</small>
             @enderror

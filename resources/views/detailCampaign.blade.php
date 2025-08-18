@@ -1,6 +1,4 @@
 @php
-    $totalDonatur = count($donations);
-
     $today = new DateTime();
     $endDate = new DateTime($campaign->tanggal_selesai);
 
@@ -155,23 +153,49 @@
                             <span class="text-sm text-gray-500">{{ $totalDonatur }} orang telah berdonasi</span>
                         </div>
 
-                        <div class="space-y-4 max-h-96 overflow-y-auto">
+                        <div class="space-y-4">
                             @forelse ($donations as $donation)
                                 <div
                                     class="donor-card p-4 rounded-xl card-hover {{ $loop->first ? 'border-2 border-amber-300' : '' }}">
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center space-x-4">
-                                            <div
-                                                class="w-12 h-12 bg-gradient-to-r from-amber-500 to-amber-800 rounded-full flex items-center justify-center text-white font-bold shadow-sm">
-                                                {{ strtoupper(substr($donation->nama, 0, 2)) }}
-                                            </div>
+                                            @if ($donation->anonim)
+                                                {{-- Jika anonim, tampilkan hanya huruf depan --}}
+                                                <div
+                                                    class="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center">
+                                                    <div
+                                                        class="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white"
+                                                            viewBox="0 0 24 24" fill="currentColor">
+                                                            <path
+                                                                d="M12 2a5 5 0 1 1-5 5l.005-.217A5 5 0 0 1 12 2m2 12a5 5 0 0 1 5 5v1a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-1a5 5 0 0 1 5-5z" />
+                                                        </svg>
+                                                    </div>
+
+                                                </div>
+                                            @else
+                                                {{-- Jika tidak anonim, tampilkan foto profil kalau ada, kalau tidak huruf depan --}}
+                                                @if ($donation->user && $donation->user->profile_path)
+                                                    <img src="{{ asset('storage/' . $donation->user->profile_path) }}"
+                                                        alt="Profile"
+                                                        class="w-12 h-12 rounded-full object-cover border-2 border-gray-300" />
+                                                @else
+                                                    <div
+                                                        class="w-12 h-12 bg-gray-400 rounded-full text-white flex items-center justify-center font-semibold uppercase">
+                                                        {{ strtoupper(substr($donation->nama ?? 'U', 0, 1)) }}
+                                                    </div>
+                                                @endif
+                                            @endif
+
                                             <div>
                                                 <h4 class="font-semibold text-gray-900">
                                                     {{ $donation->anonim ? 'Orang Baik' : $donation->nama }}
                                                 </h4>
                                                 <p class="text-sm text-gray-600">
-                                                    {{ $donation->created_at->diffForHumans() }}</p>
+                                                    {{ $donation->created_at->diffForHumans() }}
+                                                </p>
                                             </div>
+
                                         </div>
                                         <div class="text-right">
                                             @if (strtolower($donation->JenisDonasi->nama) == 'dana')
@@ -222,12 +246,11 @@
                                 <p class="text-gray-500 text-center">Belum ada donasi.</p>
                             @endforelse
                         </div>
-                        <div class="mt-6 text-center">
+                        {{-- <div class="mt-6 text-center">
                             <button class="text-amber-600 hover:text-amber-800 font-medium transition-colors">
                                 Lihat Semua Donatur <i class="fas fa-arrow-right ml-1"></i>
                             </button>
-                        </div>
-
+                        </div> --}}
                     </div>
 
                 </div>

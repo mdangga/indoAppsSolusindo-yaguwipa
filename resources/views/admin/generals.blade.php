@@ -230,7 +230,8 @@
                     {{-- Text Inputs --}}
                     <div class="mb-4">
                         <label class="block mb-1 text-sm font-medium text-gray-900">Nama Yayasan</label>
-                        <input type="text" name="nama_yayasan" value="{{ old('nama_yayasan', $profiles->nama_yayasan ?? '') }}"
+                        <input type="text" name="nama_yayasan"
+                            value="{{ old('nama_yayasan', $profiles->nama_yayasan ?? '') }}"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Nama Yayasan" />
                     </div>
@@ -244,11 +245,14 @@
                 </div>
                 <div class="grid grid-cols-3 gap-4 mt-4 items-start">
                     <div class="mb-4">
-                        <label class="block mb-1 text-sm font-medium text-gray-900">Telepon</label>
+                        <label for="telephone" class="block mb-1 text-sm font-medium text-gray-900">
+                            Nomor Telepon <span class="text-gray-500 text-xs">(08..., +628...,
+                                628...)</span>
+                        </label>
                         <input type="text" name="telephone"
                             value="{{ old('telephone', $profiles->telephone ?? '') }}"
                             class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Telepon" />
+                            placeholder="08123456789, 628123456789, +628123456789" />
                     </div>
 
                     <div class="mb-4">

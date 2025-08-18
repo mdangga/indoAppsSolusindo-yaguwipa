@@ -8,7 +8,8 @@ use App\Models\KerjaSama;
 use App\Models\Program;
 use App\Notifications\KerjaSamaDisetujui;
 use App\Notifications\KerjaSamaDitolak;
-use App\Notifications\NotifikasiPengajuanKerjaSama;
+use App\Notifications\notifikasiPengajuanKerjaSama;
+use App\Notifications\notifikasiPerbaruiKerjaSama;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,17 +17,45 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Services\PdfService;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class KerjaSamaController extends Controller
 {
     // fungsi menampilkan form pengajuan kerja sama di user
-    public function show()
+    public function showFormStore()
     {
         $kategoriKerjaSama = KategoriKerjaSama::all();
         $programs = Program::where('status', 'aktif')->get();
 
         return view('user.mitra.formKerjaSama', compact('kategoriKerjaSama', 'programs'));
+    }
+
+    public function showFormEdit($id)
+    {
+        $kerjaSama = KerjaSama::with('Program', 'KategoriKerjaSama', 'FilePenunjang')->findOrFail($id);
+        if (Auth::user()->Mitra->id_mitra !== $kerjaSama->id_mitra) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk mengedit kerja sama ini.');
+        }
+        $kategoriKerjaSama = KategoriKerjaSama::all();
+        $programs = Program::where('status', 'aktif')->get();
+        $filePenunjang = [];
+        foreach ($kerjaSama->FilePenunjang as $fp) {
+            // ambil nama tanpa ekstensi
+            $nameWithoutExt = pathinfo($fp->nama_file, PATHINFO_FILENAME);
+            $parts = explode('_', $nameWithoutExt);
+            $key = $parts[0] . '_' . $parts[1];
+
+            $filePenunjang[$key] = basename($fp->file_path);
+        }
+
+        // dd($filePenunjang);
+        return view('user.mitra.formKerjaSama', compact(
+            'kategoriKerjaSama',
+            'programs',
+            'kerjaSama',
+            'filePenunjang'
+        ));
     }
 
     public function ShowDetailKerjaSama($id)
@@ -105,7 +134,6 @@ class KerjaSamaController extends Controller
                 'tanggal_mulai' => $request->tanggal_mulai,
                 'tanggal_selesai' => $request->tanggal_selesai,
                 'status' => 'pending',
-                'created_by' => $user->id,
             ]);
 
             if ($request->has('file_penunjang')) {
@@ -125,7 +153,7 @@ class KerjaSamaController extends Controller
 
                         $extension = $file->getClientOriginalExtension();
                         $filename = "{$jenisFile}_{$namaMitra}_{$tanggal}.{$extension}";
-                        $path = $file->storeAs('file_kerja_sama', $filename, 'public');
+                        $path = $file->storeAs('file_kerja_sama', $filename, 'local');
 
                         FilePenunjang::create([
                             'id_kerja_sama' => $kerjaSama->id_kerja_sama,
@@ -145,7 +173,7 @@ class KerjaSamaController extends Controller
             ];
 
             $adminUsers = \App\Models\User::where('role', 'admin')->get();
-            Notification::send($adminUsers, new NotifikasiPengajuanKerjaSama($pengajuanNotif));
+            Notification::send($adminUsers, new notifikasiPengajuanKerjaSama($pengajuanNotif));
 
             DB::commit();
             return redirect()->route('dashboard')->with('success', 'Pengajuan kerja sama berhasil dikirim.');
@@ -159,6 +187,142 @@ class KerjaSamaController extends Controller
             return back()->with('error', 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.');
         }
     }
+
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'id_kategori_kerja_sama' => 'nullable',
+            'kategori_baru' => 'required_if:id_kategori_kerja_sama,other|string|max:255|nullable',
+            'id_program' => 'required|exists:program,id_program',
+            'keterangan' => 'required|string|max:1000',
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            'file_penunjang' => 'nullable|array|max:4',
+            'file_penunjang.*' => 'file|mimes:pdf,doc,docx|max:2048',
+        ], [
+            'kategori_baru.required_if' => 'Kategori baru harus diisi ketika memilih "Lainnya"',
+            'id_program.required' => 'Program harus dipilih',
+            'id_program.exists' => 'Program yang dipilih tidak valid',
+            'keterangan.required' => 'Keterangan harus diisi',
+            'tanggal_mulai.required' => 'Tanggal mulai harus diisi',
+            'tanggal_selesai.required' => 'Tanggal selesai harus setelah atau sama dengan tanggal mulai',
+            'file_penunjang.max' => 'Maksimal 4 file yang boleh diunggah',
+            'file_penunjang.*.max' => 'Ukuran file maksimal 2MB',
+            'file_penunjang.*.mimes' => 'Format file yang diperbolehkan: pdf, jpg, jpeg, png, doc, docx',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput($request->except('file_penunjang'))
+                ->with('error', 'Terdapat kesalahan dalam pengisian form');
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $user = Auth::user();
+            $mitra = $user->Mitra;
+
+            if (!$mitra) {
+                return back()->with('error', 'Anda bukan mitra terdaftar.');
+            }
+
+            $kerjaSama = KerjaSama::findOrFail($id);
+
+            // Tentukan kategori
+            if ($request->id_kategori_kerja_sama == 'other') {
+                $kategori = KategoriKerjaSama::create([
+                    'nama' => $request->kategori_baru
+                ]);
+                $kategoriId = $kategori->id_kategori_kerja_sama;
+            } else {
+                $kategoriId = (int) $request->id_kategori_kerja_sama;
+                if (!KategoriKerjaSama::where('id_kategori_kerja_sama', $kategoriId)->exists()) {
+                    return back()->withErrors(['id_kategori_kerja_sama' => 'Kategori tidak valid']);
+                }
+            }
+
+            // Update data kerja sama
+            $kerjaSama->update([
+                'id_mitra' => $mitra->id_mitra,
+                'id_program' => $request->id_program,
+                'id_kategori_kerja_sama' => $kategoriId,
+                'keterangan' => $request->keterangan,
+                'tanggal_mulai' => $request->tanggal_mulai,
+                'tanggal_selesai' => $request->tanggal_selesai,
+                'status' => 'pending',
+            ]);
+
+            // Update file penunjang (jika ada)
+            if ($request->has('file_penunjang')) {
+                $fileFields = [
+                    'profil_lembaga' => 'profil_lembaga',
+                    'proposal_kemitraan' => 'proposal_kemitraan',
+                    'surat_permohonan' => 'surat_permohonan',
+                    'dokumen_legalitas' => 'dokumen_legalitas'
+                ];
+
+                $namaMitra = Str::slug($user->nama, '_');
+                $tanggal = now()->format('dmY');
+
+                foreach ($fileFields as $fieldName => $jenisFile) {
+                    if ($request->hasFile("file_penunjang.{$fieldName}")) {
+                        $file = $request->file("file_penunjang.{$fieldName}");
+
+                        $extension = $file->getClientOriginalExtension();
+                        $filename = "{$jenisFile}_{$namaMitra}_{$tanggal}.{$extension}";
+                        
+                        $oldFile = FilePenunjang::where('id_kerja_sama', $kerjaSama->id_kerja_sama)
+                            ->where('nama_file', 'LIKE', "{$jenisFile}_%")
+                            ->first();
+
+                        if ($oldFile) {
+                            Storage::disk('local')->delete($oldFile->file_path);
+                        }
+
+                        $path = $file->storeAs('file_kerja_sama', $filename, 'local');
+
+                        if ($oldFile) {
+                            $oldFile->update([
+                                'file_path' => $path,
+                                'nama_file' => $filename,
+                                'file_size' => $file->getSize(),
+                            ]);
+                        } else {
+                            FilePenunjang::create([
+                                'id_kerja_sama' => $kerjaSama->id_kerja_sama,
+                                'file_path' => $path,
+                                'nama_file' => $filename,
+                                'file_size' => $file->getSize(),
+                            ]);
+                        }
+                    }
+                }
+            }
+
+            $pengajuanNotif = [
+                'nama' => $user->nama,
+                'keterangan' => $kerjaSama->keterangan,
+                'id' => $kerjaSama->id_kerja_sama
+            ];
+
+            $adminUsers = \App\Models\User::where('role', 'admin')->get();
+            Notification::send($adminUsers, new notifikasiPerbaruiKerjaSama($pengajuanNotif));
+
+            DB::commit();
+            return redirect()->route('dashboard')->with('success', 'Data kerja sama berhasil diperbarui.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            logger()->error('Error in kerja-sama.update: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+                'user_id' => Auth::id(),
+                'input' => $request->except(['file_penunjang', '_token'])
+            ]);
+            return back()->with('error', 'Terjadi kesalahan saat memperbarui data. Silakan coba lagi.');
+        }
+    }
+
 
 
 
@@ -242,7 +406,7 @@ class KerjaSamaController extends Controller
 
             DB::transaction(function () use ($kerjaSama, $request) {
                 $kerjaSama->update([
-                    'status' => 'rejected', 
+                    'status' => 'rejected',
                     'alasan' => $request->alasan
                 ]);
 

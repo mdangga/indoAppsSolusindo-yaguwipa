@@ -1,9 +1,16 @@
 @props(['program'])
 
-<div class="program-card bg-white rounded-xl shadow-lg overflow-hidden flex flex-col">
+<div class="program-card bg-white rounded-xl shadow-lg overflow-hidden flex flex-col border-gray-200 border">
     <!-- Gambar -->
     <div class="h-40 w-full overflow-hidden">
-        <img src="{{ asset('storage/' . $program->image_path) }}" alt="..." class="w-full h-full object-cover" />
+        @if ($program->image_path && Storage::disk('public')->exists($program->image_path))
+            <img src="{{ asset('storage/' . $program->image_path) }}" alt="{{ $program->nama ?? 'Program' }}"
+                class="w-full h-full object-cover" />
+        @else
+            <div class="w-full h-full flex items-center justify-center bg-gray-100 text-gray-500 text-sm">
+                Tidak ada gambar
+            </div>
+        @endif
     </div>
 
     <!-- Konten Program -->

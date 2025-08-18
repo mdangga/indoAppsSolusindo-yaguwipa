@@ -5,9 +5,11 @@ use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\DonasiController;
+use App\Http\Controllers\fileController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\InstitusiController;
 use App\Http\Controllers\JenisPublikasiController;
+use App\Http\Controllers\KataKotorController;
 use App\Http\Controllers\kategoriNewsEventController;
 use App\Http\Controllers\KategoriProgramController;
 use App\Http\Controllers\KerjaSamaController;
@@ -229,8 +231,25 @@ Route::middleware(['auth', 'auth.role:admin'])->prefix('admin')->group(function 
         Route::get('/datatable', [KerjaSamaController::class, 'getDataTables'])->name('kerjaSama.table');
         Route::get('/detail-kerja-sama/{id}', [KerjaSamaController::class, 'detailKerjaSama'])->name('kerjaSama.detail');
         Route::post('/approved/{id}', [KerjaSamaController::class, 'approved'])->name('kerjaSama.approved');
-        Route::post('/rejected{id}', [KerjaSamaController::class, 'rejected'])->name('kerjaSama.rejected');
+        Route::post('/rejected/{id}', [KerjaSamaController::class, 'rejected'])->name('kerjaSama.rejected');
         Route::delete('/destroy/{id}', [KerjaSamaController::class, 'destroy'])->name('kerjaSama.delete');
+    });
+
+
+    // review
+    Route::prefix('review')->group(function () {
+        Route::get('/', [ReviewController::class, 'index'])->name('admin.review');
+        Route::post('/', [ReviewController::class, 'manajemenKataKotor']);
+        Route::post('/approved', [ReviewController::class, 'approve'])->name('review.approve');
+    });
+
+
+    // kata-kotor
+    Route::prefix('kata-kotor')->group(function () {
+        Route::get('/', [KataKotorController::class, 'index'])->name('admin.kataKotor');
+        Route::post('/', [KataKotorController::class, 'store'])->name('kataKotor.store');
+        Route::put('/{id}', [KataKotorController::class, 'update'])->name('kataKotor.update');
+        Route::delete('/destroy/{id}', [KataKotorController::class, 'destroy'])->name('kataKotor.destroy');
     });
 
 
@@ -268,10 +287,9 @@ Route::middleware(['auth', 'auth.role:mitra,donatur'])->prefix('user')->group(fu
 
 
     // review
-    Route::prefix('ulasan')->group(function () {
+    Route::prefix('review')->group(function () {
         Route::post('/create', [ReviewController::class, 'store'])->name('review.store');
         Route::put('/edit/{id}', [ReviewController::class, 'update'])->name('review.update');
-        Route::delete('/destroy/{id}', [ReviewController::class, 'destroy'])->name('review.delete');
     });
 
 
@@ -300,8 +318,10 @@ Route::middleware(['auth', 'auth.role:mitra,donatur'])->prefix('user')->group(fu
 Route::middleware(['auth', 'auth.role:mitra'])->prefix('mitra')->group(function () {
     // kerja-sama
     Route::prefix('kerja-sama')->group(function () {
-        Route::get('/', [KerjaSamaController::class, 'show'])->name('mitra.kerja-sama');
+        Route::get('/', [KerjaSamaController::class, 'showformStore'])->name('kerja-sama.formStore');
         Route::post('/create', [KerjaSamaController::class, 'store'])->name('kerja-sama.store');
+        Route::get('/edit/{id}', [KerjaSamaController::class, 'showFormEdit'])->name('kerja-sama.formEdit');
+        Route::put('/{id}', [KerjaSamaController::class, 'update'])->name('kerja-sama.update');
         Route::delete('/destroy/{id}', [KerjaSamaController::class, 'batalkanKerjaSama'])->name('kerja-sama.destroy');
 
         Route::get('/detail-kerja-sama/{id}', [KerjaSamaController::class, 'showDetailKerjaSama'])->name('kerja-sama.detail');
@@ -311,10 +331,16 @@ Route::middleware(['auth', 'auth.role:mitra'])->prefix('mitra')->group(function 
 Route::middleware(['auth', 'auth.role:mitra,admin'])->group(function () {
     // kerja-sama
     Route::prefix('kerja-sama')->group(function () {
+        Route::get('/kerja-sama/file/{id}', [fileController::class, 'showFileKerjaSama'])->name('kerja-sama.file.show');
+        // Route::get('/kerja-sama/file/{id}/download', [FileKerjaSamaController::class, 'download'])->name('kerja-sama.file.download');
         Route::get('/zip/download-file/{id}/{nama}', [PdfController::class, 'downloadZipStream'])->name('download.zip');
     });
 });
 
+
+Route::prefix('review')->group(function () {
+    Route::delete('/destroy/{id}', [ReviewController::class, 'destroy'])->name('review.delete');
+});
 
 
 // register

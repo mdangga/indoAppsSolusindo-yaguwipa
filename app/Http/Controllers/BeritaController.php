@@ -41,28 +41,27 @@ class BeritaController extends Controller
         $endOfRange = Carbon::now();
 
         $beritaPopulerMingguan = Cache::remember("beritaPopulerMingguan", now()->addHours(1), function () use ($startOfRange, $endOfRange) {
-            // Ambil berita populer minggu ini
-            $berita = Berita::whereBetween('created_at', [$startOfRange, $endOfRange])
+            // Ambil berita minggu ini
+            $mingguan = Berita::whereBetween('created_at', [$startOfRange, $endOfRange])
                 ->where('status', 'show')
                 ->orderBy('hit', 'desc')
                 ->take(6)
                 ->get();
 
-            // Kalau minggu ini kosong → ambil berita minggu sebelumnya
-            if ($berita->isEmpty()) {
-                $startPrev = $startOfRange->copy()->subDays(7);
-                $endPrev   = $endOfRange->copy()->subDays(7);
-
-                $berita = Berita::whereBetween('created_at', [$startPrev, $endPrev])
-                    ->where('status', 'show')
-                    ->orderBy('hit', 'desc') // urutkan berdasarkan popularitas
-                    ->orderBy('created_at', 'desc') // kalau sama-sama populer, yang terbaru dulu
-                    ->take(6)
+            // Kalau jumlahnya kurang dari 6, isi sisanya dari berita populer semua waktu
+            if ($mingguan->count() < 6) {
+                $tambahan = Berita::where('status', 'show')
+                    ->whereNotIn('id', $mingguan->pluck('id')) // supaya tidak duplikat
+                    ->orderBy('hit', 'desc')
+                    ->take(6 - $mingguan->count())
                     ->get();
+
+                $mingguan = $mingguan->concat($tambahan);
             }
 
-            return $berita;
+            return $mingguan;
         });
+
 
 
         return view('newsandevent', [

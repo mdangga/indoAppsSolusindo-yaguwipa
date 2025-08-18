@@ -19,7 +19,7 @@ class ProfileController extends Controller
         return view('admin.generals', compact('profiles'));
     }
 
-    
+
     // fungsi untuk memperbarui profile website
     public function update(Request $request, $id)
     {
@@ -36,8 +36,18 @@ class ProfileController extends Controller
             'popup' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
             'nama_yayasan' => 'nullable|string',
             'website' => 'nullable|string',
-            'telephone' => 'nullable|string',
-            'fax' => 'nullable|string',
+            'telephone' => [
+                'nullable',
+                'string',
+                'max:20',
+                'regex:/^(?:\+62|62|0)[8][0-9]{7,11}$/'
+            ],
+            'fax' => [
+                'nullable',
+                'string',
+                'max:20',
+                'regex:/^[0-9+()\-\s]{6,20}$/'
+            ],
             'email' => 'nullable|string|email',
             'address' => 'nullable|string',
             'map' => 'nullable|string',
@@ -51,6 +61,9 @@ class ProfileController extends Controller
             'misi' => 'nullable|string',
             'tujuan' => 'nullable|string',
             'makna_logo' => 'nullable|string',
+        ], [
+            'telephone.regex' => 'Format nomor telepon tidak valid. Gunakan format +62 atau 08 diikuti dengan 7-11 digit angka.',
+            'fax.regex' => 'Format nomor fax tidak valid. Gunakan format yang benar dengan angka, tanda kurung, spasi, atau tanda hubung.',
         ]);
 
         if ($validator->fails()) {

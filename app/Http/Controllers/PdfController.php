@@ -32,8 +32,10 @@ class PdfController extends Controller
         }
 
         // Generate PDF
+
         $pdf = Pdf::loadView('pdf.pdfLapDonasi', [
             'donasi' => $donasi,
+
             'tanggal' => $tanggal,
             'site' => [
                 'yayasanProfile' => $yayasanProfile,

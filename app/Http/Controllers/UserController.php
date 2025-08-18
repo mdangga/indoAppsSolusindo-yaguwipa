@@ -209,14 +209,22 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|max:255|unique:users,username,' . $user->id_user . ',id_user',
             'nama' => 'required|string|max:255',
-            'email' => 'nullable|email|unique:users',
-            'no_tlp' => 'required|string|max:20',
+            'email' => 'nullable|email|unique:users,email,' . $user->id_user . ',id_user',
+            'no_tlp' => [
+                'required',
+                'string',
+                'max:20',
+                'regex:/^(?:\+62|62|0)[8][0-9]{7,11}$/'
+            ],
             'alamat' => 'nullable|string',
 
             // Mitra only fields
             'website' => 'nullable|url',
             'penanggung_jawab' => $user->role === 'mitra' ? 'required|string|max:255' : 'nullable',
             'jabatan_penanggung_jawab' => $user->role === 'mitra' ? 'required|string|max:255' : 'nullable',
+        ], [
+            'no_tlp.regex' => 'Format nomor telepon tidak valid. Gunakan format +62 atau 08 diikuti dengan 7-11 digit angka.',
+            'email.unique' => 'Email sudah digunakan oleh akun lain.',
         ]);
 
         if ($validator->fails()) {

@@ -17,7 +17,8 @@
         {{-- Nama --}}
         <div class="mb-4">
             <label class="block mb-1 text-sm font-medium">Nama Institusi</label>
-            <input type="text" name="nama" value="{{ old('nama', $institusi->nama ?? '') }}" required
+            <input type="text" name="nama" value="{{ old('nama', $institusi->nama ?? '') }}"
+                placeholder="Masukkan nama instansi..." required
                 class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5" />
             @error('nama')
                 <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -27,7 +28,7 @@
         {{-- Alamat --}}
         <div class="mb-4">
             <label class="block mb-1 text-sm font-medium">Alamat</label>
-            <textarea name="alamat" rows="3" required
+            <textarea name="alamat" rows="3" placeholder="Masukkan alamat instansi..." required
                 class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">{{ old('alamat', $institusi->alamat ?? '') }}</textarea>
             @error('alamat')
                 <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -37,7 +38,8 @@
         {{-- Website --}}
         <div class="mb-4">
             <label class="block mb-1 text-sm font-medium">Website</label>
-            <input type="url" name="website" value="{{ old('website', $institusi->website ?? '') }}" required
+            <input type="url" name="website" placeholder="https://example.com"
+                value="{{ old('website', $institusi->website ?? '') }}" required
                 class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5">
             @error('website')
                 <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -64,7 +66,7 @@
             <label class="block mb-1 text-sm font-medium">Logo / Gambar</label>
             <input type="file" name="logo" {{ isset($institusi) ? '' : 'required' }}
                 class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" />
-
+            <small class="text-gray-500">PNG, JPG, JPEG, WEBP (Max. 2MB)</small>
             @if (isset($institusi) && $institusi->image_path)
                 <p class="mt-2 text-sm text-gray-500">
                     Gambar saat ini:

@@ -27,9 +27,16 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'email' => 'nullable|email|unique:users',
             'nama' => 'required|string|max:100',
-            'no_tlp' => 'required|string|max:20',
+            'no_tlp' => [
+                'required',
+                'string',
+                'max:20',
+                'regex:/^(?:\+62|62|0)[8][0-9]{7,11}$/'
+            ],
             'alamat' => 'required|string',
             'profile_path' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ], [
+            'no_tlp.regex' => 'Format nomor telepon tidak valid. Gunakan format +62 atau 08 diikuti dengan 7-11 digit angka.',
         ]);
 
         if ($validator->fails()) {
