@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Donasi;
 use App\Models\FilePenunjang;
 use App\Models\KerjaSama;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -14,7 +15,7 @@ class PdfController extends Controller
 {
     public function testing($id)
     {
-        $kerjaSama = KerjaSama::with('Mitra.User')->findOrFail($id);
+        $donasi = Donasi::with('Campaign', 'JenisDonasi', 'DonasiBarang','DonasiJasa')->findOrFail($id);
         $tanggal = Carbon::now()->format('Y-m-d');
 
         // Ambil data profil yayasan dari variabel global view
@@ -31,8 +32,8 @@ class PdfController extends Controller
         }
 
         // Generate PDF
-        $pdf = Pdf::loadView('pdf.testing', [
-            'kerjaSama' => $kerjaSama,
+        $pdf = Pdf::loadView('pdf.pdfLapDonasi', [
+            'donasi' => $donasi,
             'tanggal' => $tanggal,
             'site' => [
                 'yayasanProfile' => $yayasanProfile,
