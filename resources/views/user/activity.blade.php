@@ -177,46 +177,76 @@
         </div>
 
         @if ($recentActivities->hasPages())
-            <div class="flex justify-center items-center space-x-4 mt-6">
-                <!-- Previous Button -->
+            <div class="flex justify-center items-center space-x-2 mt-6">
+                {{-- Previous Button --}}
                 @if ($recentActivities->onFirstPage())
                     <span
-                        class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
+                        class="px-3 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
                         ← Previous
                     </span>
                 @else
                     <a href="{{ $recentActivities->previousPageUrl() }}"
-                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition">
                         ← Previous
                     </a>
                 @endif
 
-                <!-- Page Numbers -->
+                {{-- Page Numbers --}}
                 <div class="flex space-x-1">
-                    @foreach ($recentActivities->getUrlRange(1, $recentActivities->lastPage()) as $page => $url)
-                        @if ($page == $recentActivities->currentPage())
+                    @php
+                        $current = $recentActivities->currentPage();
+                        $last = $recentActivities->lastPage();
+                        $start = max($current - 2, 1);
+                        $end = min($current + 2, $last);
+                    @endphp
+
+                    {{-- First page & ellipsis --}}
+                    @if ($start > 1)
+                        <a href="{{ $recentActivities->url(1) }}"
+                            class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition">
+                            1
+                        </a>
+                        @if ($start > 2)
+                            <span class="px-3 py-2 text-sm text-gray-400">...</span>
+                        @endif
+                    @endif
+
+                    {{-- Range pages --}}
+                    @for ($page = $start; $page <= $end; $page++)
+                        @if ($page == $current)
                             <span
-                                class="px-3 py-2 text-sm font-medium text-white bg-amber-400 border border-amber-500/50 rounded-lg scale-120 -translate-y-1">
+                                class="px-3 py-2 text-sm font-medium text-white bg-amber-400 border border-amber-500/50 rounded-lg">
                                 {{ $page }}
                             </span>
                         @else
-                            <a href="{{ $url }}"
-                                class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 hover:scale-120 hover:-translate-y-1 transition-all duration-100">
+                            <a href="{{ $recentActivities->url($page) }}"
+                                class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition">
                                 {{ $page }}
                             </a>
                         @endif
-                    @endforeach
+                    @endfor
+
+                    {{-- Last page & ellipsis --}}
+                    @if ($end < $last)
+                        @if ($end < $last - 1)
+                            <span class="px-3 py-2 text-sm text-gray-400">...</span>
+                        @endif
+                        <a href="{{ $recentActivities->url($last) }}"
+                            class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition">
+                            {{ $last }}
+                        </a>
+                    @endif
                 </div>
 
-                <!-- Next Button -->
+                {{-- Next Button --}}
                 @if ($recentActivities->hasMorePages())
                     <a href="{{ $recentActivities->nextPageUrl() }}"
-                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                        class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition">
                         Next →
                     </a>
                 @else
                     <span
-                        class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
+                        class="px-3 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
                         Next →
                     </span>
                 @endif

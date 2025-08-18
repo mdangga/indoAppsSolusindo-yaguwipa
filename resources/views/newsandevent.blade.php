@@ -184,47 +184,78 @@
                         @endforeach
                     @endif
 
+
                     @if (isset($berita) && $berita instanceof \Illuminate\Pagination\LengthAwarePaginator && $berita->hasPages())
-                        <div class="flex justify-center items-center space-x-4">
-                            <!-- Previous Button -->
+                        <div class="flex justify-center items-center space-x-2 mt-6">
+                            {{-- Previous Button --}}
                             @if ($berita->onFirstPage())
                                 <span
-                                    class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
+                                    class="px-3 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
                                     ← Previous
                                 </span>
                             @else
                                 <a href="{{ $berita->previousPageUrl() }}"
-                                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                                    class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition">
                                     ← Previous
                                 </a>
                             @endif
 
-                            <!-- Page Numbers -->
+                            {{-- Page Numbers --}}
                             <div class="flex space-x-1">
-                                @foreach ($berita->getUrlRange(1, $berita->lastPage()) as $page => $url)
-                                    @if ($page == $berita->currentPage())
+                                @php
+                                    $current = $berita->currentPage();
+                                    $last = $berita->lastPage();
+                                    $start = max($current - 2, 1);
+                                    $end = min($current + 2, $last);
+                                @endphp
+
+                                {{-- First page & ellipsis --}}
+                                @if ($start > 1)
+                                    <a href="{{ $berita->url(1) }}"
+                                        class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition">
+                                        1
+                                    </a>
+                                    @if ($start > 2)
+                                        <span class="px-3 py-2 text-sm text-gray-400">...</span>
+                                    @endif
+                                @endif
+
+                                {{-- Range pages --}}
+                                @for ($page = $start; $page <= $end; $page++)
+                                    @if ($page == $current)
                                         <span
                                             class="px-3 py-2 text-sm font-medium text-white bg-amber-400 border border-amber-500/50 rounded-lg">
                                             {{ $page }}
                                         </span>
                                     @else
-                                        <a href="{{ $url }}"
-                                            class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                                        <a href="{{ $berita->url($page) }}"
+                                            class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition">
                                             {{ $page }}
                                         </a>
                                     @endif
-                                @endforeach
+                                @endfor
+
+                                {{-- Last page & ellipsis --}}
+                                @if ($end < $last)
+                                    @if ($end < $last - 1)
+                                        <span class="px-3 py-2 text-sm text-gray-400">...</span>
+                                    @endif
+                                    <a href="{{ $berita->url($last) }}"
+                                        class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition">
+                                        {{ $last }}
+                                    </a>
+                                @endif
                             </div>
 
-                            <!-- Next Button -->
+                            {{-- Next Button --}}
                             @if ($berita->hasMorePages())
                                 <a href="{{ $berita->nextPageUrl() }}"
-                                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                                    class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition">
                                     Next →
                                 </a>
                             @else
                                 <span
-                                    class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
+                                    class="px-3 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
                                     Next →
                                 </span>
                             @endif

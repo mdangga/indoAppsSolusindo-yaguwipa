@@ -16,7 +16,7 @@ class PdfController extends Controller
     public function testing($id)
     {
         $donasi = Donasi::with('Campaign', 'JenisDonasi', 'DonasiBarang','DonasiJasa')->findOrFail($id);
-        $tanggal = Carbon::now()->format('Y-m-d');
+        $tanggal = Carbon::now()->format('Ymd');
 
         // Ambil data profil yayasan dari variabel global view
         $yayasanProfile = view()->shared('site')['yayasanProfile'];

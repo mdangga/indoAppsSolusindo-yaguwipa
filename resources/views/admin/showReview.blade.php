@@ -367,51 +367,81 @@
     </div>
 
     @if ($reviews->hasPages())
-        <div class="flex justify-center items-center space-x-4 mt-6">
-            <!-- Previous Button -->
-            @if ($reviews->onFirstPage())
-                <span
-                    class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
-                    ← Previous
-                </span>
-            @else
-                <a href="{{ $reviews->previousPageUrl() }}"
-                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
-                    ← Previous
-                </a>
-            @endif
+            <div class="flex justify-center items-center space-x-2 mt-6">
+                {{-- Previous Button --}}
+                @if ($reviews->onFirstPage())
+                    <span
+                        class="px-3 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
+                        ← Previous
+                    </span>
+                @else
+                    <a href="{{ $reviews->previousPageUrl() }}"
+                        class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition">
+                        ← Previous
+                    </a>
+                @endif
 
-            <!-- Page Numbers -->
-            <div class="flex space-x-1">
-                @foreach ($reviews->getUrlRange(1, $reviews->lastPage()) as $page => $url)
-                    @if ($page == $reviews->currentPage())
-                        <span
-                            class="px-3 py-2 text-sm font-medium text-white bg-amber-400 border border-amber-500/50 rounded-lg">
-                            {{ $page }}
-                        </span>
-                    @else
-                        <a href="{{ $url }}"
-                            class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
-                            {{ $page }}
+                {{-- Page Numbers --}}
+                <div class="flex space-x-1">
+                    @php
+                        $current = $reviews->currentPage();
+                        $last = $reviews->lastPage();
+                        $start = max($current - 2, 1);
+                        $end = min($current + 2, $last);
+                    @endphp
+
+                    {{-- First page & ellipsis --}}
+                    @if ($start > 1)
+                        <a href="{{ $reviews->url(1) }}"
+                            class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition">
+                            1
+                        </a>
+                        @if ($start > 2)
+                            <span class="px-3 py-2 text-sm text-gray-400">...</span>
+                        @endif
+                    @endif
+
+                    {{-- Range pages --}}
+                    @for ($page = $start; $page <= $end; $page++)
+                        @if ($page == $current)
+                            <span
+                                class="px-3 py-2 text-sm font-medium text-white bg-amber-400 border border-amber-500/50 rounded-lg">
+                                {{ $page }}
+                            </span>
+                        @else
+                            <a href="{{ $reviews->url($page) }}"
+                                class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition">
+                                {{ $page }}
+                            </a>
+                        @endif
+                    @endfor
+
+                    {{-- Last page & ellipsis --}}
+                    @if ($end < $last)
+                        @if ($end < $last - 1)
+                            <span class="px-3 py-2 text-sm text-gray-400">...</span>
+                        @endif
+                        <a href="{{ $reviews->url($last) }}"
+                            class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition">
+                            {{ $last }}
                         </a>
                     @endif
-                @endforeach
-            </div>
+                </div>
 
-            <!-- Next Button -->
-            @if ($reviews->hasMorePages())
-                <a href="{{ $reviews->nextPageUrl() }}"
-                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
-                    Next →
-                </a>
-            @else
-                <span
-                    class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
-                    Next →
-                </span>
-            @endif
-        </div>
-    @endif
+                {{-- Next Button --}}
+                @if ($reviews->hasMorePages())
+                    <a href="{{ $reviews->nextPageUrl() }}"
+                        class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition">
+                        Next →
+                    </a>
+                @else
+                    <span
+                        class="px-3 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed">
+                        Next →
+                    </span>
+                @endif
+            </div>
+        @endif
 @endsection
 
 @push('scripts')
