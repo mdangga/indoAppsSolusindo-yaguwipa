@@ -153,7 +153,7 @@ class KerjaSamaController extends Controller
 
                         $extension = $file->getClientOriginalExtension();
                         $filename = "{$jenisFile}_{$namaMitra}_{$tanggal}.{$extension}";
-                        $path = $file->storeAs('file_kerja_sama', $filename, 'public');
+                        $path = $file->storeAs('file_kerja_sama', $filename, 'local');
 
                         FilePenunjang::create([
                             'id_kerja_sama' => $kerjaSama->id_kerja_sama,
@@ -278,10 +278,10 @@ class KerjaSamaController extends Controller
                             ->first();
 
                         if ($oldFile) {
-                            Storage::disk('public')->delete($oldFile->file_path);
+                            Storage::disk('local')->delete($oldFile->file_path);
                         }
 
-                        $path = $file->storeAs('file_kerja_sama', $filename, 'public');
+                        $path = $file->storeAs('file_kerja_sama', $filename, 'local');
 
                         if ($oldFile) {
                             $oldFile->update([

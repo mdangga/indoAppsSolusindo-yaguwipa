@@ -232,7 +232,7 @@
                                             {{ $lampiran->nama_file }}
                                         </span>
                                     </div>
-                                    <a href="{{ asset('storage/' . $lampiran->file_path) }}" target="_blank"
+                                    <a href="{{ route('kerja-sama.file.show', $lampiran->id_file_penunjang) }}" target="_blank"
                                         class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center">
                                         Lihat Dokumen
                                         <i class="fas fa-external-link-alt ml-2"></i>
