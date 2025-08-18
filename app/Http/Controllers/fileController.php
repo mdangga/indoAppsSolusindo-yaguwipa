@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\FilePenunjang;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,7 +11,6 @@ class fileController extends Controller
     // menampilkan per file
     public function showFileKerjaSama($id)
     {
-
         $file = FilePenunjang::findOrFail($id);
 
         if (Auth::user()->role !== 'admin' && Auth::user()->id_user !== $file->KerjaSama->Mitra->User->id_user) {
