@@ -290,7 +290,7 @@
                     <label class="block mb-1 text-sm font-medium text-gray-900">Intro Singkat</label>
 
                     {{-- toolbar --}}
-                    <div id="toolbar-container" class="rounded-t-lg">
+                    <div id="toolbar-container-intro" class="rounded-t-lg">
                         <span class="ql-formats">
                             <select class="ql-font"></select>
                             <select class="ql-size"></select>
@@ -319,7 +319,8 @@
                         </span>
                     </div>
                     <!-- Editor tampil di sini -->
-                    <div id="editor" class="bg-gray-50 border rounded-t-none rounded-b-lg p-2.5 min-h-[200px]">
+                    <div id="editorIntro"
+                        class="bg-gray-50 border rounded-t-none rounded-b-lg p-2.5 min-h-[200px]">
                         {!! old('intro', $profiles->intro ?? '') !!}
                     </div>
 
@@ -361,9 +362,44 @@
 
                 <div class="mb-4">
                     <label class="block mb-1 text-sm font-medium text-gray-900">Tentang</label>
-                    <textarea name="tentang" rows="4"
-                        class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Tulis tentang di sini...">{{ old('tentang', $profiles->tentang ?? '') }}</textarea>
+
+                    {{-- toolbar --}}
+                    <div id="toolbar-container-tentang" class="rounded-t-lg">
+                        <span class="ql-formats">
+                            <select class="ql-font"></select>
+                            <select class="ql-size"></select>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-bold"></button>
+                            <button class="ql-italic"></button>
+                            <button class="ql-underline"></button>
+                            <button class="ql-strike"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <select class="ql-color"></select>
+                            <select class="ql-background"></select>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-blockquote"></button>
+                            <button class="ql-code-block"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-direction" value="rtl"></button>
+                            <select class="ql-align"></select>
+                        </span>
+
+                        <span class="ql-formats">
+                            <button class="ql-clean"></button>
+                        </span>
+                    </div>
+                    <!-- Editor tampil di sini -->
+                    <div id="editorTentang"
+                        class="bg-gray-50 border rounded-t-none rounded-b-lg p-2.5 min-h-[200px]">
+                        {!! old('tentang', $profiles->tentang ?? '') !!}
+                    </div>
+
+                    <!-- Input hidden yang akan disubmit ke backend -->
+                    <input type="hidden" name="tentang" id="tentang">
                 </div>
                 <div class="grid grid-cols-2 gap-4 mt-4 items-start">
                     <div class="mb-4">
@@ -412,27 +448,40 @@
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.min.js"></script>
 
     <script>
-        const quill = new Quill("#editor", {
+        const quillIntro = new Quill("#editorIntro", {
             theme: "snow",
             placeholder: "Ketik disini...",
             modules: {
                 syntax: true,
                 formula: true,
-                toolbar: "#toolbar-container",
+                toolbar: "#toolbar-container-intro",
+            },
+        });
+        const quillTentang = new Quill("#editorTentang", {
+            theme: "snow",
+            placeholder: "Ketik disini...",
+            modules: {
+                syntax: true,
+                formula: true,
+                toolbar: "#toolbar-container-tentang",
             },
         });
 
         // Optional: re-highlight code blocks after content change
-        quill.on("text-change", function() {
-            document.querySelectorAll("pre code").forEach((block) => {
-                hljs.highlightElement(block);
+        [quillIntro, quillTentang].forEach((quill) => {
+            quill.on("text-change", function() {
+                document.querySelectorAll("pre code").forEach((block) => {
+                    hljs.highlightElement(block);
+                });
             });
         });
 
         const form = document.querySelector("#formProfiles");
         form.addEventListener("submit", function() {
             const intro = document.querySelector("#intro");
-            intro.value = quill.root.innerHTML;
+            const tentang = document.querySelector("#tentang");
+            intro.value = quillIntro.root.innerHTML;
+            tentang.value = quillTentang.root.innerHTML;
         });
 
         document.addEventListener('DOMContentLoaded', function() {

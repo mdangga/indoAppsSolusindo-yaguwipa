@@ -29,7 +29,7 @@
                     <!-- Text -->
                     <div class="md:col-span-2 text-gray-700 leading-relaxed text-justify">
                         <p class="text-base md:text-lg">
-                            {{ $site['yayasanProfile']->tentang }}
+                            {!! $site['yayasanProfile']->tentang !!}
                         </p>
                     </div>
                 </div>

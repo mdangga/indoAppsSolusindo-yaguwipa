@@ -214,12 +214,12 @@
                     @endphp
 
                     @if ($profilePath)
-                        <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar">
+                        <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar" data-dropdown-placement="bottom-end">
                             <img src="{{ asset('storage/' . $profilePath) }}" alt="Profile"
                                 class="w-12 h-12 rounded-full object-cover border-2 border-gray-100/10 cursor-pointer hover:brightness-90 transition" />
                         </button>
                     @else
-                        <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar"
+                        <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar" data-dropdown-placement="bottom-end"
                             class="w-12 h-12 {{ $randomBg }} {{ $hoverBg }} rounded-full text-white flex items-center justify-center font-semibold uppercase select-none transition-colors duration-200 cursor-pointer text-lg">
                             {{ strtoupper(substr($user->username ?? ($user->nama ?? 'U'), 0, 1)) }}
                         </button>
@@ -227,7 +227,7 @@
 
                     <!-- Dropdown menu -->
                     <div id="dropdownAvatar"
-                        class="z-10 right-0 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-xl max-w-60 min-w-44 ">
+                        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-xl max-w-60 min-w-44 ">
                         <div class="px-4 py-3 text-sm text-gray-900 ">
                             <div class="font-bold mb-1">{{ '@' . ($user->username ?? '-') }}</div>
                             <div class="text-gray-500">{{ $user->nama ?? '-' }}</div>

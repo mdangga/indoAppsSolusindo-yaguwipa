@@ -142,7 +142,7 @@ class ReviewController extends Controller
             'status' => 'show',
         ]);
 
-        return redirect()->route('admin.review')->with('success', 'Ulasan berhasil dihapus!');
+        return redirect()->route('admin.review')->with('success', 'Ulasan berhasil diterima!');
     }
 
     public function destroy($id)
@@ -164,7 +164,7 @@ class ReviewController extends Controller
         $review->delete();
 
         if (Auth::user()->role === 'admin') {
-            return redirect()->route('admin.review')->with('success', 'Ulasan berhasil dihapus!');
+        return redirect()->route('admin.review')->with('success', 'Ulasan berhasil dihapus!');
         }
         return redirect()->route('dashboard')->with('success', 'Ulasan berhasil dihapus!');
     }

@@ -240,7 +240,7 @@ Route::middleware(['auth', 'auth.role:admin'])->prefix('admin')->group(function 
     Route::prefix('review')->group(function () {
         Route::get('/', [ReviewController::class, 'index'])->name('admin.review');
         Route::post('/', [ReviewController::class, 'manajemenKataKotor']);
-        Route::post('/approved', [ReviewController::class, 'approve'])->name('review.approve');
+        Route::post('/approved/{id}', [ReviewController::class, 'approve'])->name('review.approve');
     });
 
 
