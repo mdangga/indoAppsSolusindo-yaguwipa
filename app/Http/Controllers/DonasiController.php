@@ -12,9 +12,11 @@ use App\Models\JenisDonasi;
 use App\Notifications\donasiDiterima;
 use App\Notifications\donasiDitolak;
 use App\Notifications\notifikasiPengajuanDonasi;
+use App\Services\XenditService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
@@ -45,90 +47,119 @@ class DonasiController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $request->validate([
-            'nama'            => 'required|string|max:255',
-            'email_tlp'       => 'required|email', // Changed from 'email' to 'email_tlp'
-            'anonim'          => 'required|boolean',
-            'id_campaign'     => 'required|exists:campaign,id_campaign',
+            'nama' => 'required|string|max:255',
+            'email_tlp' => 'required|email',
+            'anonim' => 'required|boolean',
+            'id_campaign' => 'required|exists:campaign,id_campaign',
             'jenis_donasi' => 'required|string|in:dana,barang,jasa',
-            'pesan'           => 'nullable|string',
+            'pesan' => 'nullable|string',
+            'nominal' => 'required_if:jenis_donasi,dana|numeric|min:' . config('xendit.invoice.amount_limits.min') . '|max:' . config('xendit.invoice.amount_limits.max'),
 
             // Barang (multiple)
-            'DonasiBarang'                  => 'required_if:id_jenis_donasi,2|array|min:1',
-            'DonasiBarang.*.nama_barang'    => 'required_if:id_jenis_donasi,2|string|max:255',
-            'DonasiBarang.*.jumlah_barang'  => 'required_if:id_jenis_donasi,2|integer|min:1',
-            'DonasiBarang.*.kondisi'        => 'required_if:id_jenis_donasi,2|in:baru,bekas',
-            'DonasiBarang.*.deskripsi'      => 'nullable|string',
+            'DonasiBarang' => 'required_if:jenis_donasi,barang|nullable|array|min:1',
+            'DonasiBarang.*.nama_barang' => 'required_if:jenis_donasi,barang|nullable|string|max:255',
+            'DonasiBarang.*.jumlah_barang' => 'required_if:jenis_donasi,barang|nullable|integer|min:1',
+            'DonasiBarang.*.kondisi' => 'required_if:jenis_donasi,barang|nullable|in:baru,bekas',
+            'DonasiBarang.*.deskripsi' => 'nullable|string',
+
+            // Jasa
+            'jenis_jasa' => 'required_if:jenis_donasi,jasa|nullable|string|max:255',
+            'durasi_jasa' => 'required_if:jenis_donasi,jasa|nullable|string|max:255',
         ]);
 
         DB::beginTransaction();
         try {
-
             $jenis_donasi = JenisDonasi::where('nama', $request->jenis_donasi)->first();
 
             $donasi = Donasi::create([
-                'nama'            => $request->nama,
-                'email'           => $request->email_tlp,
-                'pesan'           => $request->pesan,
-                'anonim'          => $request->anonim,
-                'id_user'         => auth()->user()->id_user ?? null,
-                'id_campaign'     => $request->id_campaign,
+                'nama' => $request->anonim ? 'Anonymous' : $request->nama,
+                'email' => $request->email_tlp,
+                'pesan' => $request->pesan,
+                'anonim' => $request->anonim,
+                'id_user' => auth()->user()->id_user ?? null,
+                'id_campaign' => $request->id_campaign,
                 'id_jenis_donasi' => $jenis_donasi->id_jenis_donasi,
+                'status' => 'pending'
             ]);
 
+            if ($request->jenis_donasi == 'dana') {
+                try {
+                    $xenditService = new XenditService();
+                    $invoice = $xenditService->createInvoice(
+                        externalId: 'donasi-' . $donasi->id_donasi,
+                        amount: (float) $request->nominal,
+                        payerEmail: $request->email_tlp,
+                        description: "Donasi untuk campaign: " . $donasi->campaign->judul,
+                        customerName: $request->nama,
+                        invoiceDuration: config('xendit.invoice.expiry_duration', 86400),
+                        paymentMethods: config('xendit.payment-method'),
+                    );
 
-            if ($request->jenis_donasi == 'dana') { // Dana
-                DonasiDana::create([
-                    'id_donasi'         => $donasi->id_donasi,
-                    'nominal'           => $request->nominal,
-                    'payment_id'        => $request->payment_id,
-                    'payment_method'    => $request->payment_method,
-                    'payment_token'     => $request->payment_token,
-                    'payment_url'       => $request->payment_url,
-                    'status_verifikasi' => 'pending',
-                    'expired_at'        => now()->addDays(1)
-                ]);
+                    DonasiDana::create([
+                        'id_donasi' => $donasi->id_donasi,
+                        'nominal' => $request->nominal,
+                        'payment_id' => $invoice['id'],
+                        'payment_url' => $invoice['invoice_url'],
+                        'status_verifikasi' => strtoupper($invoice['status']),
+                        'expired_at' => $invoice['expiry_date'],
+                    ]);
+
+
+                    DB::commit();
+                    if (isset($invoice['invoice_url']) && !empty($invoice['invoice_url'])) {
+                        return redirect()->away($invoice['invoice_url']);
+                    } else {
+                        Log::error('Xendit invoice_url missing:', (array) $invoice);
+                        return back()->withErrors(['error' => 'Payment URL tidak tersedia']);
+                    }
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                    Log::error('Donasi Error: ' . $e->getMessage());
+                    return back()->withErrors(['error' => 'Failed to process payment: ' . $e->getMessage()]);
+                }
             }
-            if ($request->jenis_donasi == 'barang') { // Barang
+
+            if ($request->jenis_donasi == 'barang') {
                 foreach ($request->DonasiBarang as $item) {
                     DonasiBarang::create([
-                        'id_donasi'         => $donasi->id_donasi,
-                        'nama_barang'       => $item['nama_barang'],
-                        'jumlah_barang'     => $item['jumlah_barang'] ?? 1,
-                        'deskripsi'         => $item['deskripsi'] ?? null,
-                        'kondisi'           => $item['kondisi'] ?? 'baru',
+                        'id_donasi' => $donasi->id_donasi,
+                        'nama_barang' => $item['nama_barang'],
+                        'jumlah_barang' => $item['jumlah_barang'] ?? 1,
+                        'deskripsi' => $item['deskripsi'] ?? null,
+                        'kondisi' => $item['kondisi'] ?? 'baru',
                         'status_verifikasi' => 'pending'
                     ]);
                 }
             }
+
             if ($request->jenis_donasi == 'jasa') {
                 DonasiJasa::create([
-                    'id_donasi'         => $donasi->id_donasi,
-                    'jenis_jasa'        => $request->jenis_jasa,
-                    'durasi_jasa'       => $request->durasi_jasa,
+                    'id_donasi' => $donasi->id_donasi,
+                    'jenis_jasa' => $request->jenis_jasa,
+                    'durasi_jasa' => $request->durasi_jasa,
                     'status_verifikasi' => 'pending'
                 ]);
             }
 
+            // Send notification
             $pengajuanNotif = [
                 'nama' => $request->nama,
                 'jenis_donasi' => $jenis_donasi->nama,
                 'id' => $donasi->id_donasi,
             ];
-            // Kirim notifikasi ke admin
+
             $adminUsers = \App\Models\User::where('role', 'admin')->get();
-            Notification::send($adminUsers, new notifikasiPengajuanDonasi($pengajuanNotif));
+            Notification::send($adminUsers, new NotifikasiPengajuanDonasi($pengajuanNotif));
 
             DB::commit();
-            // Redirect ke halaman detail campaign
-            return redirect()->route('campaign.slug', $donasi->Campaign->slug)
+            return redirect()->route('campaign.slug', $donasi->campaign->slug)
                 ->with('success', 'Pengajuan donasi berhasil dibuat. Silakan tunggu verifikasi dari admin.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withInput()->withErrors([
-                'error' => 'Gagal membuat donasi: ' . $e->getMessage()
-            ]);
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Gagal membuat donasi: ' . $e->getMessage()]);
         }
     }
 
@@ -294,5 +325,14 @@ class DonasiController extends Controller
             ->findOrFail($id);
 
         return view('admin.showDetailDonasi', compact('donasi'));
+    }
+
+    public function success()
+    {
+        return view('success');
+    }
+    public function failure()
+    {
+        return view('failure');
     }
 }

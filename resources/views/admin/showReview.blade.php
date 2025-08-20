@@ -115,7 +115,7 @@
             $pending = request()->has('status') && request('status') == 'pending';
         @endphp
         <a href="{{ request()->fullUrlWithQuery(['status' => $approved ? null : 'approved']) }}"
-            class="bg-white p-4 rounded-lg shadow border border-gray-100 cursor-pointer hover:bg-gray-100 hover:border-green-200 transform active:scale-95 transition-all duration-200"
+            class="bg-white p-4 rounded-lg shadow border border-gray-100 cursor-pointer hover:bg-gray-100 hover:border-green-200 transform hover:scale-105 active:scale-95 active:bg-gray-200 transition-all duration-200"
             title="Approved Reviews">
             <div class="flex items-center">
                 <div class="bg-green-100 p-2 rounded-lg">
@@ -132,7 +132,7 @@
             </div>
         </a>
         <a href="{{ request()->fullUrlWithQuery(['status' => $pending ? null : 'pending']) }}"
-            class="bg-white p-4 rounded-lg shadow border border-gray-100 cursor-pointer hover:bg-gray-100 hover:border-amber-200 transform active:scale-95 transition-all duration-200"
+            class="bg-white p-4 rounded-lg shadow border border-gray-100 cursor-pointer hover:bg-gray-100 hover:border-amber-200 transform hover:scale-105 active:scale-95 active:bg-gray-200 transition-all duration-200"
             title="Pending Reviews">
             <div class="flex items-center">
                 <div class="bg-amber-100 p-2 rounded-lg">

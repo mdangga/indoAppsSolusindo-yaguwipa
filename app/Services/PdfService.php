@@ -6,6 +6,7 @@ use App\Models\FilePenunjang;
 use App\Models\KerjaSama;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class PdfService
 {
@@ -15,10 +16,8 @@ class PdfService
         $kerjaSama = KerjaSama::with('Mitra.User')->findOrFail($id);
         $tanggal = now()->format('dmY');
 
-        // Ambil data profil yayasan dari variabel global view
         $yayasanProfile = view()->shared('site')['yayasanProfile'];
 
-        // Siapkan logo jika ada
         $logoPath = storage_path('app/public/' . $yayasanProfile->logo);
         $logoData = null;
         $logoMime = null;
@@ -47,7 +46,8 @@ class PdfService
 
         // Simpan ke storage
         $pdfContent = $pdf->output();
-        $filename = "laporan_{$kerjaSama->Mitra->User->nama}_{$tanggal}.pdf";
+        $namaUser = Str::slug($kerjaSama->Mitra->User->nama, '_');
+        $filename = "laporan_{$namaUser}_{$tanggal}.pdf";
         $oldFile = FilePenunjang::where('id_kerja_sama', $kerjaSama->id_kerja_sama)
             ->where('nama_file', 'LIKE', "laporan_%")
             ->first();

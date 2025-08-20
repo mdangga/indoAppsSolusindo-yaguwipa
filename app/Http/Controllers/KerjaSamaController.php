@@ -46,10 +46,12 @@ class KerjaSamaController extends Controller
             $parts = explode('_', $nameWithoutExt);
             $key = $parts[0] . '_' . $parts[1];
 
-            $filePenunjang[$key] = basename($fp->file_path);
+            $filePenunjang[$key] = [
+                'id' => $fp->id_file_penunjang,
+                'nama' => basename($fp->file_path)
+            ];
         }
 
-        // dd($filePenunjang);
         return view('user.mitra.formKerjaSama', compact(
             'kategoriKerjaSama',
             'programs',

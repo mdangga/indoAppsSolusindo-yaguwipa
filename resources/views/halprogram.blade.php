@@ -85,7 +85,7 @@
                                             $terkumpul = $item->donasi
                                                 ->filter(
                                                     fn($d) => $d->donasiDana &&
-                                                        $d->donasiDana->status_verifikasi === 'approved',
+                                                        $d->donasiDana->status_verifikasi === 'PAID',
                                                 )
                                                 ->sum(fn($d) => $d->donasiDana->nominal);
 
