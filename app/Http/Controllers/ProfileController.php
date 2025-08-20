@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Profiles;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Laravel\Facades\Image;
@@ -107,11 +108,11 @@ class ProfileController extends Controller
                 $data[$file] = $profile->$file;
             }
         }
-
-
-
+        
         $profile->update($data);
 
+        Cache::forget('yayasan_site_data');
+        
         return redirect()->back()->with('success', 'Data berhasil disimpan.');
     }
 }

@@ -26,6 +26,7 @@ class XenditService
         float $amount,
         string $payerEmail,
         string $description,
+        string $slugCampaign,
         ?string $customerName = null,
         ?int $invoiceDuration = null,
         ?array $paymentMethods = ['QRIS']
@@ -44,20 +45,23 @@ class XenditService
             ];
         }
 
+        $successUrl = url("/donasi/success/{$slugCampaign}");
+        $failureUrl = url("/donasi/failure/{$slugCampaign}");
+
         $payload = [
             'external_id' => $externalId,
             'amount' => (float) ($amount + $adminFee),
             'payer_email' => $payerEmail,
             'description' => $description,
-            'success_redirect_url' => config('xendit.invoice.redirect_urls.success', url('/donasi/success')),
-            'failure_redirect_url' => config('xendit.invoice.redirect_urls.failure', url('/donasi/failed')),
+            'success_redirect_url' => $successUrl,
+            'failure_redirect_url' => $failureUrl,
             'currency' => config('xendit.invoice.currency', 'IDR'),
             'invoice_duration' => $invoiceDuration ?? config('xendit.invoice.expiry_duration', 86400),
             'payment_methods' => $paymentMethods,
             'items' => [[
                 'name' => substr($description, 0, 254),
                 'quantity' => 1,
-                'price' => (float) ($amount + $adminFee),
+                'price' => (float) ($amount),
                 'category' => 'DONATION'
             ]],
             'fees' => $fees

@@ -44,9 +44,10 @@ class DonasiController extends Controller
     }
     /**
      * Store a newly created resource in storage.
-     */
+    */
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'nama' => 'required|string|max:255',
             'email_tlp' => 'required|email',
@@ -68,6 +69,7 @@ class DonasiController extends Controller
             'durasi_jasa' => 'required_if:jenis_donasi,jasa|nullable|string|max:255',
         ]);
 
+
         DB::beginTransaction();
         try {
             $jenis_donasi = JenisDonasi::where('nama', $request->jenis_donasi)->first();
@@ -85,13 +87,15 @@ class DonasiController extends Controller
 
             if ($request->jenis_donasi == 'dana') {
                 try {
+                    // dd($donasi->Campaign->slug);
                     $xenditService = new XenditService();
                     $invoice = $xenditService->createInvoice(
                         externalId: 'donasi-' . $donasi->id_donasi,
                         amount: (float) $request->nominal,
                         payerEmail: $request->email_tlp,
-                        description: "Donasi untuk campaign: " . $donasi->campaign->judul,
+                        description: "Donasi untuk campaign: " . $donasi->Campaign->nama,
                         customerName: $request->nama,
+                        slugCampaign: $donasi->Campaign->slug,
                         invoiceDuration: config('xendit.invoice.expiry_duration', 86400),
                         paymentMethods: config('xendit.payment-method'),
                     );
@@ -171,12 +175,6 @@ class DonasiController extends Controller
 
             DB::transaction(function () use ($barang) {
                 $barang->update(['status_verifikasi' => 'approved']);
-
-                // Kalau mau kirim notifikasi ke user
-                // $user = $barang->Donasi->User ?? null;
-                // if ($user) {
-                //     $user->notify(new BarangDonasiDisetujui($barang));
-                // }
             });
 
             return back()->with('success', 'Barang donasi berhasil disetujui.');
@@ -327,13 +325,13 @@ class DonasiController extends Controller
         return view('admin.showDetailDonasi', compact('donasi'));
     }
 
-    public function success()
+    public function success($slug)
     {
-        return view('success');
+        return redirect()->route('campaign.slug', $slug)->with('success', 'Pembayaran Berhasil!');
     }
 
-    public function failure()
+    public function failure($slug)
     {
-        return view('failure');
+        return redirect()->route('campaign.slug', $slug)->with('failed', 'Pembayaran Gagal!');
     }
 }
