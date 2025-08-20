@@ -590,7 +590,6 @@
         // Form state management
         let currentStep = 1;
         let selectedDonationType = 'dana';
-        let selectedPaymentMethod = null;
         let donationAmount = 0;
         const totalSteps = 3;
 
@@ -1018,13 +1017,6 @@
             donationAmount = parseInt(this.value) || 0;
         });
 
-        // Payment method selection handling
-        const paymentMethods = document.querySelectorAll('input[name="payment_method"]');
-        paymentMethods.forEach(radio => {
-            radio.addEventListener('change', function() {
-                selectedPaymentMethod = this.value;
-            });
-        });
 
 
         // Update handlePaymentMethodsVisibility function
@@ -1106,11 +1098,6 @@
                     return false;
                 }
 
-                if (!selectedPaymentMethod) {
-                    showAlert('Mohon pilih metode pembayaran');
-                    goToStep(2);
-                    return false;
-                }
             } else if (selectedDonationType === 'barang') {
                 const barangForm = window.donasiBarangFormInstance;
                 if (!barangForm || barangForm.items.length === 0) {
