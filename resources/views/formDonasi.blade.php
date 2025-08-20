@@ -69,8 +69,6 @@
                             </p>
                         </div>
 
-
-
                         <div class="space-y-3">
                             <!-- Step 1 -->
                             <div class="flex items-center space-x-4" id="stepper-step1">
@@ -348,12 +346,11 @@
 
                                         <!-- Daftar Barang yang Sudah Ditambahkan -->
                                         <div x-show="items.length > 0" class="mt-2">
-
                                             <!-- List items -->
                                             <div class="space-y-2">
                                                 <template x-for="(item, index) in items" :key="index">
                                                     <div
-                                                        class="bg-white border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                                                        class= "bg-white border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
                                                         <div class="flex items-center justify-between">
                                                             <div class="flex items-center space-x-4 flex-1">
                                                                 <!-- No -->
@@ -431,81 +428,6 @@
 
                             <!-- Step 2: Pembayaran -->
                             <div id="step2" class="hidden">
-                                <h2 id="title-step2" class="text-2xl font-bold text-gray-900 mb-2">Metode Pembayaran
-                                </h2>
-                                <p id="desc-step2" class="text-gray-600 mb-4">Pilih metode pembayaran yang Anda
-                                    inginkan untuk
-                                    menyelesaikan donasi.</p>
-
-                                <!-- Payment Methods untuk Donasi Uang -->
-                                <div id="payment-methods" class="hidden space-y-4">
-                                    <!-- E-Wallet -->
-                                    <div class="border-2 border-gray-200 rounded-lg p-6">
-                                        <h3 class="text-lg font-semibold text-gray-800 mb-4">
-                                            <i class="fas fa-mobile-alt mr-2 text-teal-500"></i>E-Wallet
-                                        </h3>
-                                        <div class="grid md:grid-cols-4 gap-4">
-                                            <label class="cursor-pointer">
-                                                <input type="radio" name="payment_method" value="gopay"
-                                                    class="sr-only peer">
-                                                <div
-                                                    class="border border-gray-200 rounded-lg p-4 text-center hover:border-green-500 peer-checked:border-green-500 peer-checked:bg-green-50 transition duration-200 flex justify-center items-center h-15">
-                                                    <img src="{{ asset('img/payment/gopay.png') }}" alt="GoPay"
-                                                        class="h-full object-contain" />
-                                                </div>
-                                            </label>
-
-
-                                            <label class="cursor-pointer">
-                                                <input type="radio" name="payment_method" value="ovo"
-                                                    class="sr-only peer">
-                                                <div
-                                                    class="border border-gray-200 rounded-lg p-4 text-center hover:border-green-500 peer-checked:border-green-500 peer-checked:bg-green-50 transition duration-200 flex justify-center items-center h-15">
-                                                    <img src="{{ asset('img/payment/ovo.png') }}" alt="Ovo"
-                                                        class="h-full object-contain" />
-                                                </div>
-                                            </label>
-
-                                            <label class="cursor-pointer">
-                                                <input type="radio" name="payment_method" value="dana"
-                                                    class="sr-only peer">
-                                                <div
-                                                    class="border border-gray-200 rounded-lg p-4 text-center hover:border-green-500 peer-checked:border-green-500 peer-checked:bg-green-50 transition duration-200 flex justify-center items-center h-15">
-                                                    <img src="{{ asset('img/payment/dana.png') }}" alt="Dana"
-                                                        class="h-full object-contain" />
-                                                </div>
-                                            </label>
-                                            <label class="cursor-pointer">
-                                                <input type="radio" name="payment_method" value="QR_CODE"
-                                                    class="sr-only peer">
-                                                <div
-                                                    class="border border-gray-200 rounded-lg p-4 text-center hover:border-green-500 peer-checked:border-green-500 peer-checked:bg-green-50 transition duration-200 flex justify-center items-center h-15">
-                                                    <img src="{{ asset('img/payment/qris.png') }}" alt="QRIS"
-                                                        class="h-full object-contain" />
-                                                </div>
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <!-- Bank Transfer -->
-                                    <div class="border-2 border-gray-200 rounded-lg p-6">
-                                        <h3 class="text-lg font-semibold text-gray-800 mb-4">
-                                            <i class="fas fa-university mr-2 text-teal-500"></i>Transfer Bank
-                                        </h3>
-                                        <div class="grid md:grid-cols-4 gap-4">
-                                            <label class="cursor-pointer col-span-4">
-                                                <input type="radio" name="payment_method" value="bni"
-                                                    class="sr-only peer">
-                                                <div
-                                                    class="border border-gray-200 rounded-lg p-4 text-center hover:border-green-500 peer-checked:border-green-500 peer-checked:bg-green-50 transition duration-200 flex justify-center items-center h-15">
-                                                    <img src="{{ asset('img/payment/bni.png') }}" alt="Bank BNI"
-                                                        class="h-full object-contain" />
-                                                </div>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <!-- Info untuk Donasi Barang/Jasa -->
                                 <div id="non-payment-info" class="hidden">
                                     <div class="bg-teal-50 border border-teal-200 rounded-lg p-6">
@@ -550,8 +472,7 @@
                                     sebelum mengirimkan.</p>
 
                                 <!-- Donation Summary and Payment Method Change (hanya untuk donasi uang) -->
-                                <div id="uang-summary"
-                                    class=" grid md:grid-cols-2 gap-6 mb-8 p-4 bg-gray-50 rounded-lg">
+                                <div id="uang-summary" class="gap-6 mb-8 p-4 bg-gray-50 rounded-lg">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">
                                             Nominal Donasi
@@ -561,34 +482,6 @@
                                                 class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">Rp</span>
                                             <input type="number" id="nominal_donasi_display"
                                                 class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition duration-200 outline-0">
-                                        </div>
-
-                                    </div>
-
-                                    <div class="flex flex-col justify-end">
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                                            Metode Pembayaran
-                                        </label>
-                                        <div
-                                            class="w-full border border-gray-300 rounded-lg px-4 py-2 flex items-center justify-between">
-                                            <!-- Kiri: ikon dan nama metode -->
-                                            <div class="flex items-center gap-3">
-                                                <img id="payment-method-logo" src="" alt="Metode Pembayaran"
-                                                    class="h-3 md:h-4 w-auto">
-                                                <span id="current-payment-method"
-                                                    class="hidden md:block font-semibold text-sm text-gray-800">-</span>
-                                            </div>
-
-                                            <!-- Kanan: Tombol Ganti -->
-                                            <button type="button" onclick="goToStep(2)"
-                                                class="bg-teal-500 hover:bg-teal-600 text-white text-sm font-semibold px-3 py-1.5 rounded-full flex items-center gap-1 cursor-pointer">
-                                                Ganti
-                                                <svg class="w-3 h-3" fill="none" stroke="currentColor"
-                                                    stroke-width="2" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M19 9l-7 7-7-7" />
-                                                </svg>
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -668,24 +561,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Success Modal -->
-        <div id="successModal"
-            class="fixed inset-0 bg-black/35 hidden items-center justify-center z-50 transition-all duration-300 ease-out">
-            <div id="successPanel"
-                class="bg-white rounded-2xl p-8 max-w-md mx-4 text-center transform scale-75 opacity-0 transition-all duration-300 ease-out">
-                <div class="w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-check text-3xl text-teal-500"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">Terima Kasih!</h3>
-                <p class="text-gray-600 mb-6">Donasi Anda telah berhasil dikirim. Kami akan segera memproses donasi
-                    Anda.</p>
-                <button onclick="location.reload()"
-                    class="bg-teal-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-teal-600 transition duration-200 cursor-pointer">
-                    Donasi Lagi
-                </button>
-            </div>
-        </div>
     </div>
 
     <!-- Alert -->
@@ -726,68 +601,113 @@
             3: document.getElementById('step3')
         };
 
-        // Payment method names mapping
-        const paymentMethodNames = {
-            'gopay': 'GoPay',
-            'ovo': 'OVO',
-            'dana': 'DANA',
-            'qris': 'QRIS',
-            'bni': 'Transfer Bank'
-        };
-        const paymentMethodLogos = {
-            gopay: "{{ asset('img/payment/gopay.png') }}",
-            dana: "{{ asset('img/payment/dana.png') }}",
-            qris: "{{ asset('img/payment/qris.png') }}",
-            ovo: "{{ asset('img/payment/ovo.png') }}",
-            bni: "{{ asset('img/payment/bni.png') }}"
-        };
-
 
         // Update stepper visual state
         function updateStepper() {
             for (let i = 1; i <= totalSteps; i++) {
                 const stepElement = document.getElementById(`stepper-step${i}`);
+                if (!stepElement) continue;
+
                 const circle = stepElement.querySelector('.w-8.h-8');
                 const status = stepElement.querySelector('.text-xs:last-child');
 
+                // Hide step 2 and step 3 for cash donations, only show step 1 and rename step 3 as step 2
+                if (selectedDonationType === 'dana') {
+                    if (i === 2) {
+                        // Hide step 2 completely
+                        stepElement.style.display = 'none';
+                        const connector = stepElement.nextElementSibling;
+                        if (connector && connector.classList.contains('bg-gray-300')) {
+                            connector.style.display = 'none';
+                        }
+                        continue;
+                    } else if (i === 3) {
+                        // Rename step 3 as step 2 and update its content
+                        const stepTitle = stepElement.querySelector('h3');
+                        if (stepTitle) stepTitle.textContent = 'Konfirmasi';
 
-                if (i < currentStep) {
-                    // Completed step
-                    stepElement.classList.remove('opacity-50');
-                    circle.className =
-                        'w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center text-white text-sm font-semibold';
-                    circle.innerHTML = '<i class="fas fa-check"></i>';
-                    if (status) status.textContent = 'Selesai';
-                    if (status) status.className = 'text-xs text-teal-600 mt-1';
-                } else if (i === currentStep) {
-                    // Current step
-                    stepElement.classList.remove('opacity-50');
-                    circle.className =
-                        'w-8 h-8 bg-orange-300 border-2 border-orange-300 rounded-full flex items-center justify-center text-white text-sm font-semibold';
-                    circle.textContent = i;
-                    if (status) status.textContent = 'Masih berlangsung';
-                    if (status) status.className = 'text-xs text-orange-400 mt-1';
+                        const stepLabel = stepElement.querySelector('.text-xs.text-gray-500');
+                        if (stepLabel) stepLabel.textContent = 'Step 2';
+                    }
+                } else {
+                    // Show all steps for barang and jasa
+                    if (i === 2) {
+                        stepElement.style.display = 'flex';
+                        const connector = stepElement.nextElementSibling;
+                        if (connector && connector.classList.contains('bg-gray-300')) {
+                            connector.style.display = 'block';
+                        }
+                    } else if (i === 3) {
+                        // Reset step 3 content for barang/jasa
+                        const stepTitle = stepElement.querySelector('h3');
+                        if (stepTitle) stepTitle.textContent = 'Konfirmasi';
+
+                        const stepLabel = stepElement.querySelector('.text-xs.text-gray-500');
+                        if (stepLabel) stepLabel.textContent = 'Step 3';
+                    }
+                }
+
+                // Determine step numbering for display
+                let displayStepNumber = i;
+                if (selectedDonationType === 'dana' && i === 3) {
+                    displayStepNumber = 2; // Show as step 2 for cash donations
+                }
+
+                if (i < currentStep || (i === currentStep)) {
+                    stepElement.classList.remove('opacity-50', 'opacity-30');
+
+                    if (i === currentStep) {
+                        // Current step
+                        circle.className =
+                            'w-8 h-8 bg-orange-300 border-2 border-orange-300 rounded-full flex items-center justify-center text-white text-sm font-semibold';
+                        circle.textContent = displayStepNumber;
+                        if (status) status.textContent = 'Masih berlangsung';
+                        if (status) status.className = 'text-xs text-orange-400 mt-1';
+                    } else {
+                        // Completed step
+                        circle.className =
+                            'w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center text-white text-sm font-semibold';
+                        circle.innerHTML = '<i class="fas fa-check"></i>';
+                        if (status) status.textContent = 'Selesai';
+                        if (status) status.className = 'text-xs text-teal-600 mt-1';
+                    }
                 } else {
                     // Future step
                     stepElement.classList.add('opacity-50');
+                    stepElement.classList.remove('opacity-30');
                     circle.className =
                         'w-8 h-8 bg-gray-200 border-2 border-gray-300 rounded-full flex items-center justify-center text-gray-500 text-sm font-semibold';
-                    circle.textContent = i;
+                    circle.textContent = displayStepNumber;
                     if (status) status.textContent = '';
                 }
             }
         }
 
 
+        // Update mobile stepper
         function updateMobileStepper() {
             const stepLabel = document.getElementById('step-label');
             const progressBar = document.getElementById('step-progress-bar');
 
-            if (stepLabel) stepLabel.textContent = `Step ${currentStep}/${totalSteps}`;
+            if (selectedDonationType === 'dana') {
+                // For cash donations, show step as 1/2 or 2/2
+                const adjustedStep = currentStep === 3 ? 2 : currentStep;
+                const adjustedTotal = 2;
 
-            if (progressBar) {
-                const progressPercent = (currentStep / totalSteps) * 100;
-                progressBar.style.width = `${progressPercent}%`;
+                if (stepLabel) stepLabel.textContent = `Step ${adjustedStep}/${adjustedTotal}`;
+
+                if (progressBar) {
+                    const progressPercent = (adjustedStep / adjustedTotal) * 100;
+                    progressBar.style.width = `${progressPercent}%`;
+                }
+            } else {
+                // Normal 3-step process for barang and jasa
+                if (stepLabel) stepLabel.textContent = `Step ${currentStep}/${totalSteps}`;
+
+                if (progressBar) {
+                    const progressPercent = (currentStep / totalSteps) * 100;
+                    progressBar.style.width = `${progressPercent}%`;
+                }
             }
         }
 
@@ -809,7 +729,7 @@
             }
         }
 
-        // Show specific step
+        // Also modify the showStep function to call updateBarangListInStep2 when showing step 2
         function showStep(step) {
             // Hide all steps
             Object.values(steps).forEach(stepElement => {
@@ -833,7 +753,6 @@
                 setupNominalDisplayListener();
             }
         }
-
         // Go to specific step (for edit buttons)
         function goToStep(step) {
             showStep(step);
@@ -893,8 +812,6 @@
             }
         }
 
-
-
         // Update Step 3 display based on donation type
         function updateStep3Display() {
             const uangSummary = document.getElementById('uang-summary');
@@ -912,27 +829,11 @@
                 if (nominalDisplay) {
                     nominalDisplay.value = donationAmount > 0 ? formatNumber(donationAmount) : '';
                 }
-
                 // Update total donation
                 updateTotalDonation(donationAmount);
-
-                // Update payment method display
-                const currentPaymentMethodSpan = document.getElementById('current-payment-method');
-                const currentPaymentMethodLogo = document.getElementById('payment-method-logo');
-
-                if (currentPaymentMethodSpan && currentPaymentMethodLogo) {
-                    if (selectedPaymentMethod) {
-                        currentPaymentMethodSpan.textContent = paymentMethodNames[selectedPaymentMethod];
-                        currentPaymentMethodLogo.src = paymentMethodLogos[selectedPaymentMethod];
-                        currentPaymentMethodLogo.classList.remove('hidden');
-                    } else {
-                        currentPaymentMethodSpan.textContent = '-';
-                        currentPaymentMethodLogo.classList.add('hidden');
-                    }
-                }
-
                 // Hide barang summary
                 hideBarangSummaryInStep3();
+
             } else if (selectedDonationType === 'barang') {
                 // Hide money donation specific elements
                 uangSummary.classList.add('hidden');
@@ -940,7 +841,7 @@
                 confirmButtonSection.classList.add('md:ml-4');
 
                 // Show barang summary
-                // showBarangSummaryInStep3();
+                showBarangSummaryInStep3();
             } else {
                 // Hide money donation specific elements
                 uangSummary.classList.add('hidden');
@@ -1047,13 +948,17 @@
             'jasa': document.getElementById('donasi-jasa')
         };
 
-        const paymentMethodsSection = document.getElementById('payment-methods');
         const nonPaymentInfoSection = document.getElementById('non-payment-info');
 
+        // Update donation type change listener
         donationTypes.forEach(radio => {
             radio.addEventListener('change', function() {
                 selectedDonationType = this.value;
                 document.getElementById('jenis_donasi').value = this.value;
+
+                // Update stepper when donation type changes
+                updateStepper();
+                updateMobileStepper();
                 updateStep3Display();
 
                 // Hide all donation sections
@@ -1076,7 +981,7 @@
                         'Informasi Penyerahan';
                 }
 
-                //Panggil ulang fungsi visibility metode pembayaran
+                // Call payment methods visibility
                 handlePaymentMethodsVisibility();
             });
         });
@@ -1121,70 +1026,14 @@
             });
         });
 
-        // Function untuk update list barang di step 2
-        function updateBarangListInStep2() {
-            if (selectedDonationType === 'barang') {
-                const barangForm = window.donasiBarangFormInstance;
-                if (barangForm && barangForm.items.length > 0) {
-                    // Cari atau buat container untuk list barang
-                    let barangListContainer = document.getElementById('barang-list-step2');
-                    if (!barangListContainer) {
-                        // Buat container baru jika belum ada
-                        barangListContainer = document.createElement('div');
-                        barangListContainer.id = 'barang-list-step2';
-                        barangListContainer.className = 'mt-4 bg-white border border-gray-200 rounded-lg p-4';
-
-                        // Tambahkan setelah info penyerahan
-                        const nonPaymentInfo = document.getElementById('non-payment-info');
-                        nonPaymentInfo.appendChild(barangListContainer);
-                    }
-
-                    // Update konten list
-                    let listHTML = `
-                <h4 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
-                    <i class="fas fa-list mr-2 text-teal-600"></i>
-                    Daftar Barang yang Akan Didonasikan (${barangForm.items.length} item)
-                </h4>
-                <ul class="space-y-2">
-            `;
-
-                    barangForm.items.forEach((item, index) => {
-                        const kondisiBadgeClass = item.kondisi_barang === 'baru' ?
-                            'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800';
-
-                        listHTML += `
-                    <li class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <div class="flex items-center space-x-3">
-                            <span class="inline-flex items-center justify-center w-6 h-6 bg-teal-100 text-teal-800 text-xs font-semibold rounded-full">
-                                ${index + 1}
-                            </span>
-                            <div>
-                                <p class="font-medium text-gray-900">${item.nama_barang}</p>
-                                <div class="flex items-center space-x-3 text-sm text-gray-600 mt-1">
-                                    <span>Jumlah: ${item.jumlah_barang || '-'}</span>
-                                    <span class="px-2 py-1 text-xs font-medium rounded-full ${kondisiBadgeClass}">
-                                        ${item.kondisi_barang.charAt(0).toUpperCase() + item.kondisi_barang.slice(1)}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                `;
-                    });
-
-                    listHTML += '</ul>';
-                    barangListContainer.innerHTML = listHTML;
-                }
-            }
-        }
 
         // Update handlePaymentMethodsVisibility function
         function handlePaymentMethodsVisibility() {
             if (selectedDonationType === 'dana') {
-                paymentMethodsSection.classList.remove('hidden');
-                nonPaymentInfoSection.classList.add('hidden');
+                document.getElementById('nextStep2').addEventListener('click', function() {
+                    showStep(3);
+                });
             } else {
-                paymentMethodsSection.classList.add('hidden');
                 nonPaymentInfoSection.classList.remove('hidden');
 
                 const title2 = document.getElementById('title-step2');
@@ -1192,8 +1041,6 @@
                 title2.textContent = 'Informasi Penyerahan Barang atau Jasa';
                 desc2.textContent = 'Silakan isi data diri di halaman selanjutnya dengan benar';
 
-                // Update tampilan barang yang sudah ditambahkan
-                updateBarangListInStep2();
             }
         }
 
@@ -1231,20 +1078,10 @@
             return isValid;
         }
 
-        function validateStep2() {
-            if (selectedDonationType === 'dana') {
-                const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
-                if (!paymentMethod) {
-                    showAlert('Mohon pilih metode pembayaran');
-                    return false;
-                }
-            }
-            return true;
-        }
 
         function validateStep3() {
             const nama = document.querySelector('[name="nama"]');
-            const emailTlp = document.querySelector('[name="email_tlp"]');
+            const emailTlp = document.querySelector('[name="email"]');
 
             if (!nama.value.trim()) {
                 showAlert('Mohon isi nama lengkap');
@@ -1313,8 +1150,14 @@
         // Step navigation handlers
         document.getElementById('nextStep1').addEventListener('click', function() {
             if (validateStep1()) {
-                showStep(2);
-                handlePaymentMethodsVisibility();
+                // If donation type is 'dana', skip step 2 and go directly to step 3
+                if (selectedDonationType === 'dana') {
+                    showStep(3);
+                } else {
+                    // For 'barang' and 'jasa', go to step 2 as usual
+                    showStep(2);
+                    handlePaymentMethodsVisibility();
+                }
             }
         });
 
@@ -1386,44 +1229,6 @@
                     nominalInput.value = donationAmount;
                 }
             }
-
-            // Show success modal (comment this out for actual submission)
-            /*
-            const modal = document.getElementById('successModal');
-            const panel = document.getElementById('successPanel');
-
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-
-            // Update stepper to show step 3 as completed
-            const stepElement = document.getElementById(`stepper-step3`);
-            const circle = stepElement.querySelector('.w-8.h-8');
-            const status = stepElement.querySelector('.text-xs:last-child');
-
-            stepElement.classList.remove('opacity-50');
-            circle.className =
-                'w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center text-white text-sm font-semibold';
-            circle.innerHTML = '<i class="fas fa-check"></i>';
-            if (status) status.textContent = 'Selesai';
-            if (status) status.className = 'text-xs text-teal-600 mt-1';
-
-            // Trigger panel grow animation
-            setTimeout(() => {
-                panel.classList.remove('scale-75', 'opacity-0');
-                panel.classList.add('scale-100', 'opacity-100');
-            }, 50);
-
-            // Prevent actual form submission for demo
-            e.preventDefault();
-            */
-
-            // Log form data for development
-            console.log('Form submitted with data:', new FormData(this));
-            console.log('Final donation amount:', donationAmount);
-
-            if (selectedDonationType === 'barang') {
-                console.log('Barang items:', window.donasiBarangFormInstance?.items || []);
-            }
         });
 
         // Update validateStep1 for better barang validation
@@ -1471,11 +1276,15 @@
             return isValid;
         }
 
-        // Back button handler
+        // Also update the prevStep handler to handle the skip logic
         document.getElementById('prevStep').addEventListener('click', function() {
             if (currentStep === 1) {
                 window.location.href = "{{ url()->previous() }}";
+            } else if (currentStep === 3 && selectedDonationType === 'dana') {
+                // If we're on step 3 and donation type is 'dana', go back to step 1 (skip step 2)
+                showStep(1);
             } else {
+                // Normal back navigation
                 showStep(currentStep - 1);
                 if (currentStep === 2) {
                     handlePaymentMethodsVisibility();
@@ -1550,10 +1359,6 @@
                     // Reset form
                     this.resetForm();
 
-                    // Update list barang di step 2 jika sedang di step tersebut
-                    if (currentStep === 2) {
-                        updateBarangListInStep2();
-                    }
 
                     // Scroll ke atas untuk melihat item yang ditambahkan
                     document.querySelector('#donasi-barang').scrollIntoView({
@@ -1565,20 +1370,12 @@
                 hapusBarang(index) {
                     if (confirm('Apakah Anda yakin ingin menghapus item ini?')) {
                         this.items.splice(index, 1);
-                        // Update list barang di step 2 jika sedang di step tersebut
-                        if (currentStep === 2) {
-                            updateBarangListInStep2();
-                        }
                     }
                 },
 
                 hapusSemuaBarang() {
                     if (confirm('Apakah Anda yakin ingin menghapus semua item barang?')) {
                         this.items = [];
-                        // Update list barang di step 2 jika sedang di step tersebut
-                        if (currentStep === 2) {
-                            updateBarangListInStep2();
-                        }
                     }
                 },
 

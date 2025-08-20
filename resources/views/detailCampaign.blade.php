@@ -66,9 +66,7 @@
                             @php
                                 // Hitung total dana terkumpul dari donasi_dana yang status_verifikasi 'approved'
                                 $terkumpul = $campaign->donasi
-                                    ->filter(
-                                        fn($d) => $d->donasiDana && $d->donasiDana->status_verifikasi === 'PAID',
-                                    )
+                                    ->filter(fn($d) => $d->donasiDana && $d->donasiDana->status_verifikasi === 'PAID')
                                     ->sum(fn($d) => $d->donasiDana->nominal);
 
                                 // Hitung persentase progres
@@ -282,6 +280,21 @@
                 </div>
             </div>
         </div>
+
+        @if (session('success'))
+            <div id="successModal"
+                class="fixed inset-0 bg-black/35 flex justify-center items-center z-50 transition-all duration-300 ease-out">
+                <div id="successPanel"
+                    class="bg-white rounded-2xl p-8 max-w-md mx-4 text-center transform scale-100 transition-all duration-300 ease-out">
+                    <div class="w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-check text-3xl text-teal-500"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Terima Kasih!</h3>
+                    <p class="text-gray-600 mb-6">{{ session('success') }}</p>
+                </div>
+            </div>
+        @endif
+
     </main>
 @endsection
 
@@ -312,5 +325,17 @@
                 }
             });
         });
+
+        const successModal = document.getElementById('successModal');
+        const successPanel = document.getElementById('successPanel');
+
+        if (successModal) {
+            // Klik di luar panel => tutup modal
+            successModal.addEventListener('click', function(e) {
+                if (!successPanel.contains(e.target)) {
+                    successModal.remove(); // bisa pakai .classList.add('hidden') kalau mau hanya disembunyikan
+                }
+            });
+        }
     </script>
 @endpush

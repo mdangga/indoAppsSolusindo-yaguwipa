@@ -54,7 +54,7 @@ class DonasiController extends Controller
             'id_campaign' => 'required|exists:campaign,id_campaign',
             'jenis_donasi' => 'required|string|in:dana,barang,jasa',
             'pesan' => 'nullable|string',
-            'nominal' => 'required_if:jenis_donasi,dana|numeric|min:' . config('xendit.invoice.amount_limits.min') . '|max:' . config('xendit.invoice.amount_limits.max'),
+            'nominal' => 'required_if:jenis_donasi,dana|nullable|numeric|min:' . config('xendit.invoice.amount_limits.min') . '|max:' . config('xendit.invoice.amount_limits.max'),
 
             // Barang (multiple)
             'DonasiBarang' => 'required_if:jenis_donasi,barang|nullable|array|min:1',
@@ -331,6 +331,7 @@ class DonasiController extends Controller
     {
         return view('success');
     }
+
     public function failure()
     {
         return view('failure');
