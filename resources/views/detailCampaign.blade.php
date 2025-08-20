@@ -34,8 +34,6 @@
                         <h1 class="text-lg font-semibold text-gray-900">Detail Campaign</h1>
                     </div>
 
-
-
                     <!-- Title & Description -->
                     <div class="grid lg:grid-cols-2 gap-12 items-start">
                         <div>
@@ -244,11 +242,6 @@
                                 <p class="text-gray-500 text-center">Belum ada donasi.</p>
                             @endforelse
                         </div>
-                        {{-- <div class="mt-6 text-center">
-                            <button class="text-amber-600 hover:text-amber-800 font-medium transition-colors">
-                                Lihat Semua Donatur <i class="fas fa-arrow-right ml-1"></i>
-                            </button>
-                        </div> --}}
                     </div>
 
                 </div>
@@ -283,14 +276,28 @@
 
         @if (session('success'))
             <div id="successModal"
-                class="fixed inset-0 bg-black/35 flex justify-center items-center z-50 transition-all duration-300 ease-out">
+                class="fixed inset-0 bg-black/35 flex justify-center items-center z-50 transition-all duration-300 ease-out opacity-100">
                 <div id="successPanel"
-                    class="bg-white rounded-2xl p-8 max-w-md mx-4 text-center transform scale-100 transition-all duration-300 ease-out">
+                    class="bg-white rounded-2xl p-8 min-w-sm max-w-lg mx-4 text-center transform scale-100 transition-all duration-300 ease-out">
                     <div class="w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <i class="fas fa-check text-3xl text-teal-500"></i>
                     </div>
                     <h3 class="text-2xl font-bold text-gray-800 mb-2">Terima Kasih!</h3>
                     <p class="text-gray-600 mb-6">{{ session('success') }}</p>
+                </div>
+            </div>
+        @endif
+
+        @if (session('failed'))
+            <div id="failedModal"
+                class="fixed inset-0 bg-black/35 flex justify-center items-center z-50 transition-all duration-300 ease-out opacity-100">
+                <div id="failedPanel"
+                    class="bg-white rounded-2xl p-8 min-w-sm max-w-lg mx-4 text-center transform scale-100 transition-all duration-300 ease-out">
+                    <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-solid fa-x text-3xl text-red-500"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Gagal!</h3>
+                    <p class="text-gray-600 mb-6">{{ session('failed') }}</p>
                 </div>
             </div>
         @endif
@@ -303,39 +310,32 @@
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     @vite('resources/js/AOS.js')
     <script>
-        // Donation button functionality
-        document.querySelectorAll('.donate-button').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                showDonationModal();
-            });
-        });
+        function setupModalAutoClose(modalId, panelId) {
+            const modal = document.getElementById(modalId);
+            const panel = document.getElementById(panelId);
 
+            if (modal) {
+                setTimeout(() => {
+                    modal.classList.add('opacity-0');
+                    setTimeout(() => {
+                        modal.remove();
+                    }, 300);
+                }, 5000);
 
-        // Smooth scroll for internal links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        const successModal = document.getElementById('successModal');
-        const successPanel = document.getElementById('successPanel');
-
-        if (successModal) {
-            // Klik di luar panel => tutup modal
-            successModal.addEventListener('click', function(e) {
-                if (!successPanel.contains(e.target)) {
-                    successModal.remove(); // bisa pakai .classList.add('hidden') kalau mau hanya disembunyikan
-                }
-            });
+                modal.addEventListener('click', function(e) {
+                    if (!panel.contains(e.target)) {
+                        modal.classList.add('opacity-0');
+                        setTimeout(() => {
+                            modal.remove();
+                        }, 300);
+                    }
+                });
+            }
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setupModalAutoClose('successModal', 'successPanel');
+            setupModalAutoClose('failedModal', 'failedPanel');
+        });
     </script>
 @endpush

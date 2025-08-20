@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Menu;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
@@ -90,6 +91,8 @@ class MenusController extends Controller
 
         Menu::create($data);
 
+        Cache::forget('yayasan_menus');
+        
         return redirect()->route('admin.menus')->with('success', 'Menu berhasil ditambahkan!');
     }
 
@@ -128,6 +131,8 @@ class MenusController extends Controller
         }
 
         $menu->update($data);
+
+        Cache::forget('yayasan_menus');
 
         return redirect()->route('admin.menus')->with('success', 'Menu berhasil ditambahkan!');
     }

@@ -26,26 +26,27 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $profile = Profiles::first();
+        // Cache untuk data profile, sosial media, dan institusi
+        $siteData = Cache::remember('yayasan_site_data', now()->addHours(2), function () {
+            return [
+                'yayasanProfile' => Profiles::first(),
+                'yayasanSosmed' => SosialMedia::where('status', 'show')->get(),
+                'lembaga' => Institusi::where('status', 'show')->get(),
+            ];
+        });
 
-        $sosialMedia = SosialMedia::where('status', 'show')->get();
+        View::share('site', $siteData);
 
-        $lembaga = Institusi::where('status', 'show')->get();
-
-        View::share('site', [
-            'yayasanProfile' => $profile,
-            'yayasanSosmed' => $sosialMedia,
-            'lembaga' => $lembaga,
-        ]);
-
+        // Cache untuk menu
         View::composer('*', function ($view) {
             $menus = Cache::remember('yayasan_menus', now()->addHours(1), function () {
-                return Menu::with(['children' => function ($q) {
-                    $q->where('status', 'show')->orderBy('id_menus');
+                return Menu::with(['children' => function ($query) {
+                    $query->where('status', 'show')
+                        ->orderBy('id_menus');
                 }])
                     ->whereNull('parent_menu')
-                    ->orderByRaw('id_menus')
                     ->where('status', 'show')
+                    ->orderBy('id_menus')
                     ->get();
             });
 

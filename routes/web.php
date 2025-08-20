@@ -25,8 +25,8 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // testing-area
-Route::get('/donasi/success', [DonasiController::class, 'success'])->name('donasi.success');
-Route::get('/donasi/failure', [DonasiController::class, 'failure'])->name('donasi.failure');
+Route::get('/donasi/success/{slug}', [DonasiController::class, 'success'])->name('donasi.success');
+Route::get('/donasi/failure/{slug}', [DonasiController::class, 'failure'])->name('donasi.failure');
 
 
 Route::get('/testing/{id}', [PdfController::class, 'testing'])->name('testing');
