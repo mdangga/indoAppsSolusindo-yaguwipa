@@ -66,7 +66,7 @@ class PdfController extends Controller
             $zipFiles = [];
 
             foreach ($files as $file) {
-                $absolutePath = Storage::disk('public')->path($file->file_path);
+                $absolutePath = Storage::disk('local')->path($file->file_path);
 
                 if (file_exists($absolutePath)) {
                     $zipFiles[$absolutePath] = basename($file->file_path);

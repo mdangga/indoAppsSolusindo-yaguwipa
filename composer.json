@@ -13,6 +13,7 @@
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "stechstudio/laravel-zipstream": "^5.7",
+        "xendit/xendit-php": "^7.0",
         "yajra/laravel-datatables-oracle": "^12"
     },
     "require-dev": {

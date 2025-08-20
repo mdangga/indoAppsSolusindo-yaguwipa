@@ -67,7 +67,7 @@
                                 // Hitung total dana terkumpul dari donasi_dana yang status_verifikasi 'approved'
                                 $terkumpul = $campaign->donasi
                                     ->filter(
-                                        fn($d) => $d->donasiDana && $d->donasiDana->status_verifikasi === 'approved',
+                                        fn($d) => $d->donasiDana && $d->donasiDana->status_verifikasi === 'PAID',
                                     )
                                     ->sum(fn($d) => $d->donasiDana->nominal);
 

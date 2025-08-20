@@ -201,7 +201,7 @@
                                         </label>
                                         <div class="grid md:grid-cols-3 gap-4">
                                             <label class="cursor-pointer">
-                                                <input type="radio" name="jenis_donasi" value="uang"
+                                                <input type="radio" name="jenis_donasi" value="dana"
                                                     class="sr-only peer" required checked>
                                                 <div
                                                     class="border-2 border-gray-200 rounded-lg p-6 text-center hover:border-teal-500 peer-checked:border-teal-500 peer-checked:bg-teal-50 transition duration-200 md:min-h-[165px] flex flex-col justify-between">
@@ -476,7 +476,7 @@
                                                 </div>
                                             </label>
                                             <label class="cursor-pointer">
-                                                <input type="radio" name="payment_method" value="qris"
+                                                <input type="radio" name="payment_method" value="QR_CODE"
                                                     class="sr-only peer">
                                                 <div
                                                     class="border border-gray-200 rounded-lg p-4 text-center hover:border-green-500 peer-checked:border-green-500 peer-checked:bg-green-50 transition duration-200 flex justify-center items-center h-15">
@@ -714,7 +714,7 @@
 
         // Form state management
         let currentStep = 1;
-        let selectedDonationType = 'uang';
+        let selectedDonationType = 'dana';
         let selectedPaymentMethod = null;
         let donationAmount = 0;
         const totalSteps = 3;
@@ -843,7 +843,7 @@
         function setupNominalDisplayListener() {
             const nominalDisplay = document.getElementById('nominal_donasi_display');
 
-            if (nominalDisplay && selectedDonationType === 'uang') {
+            if (nominalDisplay && selectedDonationType === 'dana') {
                 // Remove existing listeners to prevent duplicates
                 nominalDisplay.removeEventListener('input', handleNominalDisplayChange);
                 nominalDisplay.removeEventListener('blur', handleNominalDisplayBlur);
@@ -901,7 +901,7 @@
             const totalDonationSection = document.getElementById('total-donation-section');
             const confirmButtonSection = document.getElementById('confirm-button-section');
 
-            if (selectedDonationType === 'uang') {
+            if (selectedDonationType === 'dana') {
                 // Show money donation specific elements
                 uangSummary.classList.remove('hidden');
                 totalDonationSection.classList.remove('hidden');
@@ -1042,7 +1042,7 @@
         // Donation type handling
         const donationTypes = document.querySelectorAll('input[name="jenis_donasi"]');
         const donationSections = {
-            'uang': document.getElementById('donasi-uang'),
+            'dana': document.getElementById('donasi-uang'),
             'barang': document.getElementById('donasi-barang'),
             'jasa': document.getElementById('donasi-jasa')
         };
@@ -1065,14 +1065,14 @@
                 }
 
                 // Reset amount if not money donation
-                if (this.value !== 'uang') {
+                if (this.value !== 'dana') {
                     donationAmount = 0;
                 }
 
                 // Update judul step 2 secara real-time
                 const step2Title = document.getElementById('step2-title');
                 if (step2Title) {
-                    step2Title.textContent = selectedDonationType === 'uang' ? 'Metode Pembayaran' :
+                    step2Title.textContent = selectedDonationType === 'dana' ? 'Metode Pembayaran' :
                         'Informasi Penyerahan';
                 }
 
@@ -1180,7 +1180,7 @@
 
         // Update handlePaymentMethodsVisibility function
         function handlePaymentMethodsVisibility() {
-            if (selectedDonationType === 'uang') {
+            if (selectedDonationType === 'dana') {
                 paymentMethodsSection.classList.remove('hidden');
                 nonPaymentInfoSection.classList.add('hidden');
             } else {
@@ -1205,7 +1205,7 @@
             const donationType = document.querySelector('input[name="jenis_donasi"]:checked');
 
             // Validate donation specific fields
-            if (donationType.value === 'uang') {
+            if (donationType.value === 'dana') {
                 const nominal = document.querySelector('[name="nominal"]');
                 if (!nominal.value || nominal.value < 10000) {
                     isValid = false;
@@ -1232,7 +1232,7 @@
         }
 
         function validateStep2() {
-            if (selectedDonationType === 'uang') {
+            if (selectedDonationType === 'dana') {
                 const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
                 if (!paymentMethod) {
                     showAlert('Mohon pilih metode pembayaran');
@@ -1259,7 +1259,7 @@
             }
 
             // Validate based on donation type
-            if (selectedDonationType === 'uang') {
+            if (selectedDonationType === 'dana') {
                 if (!donationAmount || donationAmount < 10000) {
                     showAlert('Mohon masukkan nominal donasi minimal Rp 10.000');
                     const nominalDisplay = document.getElementById('nominal_donasi_display');
@@ -1380,7 +1380,7 @@
             prepareFormData();
 
             // Update the original nominal input with the final amount
-            if (selectedDonationType === 'uang') {
+            if (selectedDonationType === 'dana') {
                 const nominalInput = document.getElementById('nominal-input');
                 if (nominalInput) {
                     nominalInput.value = donationAmount;
@@ -1434,7 +1434,7 @@
             const donationType = document.querySelector('input[name="jenis_donasi"]:checked');
 
             // Validate donation specific fields
-            if (donationType.value === 'uang') {
+            if (donationType.value === 'dana') {
                 const nominal = document.querySelector('[name="nominal"]');
                 if (!nominal.value || nominal.value < 10000) {
                     isValid = false;

@@ -234,14 +234,14 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
                             <!-- Profil Lembaga -->
-                            <div class="space-y-2" x-data="{ fileName: '{{ $isEdit && !empty($filePenunjang['profil_lembaga']) ? $filePenunjang['profil_lembaga'] : '' }}' }">
+                            <div class="space-y-2" x-data="{ fileName: '{{ $isEdit && !empty($filePenunjang['profil_lembaga']['nama']) ? $filePenunjang['profil_lembaga']['nama'] : '' }}' }">
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                                     Profil Lembaga
                                 </label>
                                 <div class="file-upload-container">
                                     <input type="file" name="file_penunjang[profil_lembaga]" id="profil_lembaga"
                                         accept=".pdf,.doc,.docx"
-                                        @change="fileName = $event.target.files[0] ? $event.target.files[0].name : '{{ $isEdit && !empty($filePenunjang['profil_lembaga']) ? $filePenunjang['profil_lembaga'] : '' }}'">
+                                        @change="fileName = $event.target.files[0] ? $event.target.files[0].name : '{{ $isEdit && !empty($filePenunjang['profil_lembaga']['nama']) ? $filePenunjang['profil_lembaga']['nama'] : '' }}'">
                                     <label for="profil_lembaga" class="file-upload-label"
                                         :class="{ 'has-file': fileName }">
                                         <div class="text-center">
@@ -250,12 +250,11 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                             </svg>
-                                            <span class="text-xs font-medium text-center"
-                                                x-text="fileName || 'Pilih File Profil'"></span>
-                                            <!-- Tambahkan link untuk melihat file yang sudah ada -->
+                                            <span class="block max-w-[150px] truncate text-xs font-medium text-center"
+                                                x-text="fileName || 'Pilih File Profil'"></span> 
                                             <template x-if="fileName && '{{ $isEdit }}'">
                                                 <div class="mt-2">
-                                                    <a href="{{ $isEdit ? asset('storage/file_kerja_sama/' . $filePenunjang['profil_lembaga']) : '#' }}"
+                                                    <a href="{{ $isEdit ? route('kerja-sama.file.show', $filePenunjang['profil_lembaga']['id']) : '#' }}"
                                                         target="_blank"
                                                         class="text-blue-600 hover:text-blue-800 text-xs underline">
                                                         Lihat file saat ini
@@ -268,14 +267,14 @@
                             </div>
 
                             <!-- Proposal Kemitraan -->
-                            <div class="space-y-2" x-data="{ fileName: '{{ $isEdit && !empty($filePenunjang['proposal_kemitraan']) ? $filePenunjang['proposal_kemitraan'] : '' }}' }">
+                            <div class="space-y-2" x-data="{ fileName: '{{ $isEdit && !empty($filePenunjang['proposal_kemitraan']['nama']) ? $filePenunjang['proposal_kemitraan']['nama'] : '' }}' }">
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                                     Proposal Kemitraan/Program
                                 </label>
                                 <div class="file-upload-container">
                                     <input type="file" name="file_penunjang[proposal_kemitraan]" id="proposal_kemitraan"
                                         accept=".pdf,.doc,.docx"
-                                        @change="fileName = $event.target.files[0] ? $event.target.files[0].name : '{{ $isEdit && !empty($filePenunjang['proposal_kemitraan']) ? $filePenunjang['proposal_kemitraan'] : '' }}'">
+                                        @change="fileName = $event.target.files[0] ? $event.target.files[0].name : '{{ $isEdit && !empty($filePenunjang['proposal_kemitraan']['nama']) ? $filePenunjang['proposal_kemitraan']['nama'] : '' }}'">
                                     <label for="proposal_kemitraan" class="file-upload-label"
                                         :class="{ 'has-file': fileName }">
                                         <div class="text-center">
@@ -284,12 +283,11 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                             </svg>
-                                            <span class="text-xs font-medium text-center"
-                                                x-text="fileName || 'Pilih File Profil'"></span>
-                                            <!-- Tambahkan link untuk melihat file yang sudah ada -->
+                                            <span class="block max-w-[150px] truncate text-xs font-medium text-center"
+                                                x-text="fileName || 'Pilih File Profil'"></span> 
                                             <template x-if="fileName && '{{ $isEdit }}'">
                                                 <div class="mt-2">
-                                                    <a href="{{ $isEdit ? asset('storage/file_kerja_sama/' . $filePenunjang['proposal_kemitraan']) : '#' }}"
+                                                    <a href="{{ $isEdit ? route('kerja-sama.file.show', $filePenunjang['proposal_kemitraan']['id']) : '#' }}"
                                                         target="_blank"
                                                         class="text-blue-600 hover:text-blue-800 text-xs underline">
                                                         Lihat file saat ini
@@ -302,14 +300,14 @@
                             </div>
 
                             <!-- Surat Permohonan -->
-                            <div class="space-y-2" x-data="{ fileName: '{{ $isEdit && !empty($filePenunjang['surat_permohonan']) ? $filePenunjang['surat_permohonan'] : '' }}' }">
+                            <div class="space-y-2" x-data="{ fileName: '{{ $isEdit && !empty($filePenunjang['surat_permohonan']['nama']) ? $filePenunjang['surat_permohonan']['nama'] : '' }}' }">
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                                     Surat Permohonan Kerja Sama
                                 </label>
                                 <div class="file-upload-container">
                                     <input type="file" name="file_penunjang[surat_permohonan]" id="surat_permohonan"
                                         accept=".pdf,.doc,.docx"
-                                        @change="fileName = $event.target.files[0] ? $event.target.files[0].name : '{{ $isEdit && !empty($filePenunjang['surat_permohonan']) ? $filePenunjang['surat_permohonan'] : '' }}'">
+                                        @change="fileName = $event.target.files[0] ? $event.target.files[0].name : '{{ $isEdit && !empty($filePenunjang['surat_permohonan']['nama']) ? $filePenunjang['surat_permohonan']['nama'] : '' }}'">
                                     <label for="surat_permohonan" class="file-upload-label"
                                         :class="{ 'has-file': fileName }">
                                         <div class="text-center">
@@ -318,12 +316,11 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                             </svg>
-                                            <span class="text-xs font-medium text-center"
-                                                x-text="fileName || 'Pilih File Profil'"></span>
-                                            <!-- Tambahkan link untuk melihat file yang sudah ada -->
+                                            <span class="block max-w-[150px] truncate text-xs font-medium text-center"
+                                                x-text="fileName || 'Pilih File Profil'"></span> 
                                             <template x-if="fileName && '{{ $isEdit }}'">
                                                 <div class="mt-2">
-                                                    <a href="{{ $isEdit ? asset('storage/file_kerja_sama/' . $filePenunjang['surat_permohonan']) : '#' }}"
+                                                    <a href="{{ $isEdit ? route('kerja-sama.file.show',  $filePenunjang['surat_permohonan']['id']) : '#' }}"
                                                         target="_blank"
                                                         class="text-blue-600 hover:text-blue-800 text-xs underline">
                                                         Lihat file saat ini
@@ -335,14 +332,14 @@
                                 </div>
                             </div>
                             <!-- Dokumen Legalitas -->
-                            <div class="space-y-2" x-data="{ fileName: '{{ $isEdit && !empty($filePenunjang['dokumen_legalitas']) ? $filePenunjang['dokumen_legalitas'] : '' }}' }">
+                            <div class="space-y-2" x-data="{ fileName: '{{ $isEdit && !empty($filePenunjang['dokumen_legalitas']['nama']) ? $filePenunjang['dokumen_legalitas']['nama'] : '' }}' }">
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                                     Dokumen Legalitas <span class="text-gray-500 text-xs">(Opsional)</span>
                                 </label>
                                 <div class="file-upload-container">
                                     <input type="file" name="file_penunjang[dokumen_legalitas]" id="dokumen_legalitas"
                                         accept=".pdf,.doc,.docx"
-                                        @change="fileName = $event.target.files[0] ? $event.target.files[0].name : '{{ $isEdit && !empty($filePenunjang['dokumen_legalitas']) ? $filePenunjang['dokumen_legalitas'] : '' }}'">
+                                        @change="fileName = $event.target.files[0] ? $event.target.files[0].name : '{{ $isEdit && !empty($filePenunjang['dokumen_legalitas']['nama']) ? $filePenunjang['dokumen_legalitas']['nama'] : '' }}'">
                                     <label for="dokumen_legalitas" class="file-upload-label"
                                         :class="{ 'has-file': fileName }">
                                         <div class="text-center">
@@ -351,12 +348,11 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                             </svg>
-                                            <span class="text-xs font-medium text-center"
+                                            <span class="block max-w-[150px] truncate text-xs font-medium text-center"
                                                 x-text="fileName || 'Pilih File Profil'"></span>
-                                            <!-- Tambahkan link untuk melihat file yang sudah ada -->
                                             <template x-if="fileName && '{{ $isEdit }}'">
                                                 <div class="mt-2">
-                                                    <a href="{{ $isEdit && !empty($filePenunjang['dokumen_legalitas'])? asset('storage/file_kerja_sama/' . $filePenunjang['dokumen_legalitas']) : '#' }}"
+                                                    <a href="{{ $isEdit && !empty($filePenunjang['dokumen_legalitas'])? route('kerja-sama.file.show', $filePenunjang['dokumen_legalitas']['id']) : '#' }}"
                                                         target="_blank"
                                                         class="text-blue-600 hover:text-blue-800 text-xs underline">
                                                         Lihat file saat ini

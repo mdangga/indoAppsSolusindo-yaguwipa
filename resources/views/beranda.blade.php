@@ -154,7 +154,7 @@
 
                     </div>
 
-                    <div class="relative w-full max-w-2xl mx-auto" data-carousel="static" data-carousel-interval="7000">
+                    <div class="relative w-full max-w-2xl mx-auto" data-carousel="slide" data-carousel-interval="7000">
                         <!-- Carousel Wrapper -->
                         <div class="relative overflow-hidden rounded-xl min-h-[320px] md:min-h-[300px]">
                             @foreach ($reviews as $i => $review)
