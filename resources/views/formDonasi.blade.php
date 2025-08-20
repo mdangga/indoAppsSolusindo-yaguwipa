@@ -1081,7 +1081,7 @@
 
         function validateStep3() {
             const nama = document.querySelector('[name="nama"]');
-            const emailTlp = document.querySelector('[name="email"]');
+            const emailTlp = document.querySelector('[name="email_tlp"]');
 
             if (!nama.value.trim()) {
                 showAlert('Mohon isi nama lengkap');
@@ -1147,6 +1147,7 @@
 
             return true;
         }
+
         // Step navigation handlers
         document.getElementById('nextStep1').addEventListener('click', function() {
             if (validateStep1()) {

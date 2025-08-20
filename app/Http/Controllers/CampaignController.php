@@ -21,6 +21,7 @@ class CampaignController extends Controller
         $donations = Donasi::with(['DonasiDana', 'DonasiBarang', 'DonasiJasa', 'JenisDonasi', 'User'])
             ->orderBy('updated_at', 'desc')
             ->where('id_campaign', $campaign->id_campaign)
+            ->where('status', 'approved')
             ->limit(5)
             ->get();
         return view('detailCampaign', compact('campaign', 'donations', 'totalDonatur'));
