@@ -40,11 +40,15 @@ class DonasiController extends Controller
             ->where('id_user', $user->id_user)
             ->findOrFail($id);
 
-        return view('user.detailDonasi', compact('donasi'));
+        if ($donasi->JenisDonasi->nama === 'Dana') {
+            return view('user.detailDonasiUang', compact('donasi'));
+        } else {
+            return view('user.detailDonasi', compact('donasi'));
+        }
     }
     /**
      * Store a newly created resource in storage.
-    */
+     */
     public function store(Request $request)
     {
         // dd($request->all());

@@ -29,7 +29,7 @@ Route::get('/donasi/success/{slug}', [DonasiController::class, 'success'])->name
 Route::get('/donasi/failure/{slug}', [DonasiController::class, 'failure'])->name('donasi.failure');
 
 
-Route::get('/testing/{id}', [PdfController::class, 'testing'])->name('testing');
+Route::get('/testing/{id}', [GeneralController::class, 'testing'])->name('testing');
 
 // route-default beranda
 Route::get('/', [GeneralController::class, 'beranda'])->name('beranda');
