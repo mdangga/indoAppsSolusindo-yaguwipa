@@ -146,10 +146,13 @@
         }
 
         .section {
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px dashed var(--border-light);
             position: relative;
+        }
+
+        .separator {
+            margin-bottom: 2rem;
+            margin-top: 1.5rem;
+            border-bottom: 1px dashed var(--border-light);
         }
 
         .section:last-of-type {
@@ -178,7 +181,7 @@
         }
 
         .value {
-            font-weight: 500;
+            /* font-weight: 500; */
             color: var(--primary-color);
             font-size: 0.875rem;
             text-align: right;
@@ -198,7 +201,7 @@
             background: linear-gradient(135deg, #f0fdf4, #dcfce7);
             color: #166534;
             padding: 6px 12px;
-            border-radius: 12px;
+            border-radius: 50px;
             font-size: 0.75rem;
             font-weight: 600;
             border: 1px solid #bbf7d0;
@@ -424,8 +427,8 @@
             <div class="header">
                 {{-- <img src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" class="w-5 h-5" alt=""> --}}
                 <h1 class="title">{{ $site['yayasanProfile']->nama_yayasan }}</h1>
-                <p class="subtitle">
-                    <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
+                <p class="subtitle" style="font-size: 12px; color: var(--success-color); font-weight: 600">
+                    <i class="fas fa-check-circle"></i>
                     Transaksi Berhasil
                 </p>
             </div>
@@ -433,7 +436,7 @@
             <!-- Content -->
             <div class="content">
                 <!-- Transaction Info -->
-                <div class="section">
+                <div class="section" style="margin-bottom: 1rem;">
                     <div class="info-row">
                         <span class="label">Tanggal</span>
                         <span class="value" id="createdAt" data-utc="{{ $donasi->DonasiDana->created_at }}">
@@ -457,6 +460,7 @@
                     </div>
                 </div>
 
+                <div class="separator"></div>
                 <!-- Payment Details -->
                 <div class="section">
                     <div class="info-row">
@@ -472,10 +476,10 @@
                         <span class="value success">Rp {{ $donasi->DonasiDana->admin_fee }}</span>
                     </div>
                 </div>
-
+                <div class="separator"></div>
                 <!-- Status -->
-                <div class="section">
-                    <div class="info-row">
+                <div class="section" style="margin-bottom: 2rem;">
+                    <div class="info-row" style="display: flex; align-items: center;">
                         <span class="label">Status</span>
                         <span class="status-badge">
                             <i class="fas fa-check"></i>
@@ -491,14 +495,13 @@
 
                 <!-- Total -->
                 <div class="total-section">
-                    <div class="total-row">
+                    <div class="total-row" style="display: flex; align-items: center;">
                         <span class="total-label">Total Donasi</span>
                         <span class="total-amount">
                             Rp
                             {{ number_format($donasi->DonasiDana->nominal + $donasi->DonasiDana->admin_fee, 0, ',', '.') }}
                         </span>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -510,16 +513,10 @@
                 Cetak Struk
             </button>
 
-            <div class="button-row">
-                <button class="btn btn-success" id="saveButton">
-                    <i class="fas fa-download"></i>
-                    Simpan
-                </button>
-                <button class="btn btn-secondary" id="backButton">
-                    <i class="fas fa-arrow-left"></i>
-                    Kembali
-                </button>
-            </div>
+            <button class="btn btn-secondary" id="backButton">
+                <i class="fas fa-arrow-left"></i>
+                Kembali
+            </button>
         </div>
 
         <!-- Footer Info -->
@@ -530,18 +527,6 @@
     </div>
 
     <script>
-        // Button interactions
-        document.getElementById('saveButton').addEventListener('click', function() {
-            const originalContent = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-check"></i> Tersimpan';
-            this.style.background = 'linear-gradient(135deg, #059669, #047857)';
-
-            setTimeout(() => {
-                this.innerHTML = originalContent;
-                this.style.background = 'linear-gradient(135deg, var(--success-color), #059669)';
-            }, 2000);
-        });
-
         document.getElementById('backButton').addEventListener('click', function() {
             window.history.back();
         });
