@@ -223,7 +223,7 @@ Route::middleware(['auth', 'auth.role:admin'])->prefix('admin')->group(function 
         Route::post('/', [PublikasiController::class, 'store'])->name('publikasi.store');
 
         Route::get('/edit/{id}', [PublikasiController::class, 'showFormEdit'])->name('publikasi.formEdit');
-        Route::put('/{id{', [PublikasiController::class, 'update'])->name('publikasi.update');
+        Route::put('/{id}', [PublikasiController::class, 'update'])->name('publikasi.update');
 
         Route::delete('/destroy/{id}', [PublikasiController::class, 'destroy'])->name('publikasi.delete');
     });
