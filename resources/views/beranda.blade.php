@@ -124,21 +124,6 @@
         </div>
         {{-- galleri end --}}
 
-        {{-- lembaga --}}
-        @if (!empty($site['lembaga']) && count($site['lembaga']) > 0)
-            <div class="px-4 sm:px-6 lg:px-12 py-16">
-                <div class="max-w-7xl mx-auto">
-                    <h1 class="text-center pb-5 text-4xl font-semibold text-gray-900">
-                        LEMBAGA TERKAIT
-                    </h1>
-                    <div class="mx-auto mt-10 logo-container">
-                        <div class="logo-track" id="logoTrack">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endif
-
         <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
             <div class="max-w-7xl mx-auto">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -268,6 +253,23 @@
                 </div>
             </div>
         </section>
+
+        {{-- lembaga --}}
+        @if (!empty($site['lembaga']) && count($site['lembaga']) > 0)
+            <div class="px-4 sm:px-6 lg:px-12 py-16">
+                <div class="max-w-7xl mx-auto">
+                    <h1 class="text-center pb-5 text-4xl font-semibold text-gray-900">
+                        LEMBAGA TERKAIT
+                    </h1>
+                    <div class="mx-auto mt-10 logo-container">
+                        <div class="logo-track" id="logoTrack">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+
     </main>
 @endsection
 

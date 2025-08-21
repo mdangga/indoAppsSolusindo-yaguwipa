@@ -22,25 +22,44 @@
     .dropdown-arrow.rotated {
         transform: rotate(180deg);
     }
+
+    /* Custom scrollbar styles */
+    .custom-scroll::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .custom-scroll::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+    }
+
+    .custom-scroll::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
+    }
+
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
 </style>
+
 <aside id="logo-sidebar"
-    class="fixed top-0 left-0 z-50 w-64 h-screen transition-transform -translate-x-full bg-[#343a40] border-r border-[#4d565f] sm:translate-x-0"
+    class="fixed top-0 left-0 z-50 w-64 h-screen transition-transform -translate-x-full bg-[#343a40] border-r border-[#4d565f] sm:translate-x-0 flex flex-col"
     aria-label="Sidebar">
 
-    <!-- Logo Section -->
-    <div class="flex items-center px-3 py-3 border-b border-white/15 lg:px-5 lg:pl-3">
+    <!-- Logo Section (Fixed) -->
+    <div class="flex items-center px-3 py-3 border-b border-white/15 lg:px-5 lg:pl-3 flex-shrink-0">
         <a href="{{ route('admin.profiles') }}" class="flex items-center">
             <img src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" class="h-8 me-3" alt="Logo Yayasan" />
-            <span class="hidden sm:inline self-center text-sm font-semibold  text-gray-200 max-w-[150px]"
+            <span class="hidden sm:inline self-center text-sm font-semibold text-gray-200 max-w-[150px]"
                 title="{{ $site['yayasanProfile']->nama_yayasan }}">
                 {{ $site['yayasanProfile']->nama_yayasan }}
             </span>
         </a>
     </div>
 
-
-    <!-- Sidebar Content -->
-    <div class="h-full px-3 pb-4 overflow-y-auto">
+    <!-- Sidebar Content (Scrollable) -->
+    <div class="flex-1 overflow-y-auto custom-scroll px-3 pb-4">
         <ul class="space-y-2 font-medium pt-4">
             <!-- Generals Dropdown -->
             <li>
@@ -75,6 +94,7 @@
                     </li>
                 </ul>
             </li>
+
             <!-- User -->
             <li>
                 <a type="button" href="{{ route('admin.user') }}"
@@ -91,6 +111,7 @@
                     <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap font-normal">Users</span>
                 </a>
             </li>
+
             <!-- Institusi -->
             <li>
                 <a type="button" href="{{ route('admin.institusi') }}"
@@ -107,7 +128,8 @@
                     <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap font-normal">Institusi</span>
                 </a>
             </li>
-            {{-- kerja-sama --}}
+
+            <!-- Kerja Sama -->
             <li>
                 <a type="button" href="{{ route('admin.kerjaSama') }}"
                     class="flex items-center w-full p-2 text-base text-gray-200 transition duration-75 rounded-lg group hover:bg-[#535c66]">
@@ -119,6 +141,7 @@
                     <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap font-normal">Kerja Sama</span>
                 </a>
             </li>
+
             <!-- News and Event Dropdown -->
             <li>
                 <button type="button"
@@ -167,7 +190,7 @@
                             d="m1 1 4 4 4-4" />
                     </svg>
                 </button>
-                <ul id="gallery-content" class="dropdown-content ">
+                <ul id="gallery-content" class="dropdown-content">
                     <li class="py-1">
                         <a href="{{ route('admin.galleryPhoto') }}"
                             class="flex items-center w-full p-2 text-gray-200 transition duration-75 rounded-lg pl-11 group hover:bg-[#535c66] font-normal">Photo</a>
@@ -178,6 +201,7 @@
                     </li>
                 </ul>
             </li>
+
             <!-- Programs Dropdown -->
             <li>
                 <button type="button"
@@ -208,7 +232,7 @@
                 </ul>
             </li>
 
-            {{-- campaign --}}
+            <!-- Campaign -->
             <li>
                 <a type="button" href="{{ route('admin.campaigns') }}"
                     class="flex items-center w-full p-2 text-base text-gray-200 transition duration-75 rounded-lg group hover:bg-[#535c66]">
@@ -221,11 +245,10 @@
                 </a>
             </li>
 
-            {{-- donasi --}}
+            <!-- Donasi -->
             <li>
                 <a type="button" href="{{ route('admin.donasi') }}"
                     class="flex items-center w-full p-2 text-base text-gray-200 transition duration-75 rounded-lg group hover:bg-[#535c66]">
-
                     <svg class="shrink-0 w-5 h-5 text-gray-200 transition duration-75 group-hover:text-gray-200"
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path fill="currentColor"
@@ -265,16 +288,15 @@
                 </ul>
             </li>
 
-            {{-- Review --}}
+            <!-- Review -->
             <li>
                 <button type="button"
                     class="flex items-center w-full p-2 text-base text-gray-200 transition duration-75 rounded-lg group hover:bg-[#535c66]"
                     onclick="toggleDropdown('Review')">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 w-5 h-5 text-gray-200 transition duration-75 group-hover:text-gray-200" viewBox="0 0 32 32">
+                    <svg class="shrink-0 w-5 h-5 text-gray-200 transition duration-75 group-hover:text-gray-200"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path fill="currentColor"
-                            d="m16 8l1.912 3.703l4.088.594L19 15l1 4l-4-2.25L12 19l1-4l-3-2.703l4.2-.594z" />
-                        <path fill="currentColor"
-                            d="M17.736 30L16 29l4-7h6a1.997 1.997 0 0 0 2-2V8a1.997 1.997 0 0 0-2-2H6a1.997 1.997 0 0 0-2 2v12a1.997 1.997 0 0 0 2 2h9v2H6a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4h20a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4h-4.835Z" />
+                            d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2m-6.43 9.57L12 15l-1.57-3.43L7 10l3.43-1.57L12 5l1.57 3.43L17 10z" />
                     </svg>
                     <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap font-normal">Review</span>
                     <svg class="w-3 h-3 dropdown-arrow" id="Review-arrow" xmlns="http://www.w3.org/2000/svg"

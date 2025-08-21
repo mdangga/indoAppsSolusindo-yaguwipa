@@ -155,7 +155,13 @@
             <tr>
                 <td>Lampiran</td>
                 <td>:</td>
-                <td>-</td>
+                <td>
+                    @if (strtolower($donasi->JenisDonasi->nama ?? '') === 'barang' && !empty($donasi->DonasiBarang))
+                        1 (satu)
+                    @else
+                        -
+                    @endif
+                </td>
                 <td></td>
             </tr>
         </table>
@@ -241,6 +247,33 @@
                 </td>
             </tr>
         </table>
+
+        {{-- Lampiran Barang --}}
+        @if (strtolower($donasi->JenisDonasi->nama ?? '') === 'barang' && !empty($donasi->DonasiBarang))
+            <br><br>
+            <p><strong>Lampiran:</strong></p>
+            <table border="1" cellspacing="0" cellpadding="5"
+                style="width: 100%; border-collapse: collapse; font-size: 11pt; text-align: center;">
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">No</th>
+                        <th style="width: 40%;">Nama Barang</th>
+                        <th style="width: 20%;">Jumlah</th>
+                        <th style="width: 30%;">Kondisi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($donasi->DonasiBarang as $index => $barang)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td class="capitalized">{{ $barang->nama_barang ?? '-' }}</td>
+                            <td>{{ $barang->jumlah_barang ?? '-' }}</td>
+                            <td class="capitalized">{{ $barang->kondisi ?? '-' }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
     </div>
 </body>
 
