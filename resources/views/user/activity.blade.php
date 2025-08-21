@@ -145,8 +145,7 @@
                                         </div>
                                     </div>
                                     <div class="flex flex-col items-end">
-                                        <span class="text-xs text-gray-500 mb-2">
-                                            {{ $activity->updated_at->format('d M Y H:i') }}
+                                        <span class="text-xs text-gray-500 mb-2" id="updateAt" data-utc="{{ $activity->updated_at }}">
                                         </span>
                                         <span
                                             class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
@@ -255,6 +254,35 @@
     </div>
 
     <script>
+        function convertUTCToLocal(utcTimeString) {
+            const utcDate = new Date(utcTimeString + (utcTimeString.includes('UTC') ? '' : ' UTC'));
+            const options = {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            };
+
+            const formatter = new Intl.DateTimeFormat('us-US', options);
+            const formattedDate = formatter.format(utcDate);
+            const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+            // tambahkan ini  (${timezoneName}) jika ingin menambahkan timezone
+            return `${formattedDate}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const updateAtElements = document.querySelectorAll('#updateAt');
+            updateAtElements.forEach(function(element) {
+                const updateAtUTC = element.getAttribute('data-utc');
+                if (updateAtUTC) {
+                    element.textContent = convertUTCToLocal(updateAtUTC);
+                }
+            });
+        });
+
         document.getElementById('filter-status').addEventListener('change', function() {
             const status = this.value;
             window.location.href = "{{ route('user.activity') }}" + (status ? `?status=${status}` : '');

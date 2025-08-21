@@ -57,11 +57,12 @@ return new class extends Migration
         Schema::create('donasi_dana', function (Blueprint $table) {
             $table->id('id_donasi_dana');
             $table->decimal('nominal', 15, 2);
+            $table->decimal('admin_fee', 10, 2);
             $table->string('payment_id')->nullable();
             $table->string('payment_method')->nullable();
-            $table->string('payment_token')->nullable();
             $table->string('payment_url')->nullable();
-            $table->enum('status_verifikasi', ['approved', 'pending', 'rejected'])->default('pending');
+            $table->enum('status_verifikasi', ['PAID', 'PENDING', 'VOIDED'])->default('PENDING');
+            $table->datetime('paid_at')->nullable();
             $table->datetime('expired_at')->nullable();
             $table->unsignedBigInteger('id_donasi');
             $table->timestamps();

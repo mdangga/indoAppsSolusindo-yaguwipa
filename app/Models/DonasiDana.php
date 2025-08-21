@@ -13,11 +13,12 @@ class DonasiDana extends Model
         'nominal',
         'payment_id',
         'payment_method',
-        'payment_token',
         'payment_url',
         'status_verifikasi',
         'expired_at',
-        'id_donasi'
+        'paid_at',
+        'id_donasi',
+        'admin_fee'
     ];
 
     public function Donasi() {

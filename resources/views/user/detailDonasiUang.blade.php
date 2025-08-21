@@ -8,121 +8,409 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net" />
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=inter:300,400,500,600&family=space-grotesk:300,400,500,600"
+        rel="stylesheet" />
     <style>
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #4a4a4a;
+            --accent-color: #6366f1;
+            --success-color: #10b981;
+            --border-light: #e5e7eb;
+            --bg-subtle: #f8fafc;
+            --text-muted: #64748b;
+            --shadow-elegant: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 20px 25px -5px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Instrument Sans', system-ui, sans-serif;
-            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            font-family: 'Inter', system-ui, sans-serif;
+            background: linear-gradient(135deg, #fafafa 0%, #f4f4f5 100%);
             min-height: 100vh;
-            padding: 1rem 0;
+            padding: 2rem 0;
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
+            color: var(--primary-color);
         }
 
         .container {
-            max-width: 384px;
+            max-width: 420px;
             width: 100%;
-            padding: 0 16px;
+            padding: 0 24px;
         }
 
-        /* Efek gerigi yang lebih halus menggunakan clip-path dengan kurva smooth */
         .receipt-paper {
             position: relative;
             background: white;
-            overflow: visible;
-            clip-path: 
-                polygon(
-                    0% 1.5%, 2% 0%, 4% 1%, 6% 0%, 8% 1%, 10% 0%, 12% 1%, 14% 0%, 16% 1%, 18% 0%, 20% 1%, 22% 0%, 24% 1%, 26% 0%, 28% 1%, 30% 0%, 32% 1%, 34% 0%, 36% 1%, 38% 0%, 40% 1%, 42% 0%, 44% 1%, 46% 0%, 48% 1%, 50% 0%, 52% 1%, 54% 0%, 56% 1%, 58% 0%, 60% 1%, 62% 0%, 64% 1%, 66% 0%, 68% 1%, 70% 0%, 72% 1%, 74% 0%, 76% 1%, 78% 0%, 80% 1%, 82% 0%, 84% 1%, 86% 0%, 88% 1%, 90% 0%, 92% 1%, 94% 0%, 96% 1%, 98% 0%, 100% 1.5%,
-                    100% 98.5%, 98% 100%, 96% 99%, 94% 100%, 92% 99%, 90% 100%, 88% 99%, 86% 100%, 84% 99%, 82% 100%, 80% 99%, 78% 100%, 76% 99%, 74% 100%, 72% 99%, 70% 100%, 68% 99%, 66% 100%, 64% 99%, 62% 100%, 60% 99%, 58% 100%, 56% 99%, 54% 100%, 52% 99%, 50% 100%, 48% 99%, 46% 100%, 44% 99%, 42% 100%, 40% 99%, 38% 100%, 36% 99%, 34% 100%, 32% 99%, 30% 100%, 28% 99%, 26% 100%, 24% 99%, 22% 100%, 20% 99%, 18% 100%, 16% 99%, 14% 100%, 12% 99%, 10% 100%, 8% 99%, 6% 100%, 4% 99%, 2% 100%, 0% 98.5%
-                );
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-elegant);
+            border: 1px solid var(--border-light);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Watermark */
-        .watermark {
+        .receipt-paper::before {
+            content: '';
             position: absolute;
-            top: 50%;
+            top: 0;
             left: 50%;
-            transform: translate(-50%, -50%) rotate(-15deg);
-            opacity: 0.04;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--border-light);
+            border-radius: 0 0 8px 8px;
+            z-index: 3;
+        }
+
+        .receipt-paper::after {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23e5e7eb" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>') no-repeat center;
+            background-size: contain;
+            opacity: 0.08;
             z-index: 1;
             pointer-events: none;
-            font-size: 48px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ffffff 0%, var(--bg-subtle) 100%);
+            padding: 2rem 2rem 1.5rem;
             text-align: center;
+            position: relative;
+            z-index: 2;
+            border-bottom: 1px solid var(--border-light);
         }
 
-        .gradient-header {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #0ea5e9 100%);
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 1px;
+            background: var(--accent-color);
         }
 
-        .gradient-text {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
         }
 
-        /* Efek bayangan yang lebih halus */
-        .soft-shadow {
-            box-shadow: 
-                0 4px 6px -1px rgba(0, 0, 0, 0.05),
-                0 10px 15px -3px rgba(0, 0, 0, 0.08),
-                0 20px 25px -5px rgba(0, 0, 0, 0.06);
+        .logo-icon {
+            color: var(--accent-color);
+            font-size: 24px;
+            z-index: 1;
         }
 
-        /* Hover effects */
-        button:hover {
-            transform: translateY(-2px) !important;
-            box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.2) !important;
+        .title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0 0 8px;
+            color: var(--primary-color);
+            letter-spacing: -0.025em;
         }
 
-        button {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 400;
+            margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
         }
 
+        .content {
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px dashed var(--border-light);
+            position: relative;
+        }
+
+        .section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            gap: 16px;
+        }
+
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            font-weight: 400;
+            flex-shrink: 0;
+        }
+
+        .value {
+            font-weight: 500;
+            color: var(--primary-color);
+            font-size: 0.875rem;
+            text-align: right;
+            word-break: break-word;
+        }
+
+        .value.highlight {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .value.success {
+            color: var(--success-color);
+        }
+
+        .status-badge {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            color: #166534;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid #bbf7d0;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .total-section {
+            background: linear-gradient(135deg, #fafafa, #f4f4f5);
+            margin: 0 -2rem -2rem;
+            padding: 2rem;
+            border-top: 2px solid var(--border-light);
+            position: relative;
+        }
+
+        .total-section::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: var(--accent-color);
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .total-label {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 1.125rem;
+        }
+
+        .total-amount {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .actions {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 14px 20px;
+            border: none;
+            border-radius: 16px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--secondary-color);
+            border: 2px solid var(--border-light);
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-subtle);
+            border-color: var(--text-muted);
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-1px);
+        }
+
+        .button-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .footer-info {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .footer-info p {
+            margin: 0 0 6px;
+        }
+
+        /* Animations */
+        .receipt-paper {
+            opacity: 0;
+            transform: translateY(20px) scale(0.98);
+            animation: slideInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .content>* {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .content>*:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .content>*:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+
+        .content>*:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .content>*:nth-child(4) {
+            animation-delay: 0.25s;
+        }
+
+        .content>*:nth-child(5) {
+            animation-delay: 0.3s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Print Styles */
         @media print {
             body {
-                font-size: 12px;
                 background: white !important;
-                display: block;
                 padding: 0;
             }
-            
+
             .container {
                 max-width: 100%;
                 padding: 0;
             }
 
-            .print\:hidden {
+            .receipt-paper {
+                box-shadow: none !important;
+                border: 1px solid #ddd;
+                border-radius: 0;
+            }
+
+            .print\\:hidden {
                 display: none !important;
             }
-
-            .soft-shadow {
-                box-shadow: none !important;
-            }
-
-            .watermark {
-                opacity: 0.08 !important;
-            }
-            
-            .receipt-paper {
-                clip-path: none;
-                border: 1px solid #ddd !important;
-            }
         }
-        
-        @media (max-width: 420px) {
+
+        @media (max-width: 480px) {
             body {
-                padding: 8px 0;
+                padding: 1rem 0;
             }
-            
+
             .container {
-                padding: 0 12px;
+                padding: 0 16px;
+            }
+
+            .content {
+                padding: 1.5rem;
+            }
+
+            .header {
+                padding: 1.5rem 1.5rem 1rem;
+            }
+
+            .total-section {
+                margin: 0 -1.5rem -1.5rem;
+                padding: 1.5rem;
             }
         }
     </style>
@@ -130,232 +418,165 @@
 
 <body>
     <div class="container">
-        <!-- Receipt Card dengan Efek Gerigi Halus -->
-        <div class="receipt-paper soft-shadow"
-            style="border: 1px solid #e5e7eb; border-radius: 0; position: relative; margin: 20px 0; padding: 15px 0; overflow: visible; background: white;">
-
-            <!-- Watermark -->
-            <div class="watermark">
-                <i class="fas fa-heart" style="color: #e5e7eb;"></i>
-                <div
-                    style="font-size: 24px; font-weight: bold; color: #e5e7eb; margin-top: 8px; font-family: 'Instrument Sans', sans-serif;">
-                    YAYASAN
-                </div>
-                <div
-                    style="font-size: 18px; font-weight: 500; color: #e5e7eb; margin-top: 4px; font-family: 'Instrument Sans', sans-serif;">
-                    BERBAGI KASIH
-                </div>
-            </div>
-
+        <!-- Receipt Card -->
+        <div class="receipt-paper">
             <!-- Header -->
-            <div class="gradient-header"
-                style="padding: 1.5rem; text-align: center; color: white; position: relative; z-index: 2;">
-                <div
-                    style="width: 48px; height: 48px; margin: 0 auto 12px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-                    <i class="fas fa-heart" style="color: #ef4444; font-size: 20px;"></i>
-                </div>
-                <h1 style="font-size: 1.125rem; font-weight: 600; margin: 0 0 4px;">Yayasan Berbagi Kasih</h1>
-                <p style="color: #e0e7ff; font-size: 0.875rem; margin: 0;">Transaksi Berhasil</p>
+            <div class="header">
+                {{-- <img src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" class="w-5 h-5" alt=""> --}}
+                <h1 class="title">{{ $site['yayasanProfile']->nama_yayasan }}</h1>
+                <p class="subtitle">
+                    <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
+                    Transaksi Berhasil
+                </p>
             </div>
 
             <!-- Content -->
-            <div style="padding: 1.5rem; font-size: 0.875rem; position: relative; z-index: 2;">
-
+            <div class="content">
                 <!-- Transaction Info -->
-                <div style="border-bottom: 1px dashed #d1d5db; padding-bottom: 1rem; margin-bottom: 1rem;">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                        <span style="color: #6b7280;">Tanggal</span>
-                        <span style="font-weight: 500; color: #374151;">{{ $transaction_date ?? '2024-01-15 14:30:25 WIB' }}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span style="color: #6b7280;">Nomor Referensi</span>
-                        <span style="font-weight: 600; color: #7c3aed;">#{{ $reference_number ?? 'DON2024-001234' }}</span>
+                <div class="section">
+                    <div class="info-row">
+                        <span class="label">Tanggal</span>
+                        <span class="value" id="createdAt" data-utc="{{ $donasi->DonasiDana->created_at }}">
+                        </span>
                     </div>
                 </div>
 
-                <!-- Transaction Details -->
-                <div style="margin-bottom: 1rem; border-bottom: 1px dashed #d1d5db; padding-bottom: 1rem;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: #6b7280;">Nama Donatur</span>
-                        <span style="font-weight: 500; color: #374151;">{{ $donor_name ?? 'Ahmad Hidayat' }}</span>
+                <!-- Donor Details -->
+                <div class="section">
+                    <div class="info-row">
+                        <span class="label">Nama Donatur</span>
+                        <span class="value">{{ $donasi->nama }}</span>
                     </div>
-
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: #6b7280;">Jenis Transaksi</span>
-                        <span style="font-weight: 500; color: #374151;">{{ $transaction_type ?? 'Donasi Online' }}</span>
+                    <div class="info-row">
+                        <span class="label">Email</span>
+                        <span class="value">{{ $donasi->email }}</span>
                     </div>
-
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: #6b7280;">Metode Bayar</span>
-                        <span style="font-weight: 500; color: #374151;">{{ $payment_method ?? 'TRANSFER BANK' }}</span>
-                    </div>
-
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: #6b7280;">Email</span>
-                        <span style="font-weight: 500; color: #374151;">{{ $email ?? 'ahmad@email.com' }}</span>
-                    </div>
-
-                    <div style="display: flex; justify-content: space-between;">
-                        <span style="color: #6b7280;">Program</span>
-                        <span style="font-weight: 500; color: #374151;">{{ $program ?? 'Pendidikan Anak' }}</span>
+                    <div class="info-row">
+                        <span class="label">Campaign</span>
+                        <span class="value">{{ $donasi->Campaign->nama }}</span>
                     </div>
                 </div>
 
-                <!-- Amount Details -->
-                <div style="margin-bottom: 1rem; border-bottom: 1px dashed #d1d5db; padding-bottom: 1rem;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="color: #6b7280;">Nominal Donasi</span>
-                        <span style="font-weight: 500; color: #374151;">Rp {{ number_format($donation_amount ?? 500000, 0, ',', '.') }}</span>
+                <!-- Payment Details -->
+                <div class="section">
+                    <div class="info-row">
+                        <span class="label">Metode Bayar</span>
+                        <span class="value">{{ $donasi->DonasiDana->payment_method }}</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span style="color: #6b7280;">Biaya Admin</span>
-                        <span style="font-weight: 500; color: #10b981;">Rp {{ number_format($admin_fee ?? 0, 0, ',', '.') }} (Gratis)</span>
+                    <div class="info-row">
+                        <span class="label">Nominal Donasi</span>
+                        <span class="value">Rp. {{ $donasi->DonasiDana->nominal }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Biaya Admin</span>
+                        <span class="value success">Rp {{ $donasi->DonasiDana->admin_fee }}</span>
                     </div>
                 </div>
 
                 <!-- Status -->
-                <div
-                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px dashed #d1d5db; padding-bottom: 1rem;">
-                    <span style="color: #6b7280;">Status</span>
-                    <span
-                        style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #065f46; padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; border: 1px solid #10b981;">
-                        ✓ {{ $status ?? 'BERHASIL' }}
-                    </span>
-                </div>
-
-                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
-                    <span style="color: #6b7280;">Tanggal Dibayar</span>
-                    <span style="font-weight: 500; color: #10b981;">{{ $payment_date ?? '2024-01-15 14:31:10 WIB' }}</span>
+                <div class="section">
+                    <div class="info-row">
+                        <span class="label">Status</span>
+                        <span class="status-badge">
+                            <i class="fas fa-check"></i>
+                            BERHASIL
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Tanggal Dibayar</span>
+                        <span class="value success" id="paidAt" data-utc="{{ $donasi->DonasiDana->paid_at }}">
+                        </span>
+                    </div>
                 </div>
 
                 <!-- Total -->
-                <div
-                    style="background: linear-gradient(135deg, #f8fafc, #f1f5f9); margin: 0 -1.5rem; padding: 1rem 1.5rem; border-top: 2px solid #e5e7eb;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-weight: 600; color: #374151; font-size: 1rem;">Total Donasi</span>
-                        <span class="gradient-text" style="font-weight: 700; font-size: 1.25rem;">Rp {{ number_format($total_amount ?? 500000, 0, ',', '.') }}</span>
+                <div class="total-section">
+                    <div class="total-row">
+                        <span class="total-label">Total Donasi</span>
+                        <span class="total-amount">
+                            Rp
+                            {{ number_format($donasi->DonasiDana->nominal + $donasi->DonasiDana->admin_fee, 0, ',', '.') }}
+                        </span>
                     </div>
+
                 </div>
             </div>
         </div>
 
         <!-- Action Buttons -->
-        <div style="margin-top: 1rem;" class="print:hidden">
-            <button onclick="window.print()"
-                style="width: 100%; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white; padding: 12px; border: none; border-radius: 12px; font-weight: 500; font-size: 0.95rem; cursor: pointer; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); margin-bottom: 8px;">
-                <i class="fas fa-print"></i> Cetak Struk
+        <div class="actions print:hidden">
+            <button class="btn btn-primary" onclick="window.print()">
+                <i class="fas fa-print"></i>
+                Cetak Struk
             </button>
 
-            <div style="display: flex; gap: 8px;">
-                <button id="saveButton"
-                    style="flex: 1; background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 10px; border: none; border-radius: 8px; font-weight: 500; font-size: 0.875rem; cursor: pointer;">
-                    <i class="fas fa-save"></i> Simpan
+            <div class="button-row">
+                <button class="btn btn-success" id="saveButton">
+                    <i class="fas fa-download"></i>
+                    Simpan
                 </button>
-                <button id="backButton"
-                    style="flex: 1; background: #f8fafc; color: #475569; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; font-size: 0.875rem; cursor: pointer;">
-                    <i class="fas fa-arrow-left"></i> Kembali
+                <button class="btn btn-secondary" id="backButton">
+                    <i class="fas fa-arrow-left"></i>
+                    Kembali
                 </button>
             </div>
         </div>
 
         <!-- Footer Info -->
-        <div style="text-align: center; margin-top: 1rem; font-size: 0.75rem; color: #94a3b8;" class="print:hidden">
-            <p style="margin: 0 0 4px;">Struk ini digenerate otomatis oleh sistem</p>
-            <p style="margin: 0;">Simpan struk ini sebagai bukti donasi yang sah</p>
+        <div class="footer-info print:hidden">
+            <p>Struk ini digenerate otomatis oleh sistem</p>
+            <p>Simpan struk ini sebagai bukti donasi yang sah</p>
         </div>
     </div>
 
     <script>
-        // Fungsi untuk mengatur animasi masuk
-        function setupEntranceAnimation() {
-            const receiptCard = document.querySelector('.receipt-paper');
-            receiptCard.style.opacity = '0';
-            receiptCard.style.transform = 'translateY(30px) scale(0.95)';
-            
+        // Button interactions
+        document.getElementById('saveButton').addEventListener('click', function() {
+            const originalContent = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-check"></i> Tersimpan';
+            this.style.background = 'linear-gradient(135deg, #059669, #047857)';
+
             setTimeout(() => {
-                receiptCard.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-                receiptCard.style.opacity = '1';
-                receiptCard.style.transform = 'translateY(0) scale(1)';
-            }, 150);
-        }
-
-        // Fungsi untuk mengatur efek hover pada tombol
-        function setupButtonHoverEffects() {
-            document.querySelectorAll('button').forEach(button => {
-                button.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-2px) scale(1.02)';
-                    this.style.boxShadow = '0 8px 15px -3px rgba(0, 0, 0, 0.2)';
-                });
-
-                button.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0) scale(1)';
-                    this.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
-                });
-            });
-        }
-
-        // Fungsi untuk mengatur efek ripple pada tombol
-        function setupRippleEffects() {
-            document.querySelectorAll('button').forEach(button => {
-                button.addEventListener('click', function(e) {
-                    const ripple = document.createElement('span');
-                    const rect = this.getBoundingClientRect();
-                    const size = Math.max(rect.width, rect.height);
-                    const x = e.clientX - rect.left - size / 2;
-                    const y = e.clientY - rect.top - size / 2;
-                    
-                    ripple.style.width = ripple.style.height = size + 'px';
-                    ripple.style.left = x + 'px';
-                    ripple.style.top = y + 'px';
-                    ripple.style.position = 'absolute';
-                    ripple.style.borderRadius = '50%';
-                    ripple.style.background = 'rgba(255, 255, 255, 0.6)';
-                    ripple.style.transform = 'scale(0)';
-                    ripple.style.animation = 'ripple 0.6s linear';
-                    ripple.style.pointerEvents = 'none';
-                    
-                    this.style.position = 'relative';
-                    this.style.overflow = 'hidden';
-                    this.appendChild(ripple);
-                    
-                    setTimeout(() => {
-                        ripple.remove();
-                    }, 600);
-                });
-            });
-        }
-
-        // Fungsi untuk mengatur tombol kembali
-        function setupBackButton() {
-            document.getElementById('backButton').addEventListener('click', function() {
-                window.history.back();
-            });
-        }
-
-        // Fungsi untuk mengatur tombol simpan
-        function setupSaveButton() {
-            document.getElementById('saveButton').addEventListener('click', function() {
-                this.innerHTML = '<i class="fas fa-check"></i> Tersimpan';
-                this.style.background = 'linear-gradient(135deg, #059669, #047857)';
-                
-                setTimeout(() => {
-                    this.innerHTML = '<i class="fas fa-save"></i> Simpan';
-                    this.style.background = 'linear-gradient(135deg, #10b981, #059669)';
-                }, 2000);
-            });
-        }
-
-        // Inisialisasi ketika halaman dimuat
-        document.addEventListener('DOMContentLoaded', function() {
-            setupEntranceAnimation();
-            setupButtonHoverEffects();
-            setupRippleEffects();
-            setupBackButton();
-            setupSaveButton();
+                this.innerHTML = originalContent;
+                this.style.background = 'linear-gradient(135deg, var(--success-color), #059669)';
+            }, 2000);
         });
 
-        // CSS untuk animasi ripple
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.history.back();
+        });
+
+        // Enhanced button hover effects
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                // Ripple effect
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.4);
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${x}px;
+                    top: ${y}px;
+                    animation: ripple 0.6s linear;
+                    pointer-events: none;
+                `;
+
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // CSS animation for ripple
         const style = document.createElement('style');
         style.textContent = `
             @keyframes ripple {
@@ -366,6 +587,42 @@
             }
         `;
         document.head.appendChild(style);
+
+        // convert Time
+        function convertUTCToLocal(utcTimeString) {
+            const utcDate = new Date(utcTimeString + (utcTimeString.includes('UTC') ? '' : ' UTC'));
+            const options = {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            };
+
+            const formatter = new Intl.DateTimeFormat('us-US', options);
+            const formattedDate = formatter.format(utcDate);
+            const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+            return `${formattedDate} (${timezoneName})`;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Konversi created_at
+            const createdAtElement = document.getElementById('createdAt');
+            const createdAtUTC = createdAtElement.getAttribute('data-utc');
+            if (createdAtUTC) {
+                createdAtElement.textContent = convertUTCToLocal(createdAtUTC);
+            }
+
+            // Konversi paid_at
+            const paidAtElement = document.getElementById('paidAt');
+            const paidAtUTC = paidAtElement.getAttribute('data-utc');
+            if (paidAtUTC) {
+                paidAtElement.textContent = convertUTCToLocal(paidAtUTC);
+            }
+        });
     </script>
 </body>
 
