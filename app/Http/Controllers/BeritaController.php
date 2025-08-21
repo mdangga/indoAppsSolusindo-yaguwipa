@@ -51,7 +51,7 @@ class BeritaController extends Controller
             // Kalau jumlahnya kurang dari 6, isi sisanya dari berita populer semua waktu
             if ($mingguan->count() < 6) {
                 $tambahan = Berita::where('status', 'show')
-                    ->whereNotIn('id', $mingguan->pluck('id')) // supaya tidak duplikat
+                    ->whereNotIn('id_berita', $mingguan->pluck('id_berita'))
                     ->orderBy('hit', 'desc')
                     ->take(6 - $mingguan->count())
                     ->get();

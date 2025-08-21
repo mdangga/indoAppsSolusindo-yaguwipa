@@ -41,7 +41,11 @@ class DonasiController extends Controller
             ->findOrFail($id);
 
         if ($donasi->JenisDonasi->nama === 'Dana') {
-            return view('user.detailDonasiUang', compact('donasi'));
+            if($donasi->DonasiDana->status_verifikasi === 'PAID'){
+                return view('user.detailDonasiUang', compact('donasi'));
+            }else{
+                return redirect()->away($donasi->DonasiDana->payment_url);
+            }
         } else {
             return view('user.detailDonasi', compact('donasi'));
         }
@@ -51,7 +55,6 @@ class DonasiController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $request->validate([
             'nama' => 'required|string|max:255',
             'email_tlp' => 'required|email',
@@ -60,24 +63,24 @@ class DonasiController extends Controller
             'jenis_donasi' => 'required|string|in:dana,barang,jasa',
             'pesan' => 'nullable|string',
             'nominal' => 'required_if:jenis_donasi,dana|nullable|numeric|min:' . config('xendit.invoice.amount_limits.min') . '|max:' . config('xendit.invoice.amount_limits.max'),
-
+            
             // Barang (multiple)
             'DonasiBarang' => 'required_if:jenis_donasi,barang|nullable|array|min:1',
             'DonasiBarang.*.nama_barang' => 'required_if:jenis_donasi,barang|nullable|string|max:255',
             'DonasiBarang.*.jumlah_barang' => 'required_if:jenis_donasi,barang|nullable|integer|min:1',
             'DonasiBarang.*.kondisi' => 'required_if:jenis_donasi,barang|nullable|in:baru,bekas',
             'DonasiBarang.*.deskripsi' => 'nullable|string',
-
+            
             // Jasa
             'jenis_jasa' => 'required_if:jenis_donasi,jasa|nullable|string|max:255',
             'durasi_jasa' => 'required_if:jenis_donasi,jasa|nullable|string|max:255',
         ]);
-
-
+        
+        
         DB::beginTransaction();
         try {
             $jenis_donasi = JenisDonasi::where('nama', $request->jenis_donasi)->first();
-
+            
             $donasi = Donasi::create([
                 'nama' => $request->anonim ? 'Anonymous' : $request->nama,
                 'email' => $request->email_tlp,
@@ -88,7 +91,7 @@ class DonasiController extends Controller
                 'id_jenis_donasi' => $jenis_donasi->id_jenis_donasi,
                 'status' => 'pending'
             ]);
-
+            
             if ($request->jenis_donasi == 'dana') {
                 try {
                     // dd($donasi->Campaign->slug);
@@ -103,7 +106,8 @@ class DonasiController extends Controller
                         invoiceDuration: config('xendit.invoice.expiry_duration', 86400),
                         paymentMethods: config('xendit.payment-method'),
                     );
-
+                    
+                    // dd($invoice);
                     DonasiDana::create([
                         'id_donasi' => $donasi->id_donasi,
                         'nominal' => $request->nominal,
@@ -112,7 +116,7 @@ class DonasiController extends Controller
                         'status_verifikasi' => strtoupper($invoice['status']),
                         'expired_at' => $invoice['expiry_date'],
                     ]);
-
+                    
 
                     DB::commit();
                     if (isset($invoice['invoice_url']) && !empty($invoice['invoice_url'])) {
