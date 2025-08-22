@@ -329,23 +329,23 @@
 
     <!-- Sidebar panel -->
     <div x-show="sidebarOpen" x-cloak x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
+        x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
         x-transition:leave="transition ease-in duration-200" x-transition:leave-start="translate-x-0"
-        x-transition:leave-end="translate-x-full"
-        class="fixed inset-y-0 right-0 z-50 w-full sm:max-w-sm bg-white p-6 overflow-y-auto ring-1 ring-gray-900/10"
+        x-transition:leave-end="-translate-x-full"
+        class="fixed inset-y-0 left-0 z-50 w-full sm:max-w-sm bg-white p-6 overflow-y-auto ring-1 ring-gray-900/10"
         @click.away="sidebarOpen = false">
         <!-- Header Sidebar -->
-        <div class="flex items-center justify-between mb-6">
-            <a href="#" class="-m-1.5 p-1.5">
-                <img class="h-8 w-auto" src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" alt="Logo" />
-            </a>
-            <button @click="sidebarOpen = false" type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+        <div class="flex items-center justify-between my-2">
+            <button @click="sidebarOpen = false" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 bg-white/30 backdrop-blur-sm cursor-pointer">
                 <span class="sr-only">Close menu</span>
-                <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
+            <a href="#" class="-m-1.5 p-1.5">
+                <img class="h-9 w-auto" src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" alt="Logo" />
+            </a>
         </div>
 
         <!-- Menu List -->
