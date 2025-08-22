@@ -29,6 +29,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Semua Aktivitas</title>
+    <link rel="icon" type="image/png" href="{{ asset('storage/' . $site['yayasanProfile']->favicon) }}">
     @vite(['resources/css/app.css', 'resources/js/AOS.js', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -53,11 +54,6 @@
                         <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Ditolak
                         </option>
                     </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                        </svg>
-                    </div>
                 </div>
             </div>
         </div>
@@ -126,7 +122,7 @@
                                             <p class="text-sm text-gray-500 mt-1">
                                                 @if (!empty($activity->DonasiDana) && $activity->DonasiDana->count())
                                                     Dana:
-                                                    Rp{{ number_format(optional($activity->DonasiDana->first())->nominal ?? 0, 0, ',', '.') }}
+                                                    Rp{{ number_format(optional($activity->DonasiDana)->nominal ?? 0, 0, ',', '.') }}
                                                 @elseif(!empty($activity->DonasiBarang) && $activity->DonasiBarang->count())
                                                     Barang:
                                                     @foreach ($activity->DonasiBarang as $barang)

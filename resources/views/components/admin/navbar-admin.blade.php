@@ -43,7 +43,7 @@
                                 <h3 class="text-lg font-semibold text-gray-900">Notifikasi</h3>
                                 @if (Auth::user()->unreadNotifications->count() > 0)
                                     <button id="markAllRead"
-                                        class="text-xs text-blue-600 hover:text-blue-800 font-medium">
+                                        class="text-xs text-blue-600 hover:text-blue-800 font-medium cursor-pointer">
                                         Tandai semua terbaca
                                     </button>
                                 @endif
@@ -131,12 +131,64 @@
 <script>
     const notifButton = document.getElementById('notificationButton');
     const notifDropdown = document.getElementById('notificationDropdown');
+    const markAllReadBtn = document.getElementById('markAllRead');
 
     notifButton.addEventListener('click', function() {
         notifDropdown.classList.toggle('hidden');
     });
 
-    // Optional: Klik di luar untuk menutup dropdown
+    // Mark all as read
+    if (markAllReadBtn) {
+        markAllReadBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            fetch("{{ route('notifications.readAll') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                        "Accept": "application/json"
+                    },
+                    credentials: "same-origin"
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    // Remove all 'new' badges and blue background
+                    document.querySelectorAll('#notificationDropdown .bg-blue-50').forEach(
+                        el => {
+                            el.classList.remove('bg-blue-50');
+                        });
+                    document.querySelectorAll('#notificationDropdown [class*="bg-blue-100"]')
+                        .forEach(el => {
+                            el.remove();
+                        });
+                    document.querySelectorAll('#notificationDropdown .w-1.bg-blue-500').forEach(
+                        el => {
+                            el.remove();
+                        });
+
+                    // Remove notification bell badge
+                    const badge = document.querySelector('#notificationButton span');
+                    if (badge) badge.remove();
+
+                    // Disable mark all read button
+                    markAllReadBtn.classList.add('hidden');
+
+                    // Close dropdown after 1 second
+                    setTimeout(() => {
+                        notifDropdown.classList.add('hidden');
+                        notifButton.classList.remove('bg-amber-100');
+                        notifButton.classList.remove('text-black');
+                    }, 1000);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    }
     document.addEventListener('click', function(event) {
         if (!notifButton.contains(event.target) && !notifDropdown.contains(event.target)) {
             notifDropdown.classList.add('hidden');

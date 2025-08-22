@@ -39,7 +39,7 @@
                                 <h3 class="text-lg font-semibold text-gray-900">Notifikasi</h3>
                                 @if ($user->unreadNotifications->count() > 0)
                                     <button id="markAllRead"
-                                        class="text-xs text-blue-600 hover:text-blue-800 font-medium">
+                                        class="text-xs text-blue-600 hover:text-blue-800 font-medium cursor-pointer">
                                         Tandai semua terbaca
                                     </button>
                                 @endif
@@ -47,7 +47,6 @@
                         </div>
 
                         @forelse($user->notifications->take(10) as $notification)
-                            <a href="{{ $notification->data['url'] ?? '#' }}" class="block hover:bg-gray-50">
                                 <a
                                     href="{{ route('notifications.read', $notification->id) }} "class="block hover:bg-gray-50">
                                     <div

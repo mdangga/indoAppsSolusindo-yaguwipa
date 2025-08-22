@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Struk Donasi - Berbagi Kebaikan</title>
+    @vite(['resources/css/app.css', 'resources/js/AOS.js', 'resources/js/app.js'])
+    <link rel="icon" type="image/png" href="{{ asset('storage/' . $site['yayasanProfile']->favicon) }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -58,69 +59,96 @@
         <div class="bg-white relative">
             <div class="px-6 pt-4 pb-2 text-center border-b border-dashed border-gray-400">
                 <h1 class="font-bold text-lg text-black mb-1 font-receipt">
-                    YAYASAN BERBAGI KEBAIKAN
+                    {{ $site['yayasanProfile']->nama_yayasan }}
                 </h1>
-                <p class="text-xs text-gray-600 mb-2">Jl. Kebaikan No. 123, Jakarta</p>
-                <p class="text-xs text-gray-600">Telp: (021) 123-4567</p>
+                <p class="text-xs text-gray-600 mb-2">{{ $site['yayasanProfile']->address }}</p>
                 <div class="mt-3 mb-1">
-                    <span class="bg-black text-white px-2 py-1 text-xs font-bold">STRUK DONASI</span>
+                    <span class="text-black px-2 py-1 text-xs font-bold">STRUK DONASI</span>
                 </div>
             </div>
             <div class="px-6 py-4 text-xs leading-relaxed">
                 <div class="mb-4">
                     <div class="flex justify-between py-1">
                         <span class="text-gray-700">Tanggal:</span>
-                        <span class="font-mono">21/08/2024 14:30</span>
+                        <span class="font-mono" id="paidAt" data-utc="{{ $donasi->DonasiDana->paid_at }}"></span>
                     </div>
                     <div class="flex justify-between py-1">
                         <span class="text-gray-700">No. Transaksi:</span>
-                        <span class="font-semibold">#DN240821001</span>
+                        <span class="font-semibold">{{ "****" . substr($donasi->DonasiDana->payment_id, -10) }}</span>
                     </div>
                 </div>
                 <div class="border-b border-dashed border-gray-400 my-4"></div>
                 <div class="mb-4">
                     <div class="flex justify-between py-1">
                         <span class="text-gray-700">Nama:</span>
-                        <span class="font-semibold max-w-40 text-right">Ahmad Subagio</span>
+                        <span class="font-semibold max-w-40 text-right">{{ $donasi->nama }}</span>
                     </div>
                     <div class="flex justify-between py-1">
                         <span class="text-gray-700">Campaign:</span>
-                        <span class="max-w-40 text-right">Bantuan Pendidikan</span>
+                        <span class="max-w-40 text-right">{{ $donasi->Campaign->nama }}</span>
                     </div>
                 </div>
                 <div class="border-b border-dashed border-gray-400 my-4"></div>
                 <div class="mb-4">
                     <div class="flex justify-between py-1">
                         <span>Donasi</span>
-                        <span class="font-mono">Rp 500,000</span>
+                        <span class="font-mono">Rp {{ number_format($donasi->DonasiDana->nominal ?? 0, 0, ',', '.') }}</span>
                     </div>
                     <div class="flex justify-between py-1">
                         <span>Biaya Admin</span>
-                        <span class="font-mono">Rp 2,500</span>
+                        <span class="font-mono">Rp {{ number_format($donasi->DonasiDana->admin_fee ?? 0, 0, ',', '.') }}</span>
                     </div>
                 </div>
                 <div class="border-b border-solid border-black my-4"></div>
                 <div class="mb-4">
                     <div class="flex justify-between items-center py-1">
                         <span class="font-bold text-lg text-black">TOTAL:</span>
-                        <span class="font-bold text-lg font-mono">Rp 502,500</span>
+                        <span class="font-bold text-lg font-mono">Rp {{ number_format($donasi->DonasiDana->nominal + $donasi->DonasiDana->admin_fee ?? 0, 0, ',', '.') }}</span>
                     </div>
                 </div>
                 <div class="border-b border-dashed border-gray-400 my-4"></div>
                 <div class="mb-4">
                     <div class="flex justify-between py-1">
                         <span class="text-gray-700">Metode Bayar:</span>
-                        <span class="font-semibold">Transfer Bank</span>
+                        <span class="font-semibold">{{ $donasi->DonasiDana->payment_method ?? '-' }}</span>
                     </div>
                     <div class="flex justify-between py-1">
                         <span class="text-gray-700">Status:</span>
-                        <span class="font-bold text-green-600">✓ BERHASIL</span>
+                        @php
+                            $status = $donasi->DonasiDana->status_verifikasi ?? 'UNKNOWN';
+                            $statusDisplay = '';
+                            $statusClass = '';
+                            
+                            switch(strtoupper($status)) {
+                                case 'PAID':
+                                    $statusDisplay = 'BERHASIL';
+                                    $statusClass = 'font-bold text-green-600';
+                                    break;
+                                case 'VOIDED':
+                                    $statusDisplay = 'DIBATALKAN';
+                                    $statusClass = 'font-bold text-red-600';
+                                    break;
+                                default:
+                                    $statusDisplay = strtoupper($status);
+                                    $statusClass = 'font-bold text-yellow-600';
+                                    break;
+                            }
+                        @endphp
+                        <span class="{{ $statusClass }}">{{ $statusDisplay }}</span>
                     </div>
                 </div>
+                
+                @if(strtoupper($donasi->DonasiDana->status_verifikasi ?? '') === 'PAID')
                 <div class="text-center mt-4">
                     <p class="font-bold text-sm mb-2">TERIMA KASIH!</p>
                     <p class="text-xs text-gray-600">Donasi Anda sangat berarti</p>
                 </div>
+                @elseif(strtoupper($donasi->DonasiDana->status_verifikasi ?? '') === 'VOIDED')
+                <div class="text-center mt-4">
+                    <p class="font-bold text-sm mb-2 text-red-600">TRANSAKSI DIBATALKAN</p>
+                    <p class="text-xs text-gray-600">Silakan lakukan donasi kembali</p>
+                </div>
+                @endif
             </div>
 
         </div>
@@ -233,12 +261,10 @@
             return new Intl.DateTimeFormat('id-ID', options).format(utcDate);
         }
 
-        // You can replace the static data with dynamic data from your backend
         document.addEventListener('DOMContentLoaded', function() {
-            // Example of how to use the UTC conversion function:
-            // const createdAtElement = document.getElementById('createdAt');
-            // const createdAtUTC = createdAtElement.getAttribute('data-utc');
-            // if (createdAtUTC) createdAtElement.textContent = convertUTCToLocal(createdAtUTC);
+            const paidAtElement = document.getElementById('paidAt');
+            const paidAtUTC = paidAtElement.getAttribute('data-utc');
+            if (paidAtUTC) paidAtElement.textContent = convertUTCToLocal(paidAtUTC);
         });
     </script>
 </body>

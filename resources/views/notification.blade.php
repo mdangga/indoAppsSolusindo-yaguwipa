@@ -42,7 +42,7 @@
             <h1 class="text-2xl font-bold text-gray-800">Notifikasi</h1>
             <div class="flex space-x-2">
                 @if ($user->unreadNotifications->count() > 0)
-                    <button id="markAllRead" class="px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-800">
+                    <button id="markAllRead" class="px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-800 cursor-pointer">
                         Tandai semua terbaca
                     </button>
                 @endif
