@@ -5,608 +5,266 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Struk Donasi - Berbagi Kebaikan</title>
+    @vite(['resources/css/app.css', 'resources/js/AOS.js', 'resources/js/app.js'])
+    <link rel="icon" type="image/png" href="{{ asset('storage/' . $site['yayasanProfile']->favicon) }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net" />
-    <link href="https://fonts.bunny.net/css?family=inter:300,400,500,600&family=space-grotesk:300,400,500,600"
-        rel="stylesheet" />
-    <style>
-        :root {
-            --primary-color: #1a1a1a;
-            --secondary-color: #4a4a4a;
-            --accent-color: #6366f1;
-            --success-color: #10b981;
-            --border-light: #e5e7eb;
-            --bg-subtle: #f8fafc;
-            --text-muted: #64748b;
-            --shadow-elegant: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 20px 25px -5px rgba(0, 0, 0, 0.08);
-            --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: linear-gradient(135deg, #fafafa 0%, #f4f4f5 100%);
-            min-height: 100vh;
-            padding: 2rem 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--primary-color);
-        }
-
-        .container {
-            max-width: 420px;
-            width: 100%;
-            padding: 0 24px;
-        }
-
-        .receipt-paper {
-            position: relative;
-            background: white;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: var(--shadow-elegant);
-            border: 1px solid var(--border-light);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .receipt-paper::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 4px;
-            background: var(--border-light);
-            border-radius: 0 0 8px 8px;
-            z-index: 3;
-        }
-
-        .receipt-paper::after {
-            content: '';
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 40px;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23e5e7eb" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>') no-repeat center;
-            background-size: contain;
-            opacity: 0.08;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #ffffff 0%, var(--bg-subtle) 100%);
-            padding: 2rem 2rem 1.5rem;
-            text-align: center;
-            position: relative;
-            z-index: 2;
-            border-bottom: 1px solid var(--border-light);
-        }
-
-        .header::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 1px;
-            background: var(--accent-color);
-        }
-
-        @keyframes shimmer {
-            0% {
-                transform: translateX(-100%) translateY(-100%) rotate(45deg);
-            }
-
-            100% {
-                transform: translateX(100%) translateY(100%) rotate(45deg);
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'mono': ['Monaco', 'Menlo', 'Ubuntu Mono', 'monospace'],
+                        'receipt': ['Courier New', 'monospace'],
+                    }
+                }
             }
         }
-
-        .logo-icon {
-            color: var(--accent-color);
-            font-size: 24px;
-            z-index: 1;
-        }
-
-        .title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin: 0 0 8px;
-            color: var(--primary-color);
-            letter-spacing: -0.025em;
-        }
-
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            font-weight: 400;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .content {
-            padding: 2rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .section {
-            position: relative;
-        }
-
-        .separator {
-            margin-bottom: 2rem;
-            margin-top: 1.5rem;
-            border-bottom: 1px dashed var(--border-light);
-        }
-
-        .section:last-of-type {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-            gap: 16px;
-        }
-
-        .info-row:last-child {
-            margin-bottom: 0;
-        }
-
-        .label {
-            color: var(--text-muted);
-            font-size: 0.875rem;
-            font-weight: 400;
-            flex-shrink: 0;
-        }
-
-        .value {
-            /* font-weight: 500; */
-            color: var(--primary-color);
-            font-size: 0.875rem;
-            text-align: right;
-            word-break: break-word;
-        }
-
-        .value.highlight {
-            color: var(--accent-color);
-            font-weight: 600;
-        }
-
-        .value.success {
-            color: var(--success-color);
-        }
-
-        .status-badge {
-            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
-            color: #166534;
-            padding: 6px 12px;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            border: 1px solid #bbf7d0;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .total-section {
-            background: linear-gradient(135deg, #fafafa, #f4f4f5);
-            margin: 0 -2rem -2rem;
-            padding: 2rem;
-            border-top: 2px solid var(--border-light);
-            position: relative;
-        }
-
-        .total-section::before {
-            content: '';
-            position: absolute;
-            top: -1px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 2px;
-            background: var(--accent-color);
-        }
-
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .total-label {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-            color: var(--primary-color);
-            font-size: 1.125rem;
-        }
-
-        .total-amount {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--primary-color);
-        }
-
-        .actions {
-            margin-top: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .btn {
-            padding: 14px 20px;
-            border: none;
-            border-radius: 16px;
-            font-weight: 500;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            position: relative;
-            overflow: hidden;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .btn-secondary {
-            background: white;
-            color: var(--secondary-color);
-            border: 2px solid var(--border-light);
-            flex: 1;
-        }
-
-        .btn-secondary:hover {
-            background: var(--bg-subtle);
-            border-color: var(--text-muted);
-            transform: translateY(-1px);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, var(--success-color), #059669);
-            color: white;
-            flex: 1;
-        }
-
-        .btn-success:hover {
-            transform: translateY(-1px);
-        }
-
-        .button-row {
-            display: flex;
-            gap: 12px;
-        }
-
-        .footer-info {
-            text-align: center;
-            margin-top: 1.5rem;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        .footer-info p {
-            margin: 0 0 6px;
-        }
-
-        /* Animations */
-        .receipt-paper {
-            opacity: 0;
-            transform: translateY(20px) scale(0.98);
-            animation: slideInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        @keyframes slideInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .content>* {
-            opacity: 0;
-            transform: translateY(10px);
-            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        .content>*:nth-child(1) {
-            animation-delay: 0.1s;
-        }
-
-        .content>*:nth-child(2) {
-            animation-delay: 0.15s;
-        }
-
-        .content>*:nth-child(3) {
-            animation-delay: 0.2s;
-        }
-
-        .content>*:nth-child(4) {
-            animation-delay: 0.25s;
-        }
-
-        .content>*:nth-child(5) {
-            animation-delay: 0.3s;
-        }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Print Styles */
-        @media print {
-            body {
-                background: white !important;
-                padding: 0;
-            }
-
-            .container {
-                max-width: 100%;
-                padding: 0;
-            }
-
-            .receipt-paper {
-                box-shadow: none !important;
-                border: 1px solid #ddd;
-                border-radius: 0;
-            }
-
-            .print\\:hidden {
-                display: none !important;
-            }
-        }
-
-        @media (max-width: 480px) {
-            body {
-                padding: 1rem 0;
-            }
-
-            .container {
-                padding: 0 16px;
-            }
-
-            .content {
-                padding: 1.5rem;
-            }
-
-            .header {
-                padding: 1.5rem 1.5rem 1rem;
-            }
-
-            .total-section {
-                margin: 0 -1.5rem -1.5rem;
-                padding: 1.5rem;
-            }
-        }
-    </style>
+    </script>
 </head>
 
-<body>
-    <div class="container">
-        <!-- Receipt Card -->
-        <div class="receipt-paper">
-            <!-- Header -->
-            <div class="header">
-                {{-- <img src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" class="w-5 h-5" alt=""> --}}
-                <h1 class="title">{{ $site['yayasanProfile']->nama_yayasan }}</h1>
-                <p class="subtitle" style="font-size: 12px; color: var(--success-color); font-weight: 600">
-                    <i class="fas fa-check-circle"></i>
-                    Transaksi Berhasil
-                </p>
-            </div>
-
-            <!-- Content -->
-            <div class="content">
-                <!-- Transaction Info -->
-                <div class="section" style="margin-bottom: 1rem;">
-                    <div class="info-row">
-                        <span class="label">Tanggal</span>
-                        <span class="value" id="createdAt" data-utc="{{ $donasi->DonasiDana->created_at }}">
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Donor Details -->
-                <div class="section">
-                    <div class="info-row">
-                        <span class="label">Nama Donatur</span>
-                        <span class="value">{{ $donasi->nama }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Email</span>
-                        <span class="value">{{ $donasi->email }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Campaign</span>
-                        <span class="value">{{ $donasi->Campaign->nama }}</span>
-                    </div>
-                </div>
-
-                <div class="separator"></div>
-                <!-- Payment Details -->
-                <div class="section">
-                    <div class="info-row">
-                        <span class="label">Metode Bayar</span>
-                        <span class="value">{{ $donasi->DonasiDana->payment_method }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Nominal Donasi</span>
-                        <span class="value">Rp. {{ $donasi->DonasiDana->nominal }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Biaya Admin</span>
-                        <span class="value success">Rp {{ $donasi->DonasiDana->admin_fee }}</span>
-                    </div>
-                </div>
-                <div class="separator"></div>
-                <!-- Status -->
-                <div class="section" style="margin-bottom: 2rem;">
-                    <div class="info-row" style="display: flex; align-items: center;">
-                        <span class="label">Status</span>
-                        <span class="status-badge">
-                            <i class="fas fa-check"></i>
-                            BERHASIL
-                        </span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Tanggal Dibayar</span>
-                        <span class="value success" id="paidAt" data-utc="{{ $donasi->DonasiDana->paid_at }}">
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Total -->
-                <div class="total-section">
-                    <div class="total-row" style="display: flex; align-items: center;">
-                        <span class="total-label">Total Donasi</span>
-                        <span class="total-amount">
-                            Rp
-                            {{ number_format($donasi->DonasiDana->nominal + $donasi->DonasiDana->admin_fee, 0, ',', '.') }}
-                        </span>
-                    </div>
+<body class="bg-gray-100 min-h-screen py-8 font-mono">
+    <div class="max-w-sm mx-auto px-4 print-container">
+        <div class="h-4 relative overflow-hidden -mb-1">
+            <svg class="absolute top-0 left-0 w-full h-6" viewBox="0 0 400 24" xmlns="http://www.w3.org/2000/svg"
+                version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" transform="matrix(1,0,0,-1,0,0)">
+                <path d="
+    M0 0
+    L0 24
+    L20 24
+    C 15 14, 5 14, 0 24
+    L20 24
+    C 25 14, 35 14, 40 24
+    L60 24
+    C 65 14, 75 14, 80 24
+    L100 24
+    C 105 14, 115 14, 120 24
+    L140 24
+    C 145 14, 155 14, 160 24
+    L180 24
+    C 185 14, 195 14, 200 24
+    L220 24
+    C 225 14, 235 14, 240 24
+    L260 24
+    C 265 14, 275 14, 280 24
+    L300 24
+    C 305 14, 315 14, 320 24
+    L340 24
+    C 345 14, 355 14, 360 24
+    L380 24
+    C 385 14, 395 14, 400 24
+    L400 0
+    Z" fill="white"></path>
+            </svg>
+        </div>
+        <div class="bg-white relative">
+            <div class="px-6 pt-4 pb-2 text-center border-b border-dashed border-gray-400">
+                <h1 class="font-bold text-lg text-black mb-1 font-receipt">
+                    {{ $site['yayasanProfile']->nama_yayasan }}
+                </h1>
+                <p class="text-xs text-gray-600 mb-2">{{ $site['yayasanProfile']->address }}</p>
+                <div class="mt-3 mb-1">
+                    <span class="text-black px-2 py-1 text-xs font-bold">STRUK DONASI</span>
                 </div>
             </div>
+            <div class="px-6 py-4 text-xs leading-relaxed">
+                <div class="mb-4">
+                    <div class="flex justify-between py-1">
+                        <span class="text-gray-700">Tanggal:</span>
+                        <span class="font-mono" id="paidAt" data-utc="{{ $donasi->DonasiDana->paid_at }}"></span>
+                    </div>
+                    <div class="flex justify-between py-1">
+                        <span class="text-gray-700">No. Transaksi:</span>
+                        <span class="font-semibold">{{ "****" . substr($donasi->DonasiDana->payment_id, -10) }}</span>
+                    </div>
+                </div>
+                <div class="border-b border-dashed border-gray-400 my-4"></div>
+                <div class="mb-4">
+                    <div class="flex justify-between py-1">
+                        <span class="text-gray-700">Nama:</span>
+                        <span class="font-semibold max-w-40 text-right">{{ $donasi->nama }}</span>
+                    </div>
+                    <div class="flex justify-between py-1">
+                        <span class="text-gray-700">Campaign:</span>
+                        <span class="max-w-40 text-right">{{ $donasi->Campaign->nama }}</span>
+                    </div>
+                </div>
+                <div class="border-b border-dashed border-gray-400 my-4"></div>
+                <div class="mb-4">
+                    <div class="flex justify-between py-1">
+                        <span>Donasi</span>
+                        <span class="font-mono">Rp {{ number_format($donasi->DonasiDana->nominal ?? 0, 0, ',', '.') }}</span>
+                    </div>
+                    <div class="flex justify-between py-1">
+                        <span>Biaya Admin</span>
+                        <span class="font-mono">Rp {{ number_format($donasi->DonasiDana->admin_fee ?? 0, 0, ',', '.') }}</span>
+                    </div>
+                </div>
+                <div class="border-b border-solid border-black my-4"></div>
+                <div class="mb-4">
+                    <div class="flex justify-between items-center py-1">
+                        <span class="font-bold text-lg text-black">TOTAL:</span>
+                        <span class="font-bold text-lg font-mono">Rp {{ number_format($donasi->DonasiDana->nominal + $donasi->DonasiDana->admin_fee ?? 0, 0, ',', '.') }}</span>
+                    </div>
+                </div>
+                <div class="border-b border-dashed border-gray-400 my-4"></div>
+                <div class="mb-4">
+                    <div class="flex justify-between py-1">
+                        <span class="text-gray-700">Metode Bayar:</span>
+                        <span class="font-semibold">{{ $donasi->DonasiDana->payment_method ?? '-' }}</span>
+                    </div>
+                    <div class="flex justify-between py-1">
+                        <span class="text-gray-700">Status:</span>
+                        @php
+                            $status = $donasi->DonasiDana->status_verifikasi ?? 'UNKNOWN';
+                            $statusDisplay = '';
+                            $statusClass = '';
+                            
+                            switch(strtoupper($status)) {
+                                case 'PAID':
+                                    $statusDisplay = 'BERHASIL';
+                                    $statusClass = 'font-bold text-green-600';
+                                    break;
+                                case 'VOIDED':
+                                    $statusDisplay = 'DIBATALKAN';
+                                    $statusClass = 'font-bold text-red-600';
+                                    break;
+                                default:
+                                    $statusDisplay = strtoupper($status);
+                                    $statusClass = 'font-bold text-yellow-600';
+                                    break;
+                            }
+                        @endphp
+                        <span class="{{ $statusClass }}">{{ $statusDisplay }}</span>
+                    </div>
+                </div>
+                
+                @if(strtoupper($donasi->DonasiDana->status_verifikasi ?? '') === 'PAID')
+                <div class="text-center mt-4">
+                    <p class="font-bold text-sm mb-2">TERIMA KASIH!</p>
+                    <p class="text-xs text-gray-600">Donasi Anda sangat berarti</p>
+                </div>
+                @elseif(strtoupper($donasi->DonasiDana->status_verifikasi ?? '') === 'VOIDED')
+                <div class="text-center mt-4">
+                    <p class="font-bold text-sm mb-2 text-red-600">TRANSAKSI DIBATALKAN</p>
+                    <p class="text-xs text-gray-600">Silakan lakukan donasi kembali</p>
+                </div>
+                @endif
+            </div>
+
+        </div>
+        <div class="h-4 relative overflow-hidden">
+            <svg class="absolute bottom-0 left-0 w-full h-6" viewBox="0 0 400 24" xmlns="http://www.w3.org/2000/svg"
+                fill="none" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
+                transform="matrix(-1,0,0,-1,0,0)">
+                <path d="
+    M0 0
+    L0 16
+    C 5 6, 15 6, 20 16
+    L40 16
+    C 45 6, 55 6, 60 16
+    L80 16
+    C 85 6, 95 6, 100 16
+    L120 16
+    C 125 6, 135 6, 140 16
+    L160 16
+    C 165 6, 175 6, 180 16
+    L200 16
+    C 205 6, 215 6, 220 16
+    L240 16
+    C 245 6, 255 6, 260 16
+    L280 16
+    C 285 6, 295 6, 300 16
+    L320 16
+    C 325 6, 335 6, 340 16
+    L360 16
+    C 365 6, 375 6, 380 16
+    L400 16
+    L400 24
+    L0 24
+    Z" fill="white"></path>
+            </svg>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="actions print:hidden">
-            <button class="btn btn-primary" onclick="window.print()">
+        <div class="mt-6 flex flex-col gap-3 print:hidden">
+            <button
+                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-colors shadow-md"
+                onclick="window.print()">
                 <i class="fas fa-print"></i>
                 Cetak Struk
             </button>
 
-            <button class="btn btn-secondary" id="backButton">
+            <button
+                class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-6 py-3 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-colors shadow-md"
+                onclick="window.history.back()">
                 <i class="fas fa-arrow-left"></i>
                 Kembali
             </button>
         </div>
 
-        <!-- Footer Info -->
-        <div class="footer-info print:hidden">
-            <p>Struk ini digenerate otomatis oleh sistem</p>
-            <p>Simpan struk ini sebagai bukti donasi yang sah</p>
+        <div class="text-center mt-6 text-xs text-gray-500 leading-relaxed print:hidden">
+            <p class="mb-1">Struk digital - Generated automatically</p>
+            <p>Simpan atau cetak sebagai bukti donasi</p>
         </div>
     </div>
 
     <script>
-        document.getElementById('backButton').addEventListener('click', function() {
-            window.history.back();
-        });
-
-        // Enhanced button hover effects
-        document.querySelectorAll('.btn').forEach(button => {
-            button.addEventListener('click', function(e) {
-                // Ripple effect
-                const ripple = document.createElement('span');
-                const rect = this.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                const x = e.clientX - rect.left - size / 2;
-                const y = e.clientY - rect.top - size / 2;
-
-                ripple.style.cssText = `
-                    position: absolute;
-                    border-radius: 50%;
-                    background: rgba(255, 255, 255, 0.4);
-                    width: ${size}px;
-                    height: ${size}px;
-                    left: ${x}px;
-                    top: ${y}px;
-                    animation: ripple 0.6s linear;
-                    pointer-events: none;
-                `;
-
-                this.style.position = 'relative';
-                this.style.overflow = 'hidden';
-                this.appendChild(ripple);
-
-                setTimeout(() => ripple.remove(), 600);
-            });
-        });
-
-        // CSS animation for ripple
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
+        const printStyles = `
+            @media print {
+                @page {
+                    size: 80mm auto;
+                    margin: 0;
+                }
+                
+                html, body { 
+                    background: white !important; 
+                    -webkit-print-color-adjust: exact;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                }
+                
+                .print\\:hidden { 
+                    display: none !important; 
+                }
+                
+                .max-w-sm {
+                    max-width: 100% !important;
+                    margin: 0 !important;
+                }
+                
+                .print-container {
+                    padding: 0 !important;
+                }
+                
+                /* Hide browser elements */
+                body::before,
+                body::after {
+                    display: none !important;
                 }
             }
         `;
-        document.head.appendChild(style);
 
-        // convert Time
+        const styleElement = document.createElement('style');
+        styleElement.textContent = printStyles;
+        document.head.appendChild(styleElement);
+
+        // Date formatting function
         function convertUTCToLocal(utcTimeString) {
             const utcDate = new Date(utcTimeString + (utcTimeString.includes('UTC') ? '' : ' UTC'));
             const options = {
-                year: 'numeric',
-                month: '2-digit',
                 day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit',
-                second: '2-digit',
                 hour12: false
             };
-
-            const formatter = new Intl.DateTimeFormat('us-US', options);
-            const formattedDate = formatter.format(utcDate);
-            const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-            return `${formattedDate} (${timezoneName})`;
+            return new Intl.DateTimeFormat('id-ID', options).format(utcDate);
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Konversi created_at
-            const createdAtElement = document.getElementById('createdAt');
-            const createdAtUTC = createdAtElement.getAttribute('data-utc');
-            if (createdAtUTC) {
-                createdAtElement.textContent = convertUTCToLocal(createdAtUTC);
-            }
-
-            // Konversi paid_at
             const paidAtElement = document.getElementById('paidAt');
             const paidAtUTC = paidAtElement.getAttribute('data-utc');
-            if (paidAtUTC) {
-                paidAtElement.textContent = convertUTCToLocal(paidAtUTC);
-            }
+            if (paidAtUTC) paidAtElement.textContent = convertUTCToLocal(paidAtUTC);
         });
     </script>
 </body>

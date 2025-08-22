@@ -4,17 +4,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image" href="{{ asset('storage/' . $site['yayasanProfile']->favicon) }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>Detail Kerja Sama</title>
-    {{-- icon --}}
-    <link rel="icon" type="image/png" href="{{ asset('storage/' . $site['yayasanProfile']->logo) }}">
-
-    <!-- Fonts -->
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -303,7 +295,6 @@
                     </div>
                 @endif
 
-                <!-- Form Penolakan (Tampil hanya jika status pending dan tombol tolak diklik) -->
                 @if ($donasi->status === 'pending')
                     <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
                         <h3 class="text-lg font-semibold text-gray-800 mb-4">Alasan / Catatan Donasi</h3>
@@ -328,20 +319,22 @@
                     @if ($donasi->status === 'pending')
                         <div class="flex flex-col sm:flex-row gap-3 sm:ml-auto">
                             <!-- Terima -->
-                            <form action="{{ route('donasi.approved', $donasi->id_donasi) }}" method="POST"
-                                class="alasan-form">
-                                @csrf
-                                <input type="hidden" name="alasan" class="hidden-alasan">
-                                <button type="button" onclick="submitWithAlasan(this)"
-                                    class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-green-600 hover:bg-green-700">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    Terima
-                                </button>
-                            </form>
+                            @if (strtolower($donasi->JenisDonasi->nama) !== 'dana')
+                                <form action="{{ route('donasi.approved', $donasi->id_donasi) }}" method="POST"
+                                    class="alasan-form">
+                                    @csrf
+                                    <input type="hidden" name="alasan" class="hidden-alasan">
+                                    <button type="button" onclick="submitWithAlasan(this)"
+                                        class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-green-600 hover:bg-green-700">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                        Terima
+                                    </button>
+                                </form>
+                            @endif
 
                             <!-- Tolak -->
                             <form action="{{ route('donasi.rejected', $donasi->id_donasi) }}" method="POST"

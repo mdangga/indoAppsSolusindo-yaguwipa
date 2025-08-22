@@ -40,11 +40,11 @@ class DonasiController extends Controller
             ->where('id_user', $user->id_user)
             ->findOrFail($id);
 
-        if ($donasi->JenisDonasi->nama === 'Dana') {
-            if($donasi->DonasiDana->status_verifikasi === 'PAID'){
-                return view('user.detailDonasiUang', compact('donasi'));
-            }else{
+        if (strtolower($donasi->JenisDonasi->nama) === 'dana') {
+            if($donasi->DonasiDana->status_verifikasi === 'PENDING'){
                 return redirect()->away($donasi->DonasiDana->payment_url);
+            }else{
+                return view('user.detailDonasiUang', compact('donasi'));
             }
         } else {
             return view('user.detailDonasi', compact('donasi'));
@@ -298,7 +298,7 @@ class DonasiController extends Controller
                 $namaJenis = strtolower($donasi->JenisDonasi->nama);
 
                 match ($namaJenis) {
-                    'dana' => $donasi->DonasiDana()->update(['status_verifikasi' => 'rejected']),
+                    'dana' => $donasi->DonasiDana()->update(['status_verifikasi' => 'VOIDED', 'paid_at' => now()]),
                     'barang' => $donasi->DonasiBarang()
                         ->update(['status_verifikasi' => 'rejected']),
                     'jasa' => $donasi->DonasiJasa()->update(['status_verifikasi' => 'rejected']),

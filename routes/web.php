@@ -66,8 +66,8 @@ Route::post('/download-file/{id}', [PublikasiController::class, 'downloadFile'])
 
 // notifikasi
 Route::get('/notifications/read/{id}', [NotificationController::class, 'bacaSatuNotif'])->name('notifications.read');
-Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
 Route::post('/notifications/read-all', [NotificationController::class, 'bacaSemuaNotif'])->name('notifications.readAll');
+Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
 
 // donasi
 Route::get('/donasi/create/{id_campaign}', [DonasiController::class, 'show'])->name('form.donasi');

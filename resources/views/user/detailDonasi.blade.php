@@ -95,8 +95,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pilih Program Donasi</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>PDetail Donasi</title>
+    <link rel="icon" type="image/png" href="{{ asset('storage/' . $site['yayasanProfile']->favicon) }}">
+    @vite(['resources/css/app.css', 'resources/js/AOS.js', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 

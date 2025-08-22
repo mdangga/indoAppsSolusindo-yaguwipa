@@ -32,6 +32,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
+    <link rel="icon" type="image/png" href="{{ asset('storage/' . $site['yayasanProfile']->favicon) }}">
     @vite(['resources/css/app.css', 'resources/js/AOS.js', 'resources/js/app.js'])
 </head>
 
