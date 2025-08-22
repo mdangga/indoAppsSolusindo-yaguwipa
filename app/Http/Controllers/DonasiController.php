@@ -268,7 +268,8 @@ class DonasiController extends Controller
 
                 $donasi->update([
                     'status' => 'approved',
-                    'alasan' => $request->alasan ?? null
+                    'alasan' => $request->alasan ?? null,
+                    'approved_at' => now(),
                 ]);
 
                 // Kalau mau kirim notifikasi ke user

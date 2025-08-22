@@ -7,21 +7,23 @@ use App\Models\FilePenunjang;
 use App\Models\KerjaSama;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use STS\ZipStream\Facades\Zip;
 use Illuminate\Support\Facades\Storage;
 
 class PdfController extends Controller
 {
-    public function testing($id)
+    public function detailDonasi($id)
     {
         $donasi = Donasi::with('Campaign', 'JenisDonasi', 'DonasiBarang','DonasiJasa')->findOrFail($id);
-        $tanggal = Carbon::now()->format('Ymd');
+        
+        if (Auth::user()->role !== 'admin' && Auth::user()->id_user !== $donasi->id_user) {
+            abort(403, 'Anda tidak punya akses ke file ini');
+        }
 
-        // Ambil data profil yayasan dari variabel global view
         $yayasanProfile = view()->shared('site')['yayasanProfile'];
 
-        // Siapkan logo jika ada
         $logoPath = storage_path('app/public/' . $yayasanProfile->logo);
         $logoData = null;
         $logoMime = null;
@@ -31,12 +33,8 @@ class PdfController extends Controller
             $logoMime = mime_content_type($logoPath);
         }
 
-        // Generate PDF
-
         $pdf = Pdf::loadView('pdf.pdfLapDonasi', [
             'donasi' => $donasi,
-
-            'tanggal' => $tanggal,
             'site' => [
                 'yayasanProfile' => $yayasanProfile,
                 'logoData' => $logoData,
@@ -50,7 +48,7 @@ class PdfController extends Controller
                 'defaultFont' => 'sans-serif',
             ]);
 
-        return $pdf->stream("test.pdf");
+        return $pdf->stream("detail-donasi.pdf");
     }
 
     public function downloadZipStream($id, $nama = '')

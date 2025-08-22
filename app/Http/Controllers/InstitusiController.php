@@ -25,7 +25,7 @@ class InstitusiController extends Controller
             return abort(403, 'Akses tidak diizinkan');
         }
 
-        $institusi = Institusi::select(['id_institusi', 'nama', 'image_path', 'status']);
+        $institusi = Institusi::select(['id_institusi', 'nama', 'profile_path', 'status']);
 
         return DataTables::of($institusi)
             ->addIndexColumn()
@@ -40,11 +40,11 @@ class InstitusiController extends Controller
             ->editColumn('status', function ($row) {
                 return $row->status;
             })
-            ->editColumn('image_path', function ($row) {
-                if (!$row->image_path) {
+            ->editColumn('profile_path', function ($row) {
+                if (!$row->profile_path) {
                     return null;
                 }
-                return asset('storage/' . $row->image_path);
+                return asset('storage/' . $row->profile_path);
             })
 
             ->rawColumns(['aksi'])
@@ -116,26 +116,26 @@ class InstitusiController extends Controller
         $data = $validator->validated();
 
         if (!empty($data['logo']) && $data['logo'] instanceof \Illuminate\Http\UploadedFile) {
-            if ($institusi->image_path && Storage::disk('public')->exists($institusi->image_path)) {
-                Storage::disk('public')->delete($institusi->image_path);
+            if ($institusi->profile_path && Storage::disk('public')->exists($institusi->profile_path)) {
+                Storage::disk('public')->delete($institusi->profile_path);
             }
             try {
                 $namaFile = 'img/institusi/' . uniqid() . '.webp';
                 $gambarWebp = Image::read($data['logo'])->toWebp(80);
                 Storage::disk('public')->put($namaFile, $gambarWebp);
-                $data['image_path'] = $namaFile;
+                $data['profile_path'] = $namaFile;
             } catch (\Throwable $e) {
                 return redirect()->back()->with('gagal', 'Gagal mengunggah logo baru: ' . $e->getMessage());
             }
         } else {
-            $data['image_path'] = $institusi->image_path;
+            $data['profile_path'] = $institusi->profile_path;
         }
 
         $institusi->update([
             'nama' => $data['nama'],
             'alamat' => $data['alamat'],
             'website' => $data['website'],
-            'image_path' => $data['image_path'],
+            'profile_path' => $data['profile_path'],
             'status' => $data['status'],
         ]);
 
@@ -151,8 +151,8 @@ class InstitusiController extends Controller
             return redirect()->back()->with('gagal', 'Institusi tidak ditemukan');
         }
 
-        if ($institusi->image_path && Storage::disk('public')->exists($institusi->image_path)) {
-            Storage::disk('public')->delete($institusi->image_path);
+        if ($institusi->profile_path && Storage::disk('public')->exists($institusi->profile_path)) {
+            Storage::disk('public')->delete($institusi->profile_path);
         }
 
         $institusi->delete();

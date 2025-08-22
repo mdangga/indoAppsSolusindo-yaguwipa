@@ -83,8 +83,8 @@
                         }
                     },
                     {
-                        data: 'image_path',
-                        name: 'image_path',
+                        data: 'profile_path',
+                        name: 'profile_path',
                         render: function(data, type, row) {
                             if (type === 'display') {
                                 if (data && typeof data === 'string') {

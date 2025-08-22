@@ -25,7 +25,7 @@ class XenditWebhookController extends Controller
             if ($donasi) {
                 // Update status donasi
                 if (in_array($status, ['PAID', 'SETTLED'])) {
-                    $donasi->update(['status' => 'approved']);
+                    $donasi->update(['status' => 'approved', 'approved_at' => now()]);
                 } elseif (in_array($status, ['EXPIRED', 'FAILED', 'VOIDED'])) {
                     $donasi->update(['status' => 'rejected']);
                 }

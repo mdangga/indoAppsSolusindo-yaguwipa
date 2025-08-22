@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html lang="id">
 @php
-    \Carbon\Carbon::setLocale('id');
+    use Carbon\Carbon;
+    Carbon::setLocale('id');
+
+    function bulanRomawi($bulan)
+    {
+        $romawi = [1 => 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+        return $romawi[$bulan] ?? '';
+    }
 @endphp
 
 <head>
@@ -159,14 +166,11 @@
                 <td style="width: 15%;">Nomor</td>
                 <td style="width: 2%;">:</td>
                 <td style="width: 53%;">
-                    {{ sprintf('%03d', $kerjaSama->id_kerja_sama) }}/LAPORAN-KERJA-SAMA/{{ ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'][
-                        date('n', strtotime($kerjaSama->created_at))
-                    ] }}/{{ date('Y', strtotime($kerjaSama->created_at)) }}
+                    {{ sprintf('%03d', $donasi->id_donasi) }}/LAPORAN-KERJA-SAMA/{{ bulanRomawi($donasi->created_at->month) }}/{{ $donasi->created_at->year }}
                 </td>
 
-                <!-- Tanggal di kanan -->
                 <td style="width: 30%; text-align: right; white-space: nowrap;">
-                    {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}
+                    {{ \Carbon\Carbon::now()->setTimezone('Asia/Makassar')->translatedFormat('d F Y') }}
                 </td>
             </tr>
             <tr>
@@ -207,8 +211,8 @@
             <tr>
                 <td>Tanggal</td>
                 <td>:</td>
-                <td>{{ \Carbon\Carbon::parse($kerjaSama->tanggal_mulai)->translatedFormat('j F Y') }} s.d.
-                    {{ \Carbon\Carbon::parse($kerjaSama->tanggal_selesai)->translatedFormat('j F Y') }}</td>
+                <td>{{ \Carbon\Carbon::parse($kerjaSama->tanggal_mulai)->setTimezone('Asia/Makassar')->translatedFormat('j F Y') }} s.d.
+                    {{ \Carbon\Carbon::parse($kerjaSama->tanggal_selesai)->setTimezone('Asia/Makassar')->translatedFormat('j F Y') }}</td>
             </tr>
             <tr>
                 <td>Status</td>
@@ -252,7 +256,13 @@
         <table class="ttd">
             <tr>
                 <td width="60%"></td>
-                <td>
+                <td style="text-align: left;">
+                    <p>{{ $site['yayasanProfile']->kota ?? 'Denpasar' }},
+                        {{ $donasi->approved_at
+                            ? \Carbon\Carbon::now()->setTimezone('Asia/Makassar')->translatedFormat('j F Y')
+                            : '-' }}
+                        WITA
+                    </p>
                     <p>Hormat kami,</p>
                     <br><br><br>
                     <p><strong>Pimpinan {{ $site['yayasanProfile']->nama_yayasan }}</strong></p>

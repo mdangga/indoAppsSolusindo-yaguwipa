@@ -18,7 +18,8 @@ class Donasi extends Model
         'alasan',
         'id_user',
         'id_campaign',
-        'id_jenis_donasi'
+        'id_jenis_donasi',
+        'approved_at'
     ];
 
     public function User()
