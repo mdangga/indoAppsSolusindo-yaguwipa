@@ -31,7 +31,6 @@
 <body class="bg-gray-50">
 
     @if ($user->role === 'admin')
-        <x-admin.navbar-admin />
         <x-admin.sidebar />
     @else
         <x-user.header-user :user="$user" :randomBg="$randomBg" :profilePath="$profilePath" :title="'Notifikasi'" :description="'Kelola notifikasi Anda'" />

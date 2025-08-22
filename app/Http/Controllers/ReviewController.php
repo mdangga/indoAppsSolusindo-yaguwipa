@@ -119,14 +119,42 @@ class ReviewController extends Controller
                 ->with('message', 'Validasi gagal.');
         }
 
+        $kataKotor = KataKotor::pluck('kata')->toArray();
+        $kataKotorDitemukan = [];
+        foreach ($kataKotor as $kata) {
+            if (stripos($request->review, $kata) !== false) {
+                $kataKotorDitemukan[] = $kata;
+            }
+        }
+
+        if (!empty($kataKotorDitemukan)) {
+            $review->update([
+                'status' => 'hide',
+            ]);
+
+            $admin = User::where('role', 'admin')->first();
+            $takedownNotif = [
+                'kata' => $kataKotorDitemukan,
+                'nama' => Auth::user()->nama,
+                'id_review' => $review->id,
+            ];
+            Notification::send($admin, new notifikasiTakedown($takedownNotif));
+        } else {
+            $review->update([
+                'status' => 'show',
+            ]);
+        }
+
         $review->update([
             'rating' => $request->rating,
             'review' => $request->review,
-            'status' => 'hide',
         ]);
 
+        $message = !empty($kataKotorDitemukan)
+            ? 'Ulasan Anda mengandung kata tidak pantas dan sedang ditinjau admin'
+            : 'Ulasan berhasil diperbarui!';
 
-        return redirect()->route('dashboard')->with('success', 'Ulasan berhasil diperbarui!');
+        return redirect()->route('dashboard')->with('success', $message);
     }
 
 
@@ -164,7 +192,7 @@ class ReviewController extends Controller
         $review->delete();
 
         if (Auth::user()->role === 'admin') {
-        return redirect()->route('admin.review')->with('success', 'Ulasan berhasil dihapus!');
+            return redirect()->route('admin.review')->with('success', 'Ulasan berhasil dihapus!');
         }
         return redirect()->route('dashboard')->with('success', 'Ulasan berhasil dihapus!');
     }
