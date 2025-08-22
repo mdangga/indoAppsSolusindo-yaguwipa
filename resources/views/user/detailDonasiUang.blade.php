@@ -74,7 +74,7 @@
                     </div>
                     <div class="flex justify-between py-1">
                         <span class="text-gray-700">No. Transaksi:</span>
-                        <span class="font-semibold">{{ "****" . substr($donasi->DonasiDana->payment_id, -10) }}</span>
+                        <span class="font-semibold max-w-[200px] text-right">{{ ($donasi->DonasiDana->payment_id) }}</span>
                     </div>
                 </div>
                 <div class="border-b border-dashed border-gray-400 my-4"></div>

@@ -116,7 +116,7 @@
                                     <p class="font-medium">{{ $daysLeft }} hari</p>
                                 </div>
                                 <a href="{{ route('form.donasi', $campaign->id_campaign) }}"
-                                    class="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg hover:scale-[1.1] text-sm font-medium transition-all duration-300">
+                                    class="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg hover:scale-105 active:scale-95 active:bg-amber-800 text-sm font-medium transition-all duration-300">
                                     Donasi Sekarang
                                 </a>
                             </div>
