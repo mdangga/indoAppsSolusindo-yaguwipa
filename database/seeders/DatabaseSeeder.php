@@ -84,7 +84,7 @@ class DatabaseSeeder extends Seeder
 
         $galleryId = DB::table('menus')->insertGetId([
             'title' => 'Gallery',
-            'url' => url(route('beranda.gallery'), [], false),
+            'url' => '#',
             'status' => 'show',
             'parent_menu' => null,
             'created_at' => now(),
@@ -130,6 +130,23 @@ class DatabaseSeeder extends Seeder
                 'title' => 'Partners',
                 'url' => url(route('beranda.partners'), [], false),
                 'parent_menu' => $profilId,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
+
+        DB::table('menus')->insert([
+            [
+                'title' => 'Photo',
+                'url' => url(route('beranda.gallery.foto'), [], false),
+                'parent_menu' => $galleryId,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'title' => 'Video',
+                'url' => url(route('beranda.gallery.video'), [], false),
+                'parent_menu' => $galleryId,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
