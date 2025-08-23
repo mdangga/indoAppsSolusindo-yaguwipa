@@ -217,7 +217,7 @@
                             <!-- Prev & Next -->
                             <div class="flex space-x-2">
                                 <button type="button"
-                                    class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 shadow-sm"
+                                    class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 shadow-sm cursor-pointer"
                                     data-carousel-prev>
                                     <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -226,7 +226,7 @@
                                     </svg>
                                 </button>
                                 <button type="button"
-                                    class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 shadow-sm"
+                                    class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 shadow-sm cursor-pointer"
                                     data-carousel-next>
                                     <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -240,7 +240,7 @@
                             <div class="flex space-x-2">
                                 @foreach ($reviews as $i => $review)
                                     <button type="button"
-                                        class="w-2 h-2 rounded-full {{ $i === 0 ? 'bg-blue-600' : 'bg-gray-300' }}"
+                                        class="w-2 h-2 rounded-full {{ $i === 0 ? 'bg-blue-600' : 'bg-gray-300' }} cursor-pointer"
                                         aria-current="{{ $i === 0 ? 'true' : 'false' }}"
                                         aria-label="Slide {{ $i + 1 }}"
                                         data-carousel-slide-to="{{ $i }}">

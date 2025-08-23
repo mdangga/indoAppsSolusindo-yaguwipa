@@ -67,10 +67,10 @@
             <input type="file" name="logo" {{ isset($institusi) ? '' : 'required' }}
                 class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" />
             <small class="text-gray-500">PNG, JPG, JPEG, WEBP (Max. 2MB)</small>
-            @if (isset($institusi) && $institusi->image_path)
+            @if (isset($institusi) && $institusi->profile_path)
                 <p class="mt-2 text-sm text-gray-500">
                     Gambar saat ini:
-                    <a href="{{ asset('storage/' . $institusi->image_path) }}" target="_blank"
+                    <a href="{{ asset('storage/' . $institusi->profile_path) }}" target="_blank"
                         class="text-blue-600 underline">
                         Lihat Gambar
                     </a>

@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Donasi;
+use App\Notifications\StructNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 
 class XenditWebhookController extends Controller
 {
@@ -25,7 +28,7 @@ class XenditWebhookController extends Controller
             if ($donasi) {
                 // Update status donasi
                 if (in_array($status, ['PAID', 'SETTLED'])) {
-                    $donasi->update(['status' => 'approved']);
+                    $donasi->update(['status' => 'approved', 'approved_at' => now()]);
                 } elseif (in_array($status, ['EXPIRED', 'FAILED', 'VOIDED'])) {
                     $donasi->update(['status' => 'rejected']);
                 }
@@ -42,7 +45,15 @@ class XenditWebhookController extends Controller
                     ]);
                 }
             }
+
+            if ($donasi->User) {
+                $donasi->User->notify(new StructNotification($donasi));
+            } else {
+                Notification::route('mail', $donasi->email)
+                    ->notify(new StructNotification($donasi));
+            }
         }
+
 
         return response()->json(['message' => 'Webhook processed'], 200);
     }

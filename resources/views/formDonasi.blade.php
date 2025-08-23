@@ -23,6 +23,47 @@
     $hoverBg = $colorMap[$randomBg];
 
     $profilePath = optional($user)->profile_path;
+
+    // Get admin fee configuration for frontend
+    $adminFeeConfig = [
+        'enabled' => config('xendit.settings.admin_fee.enabled', true),
+        'type' => config('xendit.settings.admin_fee.type', 'FIXED'),
+        'fixed_amount' => config('xendit.settings.admin_fee.fixed_amount', 2500),
+        'value' => config('xendit.settings.admin_fee.value', 2.5),
+        'minimum_fee' => config('xendit.settings.admin_fee.minimum_fee', 1000),
+        'maximum_fee' => config('xendit.settings.admin_fee.maximum_fee', 50000),
+        'rounding' => [
+            'enabled' => config('xendit.fee_calculation.rounding.enabled', true),
+            'precision' => config('xendit.fee_calculation.rounding.precision', 100),
+        ],
+    ];
+
+    function calculateAdminFee(float $amount): float
+    {
+        $feeConfig = config('xendit.settings.admin_fee');
+
+        if (!$feeConfig['enabled']) {
+            return 0;
+        }
+
+        if ($feeConfig['type'] === 'FIXED') {
+            $fee = $feeConfig['fixed_amount'];
+        } else {
+            $fee = $amount * ($feeConfig['value'] / 100);
+        }
+
+        // Apply minimum and maximum limits
+        $fee = max($fee, $feeConfig['minimum_fee']);
+        $fee = min($fee, $feeConfig['maximum_fee']);
+
+        // Rounding
+        if (config('xendit.fee_calculation.rounding.enabled')) {
+            $precision = config('xendit.fee_calculation.rounding.precision', 100);
+            $fee = round($fee / $precision) * $precision;
+        }
+
+        return (float) $fee;
+    }
 @endphp
 
 <!DOCTYPE html>
@@ -584,6 +625,9 @@
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
     <script>
+        // Admin fee configuration from PHP
+        const adminFeeConfig = @json($adminFeeConfig);
+
         // Add this JavaScript code to replace the existing script section in your HTML
         const user = @json($user);
 
@@ -600,6 +644,52 @@
             3: document.getElementById('step3')
         };
 
+        // Function to calculate admin fee (JavaScript version of your PHP function)
+        function calculateAdminFee(amount) {
+            if (!adminFeeConfig.enabled) {
+                return 0;
+            }
+
+            let fee = 0;
+
+            if (adminFeeConfig.type === 'FIXED') {
+                fee = adminFeeConfig.fixed_amount;
+            } else if (adminFeeConfig.type === 'PERCENTAGE') {
+                fee = amount * (adminFeeConfig.value / 100);
+            }
+
+            // Apply minimum and maximum limits
+            fee = Math.max(fee, adminFeeConfig.minimum_fee);
+            fee = Math.min(fee, adminFeeConfig.maximum_fee);
+
+            // Apply rounding if enabled
+            if (adminFeeConfig.rounding.enabled) {
+                const precision = adminFeeConfig.rounding.precision;
+                fee = Math.round(fee / precision) * precision;
+            }
+
+            return Math.floor(fee);
+        }
+
+        // Function to calculate total with admin fee
+        function calculateTotalWithAdminFee(donationAmount) {
+            if (selectedDonationType !== 'dana') {
+                return {
+                    donationAmount: 0,
+                    adminFee: 0,
+                    totalAmount: 0
+                };
+            }
+
+            const adminFee = calculateAdminFee(donationAmount);
+            const totalAmount = donationAmount + adminFee;
+
+            return {
+                donationAmount: donationAmount,
+                adminFee: adminFee,
+                totalAmount: totalAmount
+            };
+        }
 
         // Update stepper visual state
         function updateStepper() {
@@ -682,7 +772,6 @@
             }
         }
 
-
         // Update mobile stepper
         function updateMobileStepper() {
             const stepLabel = document.getElementById('step-label');
@@ -720,12 +809,66 @@
             return parseInt(str.replace(/\./g, '')) || 0;
         }
 
-        // Update total donation display
+        // Function to show donation breakdown with admin fee
+        function updateDonationBreakdown(calculation) {
+            const totalDonationSection = document.getElementById('total-donation-section');
+            if (!totalDonationSection || selectedDonationType !== 'dana') {
+                return;
+            }
+
+            // Check if breakdown already exists
+            let breakdownElement = document.getElementById('donation-breakdown');
+
+            if (!breakdownElement && calculation.donationAmount > 0) {
+                // Create breakdown element
+                breakdownElement = document.createElement('div');
+                breakdownElement.id = 'donation-breakdown';
+                breakdownElement.className = 'mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200 text-sm';
+
+                // Insert after the total donation display
+                totalDonationSection.appendChild(breakdownElement);
+            }
+
+            if (breakdownElement) {
+                if (calculation.donationAmount > 0) {
+                    breakdownElement.innerHTML = `
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-gray-600">
+                            <span>Donasi:</span>
+                            <span>Rp ${formatNumber(calculation.donationAmount)}</span>
+                        </div>
+                        ${calculation.adminFee > 0 ? `
+                            <div class="flex justify-between text-gray-600">
+                                <span>Biaya Admin:</span>
+                                <span>Rp ${formatNumber(calculation.adminFee)}</span>
+                            </div>
+                            <hr class="border-gray-300">
+                            <div class="flex justify-between font-semibold text-teal-700">
+                                <span>Total Bayar:</span>
+                                <span>Rp ${formatNumber(calculation.totalAmount)}</span>
+                            </div>
+                            ` : ''}
+                    </div>
+                `;
+                    breakdownElement.classList.remove('hidden');
+                } else {
+                    breakdownElement.classList.add('hidden');
+                }
+            }
+        }
+
+        // Update total donation display with admin fee
         function updateTotalDonation(amount) {
+            const calculation = calculateTotalWithAdminFee(amount);
+
+            // Update the main total display
             const totalDonationElement = document.getElementById('totalDonation');
             if (totalDonationElement) {
-                totalDonationElement.textContent = 'Rp ' + formatNumber(amount);
+                totalDonationElement.textContent = 'Rp ' + formatNumber(calculation.totalAmount);
             }
+
+            // Update or create breakdown display
+            updateDonationBreakdown(calculation);
         }
 
         // Also modify the showStep function to call updateBarangListInStep2 when showing step 2
@@ -752,6 +895,7 @@
                 setupNominalDisplayListener();
             }
         }
+
         // Go to specific step (for edit buttons)
         function goToStep(step) {
             showStep(step);
@@ -777,7 +921,7 @@
             }
         }
 
-        // Handle nominal display input change
+        // Handle nominal display input change with admin fee calculation
         function handleNominalDisplayChange(e) {
             let value = e.target.value;
 
@@ -790,7 +934,7 @@
                 // Update donation amount
                 donationAmount = numericValue;
 
-                // Update total donation display
+                // Update total donation display with admin fee
                 updateTotalDonation(numericValue);
 
                 // Update the original nominal input in step 1 as well
@@ -828,8 +972,10 @@
                 if (nominalDisplay) {
                     nominalDisplay.value = donationAmount > 0 ? formatNumber(donationAmount) : '';
                 }
-                // Update total donation
+
+                // Update total donation with admin fee calculation
                 updateTotalDonation(donationAmount);
+
                 // Hide barang summary
                 hideBarangSummaryInStep3();
 
@@ -878,49 +1024,49 @@
 
             // Build HTML content
             let summaryHTML = `
-        <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
-            <i class="fas fa-box mr-2 text-teal-600"></i>
-            Ringkasan Barang Donasi (${barangForm.items.length} item)
-        </h3>
-        <div class="space-y-2 max-h-40 overflow-y-auto">
-    `;
+    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+        <i class="fas fa-box mr-2 text-teal-600"></i>
+        Ringkasan Barang Donasi (${barangForm.items.length} item)
+    </h3>
+    <div class="space-y-2 max-h-40 overflow-y-auto">
+`;
 
             barangForm.items.forEach((item, index) => {
                 const kondisiBadgeClass = item.kondisi_barang === 'baru' ?
                     'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800';
 
                 summaryHTML += `
-            <div class="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
-                <div class="flex items-center space-x-3 flex-1">
-                    <span class="inline-flex items-center justify-center w-6 h-6 bg-teal-100 text-teal-800 text-xs font-semibold rounded-full">
-                        ${index + 1}
-                    </span>
-                    <div class="flex-1">
-                        <p class="font-medium text-gray-900 text-sm">${item.nama_barang}</p>
-                        <div class="flex items-center space-x-3 text-xs text-gray-600 mt-1">
-                            <span>Jumlah: ${item.jumlah_barang || 1}</span>
-                            <span class="px-2 py-1 text-xs font-medium rounded-full ${kondisiBadgeClass}">
-                                ${item.kondisi_barang.charAt(0).toUpperCase() + item.kondisi_barang.slice(1)}
-                            </span>
-                        </div>
-                        ${item.deskripsi_barang ? `<p class="text-xs text-gray-500 mt-1">${item.deskripsi_barang.substring(0, 50)}${item.deskripsi_barang.length > 50 ? '...' : ''}</p>` : ''}
+        <div class="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
+            <div class="flex items-center space-x-3 flex-1">
+                <span class="inline-flex items-center justify-center w-6 h-6 bg-teal-100 text-teal-800 text-xs font-semibold rounded-full">
+                    ${index + 1}
+                </span>
+                <div class="flex-1">
+                    <p class="font-medium text-gray-900 text-sm">${item.nama_barang}</p>
+                    <div class="flex items-center space-x-3 text-xs text-gray-600 mt-1">
+                        <span>Jumlah: ${item.jumlah_barang || 1}</span>
+                        <span class="px-2 py-1 text-xs font-medium rounded-full ${kondisiBadgeClass}">
+                            ${item.kondisi_barang.charAt(0).toUpperCase() + item.kondisi_barang.slice(1)}
+                        </span>
                     </div>
+                    ${item.deskripsi_barang ? `<p class="text-xs text-gray-500 mt-1">${item.deskripsi_barang.substring(0, 50)}${item.deskripsi_barang.length > 50 ? '...' : ''}</p>` : ''}
                 </div>
-                <button type="button" onclick="editBarangFromStep3()" class="text-teal-600 hover:text-teal-700 text-sm">
-                    <i class="fas fa-edit"></i>
-                </button>
             </div>
-        `;
-            });
-
-            summaryHTML += `
-        </div>
-        <div class="mt-3 text-center">
-            <button type="button" onclick="goToStep(1)" class="text-teal-600 hover:text-teal-700 text-sm font-medium">
-                <i class="fas fa-edit mr-1"></i> Edit Daftar Barang
+            <button type="button" onclick="editBarangFromStep3()" class="text-teal-600 hover:text-teal-700 text-sm">
+                <i class="fas fa-edit"></i>
             </button>
         </div>
     `;
+            });
+
+            summaryHTML += `
+    </div>
+    <div class="mt-3 text-center">
+        <button type="button" onclick="goToStep(1)" class="text-teal-600 hover:text-teal-700 text-sm font-medium">
+            <i class="fas fa-edit mr-1"></i> Edit Daftar Barang
+        </button>
+    </div>
+`;
 
             barangSummary.innerHTML = summaryHTML;
             barangSummary.classList.remove('hidden');
@@ -1005,6 +1151,11 @@
                 const nominal = parseInt(this.getAttribute('data-nominal'));
                 nominalInput.value = nominal;
                 donationAmount = nominal;
+
+                // Update total if we're in step 3
+                if (currentStep === 3) {
+                    updateTotalDonation(donationAmount);
+                }
             });
         });
 
@@ -1015,9 +1166,12 @@
                 btn.classList.add('border-gray-200');
             });
             donationAmount = parseInt(this.value) || 0;
+
+            // Update total if we're in step 3
+            if (currentStep === 3) {
+                updateTotalDonation(donationAmount);
+            }
         });
-
-
 
         // Update handlePaymentMethodsVisibility function
         function handlePaymentMethodsVisibility() {
@@ -1030,9 +1184,8 @@
 
                 const title2 = document.getElementById('title-step2');
                 const desc2 = document.getElementById('desc-step2');
-                title2.textContent = 'Informasi Penyerahan Barang atau Jasa';
-                desc2.textContent = 'Silakan isi data diri di halaman selanjutnya dengan benar';
-
+                if (title2) title2.textContent = 'Informasi Penyerahan Barang atau Jasa';
+                if (desc2) desc2.textContent = 'Silakan isi data diri di halaman selanjutnya dengan benar';
             }
         }
 
@@ -1057,11 +1210,22 @@
                 if (!barangForm || barangForm.items.length === 0) {
                     isValid = false;
                     showAlert('Mohon tambahkan minimal satu barang untuk donasi');
+                    return false;
+                }
+
+                // Validate each item
+                for (let i = 0; i < barangForm.items.length; i++) {
+                    const item = barangForm.items[i];
+                    if (!item.nama_barang || !item.kondisi_barang || !item.deskripsi_barang) {
+                        isValid = false;
+                        showAlert(`Barang ke-${i + 1} belum lengkap. Mohon periksa kembali.`);
+                        break;
+                    }
                 }
             } else if (donationType.value === 'jasa') {
                 const jenisJasa = document.querySelector('[name="jenis_jasa"]');
-                const deskripsiJasa = document.querySelector('[name="deskripsi_jasa"]');
-                if (!jenisJasa.value || !deskripsiJasa.value.trim()) {
+                const durasiJasa = document.querySelector('[name="durasi_jasa"]');
+                if (!jenisJasa.value || !durasiJasa.value.trim()) {
                     isValid = false;
                     showAlert('Mohon lengkapi data donasi jasa');
                 }
@@ -1070,6 +1234,9 @@
             return isValid;
         }
 
+        function validateStep2() {
+            return true; // Step 2 doesn't need validation for now
+        }
 
         function validateStep3() {
             const nama = document.querySelector('[name="nama"]');
@@ -1097,7 +1264,6 @@
                     }
                     return false;
                 }
-
             } else if (selectedDonationType === 'barang') {
                 const barangForm = window.donasiBarangFormInstance;
                 if (!barangForm || barangForm.items.length === 0) {
@@ -1155,13 +1321,36 @@
             }
         });
 
-        // Add this function to prepare form data before submission
+        // Add this function to prepare form data before submission with admin fee
         function prepareFormData() {
             const form = document.getElementById('donationForm');
 
             // Remove existing hidden inputs for barang to avoid duplicates
             const existingBarangInputs = form.querySelectorAll('input[name^="DonasiBarang["]');
             existingBarangInputs.forEach(input => input.remove());
+
+            // Remove existing admin fee inputs
+            const existingAdminFeeInputs = form.querySelectorAll('input[name="admin_fee"], input[name="total_amount"]');
+            existingAdminFeeInputs.forEach(input => input.remove());
+
+            // If donation type is dana, add admin fee information
+            if (selectedDonationType === 'dana' && donationAmount > 0) {
+                const calculation = calculateTotalWithAdminFee(donationAmount);
+
+                // Add admin fee as hidden input
+                const adminFeeInput = document.createElement('input');
+                adminFeeInput.type = 'hidden';
+                adminFeeInput.name = 'admin_fee';
+                adminFeeInput.value = calculation.adminFee;
+                form.appendChild(adminFeeInput);
+
+                // Add total amount as hidden input
+                const totalAmountInput = document.createElement('input');
+                totalAmountInput.type = 'hidden';
+                totalAmountInput.name = 'total_amount';
+                totalAmountInput.value = calculation.totalAmount;
+                form.appendChild(totalAmountInput);
+            }
 
             // If donation type is barang, add items to form data
             if (selectedDonationType === 'barang') {
@@ -1219,52 +1408,7 @@
             }
         });
 
-        // Update validateStep1 for better barang validation
-        function validateStep1() {
-            let isValid = true;
-
-            // Check donation type
-            const donationType = document.querySelector('input[name="jenis_donasi"]:checked');
-
-            // Validate donation specific fields
-            if (donationType.value === 'dana') {
-                const nominal = document.querySelector('[name="nominal"]');
-                if (!nominal.value || nominal.value < 10000) {
-                    isValid = false;
-                    showAlert('Mohon masukkan nominal donasi minimal Rp 10.000');
-                    nominal.focus();
-                }
-            } else if (donationType.value === 'barang') {
-                // Untuk donasi barang, validasi berdasarkan items yang sudah ditambahkan
-                const barangForm = window.donasiBarangFormInstance;
-                if (!barangForm || barangForm.items.length === 0) {
-                    isValid = false;
-                    showAlert('Mohon tambahkan minimal satu barang untuk donasi');
-                    return false;
-                }
-
-                // Validate each item
-                for (let i = 0; i < barangForm.items.length; i++) {
-                    const item = barangForm.items[i];
-                    if (!item.nama_barang || !item.kondisi_barang || !item.deskripsi_barang) {
-                        isValid = false;
-                        showAlert(`Barang ke-${i + 1} belum lengkap. Mohon periksa kembali.`);
-                        break;
-                    }
-                }
-            } else if (donationType.value === 'jasa') {
-                const jenisJasa = document.querySelector('[name="jenis_jasa"]');
-                const durasiJasa = document.querySelector('[name="durasi_jasa"]');
-                if (!jenisJasa.value || !durasiJasa.value.trim()) {
-                    isValid = false;
-                    showAlert('Mohon lengkapi data donasi jasa');
-                }
-            }
-
-            return isValid;
-        }
-
-        // Also update the prevStep handler to handle the skip logic
+        // Update the prevStep handler to handle the skip logic
         document.getElementById('prevStep').addEventListener('click', function() {
             if (currentStep === 1) {
                 window.location.href = "{{ url()->previous() }}";
@@ -1301,18 +1445,16 @@
             alert.classList.add('-translate-y-full', 'opacity-0');
         }
 
-        // Initialize
+        
         showStep(1);
         handlePaymentMethodsVisibility();
 
-        // Show default donation section
         const defaultDonationType = document.querySelector('input[name="jenis_donasi"]:checked');
 
         if (defaultDonationType && donationSections[defaultDonationType.value]) {
             donationSections[defaultDonationType.value].classList.remove('hidden');
             selectedDonationType = defaultDonationType.value;
         }
-
 
         // Enhanced donasiBarangForm function
         function donasiBarangForm() {
@@ -1346,7 +1488,6 @@
 
                     // Reset form
                     this.resetForm();
-
 
                     // Scroll ke atas untuk melihat item yang ditambahkan
                     document.querySelector('#donasi-barang').scrollIntoView({

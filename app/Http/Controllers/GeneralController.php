@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Berita;
-use App\Models\Donasi;
 use App\Models\Gallery;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\KerjaSama;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Models\Institusi;
+use App\Models\Mitra;
 use App\Models\Review;
+use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 
 class GeneralController extends Controller
 {
@@ -50,13 +49,23 @@ class GeneralController extends Controller
         return view('profiles');
     }
 
-    public function testing($id)
-    {
+    public function testing($id) {}
 
-    }
-    public function mitra()
+    public function partner()
     {
-        return view('partners');
+        $mitra = Cache::remember('mitra_all', 60, function () {
+            return User::where('role', 'mitra')
+                ->select('nama', 'profile_path')
+                ->get();
+        });
+
+        $institusi = Cache::remember('institusi_all', 60, function () {
+            return Institusi::select('nama', 'profile_path')->get();
+        });
+
+        $partners = $mitra->concat($institusi)->sortBy('nama')->values();
+        // dd($partners);
+        return view('partners', compact('partners'));
     }
 
     public function teams()

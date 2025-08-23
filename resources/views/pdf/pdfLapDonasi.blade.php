@@ -1,7 +1,15 @@
 <!DOCTYPE html>
 <html lang="id">
 @php
-    \Carbon\Carbon::setLocale('id');
+    use Carbon\Carbon;
+    Carbon::setLocale('id');
+
+    // Helper bulan romawi
+    function bulanRomawi($bulan)
+    {
+        $romawi = [1 => 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+        return $romawi[$bulan] ?? '';
+    }
 @endphp
 
 <head>
@@ -17,10 +25,6 @@
             color: #000;
         }
 
-        .capitalized {
-            text-transform: capitalize;
-        }
-
         .watermark-container {
             position: fixed;
             top: 50%;
@@ -31,10 +35,17 @@
             pointer-events: none;
         }
 
+        .watermark-logo {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* KOP SURAT */
         .kop-container {
             border-bottom: 2px solid #000;
             padding-bottom: 10px;
-            margin: 0 25px;
+            margin-left: 25px;
+            margin-right: 25px;
         }
 
         .kop-table {
@@ -72,6 +83,7 @@
             line-height: 1.4;
         }
 
+        /* KONTEN SURAT */
         .document-content {
             padding: 0 25px;
         }
@@ -86,7 +98,13 @@
 
         .document-meta td {
             padding: 2px 5px;
+            /* border: 2px solid black; */
             vertical-align: top;
+            text-align: left;
+        }
+
+        .document-meta td:nth-child(1) {
+            white-space: nowrap;
         }
 
         .document-body p {
@@ -96,7 +114,7 @@
 
         .ttd {
             width: 100%;
-            margin-top: 32px;
+            margin-top: 40px;
         }
 
         .ttd td {
@@ -146,17 +164,17 @@
                 <td style="width: 15%;">Nomor</td>
                 <td style="width: 2%;">:</td>
                 <td style="width: 53%;">
-                    {{ sprintf('%03d', $donasi->id_donasi) }}/LAPORAN-DONASI/{{ ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'][date('n', strtotime($donasi->created_at))] }}/{{ date('Y', strtotime($donasi->created_at)) }}
+                    {{ sprintf('%03d', $donasi->id_donasi) }}/LAPORAN-DONASI/{{ bulanRomawi($donasi->created_at->month) }}/{{ $donasi->created_at->year }}
                 </td>
                 <td style="width: 30%; text-align: right; white-space: nowrap;">
-                    {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}
+                    {{ $donasi->approved_at ? \Carbon\Carbon::parse($donasi->approved_at)->setTimezone('Asia/Makassar')->translatedFormat('j F Y') : '-' }}
                 </td>
             </tr>
             <tr>
                 <td>Lampiran</td>
                 <td>:</td>
                 <td>
-                    @if (strtolower($donasi->JenisDonasi->nama ?? '') === 'barang' && !empty($donasi->DonasiBarang))
+                    @if (strtolower($donasi->JenisDonasi->nama ?? '') === 'barang' && $donasi->DonasiBarang->isNotEmpty())
                         1 (satu)
                     @else
                         -
@@ -168,7 +186,7 @@
 
         <p class="document-title">LAPORAN DONASI</p>
 
-        <table class="document-meta" style="width: 80%; margin-bottom: 15px; text-indent: 30px">
+        <table class="document-meta" style="width: 80%; margin-bottom: 15px; margin-left: 30px">
             <tr>
                 <td>Nama Donatur</td>
                 <td>:</td>
@@ -178,7 +196,7 @@
                 <td>Tanggal Donasi</td>
                 <td>:</td>
                 <td>
-                    {{ \Carbon\Carbon::parse($donasi->created_at)->translatedFormat('j F Y') }}
+                    {{ $donasi->created_at ? \Carbon\Carbon::parse($donasi->created_at)->setTimezone('Asia/Makassar')->translatedFormat('j F Y') : '-' }}
                 </td>
             </tr>
             <tr>
@@ -210,12 +228,6 @@
             oleh {{ $site['yayasanProfile']->nama_yayasan }} dari para donatur yang telah berpartisipasi.
         </p>
 
-        {{-- <p style="text-indent: 30px;">
-            Donasi ini dilaksanakan pada periode
-            {{ \Carbon\Carbon::parse($donasi->tanggal_mulai)->translatedFormat('j F Y') }} sampai dengan
-            {{ \Carbon\Carbon::parse($donasi->tanggal_selesai)->translatedFormat('j F Y') }}.
-        </p> --}}
-
         <p style="text-indent: 30px;">
             Status donasi saat ini adalah <strong>{{ ucfirst($donasi->status) }}</strong>
             @if ($donasi->status !== 'approved' && !empty($donasi->alasan))
@@ -240,7 +252,13 @@
         <table class="ttd">
             <tr>
                 <td width="60%"></td>
-                <td>
+                <td style="text-align: left;">
+                    <p>{{ $site['yayasanProfile']->kota ?? 'Denpasar' }},
+                        {{ $donasi->approved_at
+                            ? \Carbon\Carbon::parse($donasi->approved_at)->setTimezone('Asia/Makassar')->translatedFormat('j F Y')
+                            : '-' }}
+                        WITA
+                    </p>
                     <p>Hormat kami,</p>
                     <br><br><br>
                     <p><strong>Pimpinan {{ $site['yayasanProfile']->nama_yayasan }}</strong></p>

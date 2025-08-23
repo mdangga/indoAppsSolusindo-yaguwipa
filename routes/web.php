@@ -45,11 +45,8 @@ Route::get('/berita-dan-kegiatan/show-all/keyword/{keyword}', [BeritaController:
 // gallery
 Route::get('/gallery/show-all', [GalleryController::class, 'show'])->name('beranda.gallery');
 
-// teams
-Route::get('/teams', [GeneralController::class, 'teams'])->name('beranda.teams'); //perbaiki
-
 // partners
-Route::get('/mitra', [GeneralController::class, 'mitra'])->name('beranda.mitra');
+Route::get('/partners', [GeneralController::class, 'partner'])->name('beranda.mitra');
 
 // programs
 Route::get('/program/show-all', [ProgramController::class, 'show'])->name('beranda.program');
@@ -65,14 +62,25 @@ Route::get('/show-pdf/{filePath}', [PublikasiController::class, 'showPdf'])->whe
 Route::post('/download-file/{id}', [PublikasiController::class, 'downloadFile'])->name('file.Download');
 
 // notifikasi
-Route::get('/notifications/read/{id}', [NotificationController::class, 'bacaSatuNotif'])->name('notifications.read');
-Route::post('/notifications/read-all', [NotificationController::class, 'bacaSemuaNotif'])->name('notifications.readAll');
-Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
 
 // donasi
 Route::get('/donasi/create/{id_campaign}', [DonasiController::class, 'show'])->name('form.donasi');
 Route::post('/donasi', [DonasiController::class, 'store'])->name('donasi.store');
+Route::get('/guest/show/detail-donasi/{payment_id}', [DonasiController::class, 'showDetailDonasiGuest'])->name('guest-donasi.detail');
 
+// user
+Route::middleware(['auth'])->group(function (){
+    // notifikasi
+    Route::prefix('notification')->group(function () {
+        Route::get('/read/{id}', [NotificationController::class, 'bacaSatuNotif'])->name('notifications.read');
+        Route::post('/read-all', [NotificationController::class, 'bacaSemuaNotif'])->name('notifications.readAll');
+        Route::get('/', [NotificationController::class, 'index'])->name('notifications.index');
+    });
+    
+    // detail-donasi
+    Route::get('donasi/show/detail/{id}', [PdfController::class, 'detailDonasi'])->name('detailDonasi.pdf');
+
+});
 // admin
 Route::middleware(['auth', 'auth.role:admin'])->prefix('admin')->group(function () {
     // general-setting
@@ -280,7 +288,7 @@ Route::middleware(['auth', 'auth.role:admin'])->prefix('admin')->group(function 
 
 // mitra-dan-donatur 
 Route::middleware(['auth', 'auth.role:mitra,donatur'])->prefix('user')->group(function () {
-    // register mitra
+    // register-mitra
     Route::prefix('mitra/register')->group(function () {
         Route::get('/create', [UserController::class, 'showJoinMitra'])->name('mitra.join');
         Route::post('/{id}', [UserController::class, 'addDataMitra'])->name('add.dataMitra');
@@ -297,7 +305,7 @@ Route::middleware(['auth', 'auth.role:mitra,donatur'])->prefix('user')->group(fu
     });
 
 
-    // edit profile
+    // edit-profile
     Route::prefix('edit-profile')->group(function () {
         Route::get('/', [UserController::class, 'showEditProfile'])->name('user.edit-profile');
         Route::put('/photo', [UserController::class, 'updatePhoto'])->name('edit-profile.photo');
@@ -309,7 +317,7 @@ Route::middleware(['auth', 'auth.role:mitra,donatur'])->prefix('user')->group(fu
     });
 
     // detail-donasi
-    Route::get('/detail-donasi/{id}', [DonasiController::class, 'showDetailDonasi'])->name('user-donasi.detail');
+    Route::get('/detail-donasi/{id}', [DonasiController::class, 'showDetailDonasiUser'])->name('user-donasi.detail');
 
     // daftar-donasi
     Route::get('/daftarDonasi', [CampaignController::class, 'showUserCampaign'])->name('daftar.donasi');
@@ -336,7 +344,6 @@ Route::middleware(['auth', 'auth.role:mitra,admin'])->group(function () {
     // kerja-sama
     Route::prefix('kerja-sama')->group(function () {
         Route::get('/kerja-sama/file/{id}', [fileController::class, 'showFileKerjaSama'])->name('kerja-sama.file.show');
-        // Route::get('/kerja-sama/file/{id}/download', [FileKerjaSamaController::class, 'download'])->name('kerja-sama.file.download');
         Route::get('/zip/download-file/{id}/{nama}', [PdfController::class, 'downloadZipStream'])->name('download.zip');
     });
 });

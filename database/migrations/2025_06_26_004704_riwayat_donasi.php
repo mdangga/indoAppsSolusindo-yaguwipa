@@ -41,12 +41,12 @@ return new class extends Migration
             $table->string('email');
             $table->string('alasan')->nullable();
             $table->text('pesan')->nullable();
-
             $table->enum('status', ['approved', 'pending', 'rejected'])->default('pending');
             $table->boolean('anonim');
             $table->unsignedBigInteger('id_user')->nullable();
             $table->unsignedBigInteger('id_campaign');
             $table->unsignedBigInteger('id_jenis_donasi');
+            $table->datetime('approved_at')->nullable();
             $table->timestamps();
 
             $table->foreign('id_user')->references('id_user')->on('users');

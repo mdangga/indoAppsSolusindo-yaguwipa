@@ -15,7 +15,7 @@ class Institusi extends Model
         'nama',
         'alamat',
         'website',
-        'image_path',
+        'profile_path',
         'status',
     ];
 
@@ -37,7 +37,7 @@ class Institusi extends Model
             $namaFileLogo = 'img/institusi/' . uniqid() . '.webp';
             $logoWebp = Image::read($logo)->toWebp(80);
             Storage::disk('public')->put($namaFileLogo, $logoWebp);
-            $institusiData['image_path'] = $namaFileLogo;
+            $institusiData['profile_path'] = $namaFileLogo;
         }
 
         return self::create($institusiData);
