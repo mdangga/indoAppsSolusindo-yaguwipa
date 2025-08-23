@@ -29,6 +29,7 @@ return new class extends Migration
             $table->id('id_review');
             $table->integer('rating')->nullable()->default(null);
             $table->string('review');
+            $table->enum('status', ['show', 'hide'])->default('hide');
             $table->unsignedBigInteger('id_user');
             $table->timestamps();
 

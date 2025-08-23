@@ -25,10 +25,6 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // testing-area
-Route::get('/donasi/success/{slug}', [DonasiController::class, 'success'])->name('donasi.success');
-Route::get('/donasi/failure/{slug}', [DonasiController::class, 'failure'])->name('donasi.failure');
-
-
 Route::get('/testing/{id}', [GeneralController::class, 'testing'])->name('testing');
 
 // route-default beranda
@@ -36,6 +32,7 @@ Route::get('/', [GeneralController::class, 'beranda'])->name('beranda');
 
 // profiles
 Route::get('/tentang-kami', [GeneralController::class, 'tentangKami'])->name('beranda.tentang');
+Route::get('/partners', [GeneralController::class, 'partner'])->name('beranda.partners');
 
 // news-dan-event 
 Route::get('/berita-dan-kegiatan/show-all', [BeritaController::class, 'show'])->name('beranda.berita');
@@ -45,28 +42,25 @@ Route::get('/berita-dan-kegiatan/show-all/keyword/{keyword}', [BeritaController:
 // gallery
 Route::get('/gallery/show-all', [GalleryController::class, 'show'])->name('beranda.gallery');
 
-// partners
-Route::get('/partners', [GeneralController::class, 'partner'])->name('beranda.mitra');
-
 // programs
 Route::get('/program/show-all', [ProgramController::class, 'show'])->name('beranda.program');
 Route::get('/program/kategori/{slug}', [ProgramController::class, 'showSlug'])->name('program.kategori');
 Route::get('/program/{id}', [ProgramController::class, 'showProgam'])->name('beranda.showProgram');
-
-// campaign
-Route::get('/program/campaign/{slug}', [CampaignController::class, 'showSlug'])->name('campaign.slug');
 
 // publikasi
 Route::get('/publikasi/show-all', [PublikasiController::class, 'show'])->name('beranda.publikasi');
 Route::get('/show-pdf/{filePath}', [PublikasiController::class, 'showPdf'])->where('filePath', '.*')->name('publikasi.pdf');
 Route::post('/download-file/{id}', [PublikasiController::class, 'downloadFile'])->name('file.Download');
 
-// notifikasi
+// campaign
+Route::get('/program/campaign/{slug}', [CampaignController::class, 'showSlug'])->name('campaign.slug');
 
 // donasi
 Route::get('/donasi/create/{id_campaign}', [DonasiController::class, 'show'])->name('form.donasi');
 Route::post('/donasi', [DonasiController::class, 'store'])->name('donasi.store');
 Route::get('/guest/show/detail-donasi/{payment_id}', [DonasiController::class, 'showDetailDonasiGuest'])->name('guest-donasi.detail');
+Route::get('/donasi/success/{slug}', [DonasiController::class, 'success'])->name('donasi.success');
+Route::get('/donasi/failure/{slug}', [DonasiController::class, 'failure'])->name('donasi.failure');
 
 // user
 Route::middleware(['auth'])->group(function (){

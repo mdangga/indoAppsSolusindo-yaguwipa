@@ -124,135 +124,137 @@
         </div>
         {{-- galleri end --}}
 
-        <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
-            <div class="max-w-7xl mx-auto">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <!-- Left Content -->
-                    <div class="max-w-xl">
-                        <h2 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-                            Apa Kata Mereka Tentang Yayasan Kami
-                        </h2>
-                        <p class="text-lg text-gray-600 mb-8 leading-relaxed">
-                            Suara hati mitra dan donatur yang bersama mewujudkan
-                            perubahan positif.
-                        </p>
+        @if (!$reviews->isEmpty())
+            <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+                <div class="max-w-7xl mx-auto">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                        <!-- Left Content -->
+                        <div class="max-w-xl">
+                            <h2 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                                Apa Kata Mereka Tentang Yayasan Kami
+                            </h2>
+                            <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                                Suara hati mitra dan donatur yang bersama mewujudkan
+                                perubahan positif.
+                            </p>
 
-                    </div>
+                        </div>
 
-                    <div class="relative w-full max-w-2xl mx-auto" data-carousel="slide" data-carousel-interval="7000">
-                        <!-- Carousel Wrapper -->
-                        <div class="relative overflow-hidden rounded-xl min-h-[320px] md:min-h-[300px]">
-                            @foreach ($reviews as $i => $review)
-                                <div class="{{ $i === 0 ? 'block' : 'hidden' }} duration-700 ease-in-out"
-                                    data-carousel-item="{{ $i === 0 ? 'active' : '' }}">
+                        <div class="relative w-full max-w-2xl mx-auto" data-carousel="slide" data-carousel-interval="7000">
+                            <!-- Carousel Wrapper -->
+                            <div class="relative overflow-hidden rounded-xl min-h-[320px] md:min-h-[300px]">
+                                @foreach ($reviews as $i => $review)
+                                    <div class="{{ $i === 0 ? 'block' : 'hidden' }} duration-700 ease-in-out"
+                                        data-carousel-item="{{ $i === 0 ? 'active' : '' }}">
 
-                                    <!-- Testimonial Card -->
-                                    <div class="bg-gray-50 rounded-2xl p-8 shadow-sm border border-gray-100">
-                                        <!-- Quote -->
-                                        <blockquote class="text-xl text-gray-700 mb-6 leading-relaxed">
-                                            "{{ Str::limit($review->review, 200, '...') }}"
-                                        </blockquote>
+                                        <!-- Testimonial Card -->
+                                        <div class="bg-gray-50 rounded-2xl p-8 shadow-sm border border-gray-100">
+                                            <!-- Quote -->
+                                            <blockquote class="text-xl text-gray-700 mb-6 leading-relaxed">
+                                                "{{ Str::limit($review->review, 200, '...') }}"
+                                            </blockquote>
 
-                                        <!-- Author -->
-                                        <div class="flex items-center">
-                                            @php
-                                                $profilePath = $review->User->profile_path ?? null;
-                                                $src = null;
-                                                $initial = strtoupper(
-                                                    Str::substr(
-                                                        $review->User->username ?? ($review->User->name ?? 'U'),
-                                                        0,
-                                                        1,
-                                                    ),
-                                                );
-                                                if ($profilePath) {
-                                                    if (preg_match('/^https?:\/\//i', $profilePath)) {
-                                                        $src = $profilePath;
-                                                    } else {
-                                                        $normalized = ltrim(
-                                                            preg_replace('#^storage/#', '', $profilePath),
-                                                            '/',
-                                                        );
-                                                        $src = asset('storage/' . $normalized);
+                                            <!-- Author -->
+                                            <div class="flex items-center">
+                                                @php
+                                                    $profilePath = $review->User->profile_path ?? null;
+                                                    $src = null;
+                                                    $initial = strtoupper(
+                                                        Str::substr(
+                                                            $review->User->username ?? ($review->User->name ?? 'U'),
+                                                            0,
+                                                            1,
+                                                        ),
+                                                    );
+                                                    if ($profilePath) {
+                                                        if (preg_match('/^https?:\/\//i', $profilePath)) {
+                                                            $src = $profilePath;
+                                                        } else {
+                                                            $normalized = ltrim(
+                                                                preg_replace('#^storage/#', '', $profilePath),
+                                                                '/',
+                                                            );
+                                                            $src = asset('storage/' . $normalized);
+                                                        }
                                                     }
-                                                }
-                                            @endphp
+                                                @endphp
 
-                                            <div class="flex-shrink-0">
-                                                @if ($src)
-                                                    <img src="{{ $src }}"
-                                                        alt="Foto Profil {{ $review->User->nama ?? 'Pengguna' }}"
-                                                        class="w-12 h-12 rounded-full object-cover border-2 border-gray-300" />
-                                                @else
-                                                    <div
-                                                        class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-semibold text-lg">
-                                                        {{ $initial }}
-                                                    </div>
-                                                @endif
-                                            </div>
-                                            <div class="ml-4">
-                                                <h4 class="font-semibold text-gray-900">
-                                                    {{ $review->User->nama ?? 'Anonim' }}
-                                                    <span
-                                                        class="ml-1 text-gray-400 text-xs">({{ $review->User->role ?? 'Pengguna' }})
-                                                    </span>
-                                                </h4>
-
-                                                <div class="text-yellow-400 mb-2 text-sm sm:text-base">
-                                                    {!! str_repeat('★', $review->rating) !!}
-                                                    {!! str_repeat('☆', 5 - $review->rating) !!}
-                                                    <span
-                                                        class="text-gray-500 text-xs sm:text-sm">({{ $review->rating }}/5)</span>
+                                                <div class="flex-shrink-0">
+                                                    @if ($src)
+                                                        <img src="{{ $src }}"
+                                                            alt="Foto Profil {{ $review->User->nama ?? 'Pengguna' }}"
+                                                            class="w-12 h-12 rounded-full object-cover border-2 border-gray-300" />
+                                                    @else
+                                                        <div
+                                                            class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-semibold text-lg">
+                                                            {{ $initial }}
+                                                        </div>
+                                                    @endif
                                                 </div>
+                                                <div class="ml-4">
+                                                    <h4 class="font-semibold text-gray-900">
+                                                        {{ $review->User->nama ?? 'Anonim' }}
+                                                        <span
+                                                            class="ml-1 text-gray-400 text-xs">({{ $review->User->role ?? 'Pengguna' }})
+                                                        </span>
+                                                    </h4>
 
+                                                    <div class="text-yellow-400 mb-2 text-sm sm:text-base">
+                                                        {!! str_repeat('★', $review->rating) !!}
+                                                        {!! str_repeat('☆', 5 - $review->rating) !!}
+                                                        <span
+                                                            class="text-gray-500 text-xs sm:text-sm">({{ $review->rating }}/5)</span>
+                                                    </div>
+
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endforeach
-                        </div>
-
-                        <!-- Navigation Buttons -->
-                        <div class="flex items-center justify-between ">
-                            <!-- Prev & Next -->
-                            <div class="flex space-x-2">
-                                <button type="button"
-                                    class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 shadow-sm cursor-pointer"
-                                    data-carousel-prev>
-                                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 19l-7-7 7-7" />
-                                    </svg>
-                                </button>
-                                <button type="button"
-                                    class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 shadow-sm cursor-pointer"
-                                    data-carousel-next>
-                                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </button>
-                            </div>
-
-                            <!-- Pagination Dots -->
-                            <div class="flex space-x-2">
-                                @foreach ($reviews as $i => $review)
-                                    <button type="button"
-                                        class="w-2 h-2 rounded-full {{ $i === 0 ? 'bg-blue-600' : 'bg-gray-300' }} cursor-pointer"
-                                        aria-current="{{ $i === 0 ? 'true' : 'false' }}"
-                                        aria-label="Slide {{ $i + 1 }}"
-                                        data-carousel-slide-to="{{ $i }}">
-                                    </button>
                                 @endforeach
                             </div>
-                        </div>
-                    </div>
 
+                            <!-- Navigation Buttons -->
+                            <div class="flex items-center justify-between ">
+                                <!-- Prev & Next -->
+                                <div class="flex space-x-2">
+                                    <button type="button"
+                                        class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 shadow-sm cursor-pointer"
+                                        data-carousel-prev>
+                                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 19l-7-7 7-7" />
+                                        </svg>
+                                    </button>
+                                    <button type="button"
+                                        class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-50 shadow-sm cursor-pointer"
+                                        data-carousel-next>
+                                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <!-- Pagination Dots -->
+                                <div class="flex space-x-2">
+                                    @foreach ($reviews as $i => $review)
+                                        <button type="button"
+                                            class="w-2 h-2 rounded-full {{ $i === 0 ? 'bg-blue-600' : 'bg-gray-300' }} cursor-pointer"
+                                            aria-current="{{ $i === 0 ? 'true' : 'false' }}"
+                                            aria-label="Slide {{ $i + 1 }}"
+                                            data-carousel-slide-to="{{ $i }}">
+                                        </button>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        @endif
 
         {{-- lembaga --}}
         @if (!empty($site['lembaga']) && count($site['lembaga']) > 0)
@@ -268,8 +270,6 @@
                 </div>
             </div>
         @endif
-
-
     </main>
 @endsection
 
