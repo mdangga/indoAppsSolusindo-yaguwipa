@@ -103,7 +103,6 @@ class XenditService
         if ($feeConfig['type'] === 'FIXED') {
             $fee = $feeConfig['fixed_amount'];
         } else {
-            // Percentage calculation
             $fee = $amount * ($feeConfig['value'] / 100);
         }
 

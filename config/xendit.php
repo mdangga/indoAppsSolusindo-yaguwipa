@@ -116,7 +116,7 @@ return [
         'production' => 'https://api.xendit.co',
 
         // Endpoint khusus untuk webhook development
-        'webhook_dev' => env('NGROK_URL') . '/api/xendit-webhook',
+        'webhook_dev' => env('APP_URL') . '/api/xendit-webhook',
     ],
 
     /*

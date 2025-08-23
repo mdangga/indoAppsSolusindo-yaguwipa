@@ -66,6 +66,7 @@ Route::post('/download-file/{id}', [PublikasiController::class, 'downloadFile'])
 // donasi
 Route::get('/donasi/create/{id_campaign}', [DonasiController::class, 'show'])->name('form.donasi');
 Route::post('/donasi', [DonasiController::class, 'store'])->name('donasi.store');
+Route::get('/guest/show/detail-donasi/{payment_id}', [DonasiController::class, 'showDetailDonasiGuest'])->name('guest-donasi.detail');
 
 // user
 Route::middleware(['auth'])->group(function (){
@@ -316,7 +317,7 @@ Route::middleware(['auth', 'auth.role:mitra,donatur'])->prefix('user')->group(fu
     });
 
     // detail-donasi
-    Route::get('/detail-donasi/{id}', [DonasiController::class, 'showDetailDonasi'])->name('user-donasi.detail');
+    Route::get('/detail-donasi/{id}', [DonasiController::class, 'showDetailDonasiUser'])->name('user-donasi.detail');
 
     // daftar-donasi
     Route::get('/daftarDonasi', [CampaignController::class, 'showUserCampaign'])->name('daftar.donasi');
