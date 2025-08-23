@@ -11,24 +11,32 @@ use Yajra\DataTables\Facades\DataTables;
 class GalleryController extends Controller
 {
     // fungsi untuk menampilkan halaman gallery di beranda
-    public function show()
+    public function showVideos()
     {
         $gallery = Gallery::latest()
+            ->where('status', 'show')
+            ->where('kategori', 'video')
+            ->get();
+
+        // dd($gallery);
+        return view('galleryVideo', compact('gallery'));
+    }
+
+    // fungsi untuk menampilkan halaman gallery di beranda
+    public function showPhotos()
+    {
+        $gallery = Gallery::latest()
+            ->where('status', 'show')
+            ->where('kategori', 'foto')
             ->get()
             ->filter(function ($item) {
-                // Jika kategori video, kita lewati pengecekan file lokal
-                if ($item->kategori === 'video') {
-                    return true;
-                }
-
                 // Cek apakah file ada di storage
                 return Storage::disk('public')->exists($item->link);
             });
 
         // dd($gallery);
-        return view('gallery', compact('gallery'));
+        return view('galleryPhoto', compact('gallery'));
     }
-
 
     // fungsi untuk menampilkan halaman photo di admin
     public function indexPhoto()
