@@ -34,7 +34,7 @@ class AuthController extends Controller
                 'regex:/^(?:\+62|62|0)[8][0-9]{7,11}$/'
             ],
             'alamat' => 'required|string',
-            'profile_path' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'profile_path' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ], [
             'no_tlp.regex' => 'Format nomor telepon tidak valid. Gunakan format +62 atau 08 diikuti dengan 7-11 digit angka.',
         ]);
@@ -44,8 +44,8 @@ class AuthController extends Controller
         }
 
         $profilePath = null;
-        if ($request->hasFile('profile')) {
-            $profilePath = $request->file('profile')->store('profiles', 'public');
+        if ($request->hasFile('profile_path')) {
+            $profilePath = $request->file('profile_path')->store('profile_user', 'public');
         }
 
         $user = User::create([

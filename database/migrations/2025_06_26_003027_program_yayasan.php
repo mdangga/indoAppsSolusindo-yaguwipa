@@ -34,7 +34,7 @@ return new class extends Migration
             $table->id('id_institusi');
             $table->string('nama');
             $table->string('alamat');
-            $table->string('image_path');
+            $table->string('profile_path')->nullable();
             $table->enum('status', ['show', 'hide'])->default('show');
             $table->string('website')->nullable();
             $table->timestamps();
