@@ -120,6 +120,10 @@
         .ttd td {
             vertical-align: top;
         }
+
+        .capitalized {
+            text-transform: capitalize;
+        }
     </style>
 </head>
 
@@ -170,12 +174,93 @@
                     {{ $donasi->approved_at ? \Carbon\Carbon::parse($donasi->approved_at)->setTimezone('Asia/Makassar')->translatedFormat('j F Y') : '-' }}
                 </td>
             </tr>
+            @php
+                // Fungsi untuk menghitung jumlah halaman lampiran
+                function hitungJumlahLampiran($donasiBarang, $itemPerHalaman = 29)
+                {
+                    if (empty($donasiBarang) || $donasiBarang->isEmpty()) {
+                        return 0;
+                    }
+
+                    $totalItem = $donasiBarang->count();
+                    $jumlahHalaman = ceil($totalItem / $itemPerHalaman);
+
+                    // Kurangi 1 karena halaman pertama bukan lampiran
+                    return $jumlahHalaman;
+                }
+
+                // Fungsi untuk mengkonversi angka ke kata
+                function angkaKeKata($angka)
+                {
+                    $kata = [
+                        1 => 'satu',
+                        2 => 'dua',
+                        3 => 'tiga',
+                        4 => 'empat',
+                        5 => 'lima',
+                        6 => 'enam',
+                        7 => 'tujuh',
+                        8 => 'delapan',
+                        9 => 'sembilan',
+                        10 => 'sepuluh',
+                        11 => 'sebelas',
+                        12 => 'dua belas',
+                        13 => 'tiga belas',
+                        14 => 'empat belas',
+                        15 => 'lima belas',
+                        16 => 'enam belas',
+                        17 => 'tujuh belas',
+                        18 => 'delapan belas',
+                        19 => 'sembilan belas',
+                        20 => 'dua puluh',
+                    ];
+
+                    if ($angka <= 20) {
+                        return $kata[$angka] ?? (string) $angka;
+                    }
+
+                    if ($angka < 100) {
+                        $puluhan = floor($angka / 10);
+                        $satuan = $angka % 10;
+                        $kataPuluhan = [
+                            2 => 'dua puluh',
+                            3 => 'tiga puluh',
+                            4 => 'empat puluh',
+                            5 => 'lima puluh',
+                            6 => 'enam puluh',
+                            7 => 'tujuh puluh',
+                            8 => 'delapan puluh',
+                            9 => 'sembilan puluh',
+                        ];
+
+                        if ($satuan == 0) {
+                            return $kataPuluhan[$puluhan];
+                        } else {
+                            return $kataPuluhan[$puluhan] . ' ' . $kata[$satuan];
+                        }
+                    }
+
+                    return (string) $angka; // fallback untuk angka > 100
+                }
+
+                // Hitung jumlah lampiran
+                $jumlahLampiran = 0;
+                if (
+                    strtolower($donasi->JenisDonasi->nama ?? '') === 'barang' &&
+                    isset($donasi->DonasiBarang) &&
+                    $donasi->DonasiBarang->isNotEmpty()
+                ) {
+                    $jumlahLampiran = hitungJumlahLampiran($donasi->DonasiBarang);
+                }
+            @endphp
+
+            <!-- Bagian Lampiran yang sudah diperbaiki -->
             <tr>
                 <td>Lampiran</td>
                 <td>:</td>
                 <td>
-                    @if (strtolower($donasi->JenisDonasi->nama ?? '') === 'barang' && $donasi->DonasiBarang->isNotEmpty())
-                        1 (satu)
+                    @if ($jumlahLampiran > 0)
+                        {{ $jumlahLampiran }} ({{ angkaKeKata($jumlahLampiran) }})
                     @else
                         -
                     @endif
