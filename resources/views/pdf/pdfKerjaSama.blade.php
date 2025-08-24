@@ -166,7 +166,7 @@
                 <td style="width: 15%;">Nomor</td>
                 <td style="width: 2%;">:</td>
                 <td style="width: 53%;">
-                    {{ sprintf('%03d', $donasi->id_donasi) }}/LAPORAN-KERJA-SAMA/{{ bulanRomawi($donasi->created_at->month) }}/{{ $donasi->created_at->year }}
+                    {{ sprintf('%03d', $kerjaSama->id_kerja_sama) }}/LAPORAN-KERJA-SAMA/{{ bulanRomawi($kerjaSama->created_at->month) }}/{{ $kerjaSama->created_at->year }}
                 </td>
 
                 <td style="width: 30%; text-align: right; white-space: nowrap;">
@@ -258,7 +258,7 @@
                 <td width="60%"></td>
                 <td style="text-align: left;">
                     <p>{{ $site['yayasanProfile']->kota ?? 'Denpasar' }},
-                        {{ $donasi->approved_at
+                        {{ $tanggal
                             ? \Carbon\Carbon::now()->setTimezone('Asia/Makassar')->translatedFormat('j F Y')
                             : '-' }}
                         WITA

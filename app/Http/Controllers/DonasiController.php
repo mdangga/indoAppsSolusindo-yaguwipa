@@ -106,7 +106,6 @@ class DonasiController extends Controller
 
             if ($request->jenis_donasi == 'dana') {
                 try {
-                    // dd($donasi->Campaign->slug);
                     $xenditService = new XenditService();
                     $invoice = $xenditService->createInvoice(
                         externalId: 'donasi-' . $donasi->id_donasi,

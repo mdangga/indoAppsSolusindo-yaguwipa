@@ -26,21 +26,21 @@ class KerjaSamaDisetujui extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail' , 'database'];
+        return ['database'];
     }
 
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): MailMessage
-    {
-        return (new MailMessage)
-            ->subject('Status kerja Sama Anda: Diterima')
-            ->greeting('Halo ' . $notifiable->nama . '!')
-            ->line('Kami ingin memberitahukan bahwa pengajuan kerja sama Anda dengan ID #' . $this->kerjaSama->id_kerja_sama . ' berjenis ' . $this->kerjaSama->KategoriKerjaSama->nama . ' Untuk program ' . $this->kerjaSama->Program->nama . ' telah diterima.')
-            ->action('Lihat Detail Kerja Sama', route('kerja-sama.detail', $this->kerjaSama->id_kerja_sama))
-            ->line('Terima kasih atas niat baik Anda. Kami menghargai kontribusi Anda dalam mendukung misi kami.');
-    }
+    // public function toMail(object $notifiable): MailMessage
+    // {
+    //     return (new MailMessage)
+    //         ->subject('Status kerja Sama Anda: Diterima')
+    //         ->greeting('Halo ' . $notifiable->nama . '!')
+    //         ->line('Kami ingin memberitahukan bahwa pengajuan kerja sama Anda dengan ID #' . $this->kerjaSama->id_kerja_sama . ' berjenis ' . $this->kerjaSama->KategoriKerjaSama->nama . ' Untuk program ' . $this->kerjaSama->Program->nama . ' telah diterima.')
+    //         ->action('Lihat Detail Kerja Sama', route('kerja-sama.detail', $this->kerjaSama->id_kerja_sama))
+    //         ->line('Terima kasih atas niat baik Anda. Kami menghargai kontribusi Anda dalam mendukung misi kami.');
+    // }
 
     public function toArray($notifiable)
     {

@@ -10,6 +10,7 @@ use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\InstitusiController;
 use App\Http\Controllers\JenisPublikasiController;
 use App\Http\Controllers\KataKotorController;
+use App\Http\Controllers\KategoriKerjaSamaController;
 use App\Http\Controllers\kategoriNewsEventController;
 use App\Http\Controllers\KategoriProgramController;
 use App\Http\Controllers\KerjaSamaController;
@@ -136,6 +137,7 @@ Route::middleware(['auth', 'auth.role:admin'])->prefix('admin')->group(function 
         Route::delete('/destroy/{id}', [KategoriProgramController::class, 'destroy'])->name('kategoriProgram.delete');
     });
 
+
     // program
     Route::prefix('program')->group(function () {
         Route::get('/', [ProgramController::class, 'index'])->name('admin.program');
@@ -231,6 +233,18 @@ Route::middleware(['auth', 'auth.role:admin'])->prefix('admin')->group(function 
     });
 
 
+    // Kategori-kerja-sama
+    Route::prefix('kategori-kerja-sama')->group(function () {
+        Route::get('/', [KategoriKerjaSamaController::class, 'index'])->name('admin.kategoriKerjaSama');
+        Route::get('/datatable', [KategoriKerjaSamaController::class, 'getDataTables'])->name('kategoriKerjaSama.table');
+        Route::get('/create', [KategoriKerjaSamaController::class, 'showFormStore'])->name('kategoriKerjaSama.formStore');
+        Route::post('/', [KategoriKerjaSamaController::class, 'store'])->name('kategoriKerjaSama.store');
+        Route::get('/edit/{id}', [KategoriKerjaSamaController::class, 'showFormEdit'])->name('kategoriKerjaSama.formUpdate');
+        Route::put('/{id}', [KategoriKerjaSamaController::class, 'update'])->name('kategoriKerjaSama.update');
+        Route::delete('/destroy/{id}', [KategoriKerjaSamaController::class, 'destroy'])->name('kategoriKerjaSama.delete');
+    });
+    
+    
     // kerja-sama
     Route::prefix('kerja-sama')->group(function () {
         Route::get('/', [KerjaSamaController::class, 'index'])->name('admin.kerjaSama');
