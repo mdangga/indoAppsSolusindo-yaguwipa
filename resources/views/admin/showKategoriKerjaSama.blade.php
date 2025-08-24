@@ -1,28 +1,23 @@
 @extends('layouts.showAdmin')
 
-@section('title', 'Admin - Galleri Video')
+@section('title', 'Admin - Kategori Kerja Sama')
 
-@section('header', 'Video')
+@section('header', 'Kategori Kerja Sama')
 
 @section('button')
-    @php
-        $kategori = 'video';
-    @endphp
-    <a href="{{ route('gallery.formStore', $kategori) }}"
+    <a href="{{ route('kategoriKerjaSama.formStore') }}"
         class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
         <i class="fas fa-plus w-4 h-4 mr-2"></i>
-        Tambah Gallery
+        Tambah Kategori
     </a>
 @endsection
 
 @section('content')
-    <table id="galleryTable" class="w-full border border-gray-300 ">
+    <table id="kategoriKerjaSamaTable" class="w-full border border-gray-300 ">
         <thead>
             <tr class="text-left">
                 <th>No</th>
-                <th>Caption</th>
-                <th>Thumbnail</th>
-                <th>Status</th>
+                <th>Nama</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -33,11 +28,11 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            let table = $('#galleryTable').DataTable({
+            let table = $('#kategoriKerjaSamaTable').DataTable({
                 processing: false,
                 serverSide: true,
                 autoWidth: false,
-                ajax: '{{ route('galleryVideo.table') }}',
+                ajax: '{{ route('kategoriKerjaSama.table') }}',
                 dom: '<"flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6"<"flex items-center gap-2"l><"flex items-center gap-2"f>>rt<"flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-6"ip>',
                 language: {
 
@@ -75,8 +70,8 @@
                         width: '80px'
                     },
                     {
-                        data: 'alt_text',
-                        name: 'alt_text',
+                        data: 'nama',
+                        name: 'nama',
                         render: function(data, type, row) {
                             return `
                                 <div class="">
@@ -84,60 +79,6 @@
                                 </div>
                             `;
                         }
-                    },
-                    {
-                        data: 'link',
-                        name: 'link',
-                        render: function(data, type, row) {
-                            if (type === 'display') {
-                                if (data && typeof data === 'string') {
-                                    return `
-                    <div class="flex justify-center">
-                        <img src="${data}" alt="Thumbnail"
-                             class="w-32 h-20 object-cover border border-gray-200 shadow-sm rounded"
-                             onerror="this.src='/img/no-image.png'; this.classList.add('opacity-50');" />
-                    </div>
-                `;
-                                }
-
-                                return `
-                <div class="flex justify-center">
-                    <div class="w-32 h-20 bg-gray-100 border border-gray-200 flex items-center justify-center rounded">
-                        <i class="fas fa-image text-gray-400"></i>
-                        <span class="text-xs text-gray-500 ml-1">No Media</span>
-                    </div>
-                </div>
-            `;
-                            }
-
-                            return data;
-                        },
-                        orderable: false,
-                        searchable: false,
-                        width: '150px'
-                    },
-                    {
-                        data: 'status',
-                        name: 'status',
-                        render: function(data, type, row) {
-                            // Handle different status formats
-                            let isPublished = false;
-
-                            if (typeof data === 'string') {
-                                isPublished = data.toLowerCase().includes('published') ||
-                                    data.toLowerCase().includes('aktif') ||
-                                    data.toLowerCase().includes('show');
-                            } else if (typeof data === 'number') {
-                                isPublished = data == 1;
-                            } else if (typeof data === 'boolean') {
-                                isPublished = data;
-                            }
-
-                            return isPublished ?
-                                '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200"><i class="fas fa-eye w-3 h-3 mr-1.5"></i>Show</span>' :
-                                '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200"><i class="fas fa-eye-slash w-3 h-3 mr-1.5"></i>Hidden</span>';
-                        },
-                        width: '100px'
                     },
                     {
                         data: 'aksi',
@@ -190,19 +131,19 @@
             });
 
             // Delete handler
-            $('#galleryTable').on('click', '.deleteBtn', function() {
+            $('#kategoriKerjaSamaTable').on('click', '.deleteBtn', function() {
                 const id = $(this).data('id');
                 const button = $(this);
 
-                if (confirm('Apakah Anda yakin ingin menghapus video ini?')) {
+                if (confirm('Apakah Anda yakin ingin menghapus kategori ini?')) {
                     // Show loading state
                     button.prop('disabled', true)
                         .removeClass('bg-red-500 hover:bg-red-600')
                         .addClass('bg-gray-400 cursor-not-allowed')
                         .html('<i class="fas fa-spinner fa-spin w-3 h-3 mr-1"></i>');
 
-                    fetch(`/admin/gallery/destroy/${id}`, {
-                            method: 'delete', // ubah ke POST
+                    fetch(`/admin/kategori-kerja-sama/destroy/${id}`, {
+                            method: 'delete',
                             headers: {
                                 'Content-Type': 'application/json',
                                 'X-Requested-With': 'XMLHttpRequest',
@@ -213,9 +154,9 @@
                         .then(response => {
                             if (response.redirected || response.ok) {
                                 table.ajax.reload();
-                                showNotification('Video berhasil dihapus!', 'success');
+                                showNotification('Kategori berhasil dihapus!', 'success');
                             } else {
-                                throw new Error('Gagal menghapus video');
+                                throw new Error('Gagal menghapus Kategori');
                             }
                         })
                         .catch(error => {
@@ -230,11 +171,10 @@
                 }
             });
 
-
             // Edit handler
-            $('#galleryTable').on('click', '.editBtn', function() {
+            $('#kategoriKerjaSamaTable').on('click', '.editBtn', function() {
                 const id = $(this).data('id');
-                window.location.href = `/admin/gallery/edit/${id}`;
+                window.location.href = `/admin/kategori-kerja-sama/edit/${id}`;
             });
 
             // Notification system

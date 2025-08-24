@@ -148,7 +148,7 @@
                 const id = $(this).data('id');
                 const button = $(this);
 
-                if (confirm('Apakah Anda yakin ingin menghapus berita ini?')) {
+                if (confirm('Apakah Anda yakin ingin menghapus kategori ini?')) {
                     // Show loading state
                     button.prop('disabled', true)
                         .removeClass('bg-red-500 hover:bg-red-600')
@@ -167,9 +167,9 @@
                         .then(response => {
                             if (response.redirected || response.ok) {
                                 table.ajax.reload();
-                                showNotification('Berita berhasil dihapus!', 'success');
+                                showNotification('Kategori berhasil dihapus!', 'success');
                             } else {
-                                throw new Error('Gagal menghapus berita');
+                                throw new Error('Gagal menghapus kategori');
                             }
                         })
                         .catch(error => {

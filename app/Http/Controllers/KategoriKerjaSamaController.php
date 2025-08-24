@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\KategoriProgram;
+use App\Models\KategoriKerjaSama;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Str;
 
-class KategoriProgramController extends Controller
+class KategoriKerjaSamaController extends Controller
 {
     // fungsi untuk menampilkan halaman kategori program di admin
     public function index()
     {
-        return view('admin.showKategoriProgram');
+        return view('admin.showKategoriKerjaSama');
     }
 
 
@@ -24,14 +23,14 @@ class KategoriProgramController extends Controller
             return abort(403, 'Akses tidak diizinkan');
         }
 
-        $kategori = KategoriProgram::select(['id_kategori_program', 'nama'])->orderBy('updated_at', 'desc');
+        $kategori = KategoriKerjaSama::select(['id_kategori_kerja_sama', 'nama'])->orderBy('updated_at', 'desc');
 
         return DataTables::of($kategori)
             ->addColumn('aksi', function ($row) {
                 return '
                 <div class="flex items-center">
-                <button class="cursor-pointer editBtn bg-blue-500 text-white px-2 py-1 rounded text-sm" data-id="' . e($row->id_kategori_program) . '">Edit</button>
-                <button class="cursor-pointer deleteBtn bg-red-500 text-white px-2 py-1 rounded text-sm ml-2" data-id="' . e($row->id_kategori_program) . '">Hapus</button>
+                <button class="cursor-pointer editBtn bg-blue-500 text-white px-2 py-1 rounded text-sm" data-id="' . e($row->id_kategori_kerja_sama) . '">Edit</button>
+                <button class="cursor-pointer deleteBtn bg-red-500 text-white px-2 py-1 rounded text-sm ml-2" data-id="' . e($row->id_kategori_kerja_sama) . '">Hapus</button>
                 </div>
             ';
             })
@@ -46,15 +45,15 @@ class KategoriProgramController extends Controller
     // fungsi untuk menampilkan form menambahkan data
     public function showFormStore()
     {
-        return view('admin.formKategoriProgram');
+        return view('admin.formKategoriKerjaSama');
     }
 
 
     // fungsi untuk menampilkan form memperbarui data
     public function showFormEdit($id)
     {
-        $kategori = KategoriProgram::findOrFail($id);
-        return view('admin.formKategoriProgram', compact('kategori'));
+        $kategori = kategoriKerjaSama::findOrFail($id);
+        return view('admin.formKategoriKerjaSama', compact('kategori'));
     }
 
 
@@ -62,7 +61,7 @@ class KategoriProgramController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama' => 'required|unique:kategori_program,nama|max:255',
+            'nama' => 'required|unique:kategori_kerja_sama,nama|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -73,21 +72,20 @@ class KategoriProgramController extends Controller
         }
 
         $data = $validator->validate();
-        $data['slug'] = Str::slug($request->nama);
 
-        KategoriProgram::create($data);
+        KategoriKerjaSama::create($data);
 
-        return redirect()->route('admin.kategoriProgram')->with('success', 'Kategori Program berhasil ditambahkan.');
+        return redirect()->route('admin.kategoriKerjaSama')->with('success', 'Kategori Kerja Sama berhasil ditambahkan.');
     }
 
 
     // fungsi untuk memperbarui data lama
     public function update(Request $request, $id)
     {
-        $kategori = KategoriProgram::findOrFail($id);
+        $kategori = KategoriKerjaSama::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
-            'nama' => 'required|unique:kategori_program,nama|max:255',
+            'nama' => 'required|unique:kategori_kerja_sama,nama|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -98,20 +96,19 @@ class KategoriProgramController extends Controller
         }
 
         $data = $validator->validate();
-        $data['slug'] = Str::slug($request->nama);
 
         $kategori->update($data);
 
-        return redirect()->route('admin.kategoriProgram')->with('success', 'Kategori Program berhasil diperbarui.');
+        return redirect()->route('admin.kategoriKerjaSama')->with('success', 'Kategori Kerja Sama berhasil diperbarui.');
     }
 
 
     // fungsi untuk menghapus data
     public function destroy($id)
     {
-        $jenis = KategoriProgram::findOrFail($id);
+        $jenis = KategoriKerjaSama::findOrFail($id);
         $jenis->delete();
 
-        return redirect()->back()->with('success', 'Kategori Program berhasil dihapus.');
+        return redirect()->back()->with('success', 'Kategori Kerja Sama berhasil dihapus.');
     }
 }

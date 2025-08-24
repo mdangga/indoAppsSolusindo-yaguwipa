@@ -32,15 +32,15 @@ class donasiDiterima extends Notification
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): MailMessage
-    {
-        return (new MailMessage)
-            ->subject('Status Donasi Anda: Diterima')
-            ->greeting('Halo ' . $notifiable->nama . '!')
-            ->line('Kami ingin memberitahukan bahwa pengajuan donasi Anda dengan ID #' . $this->donasi->id_donasi . ' berjenis ' . $this->donasi->JenisDonasi->nama . ' telah diterima.')
-            ->action('Lihat Detail Donasi', route('user-donasi.detail', $this->donasi->id_donasi))
-            ->line('Terima kasih atas niat baik Anda. Kami menghargai kontribusi Anda dalam mendukung misi kami.');
-    }
+    // public function toMail(object $notifiable): MailMessage
+    // {
+    //     return (new MailMessage)
+    //         ->subject('Status Donasi Anda: Diterima')
+    //         ->greeting('Halo ' . $notifiable->nama . '!')
+    //         ->line('Kami ingin memberitahukan bahwa pengajuan donasi Anda dengan ID #' . $this->donasi->id_donasi . ' berjenis ' . $this->donasi->JenisDonasi->nama . ' telah diterima.')
+    //         ->action('Lihat Detail Donasi', route('user-donasi.detail', $this->donasi->id_donasi))
+    //         ->line('Terima kasih atas niat baik Anda. Kami menghargai kontribusi Anda dalam mendukung misi kami.');
+    // }
 
     /**
      * Get the array representation of the notification.
