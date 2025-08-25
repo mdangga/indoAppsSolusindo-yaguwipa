@@ -244,8 +244,8 @@ Route::middleware(['auth', 'auth.role:admin'])->prefix('admin')->group(function 
         Route::put('/{id}', [KategoriKerjaSamaController::class, 'update'])->name('kategoriKerjaSama.update');
         Route::delete('/destroy/{id}', [KategoriKerjaSamaController::class, 'destroy'])->name('kategoriKerjaSama.delete');
     });
-    
-    
+
+
     // kerja-sama
     Route::prefix('kerja-sama')->group(function () {
         Route::get('/', [KerjaSamaController::class, 'index'])->name('admin.kerjaSama');
@@ -366,7 +366,7 @@ Route::prefix('review')->group(function () {
 // register
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register.form');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
-
+Route::get('/check-username', [AuthController::class, 'checkUsername'])->name('check.username');
 
 // login
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');

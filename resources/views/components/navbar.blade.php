@@ -214,12 +214,14 @@
                     @endphp
 
                     @if ($profilePath)
-                        <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar" data-dropdown-placement="bottom-end">
+                        <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar"
+                            data-dropdown-placement="bottom-end">
                             <img src="{{ asset('storage/' . $profilePath) }}" alt="Profile"
                                 class="w-12 h-12 rounded-full object-cover border-2 border-gray-100/10 cursor-pointer hover:brightness-90 transition" />
                         </button>
                     @else
-                        <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar" data-dropdown-placement="bottom-end"
+                        <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar"
+                            data-dropdown-placement="bottom-end"
                             class="w-12 h-12 {{ $randomBg }} {{ $hoverBg }} rounded-full text-white flex items-center justify-center font-semibold uppercase select-none transition-colors duration-200 cursor-pointer text-lg">
                             {{ strtoupper(substr($user->username ?? ($user->nama ?? 'U'), 0, 1)) }}
                         </button>
@@ -291,20 +293,22 @@
                             <div
                                 class="absolute top-full mt-2 left-0 bg-white shadow-lg rounded-lg opacity-0 
                                 group-hover:opacity-100 group-hover:visible invisible 
-                                transition duration-200 min-w-[160px]">
+                                transition duration-200 min-w-[160px] overflow-hidden">
+
                                 @foreach ($menu->children as $sub)
                                     @php
                                         $subActive = rtrim(request()->url(), '/') === rtrim($sub->url, '/');
                                     @endphp
                                     <a href="{{ $sub->url }}"
-                                        class="block px-4 py-2 text-sm font-medium rounded-lg transition duration-200
-                                        {{ $subActive
-                                            ? 'bg-amber-100 text-gray-800 hover:bg-gray-700 hover:text-white'
-                                            : 'text-gray-700 hover:bg-amber-100' }}">
+                                        class="block px-4 py-2 text-sm font-medium transition duration-200
+                                {{ $subActive
+                                    ? 'bg-amber-100 text-gray-800 hover:bg-amber-400 hover:text-white'
+                                    : 'text-gray-700 hover:bg-amber-100' }}">
                                         {{ $sub->title }}
                                     </a>
                                 @endforeach
                             </div>
+
                         </div>
                     @else
                         <a href="{{ $menu->url }}"
@@ -336,15 +340,16 @@
         @click.away="sidebarOpen = false">
         <!-- Header Sidebar -->
         <div class="flex items-center justify-between my-2">
-            <button @click="sidebarOpen = false" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 bg-white/30 backdrop-blur-sm cursor-pointer">
+            <button @click="sidebarOpen = false" type="button"
+                class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 bg-white/30 backdrop-blur-sm cursor-pointer">
                 <span class="sr-only">Close menu</span>
                 <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M6 18L18 6M6 6l12 12" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
             <a href="#" class="-m-1.5 p-1.5">
-                <img class="h-9 w-auto" src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}" alt="Logo" />
+                <img class="h-9 w-auto" src="{{ asset('storage/' . $site['yayasanProfile']->logo) }}"
+                    alt="Logo" />
             </a>
         </div>
 
@@ -372,7 +377,7 @@
                             <div x-show="openDropdown === {{ $menu->id_menus }}" x-collapse>
                                 @foreach ($menu->children as $sub)
                                     <a href="{{ $sub->url }}"
-                                        class="block px-6 py-2 text-sm text-gray-700 hover:bg-blue-100">
+                                        class="block px-6 py-2 text-sm text-gray-700 hover:bg-amber-100">
                                         {{ $sub->title }}
                                     </a>
                                 @endforeach
@@ -380,12 +385,13 @@
                         </div>
                     @else
                         <a href="{{ $menu->url }}"
-                            class="block px-3 py-2 text-base font-semibold text-gray-900 hover:bg-blue-100 rounded-lg">
+                            class="block px-3 py-2 text-base font-semibold text-gray-900 hover:bg-amber-100 rounded-lg">
                             {{ $menu->title }}
                         </a>
                     @endif
                 @endforeach
             </div>
+
         </div>
     </div>
 </header>

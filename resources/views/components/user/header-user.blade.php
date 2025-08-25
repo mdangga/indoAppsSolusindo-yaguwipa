@@ -3,8 +3,8 @@
     'profilePath' => null,
     'title' => 'Edit Profile',
     'randomBg' => 'bg-blue-500',
-    'route' => route("dashboard"),
-    'description' => 'Kelola informasi akun Anda'
+    'route' => route('dashboard'),
+    'description' => 'Kelola informasi akun Anda',
 ])
 <div class="bg-white shadow-sm border-b border-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -19,7 +19,7 @@
                 </a>
                 <div>
                     <h1 class="text-md lg:text-xl font-bold text-gray-900">{{ $title }}</h1>
-                    <p class="text-sm lg:text-md text-gray-600">{{ $description }}</p>
+                    <p class="text-sm lg:text-md text-gray-600 hidden sm:block">{{ $description }}</p>
                 </div>
 
             </div>
