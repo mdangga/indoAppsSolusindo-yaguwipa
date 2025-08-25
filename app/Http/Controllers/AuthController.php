@@ -63,7 +63,7 @@ class AuthController extends Controller
         return redirect()->route('dashboard');
     }
 
-    
+
     // form login
     public function showLoginForm()
     {
@@ -120,5 +120,17 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/login')->with('success', 'Logout berhasil.');
+    }
+
+    // fungsi cek username
+    public function checkUsername(Request $request)
+    {
+        $username = $request->get('username');
+
+        $exists = \App\Models\User::where('username', $username)->exists();
+
+        return response()->json([
+            'exists' => $exists
+        ]);
     }
 }

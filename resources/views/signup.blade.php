@@ -78,6 +78,7 @@
                                         required
                                         class="form-input block w-full rounded-xl bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400"
                                         placeholder="Masukkan Username" />
+                                    <p id="username-status" class="text-xs mt-2"></p>
                                     @error('username')
                                         <p class="text-sm text-red-600 mt-2 flex items-center">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -563,6 +564,29 @@
         document.addEventListener('DOMContentLoaded', function() {
             updateButtons();
             updateStepper();
+        });
+
+
+        document.getElementById('username').addEventListener('input', function(e) {
+            const username = e.target.value.trim();
+            const statusEl = document.getElementById('username-status');
+
+            if (username.length === 0) {
+                statusEl.textContent = '';
+                return;
+            }
+
+            fetch(`/check-username?username=${encodeURIComponent(username)}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.exists) {
+                        statusEl.textContent = 'Username sudah dipakai';
+                        statusEl.className = 'text-xs mt-2 text-red-600';
+                    } else {
+                        statusEl.textContent = 'Username tersedia';
+                        statusEl.className = 'text-xs mt-2 text-green-600';
+                    }
+                });
         });
     </script>
 @endpush

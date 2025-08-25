@@ -25,7 +25,7 @@
     <main>
         <div class="px-4 sm:px-6 lg:px-12 py-16">
             <div class="max-w-7xl mx-auto">
-                <x-header-page title="GALLERY"
+                <x-header-page title="GALLERY {{ strtoupper($type) }}"
                     description="Galeri ini menyajikan koleksi gambar dari berbagai aktivitas, baik yang diselenggarakan oleh yayasan maupun momen-momen penting lainnya." />
                 @if ($gallery->isEmpty())
                     <div class="flex flex-col items-center justify-center min-h-[200px] mb-20 w-full space-y-4">
@@ -52,9 +52,9 @@
                                 data-image="{{ $thumbnail }}" data-title="{{ $item->alt_text }}"
                                 data-type="{{ $item->kategori }}" data-link="{{ $item->link }}">
                                 <div
-                                    class="relative overflow-hidden rounded-xl bg-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 ease-out">
+                                    class="relative overflow-hidden rounded-xl bg-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 ">
                                     <img src="{{ $thumbnail }}" alt="{{ $item->alt_text }}"
-                                        class="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                                        class="w-full h-auto object-cover transition-transform duration-700  group-hover:scale-102"
                                         loading="lazy" />
                                     <div
                                         class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -137,13 +137,13 @@
                     </div>
 
                     <!-- Image -->
-                    <img id="modal-image" class="hidden max-w-full max-h-[90vh] rounded-md object-contain bg-transparent"
+                    <img id="modal-image" class="hidden max-w-full max-h-[80vh] rounded-md object-contain bg-transparent"
                         loading="lazy" />
                 </div>
 
                 <!-- Title -->
                 <div class="absolute bottom-6 text-white text-center px-4 max-w-[80%]">
-                    <h3 id="modal-title" class="text-xl font-semibold drop-shadow-md"></h3>
+                    <h3 id="modal-title" class="text-xl font-medium drop-shadow-md"></h3>
                 </div>
             </div>
         </div>

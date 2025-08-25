@@ -40,7 +40,7 @@
                         <!-- Left Side - Video Background -->
                         <div class="hidden lg:flex lg:w-1/2 img-container p-8 items-center justify-center relative">
                             <!-- Video Background -->
-                            <img class="img-background grayscale-25 blur-[1px]"
+                            <img class="img-background grayscale-25"
                                 src="{{ asset('storage/' . $site['yayasanProfile']->background) }}">
 
                             <!-- Video Overlay -->
@@ -58,7 +58,7 @@
                                         </svg>
                                     </div>
                                 </div>
-                                <h1 class="text-3xl font-bold mb-4">Welcome Back!</h1>
+                                <h1 class="text-3xl font-bold mb-4">Selamat Datang!</h1>
                                 <p class="text-lg text-white/90 mb-8">Masuk untuk mengakses akun Anda dan melanjutkan
                                     perjalanan Anda bersama kami.</p>
                                 <div class="flex justify-center space-x-2">
@@ -128,11 +128,11 @@
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             stroke-width="2"
                                                             d="M13.875 18.825A10.05 10.05 0 0112
-                                                                                                                    19c-4.478 0-8.268-2.943-9.542-7a9.957
-                                                                                                                    9.957 0 012.873-4.412m3.113-2.14A9.956
-                                                                                                                    9.956 0 0112 5c4.478 0 8.268 2.943
-                                                                                                                    9.542 7a9.958 9.958 0 01-4.293 5.177M15
-                                                                                                                    12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                                                                                            19c-4.478 0-8.268-2.943-9.542-7a9.957
+                                                                                                                            9.957 0 012.873-4.412m3.113-2.14A9.956
+                                                                                                                            9.956 0 0112 5c4.478 0 8.268 2.943
+                                                                                                                            9.542 7a9.958 9.958 0 01-4.293 5.177M15
+                                                                                                                            12a3 3 0 11-6 0 3 3 0 016 0z" />
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             stroke-width="2" d="M3 3l18 18" />
                                                     </svg>

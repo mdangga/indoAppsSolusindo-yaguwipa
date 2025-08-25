@@ -19,7 +19,10 @@ class GalleryController extends Controller
             ->get();
 
         // dd($gallery);
-        return view('galleryVideo', compact('gallery'));
+        return view('gallery', [
+            'gallery' => $gallery,
+            'type' => 'video'
+        ]);
     }
 
     // fungsi untuk menampilkan halaman gallery di beranda
@@ -35,7 +38,10 @@ class GalleryController extends Controller
             });
 
         // dd($gallery);
-        return view('galleryPhoto', compact('gallery'));
+        return view('gallery', [
+            'gallery' => $gallery,
+            'type' => 'foto'
+        ]);
     }
 
     // fungsi untuk menampilkan halaman photo di admin
