@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Campaign;
 use App\Models\Institusi;
 use App\Models\JenisDonasi;
 use App\Models\Profiles;
@@ -10,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -174,67 +176,81 @@ class DatabaseSeeder extends Seeder
             ]);
         };
 
+
+        // donasi umum
+        $namaCampaign = 'Donasi Umum';
+        Campaign::create([
+            'slug' => Str::slug($namaCampaign),
+            'nama' => $namaCampaign,
+            'deskripsi' => 'Bantu Yayasan ini dalam membantu orang yang membutuhkan',
+            'image_path' => null,
+            'target_dana' => null,
+            'tanggal_mulai' => now(),
+            'tanggal_selesai' => null,
+            'status' => 'aktif',
+            'lokasi' => 'Jln. Ganetri IV No. 4 DPS 80237 Bali',
+            'id_program' => null,
+        ]);
+
+
         // kata kotor
-        // $data = [
-        //     // Kata kasar umum
-        //     ['kata' => 'anjing'],
-        //     ['kata' => 'bangsat'],
-        //     ['kata' => 'brengsek'],
-        //     ['kata' => 'kampret'],
-        //     ['kata' => 'sialan'],
-        //     ['kata' => 'setan'],
-        //     ['kata' => 'iblis'],
+        $dataKataKotor = [
+            // Kata kasar umum
+            ['kata' => 'bangsat'],
+            ['kata' => 'brengsek'],
+            ['kata' => 'kampret'],
+            ['kata' => 'sialan'],
+            ['kata' => 'setan'],
+            ['kata' => 'iblis'],
 
-        //     // Binatang (sering dipakai sebagai umpatan)
-        //     ['kata' => 'babi'],
-        //     ['kata' => 'monyet'],
-        //     ['kata' => 'anjing'],
-        //     ['kata' => 'keledai'],
-        //     ['kata' => 'cacing'],
+            // Binatang (sering dipakai sebagai umpatan)
+            ['kata' => 'babi'],
+            ['kata' => 'monyet'],
+            ['kata' => 'anjing'],
 
-        //     // Menghina intelektual
-        //     ['kata' => 'tolol'],
-        //     ['kata' => 'goblok'],
-        //     ['kata' => 'idiot'],
-        //     ['kata' => 'dungu'],
-        //     ['kata' => 'bego'],
-        //     ['kata' => 'otak udang'],
-        //     ['kata' => 'otak kosong'],
+            // Menghina intelektual
+            ['kata' => 'tolol'],
+            ['kata' => 'goblok'],
+            ['kata' => 'idiot'],
+            ['kata' => 'dungu'],
+            ['kata' => 'bego'],
+            ['kata' => 'otak udang'],
+            ['kata' => 'otak kosong'],
 
-        //     // Seksual vulgar
-        //     ['kata' => 'kontol'],
-        //     ['kata' => 'memek'],
-        //     ['kata' => 'ngentot'],
-        //     ['kata' => 'jembut'],
-        //     ['kata' => 'tetek'],
-        //     ['kata' => 'toket'],
-        //     ['kata' => 'pepek'],
-        //     ['kata' => 'peler'],
-        //     ['kata' => 'ewe'],
-        //     ['kata' => 'coli'],
+            // Seksual vulgar
+            ['kata' => 'kontol'],
+            ['kata' => 'memek'],
+            ['kata' => 'ngentot'],
+            ['kata' => 'jembut'],
+            ['kata' => 'tetek'],
+            ['kata' => 'toket'],
+            ['kata' => 'pepek'],
+            ['kata' => 'peler'],
+            ['kata' => 'ewe'],
+            ['kata' => 'coli'],
 
-        //     // Umpatan lain
-        //     ['kata' => 'tai'],
-        //     ['kata' => 'kacung'],
-        //     ['kata' => 'kampungan'],
-        //     ['kata' => 'katrok'],
-        //     ['kata' => 'sundal'],
-        //     ['kata' => 'lonte'],
-        //     ['kata' => 'jablay'],
-        //     ['kata' => 'pelacur'],
-        //     ['kata' => 'psk'],
-        //     ['kata' => 'bencong'],
-        //     ['kata' => 'banci'],
-        //     ['kata' => 'homo'],
-        //     ['kata' => 'lesbi'],
-        // ];
+            // Umpatan lain
+            ['kata' => 'tai'],
+            ['kata' => 'kacung'],
+            ['kata' => 'kampungan'],
+            ['kata' => 'katrok'],
+            ['kata' => 'sundal'],
+            ['kata' => 'lonte'],
+            ['kata' => 'jablay'],
+            ['kata' => 'pelacur'],
+            ['kata' => 'psk'],
+            ['kata' => 'bencong'],
+            ['kata' => 'banci'],
+            ['kata' => 'homo'],
+            ['kata' => 'lesbi'],
+        ];
 
-        // $now = Carbon::now();
-        // foreach ($data as &$row) {
-        //     $row['created_at'] = $now;
-        //     $row['updated_at'] = $now;
-        // }
+        $now = Carbon::now();
+        foreach ($dataKataKotor as &$row) {
+            $row['created_at'] = $now;
+            $row['updated_at'] = $now;
+        }
 
-        // DB::table('kata_kotor')->insert($data);
+        DB::table('kata_kotor')->insert($dataKataKotor);
     }
 }
