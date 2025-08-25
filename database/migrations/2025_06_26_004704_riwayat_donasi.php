@@ -57,7 +57,7 @@ return new class extends Migration
         Schema::create('donasi_dana', function (Blueprint $table) {
             $table->id('id_donasi_dana');
             $table->decimal('nominal', 15, 2);
-            $table->decimal('admin_fee', 10, 2);
+            $table->decimal('admin_fee', 10, 2)->default(0);
             $table->string('payment_id')->nullable();
             $table->string('payment_method')->nullable();
             $table->string('payment_url')->nullable();

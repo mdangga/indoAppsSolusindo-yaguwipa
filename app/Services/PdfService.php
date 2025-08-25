@@ -10,7 +10,6 @@ use Illuminate\Support\Str;
 
 class PdfService
 {
-    // PdfService.php
     public function generateKerjaSama(int $id)
     {
         $kerjaSama = KerjaSama::with('Mitra.User')->findOrFail($id);
@@ -44,6 +43,7 @@ class PdfService
                 'defaultFont' => 'sans-serif',
             ]);
 
+        // dd($pdf);
         // Simpan ke storage
         $pdfContent = $pdf->output();
         $namaUser = Str::slug($kerjaSama->Mitra->User->nama, '_');

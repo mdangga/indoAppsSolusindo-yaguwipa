@@ -145,7 +145,7 @@
                 const id = $(this).data('id');
                 const button = $(this);
 
-                if (confirm('Apakah Anda yakin ingin menghapus berita ini?')) {
+                if (confirm('Apakah Anda yakin ingin menghapus menu ini?')) {
                     // Show loading state
                     button.prop('disabled', true)
                         .removeClass('bg-red-500 hover:bg-red-600')
