@@ -17,13 +17,13 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('nama');
             $table->text('deskripsi');
-            $table->string('image_path');
+            $table->string('image_path')->nullable();
             $table->decimal('target_dana', 15, 2)->nullable();
             $table->date('tanggal_mulai');
-            $table->date('tanggal_selesai');
+            $table->date('tanggal_selesai')->nullable();
             $table->enum('status', ['aktif', 'selesai', 'pending'])->default('pending');
             $table->string('lokasi');
-            $table->unsignedBigInteger('id_program');
+            $table->unsignedBigInteger('id_program')->nullable();
             $table->timestamps();
 
             $table->foreign('id_program')->references('id_program')->on('program');
