@@ -41,6 +41,8 @@ Route::get('/berita-dan-kegiatan/show-all/keyword/{keyword}', [BeritaController:
 
 // gallery
 Route::get('/gallery/show-all', [GalleryController::class, 'show'])->name('beranda.gallery');
+Route::get('/gallery/photos/show-all', [GalleryController::class, 'showPhotos'])->name('beranda.gallery.foto');
+Route::get('/gallery/videos/show-all', [GalleryController::class, 'showVideos'])->name('beranda.gallery.video');
 
 // programs
 Route::get('/program/show-all', [ProgramController::class, 'show'])->name('beranda.program');
@@ -63,17 +65,16 @@ Route::get('/donasi/success/{slug}', [DonasiController::class, 'success'])->name
 Route::get('/donasi/failure/{slug}', [DonasiController::class, 'failure'])->name('donasi.failure');
 
 // user
-Route::middleware(['auth'])->group(function (){
+Route::middleware(['auth'])->group(function () {
     // notifikasi
     Route::prefix('notification')->group(function () {
         Route::get('/read/{id}', [NotificationController::class, 'bacaSatuNotif'])->name('notifications.read');
         Route::post('/read-all', [NotificationController::class, 'bacaSemuaNotif'])->name('notifications.readAll');
         Route::get('/', [NotificationController::class, 'index'])->name('notifications.index');
     });
-    
+
     // detail-donasi
     Route::get('donasi/show/detail/{id}', [PdfController::class, 'detailDonasi'])->name('detailDonasi.pdf');
-
 });
 // admin
 Route::middleware(['auth', 'auth.role:admin'])->prefix('admin')->group(function () {

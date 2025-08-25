@@ -36,7 +36,7 @@
     <div class="min-h-screen bg-gray-50">
         <!-- Header -->
         <x-user.header-user :user="$user" :randomBg="$randomBg" :profilePath="$profilePath" :title="'Salurkan Donasi Anda'" :description="'Pilih program donasi yang ingin Anda dukung. Setiap
-                                        kontribusi Anda akan memberikan dampak positif.'" />
+                                                                                        kontribusi Anda akan memberikan dampak positif.'" />
         <!-- Main Content -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <!-- Kategori Donasi -->
@@ -79,29 +79,29 @@
                                 </span>
                             </div>
                             <p class="text-gray-600 mb-4">{{ $campaign->deskripsi }}</p>
-
+                            @php
+                                $terkumpul = $campaign->donasi
+                                    ->filter(fn($d) => $d->donasiDana && $d->donasiDana->status_verifikasi === 'PAID')
+                                    ->sum(fn($d) => $d->donasiDana->nominal);
+                            @endphp
                             <div class="mb-4">
                                 <div class="flex justify-between text-sm text-gray-500 mb-1">
                                     <span>Terkumpul</span>
-                                    <span>Rp {{ number_format($campaign->Donasi->sum('nominal'), 0, ',', '.') }}</span>
+                                    <span>Rp
+                                        {{ number_format($terkumpul, 0, ',', '.') }}</span>
                                 </div>
                                 <div class="w-full bg-gray-200 rounded-full h-2">
                                     @php
                                         $percent =
-                                            $campaign->target > 0
-                                                ? min(
-                                                    100,
-                                                    round(
-                                                        ($campaign->Donasi->sum('nominal') / $campaign->target) * 100,
-                                                    ),
-                                                )
+                                            $campaign->target_dana > 0
+                                                ? min(100, round(($terkumpul / $campaign->target_dana) * 100))
                                                 : 0;
                                     @endphp
                                     <div class="bg-green-500 h-2 rounded-full" style="width: {{ $percent }}%">
                                     </div>
                                 </div>
                                 <div class="flex justify-between text-sm text-gray-500 mt-1">
-                                    <span>Target Rp {{ number_format($campaign->target, 0, ',', '.') }}</span>
+                                    <span>Target Rp {{ number_format($campaign->target_dana, 0, ',', '.') }}</span>
                                     <span>{{ $percent }}%</span>
                                 </div>
                             </div>
