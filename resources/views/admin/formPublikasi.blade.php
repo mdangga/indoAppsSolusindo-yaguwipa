@@ -51,7 +51,7 @@
 
             <div>
                 <label for="tanggal_terbit" class="block mb-1 text-sm font-medium">Tanggal Terbit</label>
-                <input type="datetime-local" name="tanggal_terbit" id="tanggal_terbit"
+                <input type="date" name="tanggal_terbit" id="tanggal_terbit"
                     class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
                     value="{{ old('tanggal_terbit', $publikasi->tanggal_terbit ?? '') }}" />
                 @error('tanggal_terbit')

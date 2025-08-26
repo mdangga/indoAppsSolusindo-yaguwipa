@@ -160,6 +160,35 @@
                 </ul>
             </li>
 
+            <!-- Programs Dropdown -->
+            <li>
+                <button type="button"
+                    class="flex items-center w-full p-2 text-base text-gray-200 transition duration-75 rounded-lg group hover:bg-[#535c66]"
+                    onclick="toggleDropdown('programs')">
+                    <svg class="shrink-0 w-5 h-5 text-gray-200 transition duration-75 group-hover:text-gray-200"
+                        xmlns="http://www.w3.org/2000/svg" width="448" height="512" viewBox="0 0 448 512">
+                        <path fill="currentColor"
+                            d="M128 0c17.7 0 32 14.3 32 32v32h128V32c0-17.7 14.3-32 32-32s32 14.3 32 32v32h48c26.5 0 48 21.5 48 48v48H0v-48c0-26.5 21.5-48 48-48h48V32c0-17.7 14.3-32 32-32M0 192h448v272c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48zm80 64c-8.8 0-16 7.2-16 16v96c0 8.8 7.2 16 16 16h96c8.8 0 16-7.2 16-16v-96c0-8.8-7.2-16-16-16z" />
+                    </svg>
+                    <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap font-normal">Program</span>
+                    <svg class="w-3 h-3 dropdown-arrow" id="programs-arrow" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 4 4 4-4" />
+                    </svg>
+                </button>
+                <ul id="programs-content" class="dropdown-content">
+                    <li class="py-1">
+                        <a href="{{ route('admin.kategoriProgram') }}"
+                            class="flex items-center w-full p-2 text-gray-200 transition duration-75 rounded-lg pl-11 group hover:bg-[#535c66] font-normal">Kategori
+                            Program</a>
+                    </li>
+                    <li class="py-1">
+                        <a href="{{ route('admin.program') }}"
+                            class="flex items-center w-full p-2 text-gray-200 transition duration-75 rounded-lg pl-11 group hover:bg-[#535c66] font-normal">Program</a>
+                    </li>
+                </ul>
+            </li>
 
             <!-- News and Event Dropdown -->
             <li>
@@ -217,36 +246,6 @@
                     <li class="py-1">
                         <a href="{{ route('admin.galleryVideo') }}"
                             class="flex items-center w-full p-2 text-gray-200 transition duration-75 rounded-lg pl-11 group hover:bg-[#535c66] font-normal">Video</a>
-                    </li>
-                </ul>
-            </li>
-
-            <!-- Programs Dropdown -->
-            <li>
-                <button type="button"
-                    class="flex items-center w-full p-2 text-base text-gray-200 transition duration-75 rounded-lg group hover:bg-[#535c66]"
-                    onclick="toggleDropdown('programs')">
-                    <svg class="shrink-0 w-5 h-5 text-gray-200 transition duration-75 group-hover:text-gray-200"
-                        xmlns="http://www.w3.org/2000/svg" width="448" height="512" viewBox="0 0 448 512">
-                        <path fill="currentColor"
-                            d="M128 0c17.7 0 32 14.3 32 32v32h128V32c0-17.7 14.3-32 32-32s32 14.3 32 32v32h48c26.5 0 48 21.5 48 48v48H0v-48c0-26.5 21.5-48 48-48h48V32c0-17.7 14.3-32 32-32M0 192h448v272c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48zm80 64c-8.8 0-16 7.2-16 16v96c0 8.8 7.2 16 16 16h96c8.8 0 16-7.2 16-16v-96c0-8.8-7.2-16-16-16z" />
-                    </svg>
-                    <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap font-normal">Program</span>
-                    <svg class="w-3 h-3 dropdown-arrow" id="programs-arrow" xmlns="http://www.w3.org/2000/svg"
-                        fill="none" viewBox="0 0 10 6">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m1 1 4 4 4-4" />
-                    </svg>
-                </button>
-                <ul id="programs-content" class="dropdown-content">
-                    <li class="py-1">
-                        <a href="{{ route('admin.kategoriProgram') }}"
-                            class="flex items-center w-full p-2 text-gray-200 transition duration-75 rounded-lg pl-11 group hover:bg-[#535c66] font-normal">Kategori
-                            Program</a>
-                    </li>
-                    <li class="py-1">
-                        <a href="{{ route('admin.program') }}"
-                            class="flex items-center w-full p-2 text-gray-200 transition duration-75 rounded-lg pl-11 group hover:bg-[#535c66] font-normal">Program</a>
                     </li>
                 </ul>
             </li>
