@@ -82,9 +82,14 @@ class BeritaController extends Controller
             "%;" . str_replace(' ', '', $keyword) . ";%"
         ])->get();
 
+        $berita_populer = Cache::remember('berita_populer', now()->addHours(1), function () {
+            return Berita::orderBy('hit', 'desc')->take(5)->get();
+        });
+
         return view('newsandevent', [
             'keyword' => $keyword,
             'beritaKeyword' => $beritaKeyword,
+            'beritaPopuler' => $berita_populer,
         ]);
     }
 
