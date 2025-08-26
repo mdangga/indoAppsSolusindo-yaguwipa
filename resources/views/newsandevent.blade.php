@@ -74,7 +74,7 @@
                                 <a href="{{ route('berita.slug', $pop->slug) }}"
                                     class="flex items-start gap-3 group hover:bg-gray-100 p-2 transition">
                                     <img src="{{ $pop->thumbnail ? asset('storage/' . $pop->thumbnail) : asset('images/no-image.png') }}"
-                                        alt="{{ $pop->judul }}" class="h-17 w-auto object-cover" />
+                                        alt="{{ $pop->judul }}" class="h-17 w-24 object-cover" />
                                     <div>
                                         <!-- Tanggal dan durasi baca -->
                                         <div class="text-xs text-gray-400 flex items-center gap-3">
