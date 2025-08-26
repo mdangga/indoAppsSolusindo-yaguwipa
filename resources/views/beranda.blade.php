@@ -291,7 +291,7 @@
                         {
                             name: '{{ $logo['nama'] }}',
                             url: '{{ $logo['website'] }}',
-                            image: '{{ asset('storage/' . $logo['image_path']) }}'
+                            image: '{{ asset('storage/' . $logo['profile_path']) }}'
                         },
                     @endforeach
                 ];
