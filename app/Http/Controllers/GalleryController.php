@@ -151,14 +151,14 @@ class GalleryController extends Controller
     {
         $rules = [
             'alt_text' => 'required|string|max:255',
-            'kategori' => 'required|in:foto,youtube',
+            'kategori' => 'required|in:foto,video',
             'status' => 'required|in:show,hide',
         ];
 
         if ($request->kategori === 'foto') {
             $rules['link'] = 'required:kategori,foto|file|mimes:jpeg,png,jpg,webp|max:10240';
-        } elseif ($request->kategori === 'youtube') {
-            $rules['youtube_link'] = 'required:kategori,youtube|url';
+        } elseif ($request->kategori === 'video') {
+            $rules['youtube_link'] = 'required:kategori,video|url';
         }
 
         $validator = Validator::make($request->all(), $rules);
@@ -179,7 +179,7 @@ class GalleryController extends Controller
         if ($request->kategori === 'foto' && $request->hasFile('link')) {
             $path = $request->file('link')->store('img/gallery', 'public');
             $data['link'] = $path;
-        } elseif ($request->kategori === 'youtube' && $request->youtube_link) {
+        } elseif ($request->kategori === 'video' && $request->youtube_link) {
             $data['link'] = $request->youtube_link;
         } else {
             return redirect()->back()
@@ -208,17 +208,17 @@ class GalleryController extends Controller
 
         $rules = [
             'alt_text' => 'required|string|max:255',
-            'kategori' => 'required|in:foto,youtube',
+            'kategori' => 'required|in:foto,video',
             'status' => 'required|in:show,hide',
         ];
 
         if ($request->kategori === 'foto') {
-            if ($gallery->kategori === 'youtube' || !$gallery->link) {
+            if ($gallery->kategori === 'video' || !$gallery->link) {
                 $rules['link'] = 'required|file|mimes:jpeg,png,jpg,webp|max:10240';
             } else {
                 $rules['link'] = 'nullable|file|mimes:jpeg,png,jpg,webp|max:10240';
             }
-        } elseif ($request->kategori === 'youtube') {
+        } elseif ($request->kategori === 'video') {
             $rules['youtube_link'] = 'required|url';
         }
 
@@ -245,12 +245,12 @@ class GalleryController extends Controller
 
                 $path = $request->file('link')->store('img/gallery', 'public');
                 $data['link'] = $path;
-            } elseif ($gallery->kategori === 'youtube' && !$request->hasFile('link')) {
+            } elseif ($gallery->kategori === 'video' && !$request->hasFile('link')) {
                 return redirect()->back()
                     ->withInput()
                     ->with('message', 'File foto wajib diisi ketika mengubah dari YouTube ke Foto.');
             }
-        } elseif ($request->kategori === 'youtube' && $request->youtube_link) {
+        } elseif ($request->kategori === 'video' && $request->youtube_link) {
             if ($gallery->kategori === 'foto' && $gallery->link && Storage::disk('public')->exists($gallery->link)) {
                 Storage::disk('public')->delete($gallery->link);
             }
