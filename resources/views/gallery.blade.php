@@ -56,16 +56,23 @@
                                     <img src="{{ $thumbnail }}" alt="{{ $item->alt_text }}"
                                         class="w-full h-auto object-cover transition-transform duration-700  group-hover:scale-102"
                                         loading="lazy" />
-                                    <div
-                                        class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                        <div class="absolute bottom-0 left-0 right-0 p-4">
-                                            <div class="flex items-center justify-between">
-                                                <div class="flex items-center space-x-3">
-                                                    <p class="text-white text-sm font-medium">{{ $item->alt_text }}</p>
-                                                </div>
+                                    {{-- kalau video: teks selalu muncul --}}
+                                    @if ($isVideo)
+                                        <div
+                                            class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-100 transition-opacity duration-300">
+                                            <div class="absolute bottom-0 left-0 right-0 p-4">
+                                                <p class="text-white text-sm font-medium">{{ $item->alt_text }}</p>
                                             </div>
                                         </div>
-                                    </div>
+                                    @else
+                                        {{-- kalau gambar: teks hanya muncul saat hover --}}
+                                        <div
+                                            class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                            <div class="absolute bottom-0 left-0 right-0 p-4">
+                                                <p class="text-white text-sm font-medium">{{ $item->alt_text }}</p>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         @endforeach
@@ -100,16 +107,23 @@
                                 <img src="{{ $thumbnail }}" alt="{{ $item->alt_text }}"
                                     class="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                                     loading="lazy" />
-                                <div
-                                    class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                    <div class="absolute bottom-0 left-0 right-0 p-4">
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center space-x-3">
-                                                <p class="text-white text-sm font-medium">{{ $item->alt_text }}</p>
-                                            </div>
+                                {{-- kalau video: teks selalu muncul --}}
+                                @if ($isVideo)
+                                    <div
+                                        class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-100 transition-opacity duration-300">
+                                        <div class="absolute bottom-0 left-0 right-0 p-4">
+                                            <p class="text-white text-sm font-medium">{{ $item->alt_text }}</p>
                                         </div>
                                     </div>
-                                </div>
+                                @else
+                                    {{-- kalau gambar: teks hanya muncul saat hover --}}
+                                    <div
+                                        class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <div class="absolute bottom-0 left-0 right-0 p-4">
+                                            <p class="text-white text-sm font-medium">{{ $item->alt_text }}</p>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     @endforeach
