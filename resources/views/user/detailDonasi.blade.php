@@ -329,7 +329,7 @@
                             </div>
                         </div>
                     @endif
-                    @if ($donasi->status === 'approvedhjkdfghj ')
+                    @if ($donasi->status === 'approved')
                         <form action="{{ route('detailDonasi.pdf', $donasi->id_donasi) }}" method="GET">
                             @csrf
                             <button type="submit"
